@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Navbar = () => {
@@ -47,8 +47,9 @@ const Navbar = () => {
                 {item}
               </a>
             ))}
-            <Button className="bg-[#F97316] hover:bg-[#F97316]/90 text-white">
-              Neem Contact Op
+            <Button className="bg-[#F97316] hover:bg-[#F97316]/90 text-white flex items-center gap-2">
+              <LogIn className="h-4 w-4" />
+              <span>Client Login</span>
             </Button>
           </nav>
 
@@ -76,8 +77,9 @@ const Navbar = () => {
                   {item}
                 </a>
               ))}
-              <Button className="bg-[#F97316] hover:bg-[#F97316]/90 text-white w-full">
-                Neem Contact Op
+              <Button className="bg-[#F97316] hover:bg-[#F97316]/90 text-white w-full flex items-center justify-center gap-2">
+                <LogIn className="h-4 w-4" />
+                <span>Client Login</span>
               </Button>
             </div>
           </div>
