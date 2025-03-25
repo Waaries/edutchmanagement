@@ -1,5 +1,5 @@
 
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Footer = () => {
@@ -22,18 +22,34 @@ const Footer = () => {
               Wij bieden professionele bedrijfsadressen voor ondernemers en bedrijven die hun uitstraling willen verbeteren zonder de kosten van een fysiek kantoor.
             </p>
             <div className="flex space-x-4 pt-4">
-              {["facebook", "twitter", "linkedin", "instagram"].map((social) => (
-                <a 
-                  key={social} 
-                  href={`#${social}`} 
-                  className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-[#F97316] hover:border-[#F97316] transition-all"
-                  aria-label={`Follow us on ${social}`}
-                >
-                  <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm-1 5h2v2h-2V7zm0 4h2v6h-2v-6z" />
-                  </svg>
-                </a>
-              ))}
+              <a 
+                href="#facebook" 
+                className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-[#F97316] hover:border-[#F97316] transition-all"
+                aria-label="Follow us on Facebook"
+              >
+                <Facebook size={20} />
+              </a>
+              <a 
+                href="#twitter" 
+                className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-[#F97316] hover:border-[#F97316] transition-all"
+                aria-label="Follow us on Twitter"
+              >
+                <Twitter size={20} />
+              </a>
+              <a 
+                href="#linkedin" 
+                className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-[#F97316] hover:border-[#F97316] transition-all"
+                aria-label="Follow us on LinkedIn"
+              >
+                <Linkedin size={20} />
+              </a>
+              <a 
+                href="#instagram" 
+                className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-[#F97316] hover:border-[#F97316] transition-all"
+                aria-label="Follow us on Instagram"
+              >
+                <Instagram size={20} />
+              </a>
             </div>
           </div>
           
