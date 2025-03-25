@@ -203,8 +203,8 @@ const Contact = () => {
                   </div>
                   <div>
                     <h4 className="font-semibold text-lg mb-1">Telefoonnummer</h4>
-                    <p className="text-brand-mediumgray">+31 (0)20 123 4567</p>
-                    <p className="text-sm text-brand-mediumgray">Ma-Vr: 9:00 - 17:30</p>
+                    <p className="text-brand-mediumgray">+31 (0)20 737 03 85</p>
+                    <p className="text-sm text-brand-mediumgray">Ma-Vr: 09:00 - 17:00</p>
                   </div>
                 </div>
                 

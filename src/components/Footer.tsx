@@ -95,7 +95,27 @@ const Footer = () => {
           </div>
           
           <div>
-            <h4 className="text-lg font-semibold mb-4">Nieuwsbrief</h4>
+            <h4 className="text-lg font-semibold mb-4">Contact</h4>
+            <ul className="space-y-3">
+              <li className="flex items-center">
+                <MapPin size={16} className="text-[#F97316] mr-2" />
+                <span className="text-white/70">Reigersbos 100 P, 1107 ES Amsterdam</span>
+              </li>
+              <li className="flex items-center">
+                <Phone size={16} className="text-[#F97316] mr-2" />
+                <span className="text-white/70">+31 (0)20 737 03 85</span>
+              </li>
+              <li className="flex items-start">
+                <Mail size={16} className="text-[#F97316] mr-2 mt-1" />
+                <span className="text-white/70">info@edutchmanagement.nl</span>
+              </li>
+              <li className="flex items-center">
+                <span className="text-[#F97316] mr-2">⏰</span>
+                <span className="text-white/70">Ma-Vr: 09:00 - 17:00</span>
+              </li>
+            </ul>
+            
+            <h4 className="text-lg font-semibold mb-4 mt-8">Nieuwsbrief</h4>
             <p className="text-white/70 mb-4">
               Schrijf u in voor onze nieuwsbrief om op de hoogte te blijven van aanbiedingen en updates.
             </p>
