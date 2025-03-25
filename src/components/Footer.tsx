@@ -1,6 +1,7 @@
 
 import { ArrowRight, Facebook, Twitter, Linkedin, Instagram, MapPin, Phone, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -140,11 +141,15 @@ const Footer = () => {
           </p>
           
           <div className="flex space-x-6 mt-4 md:mt-0">
-            {["Privacybeleid", "Algemene Voorwaarden", "Cookiebeleid"].map((item) => (
-              <a key={item} href="#" className="text-sm text-white/60 hover:text-white transition-colors">
-                {item}
-              </a>
-            ))}
+            <a href="#privacybeleid" className="text-sm text-white/60 hover:text-white transition-colors">
+              Privacybeleid
+            </a>
+            <a href="#algemene-voorwaarden" className="text-sm text-white/60 hover:text-white transition-colors">
+              Algemene Voorwaarden
+            </a>
+            <Link to="/cookiebeleid" className="text-sm text-white/60 hover:text-white transition-colors">
+              Cookiebeleid
+            </Link>
           </div>
         </div>
       </div>
