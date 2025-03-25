@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { MapPin, Phone, Mail, ArrowRight, Check } from "lucide-react";
@@ -213,7 +214,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h4 className="font-semibold text-lg mb-1">E-mail</h4>
-                    <p className="text-brand-mediumgray">info@bedrijfsadres.nl</p>
+                    <p className="text-brand-mediumgray">info@edutchmanagement.nl</p>
                     <p className="text-sm text-brand-mediumgray">Antwoord binnen 24 uur</p>
                   </div>
                 </div>

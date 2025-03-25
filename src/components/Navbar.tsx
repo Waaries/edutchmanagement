@@ -34,7 +34,7 @@ const Navbar = () => {
               alt="eDutch Management Logo" 
               className="h-12 mr-2"
             />
-            <span className="hidden sm:inline">eDutch Management</span>
+            <span className="hidden sm:inline font-montserrat">eDutch Management</span>
           </a>
 
           <nav className="hidden md:flex items-center space-x-8">
@@ -42,7 +42,7 @@ const Navbar = () => {
               <a
                 key={item}
                 href={`#${item.toLowerCase()}`}
-                className="text-brand-charcoal hover:text-[#F97316] transition-colors font-medium"
+                className="text-brand-charcoal hover:text-[#F97316] transition-colors font-bold font-montserrat"
               >
                 {item}
               </a>
@@ -71,7 +71,7 @@ const Navbar = () => {
                 <a
                   key={item}
                   href={`#${item.toLowerCase()}`}
-                  className="text-brand-charcoal hover:text-[#F97316] transition-colors py-2 font-medium"
+                  className="text-brand-charcoal hover:text-[#F97316] transition-colors py-2 font-bold font-montserrat"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item}
