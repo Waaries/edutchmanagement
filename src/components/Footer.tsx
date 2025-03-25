@@ -1,5 +1,5 @@
 
-import { ArrowRight, Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
+import { ArrowRight, Facebook, Twitter, Linkedin, Instagram, MapPin, Phone, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Footer = () => {
