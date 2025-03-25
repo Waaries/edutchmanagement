@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { MapPin, Phone, Mail, ArrowRight, Check } from "lucide-react";
@@ -191,9 +190,8 @@ const Contact = () => {
                   <div>
                     <h4 className="font-semibold text-lg mb-1">Ons Adres</h4>
                     <p className="text-brand-mediumgray">
-                      Zuidas Business Center<br />
-                      Gustav Mahlerlaan
-                      1082 MS Amsterdam
+                      Reigersbos 100 P<br />
+                      1107 ES Amsterdam
                     </p>
                   </div>
                 </div>
@@ -225,7 +223,7 @@ const Contact = () => {
             <div className="rounded-lg overflow-hidden h-64 relative">
               <div className="absolute inset-0 bg-gray-600 opacity-10"></div>
               <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2436.5967266461806!2d4.870153999999999!3d52.3371264!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c60a039cf63a3f%3A0x8ae5222fff2e8568!2sGustav%20Mahlerlaan%2C%20Amsterdam!5e0!3m2!1sen!2snl!4v1697028838428!5m2!1sen!2snl" 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2438.4499798694825!2d4.979604376940437!3d52.30021574461772!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c60be2375814c1%3A0x4e2e41c3de0fc814!2sReigersbos%20100%2C%201107%20ES%20Amsterdam!5e0!3m2!1sen!2snl!4v1697029838428!5m2!1sen!2snl" 
                 width="100%" 
                 height="100%" 
                 className="border-0"
