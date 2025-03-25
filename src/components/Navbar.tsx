@@ -27,9 +27,14 @@ const Navbar = () => {
         <div className="flex items-center justify-between">
           <a 
             href="#" 
-            className="text-2xl font-bold tracking-tight text-brand-charcoal"
+            className="flex items-center text-2xl font-bold tracking-tight text-brand-charcoal"
           >
-            BusinessAddress
+            <img 
+              src="/lovable-uploads/39d6c2c8-b4a1-4f97-86fb-dd3a6e9fcdbd.png" 
+              alt="eDutch Management Logo" 
+              className="h-12 mr-2"
+            />
+            <span className="hidden sm:inline">eDutch Management</span>
           </a>
 
           <nav className="hidden md:flex items-center space-x-8">
@@ -37,12 +42,12 @@ const Navbar = () => {
               <a
                 key={item}
                 href={`#${item.toLowerCase()}`}
-                className="text-brand-charcoal hover:text-brand-blue transition-colors font-medium"
+                className="text-brand-charcoal hover:text-[#F97316] transition-colors font-medium"
               >
                 {item}
               </a>
             ))}
-            <Button className="bg-brand-blue hover:bg-brand-blue/90 text-white">
+            <Button className="bg-[#F97316] hover:bg-[#F97316]/90 text-white">
               Neem Contact Op
             </Button>
           </nav>
@@ -65,13 +70,13 @@ const Navbar = () => {
                 <a
                   key={item}
                   href={`#${item.toLowerCase()}`}
-                  className="text-brand-charcoal hover:text-brand-blue transition-colors py-2 font-medium"
+                  className="text-brand-charcoal hover:text-[#F97316] transition-colors py-2 font-medium"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item}
                 </a>
               ))}
-              <Button className="bg-brand-blue hover:bg-brand-blue/90 text-white w-full">
+              <Button className="bg-[#F97316] hover:bg-[#F97316]/90 text-white w-full">
                 Neem Contact Op
               </Button>
             </div>

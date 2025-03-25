@@ -10,7 +10,14 @@ const Footer = () => {
       <div className="container mx-auto container-padding">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 py-16">
           <div className="space-y-4">
-            <h3 className="text-xl font-bold mb-4">BusinessAddress</h3>
+            <div className="flex items-center mb-4">
+              <img 
+                src="/lovable-uploads/39d6c2c8-b4a1-4f97-86fb-dd3a6e9fcdbd.png" 
+                alt="eDutch Management Logo" 
+                className="h-10 mr-2"
+              />
+              <h3 className="text-xl font-bold">eDutch Management</h3>
+            </div>
             <p className="text-white/70">
               Wij bieden professionele bedrijfsadressen voor ondernemers en bedrijven die hun uitstraling willen verbeteren zonder de kosten van een fysiek kantoor.
             </p>
@@ -19,7 +26,7 @@ const Footer = () => {
                 <a 
                   key={social} 
                   href={`#${social}`} 
-                  className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-brand-blue hover:border-brand-blue transition-all"
+                  className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-[#F97316] hover:border-[#F97316] transition-all"
                   aria-label={`Follow us on ${social}`}
                 >
                   <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
@@ -42,7 +49,7 @@ const Footer = () => {
                 "Telefonische Beantwoording"
               ].map((item) => (
                 <li key={item}>
-                  <a href="#diensten" className="text-white/70 hover:text-brand-blue transition-colors">
+                  <a href="#diensten" className="text-white/70 hover:text-[#F97316] transition-colors">
                     {item}
                   </a>
                 </li>
@@ -63,7 +70,7 @@ const Footer = () => {
                 "Contact"
               ].map((item) => (
                 <li key={item}>
-                  <a href={`#${item.toLowerCase().replace(/ /g, '-')}`} className="text-white/70 hover:text-brand-blue transition-colors">
+                  <a href={`#${item.toLowerCase().replace(/ /g, '-')}`} className="text-white/70 hover:text-[#F97316] transition-colors">
                     {item}
                   </a>
                 </li>
@@ -80,9 +87,9 @@ const Footer = () => {
               <input 
                 type="email" 
                 placeholder="Uw e-mailadres" 
-                className="px-4 py-2 rounded-l-md bg-white/10 border-white/10 border focus:outline-none focus:ring-1 focus:ring-brand-blue w-full"
+                className="px-4 py-2 rounded-l-md bg-white/10 border-white/10 border focus:outline-none focus:ring-1 focus:ring-[#F97316] w-full"
               />
-              <Button className="bg-brand-blue hover:bg-brand-blue/90 text-white rounded-l-none" aria-label="Subscribe">
+              <Button className="bg-[#F97316] hover:bg-[#F97316]/90 text-white rounded-l-none" aria-label="Subscribe">
                 <ArrowRight className="h-5 w-5" />
               </Button>
             </div>
@@ -93,7 +100,7 @@ const Footer = () => {
         
         <div className="py-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-sm text-white/60">
-            &copy; {currentYear} BusinessAddress. Alle rechten voorbehouden.
+            &copy; {currentYear} eDutch Management. Alle rechten voorbehouden.
           </p>
           
           <div className="flex space-x-6 mt-4 md:mt-0">

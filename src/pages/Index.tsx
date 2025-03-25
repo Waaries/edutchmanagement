@@ -10,6 +10,9 @@ import Footer from "@/components/Footer";
 
 const Index = () => {
   useEffect(() => {
+    // Update the document title
+    document.title = "eDutch Management | Professionele Bedrijfsadressen";
+    
     const handleScroll = () => {
       const reveals = document.querySelectorAll('.reveal');
       reveals.forEach(element => {
