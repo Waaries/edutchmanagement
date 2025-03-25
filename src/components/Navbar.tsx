@@ -49,7 +49,7 @@ const Navbar = () => {
             ))}
             <Button className="bg-[#F97316] hover:bg-[#F97316]/90 text-white flex items-center gap-2">
               <LogIn className="h-4 w-4" />
-              <span>Client Login</span>
+              <span>Inloggen</span>
             </Button>
           </nav>
 
@@ -79,7 +79,7 @@ const Navbar = () => {
               ))}
               <Button className="bg-[#F97316] hover:bg-[#F97316]/90 text-white w-full flex items-center justify-center gap-2">
                 <LogIn className="h-4 w-4" />
-                <span>Client Login</span>
+                <span>Inloggen</span>
               </Button>
             </div>
           </div>
