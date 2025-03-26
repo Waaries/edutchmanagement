@@ -1,4 +1,3 @@
-
 import { Facebook, Twitter, Linkedin, Instagram, MapPin, Phone, Mail, Clock, ChevronRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -96,7 +95,7 @@ const Footer = () => {
             </ul>
           </div>
           
-          {/* Contact Information */}
+          {/* Contact Information - Updated to align text left */}
           <div className="md:col-span-3">
             <h4 className="text-xl font-semibold mb-6 border-b border-white/10 pb-2 flex items-center">
               <Sparkles className="h-4 w-4 mr-2 text-primary" />
@@ -107,7 +106,7 @@ const Footer = () => {
                 <div className="w-10 h-10 rounded-2xl bg-white/10 flex items-center justify-center mr-4 flex-shrink-0 group-hover:bg-primary/20 transition-colors">
                   <MapPin className="h-5 w-5 text-primary" />
                 </div>
-                <div>
+                <div className="text-left">
                   <h4 className="font-semibold text-lg mb-1">Ons Adres</h4>
                   <p className="text-white/80">
                     Reigersbos 100 P<br />
@@ -120,7 +119,7 @@ const Footer = () => {
                 <div className="w-10 h-10 rounded-2xl bg-white/10 flex items-center justify-center mr-4 flex-shrink-0 group-hover:bg-primary/20 transition-colors">
                   <Phone className="h-5 w-5 text-primary" />
                 </div>
-                <div>
+                <div className="text-left">
                   <h4 className="font-semibold text-lg mb-1">Telefoonnummer</h4>
                   <a href="tel:+31207370385" className="text-white/80 hover:text-primary transition-colors">
                     +31 (0)20 737 03 85
@@ -132,7 +131,7 @@ const Footer = () => {
                 <div className="w-10 h-10 rounded-2xl bg-white/10 flex items-center justify-center mr-4 flex-shrink-0 group-hover:bg-primary/20 transition-colors">
                   <Mail className="h-5 w-5 text-primary" />
                 </div>
-                <div>
+                <div className="text-left">
                   <h4 className="font-semibold text-lg mb-1">E-mail</h4>
                   <a href="mailto:info@edutchmanagement.nl" className="text-white/80 hover:text-primary transition-colors">
                     info@edutchmanagement.nl
@@ -144,7 +143,7 @@ const Footer = () => {
                 <div className="w-10 h-10 rounded-2xl bg-white/10 flex items-center justify-center mr-4 flex-shrink-0 group-hover:bg-primary/20 transition-colors">
                   <Clock className="h-5 w-5 text-primary" />
                 </div>
-                <div>
+                <div className="text-left">
                   <h4 className="font-semibold text-lg mb-1">Openingstijden</h4>
                   <p className="text-white/80">Ma-Vr: 09:00 - 17:00</p>
                 </div>
