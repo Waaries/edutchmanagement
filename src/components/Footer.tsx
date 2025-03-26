@@ -1,5 +1,5 @@
+
 import { Facebook, Twitter, Linkedin, Instagram, MapPin, Phone, Mail, Clock, ChevronRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
@@ -146,11 +146,7 @@ const Footer = () => {
                 </div>
               </li>
             </ul>
-            <div className="mt-8">
-              <Button className="w-full">
-                Contact Ons
-              </Button>
-            </div>
+            {/* Removed the Contact Ons button that was here */}
           </div>
         </div>
         
