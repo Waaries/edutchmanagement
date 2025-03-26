@@ -1,4 +1,3 @@
-
 import { ArrowRight, Facebook, Twitter, Linkedin, Instagram, MapPin, Phone, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -15,7 +14,7 @@ const Footer = () => {
               <img 
                 src="/lovable-uploads/39d6c2c8-b4a1-4f97-86fb-dd3a6e9fcdbd.png" 
                 alt="eDutch Management Logo" 
-                className="h-10 mr-2"
+                className="h-14 mr-3" // Increased from h-10 to h-14 and mr-2 to mr-3
               />
               <h3 className="text-xl font-bold">eDutch Management</h3>
             </div>
