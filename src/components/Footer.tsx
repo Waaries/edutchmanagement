@@ -1,4 +1,3 @@
-
 import { Facebook, Twitter, Linkedin, Instagram, MapPin, Phone, Mail, Clock, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -21,7 +20,7 @@ const Footer = () => {
                   className="h-14 md:h-16 invert" // Added invert class to make dark logo lines white
                 />
               </div>
-              <h3 className="text-2xl font-bold gradient-text">eDutch Management</h3>
+              <h3 className="text-2xl font-bold text-white font-space">eDutch Management</h3>
             </div>
             <p className="text-white/80 text-lg leading-relaxed max-w-md text-left">
               Wij bieden professionele bedrijfsadressen voor ondernemers en bedrijven die hun uitstraling willen verbeteren zonder de kosten van een fysiek kantoor.
