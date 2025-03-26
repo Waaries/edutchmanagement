@@ -62,8 +62,8 @@ const Features = () => {
   return (
     <section id="voordelen" className="section-padding" ref={sectionRef}>
       <div className="container mx-auto container-padding reveal">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-block px-3 py-1 text-sm font-medium bg-primary/10 text-primary mb-4 rounded-2xl flex items-center justify-center mx-auto">
+        <div className="text-left max-w-3xl mx-auto mb-16">
+          <div className="inline-block px-3 py-1 text-sm font-medium bg-primary/10 text-primary mb-4 rounded-2xl flex items-center justify-start">
             Waarom Kiezen Voor Ons
           </div>
           <h2 className="mb-6">Voordelen van een <span className="gradient-text">Bedrijfsadres</span></h2>
@@ -76,7 +76,7 @@ const Features = () => {
           {features.map((feature, index) => (
             <div 
               key={index} 
-              className="bg-white rounded-3xl p-8 hover-lift transition-all duration-300 card-shadow"
+              className="bg-white rounded-3xl p-8 hover-lift transition-all duration-300 card-shadow text-left"
               style={{ animationDelay: `${index * 100}ms` }}
             >
               <div className="w-14 h-14 blob-shape bg-primary/10 flex items-center justify-center mb-6">
