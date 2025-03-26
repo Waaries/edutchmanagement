@@ -1,3 +1,4 @@
+
 import { Facebook, Twitter, Linkedin, Instagram, MapPin, Phone, Mail, Clock, ChevronRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -60,7 +61,7 @@ const Footer = () => {
                 "Telefonische Beantwoording"
               ].map((item, index) => (
                 <li key={index}>
-                  <a href="#diensten" className="text-white/70 hover:text-primary transition-colors duration-300 flex items-center group">
+                  <a href="#diensten" className="text-slate-300 hover:text-primary transition-colors duration-300 flex items-center group text-base">
                     <ChevronRight className="h-4 w-4 mr-2 opacity-0 -ml-6 group-hover:opacity-100 group-hover:ml-0 transition-all" />
                     {item}
                   </a>
@@ -86,7 +87,7 @@ const Footer = () => {
                 "Contact"
               ].map((item, index) => (
                 <li key={index}>
-                  <a href={`#${item.toLowerCase().replace(/ /g, '-')}`} className="text-white/70 hover:text-primary transition-colors duration-300 flex items-center group">
+                  <a href={`#${item.toLowerCase().replace(/ /g, '-')}`} className="text-slate-300 hover:text-primary transition-colors duration-300 flex items-center group text-base">
                     <ChevronRight className="h-4 w-4 mr-2 opacity-0 -ml-6 group-hover:opacity-100 group-hover:ml-0 transition-all" />
                     {item}
                   </a>
@@ -95,7 +96,7 @@ const Footer = () => {
             </ul>
           </div>
           
-          {/* Contact Information - Updated to align text left */}
+          {/* Contact Information */}
           <div className="md:col-span-3">
             <h4 className="text-xl font-semibold mb-6 border-b border-white/10 pb-2 flex items-center">
               <Sparkles className="h-4 w-4 mr-2 text-primary" />
@@ -108,7 +109,7 @@ const Footer = () => {
                 </div>
                 <div className="text-left">
                   <h4 className="font-semibold text-lg mb-1">Ons Adres</h4>
-                  <p className="text-white/80">
+                  <p className="text-slate-300 leading-relaxed">
                     Reigersbos 100 P<br />
                     1107 ES Amsterdam
                   </p>
@@ -121,7 +122,7 @@ const Footer = () => {
                 </div>
                 <div className="text-left">
                   <h4 className="font-semibold text-lg mb-1">Telefoonnummer</h4>
-                  <a href="tel:+31207370385" className="text-white/80 hover:text-primary transition-colors">
+                  <a href="tel:+31207370385" className="text-slate-300 hover:text-primary transition-colors">
                     +31 (0)20 737 03 85
                   </a>
                 </div>
@@ -133,7 +134,7 @@ const Footer = () => {
                 </div>
                 <div className="text-left">
                   <h4 className="font-semibold text-lg mb-1">E-mail</h4>
-                  <a href="mailto:info@edutchmanagement.nl" className="text-white/80 hover:text-primary transition-colors">
+                  <a href="mailto:info@edutchmanagement.nl" className="text-slate-300 hover:text-primary transition-colors">
                     info@edutchmanagement.nl
                   </a>
                 </div>
@@ -145,7 +146,7 @@ const Footer = () => {
                 </div>
                 <div className="text-left">
                   <h4 className="font-semibold text-lg mb-1">Openingstijden</h4>
-                  <p className="text-white/80">Ma-Vr: 09:00 - 17:00</p>
+                  <p className="text-slate-300">Ma-Vr: 09:00 - 17:00</p>
                 </div>
               </li>
             </ul>
@@ -160,18 +161,18 @@ const Footer = () => {
         {/* Bottom Bar with Copyright and Links */}
         <div className="border-t border-white/10 py-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-sm text-white/60 mb-4 md:mb-0">
+            <p className="text-sm text-slate-400 mb-4 md:mb-0">
               &copy; {currentYear} eDutch Management. Alle rechten voorbehouden.
             </p>
             
             <div className="flex flex-wrap justify-center space-x-6">
-              <a href="#privacybeleid" className="text-sm text-white/60 hover:text-white transition-colors">
+              <a href="#privacybeleid" className="text-sm text-slate-400 hover:text-white transition-colors">
                 Privacybeleid
               </a>
-              <a href="#algemene-voorwaarden" className="text-sm text-white/60 hover:text-white transition-colors">
+              <a href="#algemene-voorwaarden" className="text-sm text-slate-400 hover:text-white transition-colors">
                 Algemene Voorwaarden
               </a>
-              <Link to="/cookiebeleid" className="text-sm text-white/60 hover:text-white transition-colors">
+              <Link to="/cookiebeleid" className="text-sm text-slate-400 hover:text-white transition-colors">
                 Cookiebeleid
               </Link>
             </div>
