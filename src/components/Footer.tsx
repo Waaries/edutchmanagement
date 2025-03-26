@@ -18,7 +18,7 @@ const Footer = () => {
                 <img 
                   src="/lovable-uploads/39d6c2c8-b4a1-4f97-86fb-dd3a6e9fcdbd.png" 
                   alt="eDutch Management Logo" 
-                  className="h-14 md:h-16"
+                  className="h-14 md:h-16 invert" // Added invert class to make dark logo lines white
                 />
               </div>
               <h3 className="text-2xl font-bold gradient-text">eDutch Management</h3>
