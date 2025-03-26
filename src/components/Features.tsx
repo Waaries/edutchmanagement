@@ -60,14 +60,14 @@ const Features = () => {
   ];
 
   return (
-    <section id="voordelen" className="section-padding bg-brand-silver" ref={sectionRef}>
+    <section id="voordelen" className="section-padding bg-gray-50" ref={sectionRef}>
       <div className="container mx-auto container-padding reveal">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-block rounded-full bg-brand-blue/10 px-3 py-1 text-sm font-medium text-brand-blue mb-4">
+          <div className="inline-block px-3 py-1 text-sm font-medium bg-blue-100 text-blue-600 mb-4">
             Waarom Kiezen Voor Ons
           </div>
-          <h2 className="mb-6">Voordelen van een Virtueel <span className="text-brand-blue">Bedrijfsadres</span></h2>
-          <p className="text-lg text-brand-mediumgray">
+          <h2 className="mb-6">Voordelen van een Virtueel <span className="gradient-text">Bedrijfsadres</span></h2>
+          <p className="text-lg text-slate-600">
             Ontdek hoe een professioneel bedrijfsadres uw bedrijf naar een hoger niveau kan tillen.
           </p>
         </div>
@@ -76,14 +76,14 @@ const Features = () => {
           {features.map((feature, index) => (
             <div 
               key={index} 
-              className="glass-card rounded-xl p-8 hover-lift transition-all duration-300"
+              className="bg-white rounded-xl p-8 hover-lift transition-all duration-300 card-shadow"
               style={{ animationDelay: `${index * 100}ms` }}
             >
-              <div className="w-14 h-14 rounded-lg bg-brand-blue/10 flex items-center justify-center mb-6">
-                <feature.icon className="h-7 w-7 text-brand-blue" />
+              <div className="w-14 h-14 rounded-lg bg-blue-100 flex items-center justify-center mb-6">
+                <feature.icon className="h-7 w-7 text-blue-600" />
               </div>
               <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
-              <p className="text-brand-mediumgray">{feature.description}</p>
+              <p className="text-slate-600">{feature.description}</p>
             </div>
           ))}
         </div>

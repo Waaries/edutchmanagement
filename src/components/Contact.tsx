@@ -58,20 +58,20 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="section-padding bg-brand-silver" ref={sectionRef}>
+    <section id="contact" className="section-padding bg-gray-50" ref={sectionRef}>
       <div className="container mx-auto container-padding reveal">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-block rounded-full bg-brand-blue/10 px-3 py-1 text-sm font-medium text-brand-blue mb-4">
+          <div className="inline-block px-3 py-1 text-sm font-medium bg-blue-100 text-blue-600 mb-4">
             Contact Opnemen
           </div>
-          <h2 className="mb-6">Klaar Om Uw <span className="text-brand-blue">Bedrijfsadres</span> Te Upgraden?</h2>
-          <p className="text-lg text-brand-mediumgray">
+          <h2 className="mb-6">Klaar Om Uw <span className="gradient-text">Bedrijfsadres</span> Te Upgraden?</h2>
+          <p className="text-lg text-slate-600">
             Neem contact met ons op voor meer informatie of om een pakket te kiezen dat bij uw bedrijf past.
           </p>
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          <div className="glass-card rounded-xl p-8 md:p-10">
+          <div className="bg-white rounded-xl p-8 md:p-10 card-shadow">
             <h3 className="text-2xl font-semibold mb-6">Stuur ons een bericht</h3>
             
             {submitted ? (
@@ -80,7 +80,7 @@ const Contact = () => {
                   <Check className="h-8 w-8 text-green-600" />
                 </div>
                 <h4 className="text-xl font-semibold mb-2">Bericht Verzonden!</h4>
-                <p className="text-brand-mediumgray">
+                <p className="text-slate-600">
                   Bedankt voor uw bericht. We nemen zo snel mogelijk contact met u op.
                 </p>
               </div>
@@ -98,7 +98,7 @@ const Contact = () => {
                       value={formState.name}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
+                      className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
                       placeholder="Uw volledige naam"
                     />
                   </div>
@@ -114,7 +114,7 @@ const Contact = () => {
                       value={formState.email}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
+                      className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
                       placeholder="uw@email.nl"
                     />
                   </div>
@@ -131,7 +131,7 @@ const Contact = () => {
                       name="phone"
                       value={formState.phone}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
+                      className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
                       placeholder="Uw telefoonnummer"
                     />
                   </div>
@@ -145,7 +145,7 @@ const Contact = () => {
                       name="service"
                       value={formState.service}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all bg-white"
+                      className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all bg-white"
                     >
                       <option value="">Selecteer een pakket</option>
                       <option value="basic">Basis Bedrijfsadres</option>
@@ -166,12 +166,12 @@ const Contact = () => {
                     value={formState.message}
                     onChange={handleChange}
                     rows={4}
-                    className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
+                    className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
                     placeholder="Vertel ons wat meer over uw behoeften..."
                   ></textarea>
                 </div>
                 
-                <Button type="submit" className="bg-brand-blue hover:bg-brand-blue/90 text-white w-full py-6">
+                <Button type="submit" className="gradient-primary text-white w-full py-6">
                   <span>Verstuur Bericht</span>
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
@@ -179,18 +179,18 @@ const Contact = () => {
             )}
           </div>
           
-          <div className="glass-card rounded-xl p-8 md:p-10 flex flex-col justify-between">
+          <div className="bg-white rounded-xl p-8 md:p-10 card-shadow flex flex-col justify-between">
             <div>
               <h3 className="text-2xl font-semibold mb-6">Contactgegevens</h3>
               
               <div className="space-y-6 mb-12">
                 <div className="flex items-start">
-                  <div className="w-10 h-10 rounded-full bg-brand-blue/10 flex items-center justify-center mr-4 flex-shrink-0">
-                    <MapPin className="h-5 w-5 text-brand-blue" />
+                  <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-4 flex-shrink-0">
+                    <MapPin className="h-5 w-5 text-blue-600" />
                   </div>
                   <div>
                     <h4 className="font-semibold text-lg mb-1">Ons Adres</h4>
-                    <p className="text-brand-mediumgray">
+                    <p className="text-slate-600">
                       Reigersbos 100 P<br />
                       1107 ES Amsterdam
                     </p>
@@ -198,24 +198,24 @@ const Contact = () => {
                 </div>
                 
                 <div className="flex items-start">
-                  <div className="w-10 h-10 rounded-full bg-brand-blue/10 flex items-center justify-center mr-4 flex-shrink-0">
-                    <Phone className="h-5 w-5 text-brand-blue" />
+                  <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-4 flex-shrink-0">
+                    <Phone className="h-5 w-5 text-blue-600" />
                   </div>
                   <div>
                     <h4 className="font-semibold text-lg mb-1">Telefoonnummer</h4>
-                    <p className="text-brand-mediumgray">+31 (0)20 737 03 85</p>
-                    <p className="text-sm text-brand-mediumgray">Ma-Vr: 09:00 - 17:00</p>
+                    <p className="text-slate-600">+31 (0)20 737 03 85</p>
+                    <p className="text-sm text-slate-500">Ma-Vr: 09:00 - 17:00</p>
                   </div>
                 </div>
                 
                 <div className="flex items-start">
-                  <div className="w-10 h-10 rounded-full bg-brand-blue/10 flex items-center justify-center mr-4 flex-shrink-0">
-                    <Mail className="h-5 w-5 text-brand-blue" />
+                  <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-4 flex-shrink-0">
+                    <Mail className="h-5 w-5 text-blue-600" />
                   </div>
                   <div>
                     <h4 className="font-semibold text-lg mb-1">E-mail</h4>
-                    <p className="text-brand-mediumgray">info@edutchmanagement.nl</p>
-                    <p className="text-sm text-brand-mediumgray">Antwoord binnen 24 uur</p>
+                    <p className="text-slate-600">info@edutchmanagement.nl</p>
+                    <p className="text-sm text-slate-500">Antwoord binnen 24 uur</p>
                   </div>
                 </div>
               </div>

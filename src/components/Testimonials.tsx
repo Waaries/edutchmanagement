@@ -53,13 +53,13 @@ const Testimonials = () => {
   ];
 
   return (
-    <section id="getuigenissen" className="section-padding bg-brand-charcoal text-white" ref={sectionRef}>
+    <section id="getuigenissen" className="section-padding gradient-primary text-white" ref={sectionRef}>
       <div className="container mx-auto container-padding reveal">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-block rounded-full bg-white/10 px-3 py-1 text-sm font-medium text-white mb-4">
+          <div className="inline-block px-3 py-1 text-sm font-medium bg-white/10 text-white mb-4">
             Ervaringen
           </div>
-          <h2 className="mb-6">Wat Onze <span className="text-brand-blue">Klanten</span> Zeggen</h2>
+          <h2 className="mb-6">Wat Onze <span className="text-white">Klanten</span> Zeggen</h2>
           <p className="text-lg text-white/80">
             Ontdek waarom ondernemers kiezen voor onze bedrijfsadresservice.
           </p>
@@ -77,9 +77,9 @@ const Testimonials = () => {
                     : 'opacity-0 translate-x-full z-0'
               }`}
             >
-              <div className="glass-card bg-white/5 backdrop-blur-xs border-white/10 rounded-2xl p-8 md:p-12">
+              <div className="bg-white/10 backdrop-blur-sm border border-white/10 rounded-2xl p-8 md:p-12 card-shadow">
                 <div className="flex flex-col items-center text-center">
-                  <svg className="h-12 w-12 text-brand-blue mb-6 opacity-30" fill="currentColor" viewBox="0 0 24 24">
+                  <svg className="h-12 w-12 text-white mb-6 opacity-40" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" />
                   </svg>
                   
@@ -91,7 +91,7 @@ const Testimonials = () => {
                     <img 
                       src={testimonial.avatar} 
                       alt={testimonial.author} 
-                      className="w-14 h-14 rounded-full mr-4 border-2 border-brand-blue"
+                      className="w-14 h-14 rounded-full mr-4 border-2 border-white/30"
                     />
                     <div className="text-left">
                       <p className="font-semibold">{testimonial.author}</p>
@@ -110,7 +110,7 @@ const Testimonials = () => {
               key={index}
               onClick={() => setActiveTestimonial(index)}
               className={`w-3 h-3 rounded-full mx-1 transition-all ${
-                index === activeTestimonial ? 'bg-brand-blue' : 'bg-white/30'
+                index === activeTestimonial ? 'bg-white' : 'bg-white/30'
               }`}
               aria-label={`View testimonial ${index + 1}`}
             />

@@ -27,22 +27,22 @@ const Navbar = () => {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled 
-          ? "bg-white bg-opacity-80 backdrop-blur-md shadow-sm py-3" 
-          : "bg-transparent py-5"
+          ? "bg-white bg-opacity-95 backdrop-blur-md shadow-sm py-2" 
+          : "bg-transparent py-4"
       }`}
     >
       <div className="container mx-auto container-padding">
         <div className="flex items-center justify-between">
           <a 
             href="#" 
-            className="flex items-center text-2xl font-bold tracking-tight text-brand-charcoal"
+            className="flex items-center text-2xl font-bold tracking-tight text-slate-800"
           >
             <img 
               src="/lovable-uploads/39d6c2c8-b4a1-4f97-86fb-dd3a6e9fcdbd.png" 
               alt="eDutch Management Logo" 
-              className="h-16 md:h-20 mr-3"
+              className="h-14 md:h-16 mr-3"
             />
-            <span className="hidden sm:inline font-montserrat">eDutch Management</span>
+            <span className="hidden sm:inline font-playfair">eDutch Management</span>
           </a>
 
           <nav className="hidden md:flex items-center space-x-8">
@@ -50,7 +50,7 @@ const Navbar = () => {
               <a
                 key={item}
                 href={`#${item.toLowerCase()}`}
-                className="text-brand-charcoal hover:text-[#F97316] transition-colors font-bold font-montserrat"
+                className="text-slate-700 hover:text-blue-600 transition-colors font-medium border-animate"
               >
                 {item}
               </a>
@@ -58,14 +58,14 @@ const Navbar = () => {
             {user ? (
               <Button 
                 onClick={handleLogout}
-                className="bg-[#F97316] hover:bg-[#F97316]/90 text-white flex items-center gap-2"
+                className="gradient-primary text-white flex items-center gap-2"
               >
                 <LogOut className="h-4 w-4" />
                 <span>Uitloggen</span>
               </Button>
             ) : (
               <Link to="/auth">
-                <Button className="bg-[#F97316] hover:bg-[#F97316]/90 text-white flex items-center gap-2">
+                <Button className="gradient-primary text-white flex items-center gap-2">
                   <LogIn className="h-4 w-4" />
                   <span>Inloggen</span>
                 </Button>
@@ -74,7 +74,7 @@ const Navbar = () => {
           </nav>
 
           <button 
-            className="md:hidden text-brand-charcoal"
+            className="md:hidden text-slate-800"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -91,7 +91,7 @@ const Navbar = () => {
                 <a
                   key={item}
                   href={`#${item.toLowerCase()}`}
-                  className="text-brand-charcoal hover:text-[#F97316] transition-colors py-2 font-bold font-montserrat"
+                  className="text-slate-700 hover:text-blue-600 transition-colors py-2 font-medium"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item}
@@ -100,14 +100,14 @@ const Navbar = () => {
               {user ? (
                 <Button 
                   onClick={handleLogout}
-                  className="bg-[#F97316] hover:bg-[#F97316]/90 text-white w-full flex items-center justify-center gap-2"
+                  className="gradient-primary text-white w-full flex items-center justify-center gap-2"
                 >
                   <LogOut className="h-4 w-4" />
                   <span>Uitloggen</span>
                 </Button>
               ) : (
                 <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
-                  <Button className="bg-[#F97316] hover:bg-[#F97316]/90 text-white w-full flex items-center justify-center gap-2">
+                  <Button className="gradient-primary text-white w-full flex items-center justify-center gap-2">
                     <LogIn className="h-4 w-4" />
                     <span>Inloggen</span>
                   </Button>
