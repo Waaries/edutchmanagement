@@ -1,11 +1,14 @@
 
 import { useState, useEffect } from "react";
-import { Menu, X, LogIn } from "lucide-react";
+import { Menu, X, LogIn, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/contexts/AuthContext";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, signOut } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -14,6 +17,11 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleLogout = async () => {
+    await signOut();
+    setIsMenuOpen(false);
+  };
 
   return (
     <header
@@ -32,7 +40,7 @@ const Navbar = () => {
             <img 
               src="/lovable-uploads/39d6c2c8-b4a1-4f97-86fb-dd3a6e9fcdbd.png" 
               alt="eDutch Management Logo" 
-              className="h-16 md:h-20 mr-3" // Increased the logo size from h-12 to h-16/h-20
+              className="h-16 md:h-20 mr-3"
             />
             <span className="hidden sm:inline font-montserrat">eDutch Management</span>
           </a>
@@ -47,10 +55,22 @@ const Navbar = () => {
                 {item}
               </a>
             ))}
-            <Button className="bg-[#F97316] hover:bg-[#F97316]/90 text-white flex items-center gap-2">
-              <LogIn className="h-4 w-4" />
-              <span>Inloggen</span>
-            </Button>
+            {user ? (
+              <Button 
+                onClick={handleLogout}
+                className="bg-[#F97316] hover:bg-[#F97316]/90 text-white flex items-center gap-2"
+              >
+                <LogOut className="h-4 w-4" />
+                <span>Uitloggen</span>
+              </Button>
+            ) : (
+              <Link to="/auth">
+                <Button className="bg-[#F97316] hover:bg-[#F97316]/90 text-white flex items-center gap-2">
+                  <LogIn className="h-4 w-4" />
+                  <span>Inloggen</span>
+                </Button>
+              </Link>
+            )}
           </nav>
 
           <button 
@@ -77,10 +97,22 @@ const Navbar = () => {
                   {item}
                 </a>
               ))}
-              <Button className="bg-[#F97316] hover:bg-[#F97316]/90 text-white w-full flex items-center justify-center gap-2">
-                <LogIn className="h-4 w-4" />
-                <span>Inloggen</span>
-              </Button>
+              {user ? (
+                <Button 
+                  onClick={handleLogout}
+                  className="bg-[#F97316] hover:bg-[#F97316]/90 text-white w-full flex items-center justify-center gap-2"
+                >
+                  <LogOut className="h-4 w-4" />
+                  <span>Uitloggen</span>
+                </Button>
+              ) : (
+                <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
+                  <Button className="bg-[#F97316] hover:bg-[#F97316]/90 text-white w-full flex items-center justify-center gap-2">
+                    <LogIn className="h-4 w-4" />
+                    <span>Inloggen</span>
+                  </Button>
+                </Link>
+              )}
             </div>
           </div>
         </div>
