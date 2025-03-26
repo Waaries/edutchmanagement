@@ -1,5 +1,5 @@
 
-import { Facebook, Twitter, Linkedin, Instagram, MapPin, Phone, Mail, Clock, ChevronRight } from "lucide-react";
+import { Facebook, Twitter, Linkedin, Instagram, MapPin, Phone, Mail, Clock, ChevronRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
@@ -7,19 +7,21 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-gradient-to-b from-slate-900 to-slate-800 text-white">
+    <footer className="bg-slate-900 text-white">
       <div className="container mx-auto container-padding">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 py-20">
-          {/* Logo and Description - spans 5 columns on md screens */}
+          {/* Logo and Description */}
           <div className="md:col-span-5 space-y-6">
             <div className="flex items-center mb-6">
-              <img 
-                src="/lovable-uploads/39d6c2c8-b4a1-4f97-86fb-dd3a6e9fcdbd.png" 
-                alt="eDutch Management Logo" 
-                className="h-16 mr-4" 
-              />
-              <h3 className="text-2xl font-bold">eDutch Management</h3>
+              <div className="h-14 w-14 mr-4 gradient-primary flex items-center justify-center rounded-2xl shadow-lg shadow-primary/20">
+                <img 
+                  src="/lovable-uploads/39d6c2c8-b4a1-4f97-86fb-dd3a6e9fcdbd.png" 
+                  alt="eDutch Management Logo" 
+                  className="h-10 invert"
+                />
+              </div>
+              <h3 className="text-2xl font-bold gradient-text">eDutch Management</h3>
             </div>
             <p className="text-white/80 text-lg leading-relaxed max-w-md">
               Wij bieden professionele bedrijfsadressen voor ondernemers en bedrijven die hun uitstraling willen verbeteren zonder de kosten van een fysiek kantoor.
@@ -34,7 +36,7 @@ const Footer = () => {
                 <a 
                   key={index}
                   href={social.href} 
-                  className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-blue-500 transition-all duration-300"
+                  className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-all duration-300"
                   aria-label={`Follow us on ${social.label}`}
                 >
                   {social.icon}
@@ -43,9 +45,12 @@ const Footer = () => {
             </div>
           </div>
           
-          {/* Services Column - spans 2 columns on md screens */}
+          {/* Services Column */}
           <div className="md:col-span-2">
-            <h4 className="text-xl font-semibold mb-6 border-b border-white/10 pb-2">Diensten</h4>
+            <h4 className="text-xl font-semibold mb-6 border-b border-white/10 pb-2 flex items-center">
+              <Sparkles className="h-4 w-4 mr-2 text-primary" />
+              Diensten
+            </h4>
             <ul className="space-y-4">
               {[
                 "Basis Bedrijfsadres",
@@ -56,7 +61,7 @@ const Footer = () => {
                 "Telefonische Beantwoording"
               ].map((item, index) => (
                 <li key={index}>
-                  <a href="#diensten" className="text-white/70 hover:text-blue-300 transition-colors duration-300 flex items-center group">
+                  <a href="#diensten" className="text-white/70 hover:text-primary transition-colors duration-300 flex items-center group">
                     <ChevronRight className="h-4 w-4 mr-2 opacity-0 -ml-6 group-hover:opacity-100 group-hover:ml-0 transition-all" />
                     {item}
                   </a>
@@ -65,9 +70,12 @@ const Footer = () => {
             </ul>
           </div>
           
-          {/* Links Column - spans 2 columns on md screens */}
+          {/* Links Column */}
           <div className="md:col-span-2">
-            <h4 className="text-xl font-semibold mb-6 border-b border-white/10 pb-2">Links</h4>
+            <h4 className="text-xl font-semibold mb-6 border-b border-white/10 pb-2 flex items-center">
+              <Sparkles className="h-4 w-4 mr-2 text-primary" />
+              Links
+            </h4>
             <ul className="space-y-4">
               {[
                 "Home",
@@ -79,7 +87,7 @@ const Footer = () => {
                 "Contact"
               ].map((item, index) => (
                 <li key={index}>
-                  <a href={`#${item.toLowerCase().replace(/ /g, '-')}`} className="text-white/70 hover:text-blue-300 transition-colors duration-300 flex items-center group">
+                  <a href={`#${item.toLowerCase().replace(/ /g, '-')}`} className="text-white/70 hover:text-primary transition-colors duration-300 flex items-center group">
                     <ChevronRight className="h-4 w-4 mr-2 opacity-0 -ml-6 group-hover:opacity-100 group-hover:ml-0 transition-all" />
                     {item}
                   </a>
@@ -88,13 +96,16 @@ const Footer = () => {
             </ul>
           </div>
           
-          {/* Contact Information - spans 3 columns on md screens */}
+          {/* Contact Information */}
           <div className="md:col-span-3">
-            <h4 className="text-xl font-semibold mb-6 border-b border-white/10 pb-2">Contact</h4>
+            <h4 className="text-xl font-semibold mb-6 border-b border-white/10 pb-2 flex items-center">
+              <Sparkles className="h-4 w-4 mr-2 text-primary" />
+              Contact
+            </h4>
             <ul className="space-y-5">
-              <li className="flex items-start">
-                <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center mr-4 flex-shrink-0">
-                  <MapPin className="h-5 w-5 text-blue-300" />
+              <li className="flex items-start group hover:bg-white/5 p-2 rounded-2xl transition-all">
+                <div className="w-10 h-10 rounded-2xl bg-white/10 flex items-center justify-center mr-4 flex-shrink-0 group-hover:bg-primary/20 transition-colors">
+                  <MapPin className="h-5 w-5 text-primary" />
                 </div>
                 <div>
                   <h4 className="font-semibold text-lg mb-1">Ons Adres</h4>
@@ -105,33 +116,33 @@ const Footer = () => {
                 </div>
               </li>
               
-              <li className="flex items-center">
-                <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center mr-4 flex-shrink-0">
-                  <Phone className="h-5 w-5 text-blue-300" />
+              <li className="flex items-center group hover:bg-white/5 p-2 rounded-2xl transition-all">
+                <div className="w-10 h-10 rounded-2xl bg-white/10 flex items-center justify-center mr-4 flex-shrink-0 group-hover:bg-primary/20 transition-colors">
+                  <Phone className="h-5 w-5 text-primary" />
                 </div>
                 <div>
                   <h4 className="font-semibold text-lg mb-1">Telefoonnummer</h4>
-                  <a href="tel:+31207370385" className="text-white/80 hover:text-blue-300 transition-colors">
+                  <a href="tel:+31207370385" className="text-white/80 hover:text-primary transition-colors">
                     +31 (0)20 737 03 85
                   </a>
                 </div>
               </li>
               
-              <li className="flex items-start">
-                <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center mr-4 flex-shrink-0">
-                  <Mail className="h-5 w-5 text-blue-300" />
+              <li className="flex items-start group hover:bg-white/5 p-2 rounded-2xl transition-all">
+                <div className="w-10 h-10 rounded-2xl bg-white/10 flex items-center justify-center mr-4 flex-shrink-0 group-hover:bg-primary/20 transition-colors">
+                  <Mail className="h-5 w-5 text-primary" />
                 </div>
                 <div>
                   <h4 className="font-semibold text-lg mb-1">E-mail</h4>
-                  <a href="mailto:info@edutchmanagement.nl" className="text-white/80 hover:text-blue-300 transition-colors">
+                  <a href="mailto:info@edutchmanagement.nl" className="text-white/80 hover:text-primary transition-colors">
                     info@edutchmanagement.nl
                   </a>
                 </div>
               </li>
               
-              <li className="flex items-center">
-                <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center mr-4 flex-shrink-0">
-                  <Clock className="h-5 w-5 text-blue-300" />
+              <li className="flex items-center group hover:bg-white/5 p-2 rounded-2xl transition-all">
+                <div className="w-10 h-10 rounded-2xl bg-white/10 flex items-center justify-center mr-4 flex-shrink-0 group-hover:bg-primary/20 transition-colors">
+                  <Clock className="h-5 w-5 text-primary" />
                 </div>
                 <div>
                   <h4 className="font-semibold text-lg mb-1">Openingstijden</h4>
@@ -140,7 +151,7 @@ const Footer = () => {
               </li>
             </ul>
             <div className="mt-8">
-              <Button className="gradient-primary hover:bg-blue-600 text-white border-none w-full">
+              <Button className="w-full">
                 Contact Ons
               </Button>
             </div>

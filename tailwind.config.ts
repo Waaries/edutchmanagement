@@ -22,6 +22,7 @@ export default {
 			fontFamily: {
 				playfair: ['Playfair Display', 'serif'],
 				poppins: ['Poppins', 'sans-serif'],
+				space: ['Space Grotesk', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
@@ -70,15 +71,15 @@ export default {
 				brand: {
 					silver: '#f5f5f7',
 					charcoal: '#1d1d1f',
-					blue: '#0071e3',
-					lightgray: '#f2f2f2',
+					purple: '#9333ea',
+					lightpurple: '#e9d5ff',
 					mediumgray: '#86868b'
 				}
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
-				md: 'calc(var(--radius) - 2px)',
-				sm: 'calc(var(--radius) - 4px)'
+				md: 'calc(var(--radius) - 0.5rem)',
+				sm: 'calc(var(--radius) - 1rem)'
 			},
 			keyframes: {
 				'accordion-down': {

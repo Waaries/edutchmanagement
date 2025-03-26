@@ -1,7 +1,7 @@
 
 import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, Check, Sparkles } from "lucide-react";
 
 const Services = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -74,10 +74,11 @@ const Services = () => {
   ];
 
   return (
-    <section id="diensten" className="section-padding bg-white" ref={sectionRef}>
+    <section id="diensten" className="section-padding angled-bg" ref={sectionRef}>
       <div className="container mx-auto container-padding reveal">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-block px-3 py-1 text-sm font-medium bg-blue-100 text-blue-600 mb-4 rounded-full">
+          <div className="inline-block px-3 py-1 text-sm font-medium bg-primary/10 text-primary mb-4 rounded-2xl flex items-center justify-center mx-auto">
+            <Sparkles className="h-4 w-4 mr-2" />
             Onze Diensten
           </div>
           <h2 className="mb-6">Flexibele <span className="gradient-text">Adresoplossingen</span> Voor Uw Bedrijf</h2>
@@ -90,21 +91,22 @@ const Services = () => {
           {services.map((service, index) => (
             <div 
               key={index} 
-              className={`relative overflow-hidden transition-all duration-300 border ${
+              className={`relative overflow-hidden transition-all duration-300 border-2 ${
                 service.mostPopular 
-                  ? 'border-blue-500 shadow-lg shadow-blue-500/10' 
-                  : 'border-gray-200'
-              } hover-lift rounded-2xl`}
+                  ? 'border-primary shadow-xl shadow-primary/10' 
+                  : 'border-slate-200'
+              } hover-lift rounded-3xl bg-white`}
             >
               {service.mostPopular && (
-                <div className="absolute top-0 right-0 gradient-primary text-white px-4 py-1 text-sm font-medium">
+                <div className="absolute top-0 right-0 gradient-primary text-white px-4 py-1 text-sm font-medium rounded-bl-2xl rounded-tr-3xl">
+                  <Sparkles className="h-4 w-4 inline-block mr-1" />
                   Meest Gekozen
                 </div>
               )}
               <div className="p-8">
                 <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
                 <div className="flex items-end gap-1 mb-2">
-                  <span className="text-3xl font-bold">{service.price}</span>
+                  <span className="text-3xl font-bold gradient-text">{service.price}</span>
                   <span className="text-slate-500 mb-1">{service.period}</span>
                 </div>
                 <p className="text-slate-600 mb-6">{service.description}</p>
@@ -112,7 +114,9 @@ const Services = () => {
                 <ul className="space-y-3 mb-8">
                   {service.features.map((feature, idx) => (
                     <li key={idx} className="flex items-start">
-                      <Check className="h-5 w-5 text-blue-500 flex-shrink-0 mr-2" />
+                      <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center mr-2 flex-shrink-0">
+                        <Check className="h-3 w-3 text-primary" />
+                      </div>
                       <span>{feature}</span>
                     </li>
                   ))}
@@ -121,9 +125,10 @@ const Services = () => {
                 <Button 
                   className={`w-full ${
                     service.mostPopular 
-                      ? 'gradient-primary text-white' 
-                      : 'bg-transparent hover:bg-blue-50 text-blue-600 border border-blue-500'
+                      ? '' 
+                      : 'variant-outline'
                   }`}
+                  variant={service.mostPopular ? "default" : "outline"}
                 >
                   <span>Selecteer Plan</span>
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -137,7 +142,7 @@ const Services = () => {
           <p className="text-slate-600 mb-4">
             Heeft u specifieke behoeften die niet in onze standaardpakketten worden gedekt?
           </p>
-          <Button variant="outline" className="border-blue-500 text-blue-600 hover:bg-blue-50">
+          <Button variant="outline">
             Vraag Een Aangepast Pakket Aan
           </Button>
         </div>

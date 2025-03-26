@@ -1,5 +1,6 @@
 
 import { useEffect, useRef, useState } from "react";
+import { Sparkles, ArrowLeft, ArrowRight } from "lucide-react";
 
 const Testimonials = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -30,6 +31,18 @@ const Testimonials = () => {
       clearInterval(interval);
     };
   }, []);
+
+  const handlePrev = () => {
+    setActiveTestimonial((prev) => 
+      prev === 0 ? testimonials.length - 1 : prev - 1
+    );
+  };
+
+  const handleNext = () => {
+    setActiveTestimonial((prev) => 
+      (prev + 1) % testimonials.length
+    );
+  };
   
   const testimonials = [
     {
@@ -56,7 +69,8 @@ const Testimonials = () => {
     <section id="getuigenissen" className="section-padding gradient-primary text-white" ref={sectionRef}>
       <div className="container mx-auto container-padding reveal">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-block px-3 py-1 text-sm font-medium bg-white/10 text-white mb-4">
+          <div className="inline-block px-3 py-1 text-sm font-medium bg-white/10 text-white mb-4 rounded-2xl flex items-center justify-center mx-auto">
+            <Sparkles className="h-4 w-4 mr-2" />
             Ervaringen
           </div>
           <h2 className="mb-6">Wat Onze <span className="text-white">Klanten</span> Zeggen</h2>
@@ -77,11 +91,11 @@ const Testimonials = () => {
                     : 'opacity-0 translate-x-full z-0'
               }`}
             >
-              <div className="bg-white/10 backdrop-blur-sm border border-white/10 rounded-2xl p-8 md:p-12 card-shadow">
+              <div className="bg-white/10 backdrop-blur-sm border border-white/10 rounded-3xl p-8 md:p-12 card-shadow">
                 <div className="flex flex-col items-center text-center">
-                  <svg className="h-12 w-12 text-white mb-6 opacity-40" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" />
-                  </svg>
+                  <div className="h-12 w-12 rounded-full bg-white/10 flex items-center justify-center mb-6">
+                    <Sparkles className="h-6 w-6 text-white/80" />
+                  </div>
                   
                   <p className="text-xl md:text-2xl mb-8 text-white/90 text-balance">
                     "{testimonial.quote}"
@@ -104,7 +118,15 @@ const Testimonials = () => {
           ))}
         </div>
         
-        <div className="flex justify-center mt-8">
+        <div className="flex justify-center mt-8 gap-4">
+          <button 
+            onClick={handlePrev}
+            className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors duration-300"
+            aria-label="Previous testimonial"
+          >
+            <ArrowLeft className="h-5 w-5 text-white" />
+          </button>
+          
           {testimonials.map((_, index) => (
             <button
               key={index}
@@ -115,6 +137,14 @@ const Testimonials = () => {
               aria-label={`View testimonial ${index + 1}`}
             />
           ))}
+          
+          <button 
+            onClick={handleNext}
+            className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors duration-300"
+            aria-label="Next testimonial"
+          >
+            <ArrowRight className="h-5 w-5 text-white" />
+          </button>
         </div>
       </div>
     </section>

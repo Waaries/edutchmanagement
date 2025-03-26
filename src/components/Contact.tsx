@@ -1,7 +1,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { MapPin, Phone, Mail, ArrowRight, Check } from "lucide-react";
+import { MapPin, Phone, Mail, ArrowRight, Check, Sparkles } from "lucide-react";
 
 const Contact = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -58,10 +58,11 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="section-padding bg-gray-50" ref={sectionRef}>
+    <section id="contact" className="section-padding bg-white" ref={sectionRef}>
       <div className="container mx-auto container-padding reveal">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-block px-3 py-1 text-sm font-medium bg-blue-100 text-blue-600 mb-4 rounded-full">
+          <div className="inline-block px-3 py-1 text-sm font-medium bg-primary/10 text-primary mb-4 rounded-2xl flex items-center justify-center mx-auto">
+            <Sparkles className="h-4 w-4 mr-2" />
             Contact Opnemen
           </div>
           <h2 className="mb-6">Klaar Om Uw <span className="gradient-text">Bedrijfsadres</span> Te Upgraden?</h2>
@@ -71,12 +72,15 @@ const Contact = () => {
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          <div className="bg-white rounded-3xl p-8 md:p-10 card-shadow">
-            <h3 className="text-2xl font-semibold mb-6">Stuur ons een bericht</h3>
+          <div className="stacked-card bg-white rounded-3xl p-8 md:p-10 card-shadow">
+            <h3 className="text-2xl font-semibold mb-6 flex items-center">
+              <Sparkles className="h-5 w-5 mr-2 text-primary" />
+              Stuur ons een bericht
+            </h3>
             
             {submitted ? (
               <div className="flex flex-col items-center justify-center py-12 text-center">
-                <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-4">
+                <div className="w-16 h-16 blob-shape bg-green-100 flex items-center justify-center mb-4">
                   <Check className="h-8 w-8 text-green-600" />
                 </div>
                 <h4 className="text-xl font-semibold mb-2">Bericht Verzonden!</h4>
@@ -98,7 +102,7 @@ const Contact = () => {
                       value={formState.name}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                      className="w-full px-4 py-3 rounded-2xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                       placeholder="Uw volledige naam"
                     />
                   </div>
@@ -114,7 +118,7 @@ const Contact = () => {
                       value={formState.email}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                      className="w-full px-4 py-3 rounded-2xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                       placeholder="uw@email.nl"
                     />
                   </div>
@@ -131,7 +135,7 @@ const Contact = () => {
                       name="phone"
                       value={formState.phone}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                      className="w-full px-4 py-3 rounded-2xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                       placeholder="Uw telefoonnummer"
                     />
                   </div>
@@ -145,7 +149,7 @@ const Contact = () => {
                       name="service"
                       value={formState.service}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all bg-white"
+                      className="w-full px-4 py-3 rounded-2xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-white"
                     >
                       <option value="">Selecteer een pakket</option>
                       <option value="basic">Basis Bedrijfsadres</option>
@@ -166,12 +170,12 @@ const Contact = () => {
                     value={formState.message}
                     onChange={handleChange}
                     rows={4}
-                    className="w-full px-4 py-3 rounded-2xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                    className="w-full px-4 py-3 rounded-2xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                     placeholder="Vertel ons wat meer over uw behoeften..."
                   ></textarea>
                 </div>
                 
-                <Button type="submit" className="gradient-primary text-white w-full py-6">
+                <Button type="submit" className="w-full py-6">
                   <span>Verstuur Bericht</span>
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
@@ -179,14 +183,17 @@ const Contact = () => {
             )}
           </div>
           
-          <div className="bg-white rounded-3xl p-8 md:p-10 card-shadow flex flex-col justify-between">
+          <div className="bg-white rounded-3xl p-8 md:p-10 card-shadow flex flex-col justify-between stacked-card">
             <div>
-              <h3 className="text-2xl font-semibold mb-6">Contactgegevens</h3>
+              <h3 className="text-2xl font-semibold mb-6 flex items-center">
+                <Sparkles className="h-5 w-5 mr-2 text-primary" />
+                Contactgegevens
+              </h3>
               
               <div className="space-y-6 mb-12">
-                <div className="flex items-start">
-                  <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-4 flex-shrink-0">
-                    <MapPin className="h-5 w-5 text-blue-600" />
+                <div className="flex items-start group hover:bg-primary/5 p-3 rounded-2xl transition-all">
+                  <div className="w-10 h-10 blob-shape bg-primary/10 flex items-center justify-center mr-4 flex-shrink-0">
+                    <MapPin className="h-5 w-5 text-primary" />
                   </div>
                   <div>
                     <h4 className="font-semibold text-lg mb-1">Ons Adres</h4>
@@ -197,9 +204,9 @@ const Contact = () => {
                   </div>
                 </div>
                 
-                <div className="flex items-start">
-                  <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-4 flex-shrink-0">
-                    <Phone className="h-5 w-5 text-blue-600" />
+                <div className="flex items-start group hover:bg-primary/5 p-3 rounded-2xl transition-all">
+                  <div className="w-10 h-10 blob-shape bg-primary/10 flex items-center justify-center mr-4 flex-shrink-0">
+                    <Phone className="h-5 w-5 text-primary" />
                   </div>
                   <div>
                     <h4 className="font-semibold text-lg mb-1">Telefoonnummer</h4>
@@ -208,9 +215,9 @@ const Contact = () => {
                   </div>
                 </div>
                 
-                <div className="flex items-start">
-                  <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-4 flex-shrink-0">
-                    <Mail className="h-5 w-5 text-blue-600" />
+                <div className="flex items-start group hover:bg-primary/5 p-3 rounded-2xl transition-all">
+                  <div className="w-10 h-10 blob-shape bg-primary/10 flex items-center justify-center mr-4 flex-shrink-0">
+                    <Mail className="h-5 w-5 text-primary" />
                   </div>
                   <div>
                     <h4 className="font-semibold text-lg mb-1">E-mail</h4>
