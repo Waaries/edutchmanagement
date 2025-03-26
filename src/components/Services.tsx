@@ -77,7 +77,7 @@ const Services = () => {
     <section id="diensten" className="section-padding bg-white" ref={sectionRef}>
       <div className="container mx-auto container-padding reveal">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-block px-3 py-1 text-sm font-medium bg-blue-100 text-blue-600 mb-4">
+          <div className="inline-block px-3 py-1 text-sm font-medium bg-blue-100 text-blue-600 mb-4 rounded-full">
             Onze Diensten
           </div>
           <h2 className="mb-6">Flexibele <span className="gradient-text">Adresoplossingen</span> Voor Uw Bedrijf</h2>
@@ -90,11 +90,11 @@ const Services = () => {
           {services.map((service, index) => (
             <div 
               key={index} 
-              className={`relative rounded-xl overflow-hidden transition-all duration-300 border ${
+              className={`relative overflow-hidden transition-all duration-300 border ${
                 service.mostPopular 
                   ? 'border-blue-500 shadow-lg shadow-blue-500/10' 
                   : 'border-gray-200'
-              } hover-lift`}
+              } hover-lift rounded-2xl`}
             >
               {service.mostPopular && (
                 <div className="absolute top-0 right-0 gradient-primary text-white px-4 py-1 text-sm font-medium">

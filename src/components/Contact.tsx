@@ -61,7 +61,7 @@ const Contact = () => {
     <section id="contact" className="section-padding bg-gray-50" ref={sectionRef}>
       <div className="container mx-auto container-padding reveal">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-block px-3 py-1 text-sm font-medium bg-blue-100 text-blue-600 mb-4">
+          <div className="inline-block px-3 py-1 text-sm font-medium bg-blue-100 text-blue-600 mb-4 rounded-full">
             Contact Opnemen
           </div>
           <h2 className="mb-6">Klaar Om Uw <span className="gradient-text">Bedrijfsadres</span> Te Upgraden?</h2>
@@ -71,7 +71,7 @@ const Contact = () => {
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          <div className="bg-white rounded-xl p-8 md:p-10 card-shadow">
+          <div className="bg-white rounded-3xl p-8 md:p-10 card-shadow">
             <h3 className="text-2xl font-semibold mb-6">Stuur ons een bericht</h3>
             
             {submitted ? (
@@ -98,7 +98,7 @@ const Contact = () => {
                       value={formState.name}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                      className="w-full px-4 py-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
                       placeholder="Uw volledige naam"
                     />
                   </div>
@@ -114,7 +114,7 @@ const Contact = () => {
                       value={formState.email}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                      className="w-full px-4 py-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
                       placeholder="uw@email.nl"
                     />
                   </div>
@@ -131,7 +131,7 @@ const Contact = () => {
                       name="phone"
                       value={formState.phone}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                      className="w-full px-4 py-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
                       placeholder="Uw telefoonnummer"
                     />
                   </div>
@@ -145,7 +145,7 @@ const Contact = () => {
                       name="service"
                       value={formState.service}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all bg-white"
+                      className="w-full px-4 py-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all bg-white"
                     >
                       <option value="">Selecteer een pakket</option>
                       <option value="basic">Basis Bedrijfsadres</option>
@@ -166,7 +166,7 @@ const Contact = () => {
                     value={formState.message}
                     onChange={handleChange}
                     rows={4}
-                    className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                    className="w-full px-4 py-3 rounded-2xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
                     placeholder="Vertel ons wat meer over uw behoeften..."
                   ></textarea>
                 </div>
@@ -179,7 +179,7 @@ const Contact = () => {
             )}
           </div>
           
-          <div className="bg-white rounded-xl p-8 md:p-10 card-shadow flex flex-col justify-between">
+          <div className="bg-white rounded-3xl p-8 md:p-10 card-shadow flex flex-col justify-between">
             <div>
               <h3 className="text-2xl font-semibold mb-6">Contactgegevens</h3>
               
@@ -221,7 +221,7 @@ const Contact = () => {
               </div>
             </div>
             
-            <div className="rounded-lg overflow-hidden h-64 relative">
+            <div className="rounded-2xl overflow-hidden h-64 relative">
               <div className="absolute inset-0 bg-gray-600 opacity-10"></div>
               <iframe 
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2438.4499798694825!2d4.979604376940437!3d52.30021574461772!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c60be2375814c1%3A0x4e2e41c3de0fc814!2sReigersbos%20100%2C%201107%20ES%20Amsterdam!5e0!3m2!1sen!2snl!4v1697029838428!5m2!1sen!2snl" 

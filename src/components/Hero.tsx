@@ -23,7 +23,7 @@ const Hero = () => {
       <div className="container mx-auto container-padding z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className={`transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100' : 'opacity-0 translate-y-10'}`}>
-            <div className="inline-block px-3 py-1 text-sm font-medium bg-blue-100 text-blue-600 mb-6 animate-fade-in">
+            <div className="inline-block px-3 py-1 text-sm font-medium bg-blue-100 text-blue-600 mb-6 animate-fade-in rounded-full">
               Professioneel Bedrijfsadres
             </div>
             <h1 className="font-bold mb-6 leading-tight text-balance">
@@ -67,16 +67,16 @@ const Hero = () => {
           
           <div className={`relative transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100' : 'opacity-0 translate-x-10'}`}>
             <div className="relative">
-              <div className="absolute inset-0 -m-2 rounded-xl bg-blue-600 blur-md opacity-10 transform rotate-3"></div>
-              <div className="absolute inset-0 -m-6 rounded-xl bg-indigo-500 blur-md opacity-5 transform -rotate-3"></div>
-              <div className="glass-card rounded-xl overflow-hidden relative z-10 card-shadow">
+              <div className="absolute inset-0 -m-2 rounded-3xl bg-blue-600 blur-md opacity-10 transform rotate-3"></div>
+              <div className="absolute inset-0 -m-6 rounded-3xl bg-indigo-500 blur-md opacity-5 transform -rotate-3"></div>
+              <div className="glass-card rounded-3xl overflow-hidden relative z-10 card-shadow">
                 <img 
                   src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
                   alt="Modern office space" 
                   className="w-full h-[500px] object-cover object-center"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 to-transparent flex flex-col justify-end p-8">
-                  <div className="glass-card rounded-lg p-6 max-w-md backdrop-blur-md bg-white/20">
+                  <div className="glass-card rounded-2xl p-6 max-w-md backdrop-blur-md bg-white/20">
                     <h3 className="text-white font-semibold text-2xl mb-2">Premium Kantoorlocaties</h3>
                     <p className="text-white/90">Indrukwekkende adressen in de beste zakendistricten voor uw bedrijf.</p>
                   </div>

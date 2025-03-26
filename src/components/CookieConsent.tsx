@@ -36,7 +36,7 @@ const CookieConsent = () => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md rounded-2xl">
         <DialogHeader>
           <DialogTitle className="font-['Montserrat',sans-serif] text-xl">Cookie-instellingen</DialogTitle>
           <DialogDescription>
@@ -46,7 +46,7 @@ const CookieConsent = () => {
         </DialogHeader>
         <div className="space-y-4 py-4">
           <div className="flex items-start space-x-3">
-            <div className="w-5 h-5 mt-0.5 bg-[#F97316] rounded-sm flex items-center justify-center">
+            <div className="w-5 h-5 mt-0.5 bg-[#F97316] rounded-full flex items-center justify-center">
               <span className="text-white text-xs">✓</span>
             </div>
             <div>
@@ -58,7 +58,7 @@ const CookieConsent = () => {
             </div>
           </div>
           <div className="flex items-start space-x-3">
-            <div className="w-5 h-5 mt-0.5 border border-gray-300 rounded-sm flex items-center justify-center">
+            <div className="w-5 h-5 mt-0.5 border border-gray-300 rounded-full flex items-center justify-center">
               <span className="text-white text-xs"></span>
             </div>
             <div>
@@ -70,7 +70,7 @@ const CookieConsent = () => {
             </div>
           </div>
           <div className="flex items-start space-x-3">
-            <div className="w-5 h-5 mt-0.5 border border-gray-300 rounded-sm flex items-center justify-center">
+            <div className="w-5 h-5 mt-0.5 border border-gray-300 rounded-full flex items-center justify-center">
               <span className="text-white text-xs"></span>
             </div>
             <div>
