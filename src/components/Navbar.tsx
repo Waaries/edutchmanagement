@@ -44,7 +44,7 @@ const Navbar = () => {
                 className="h-14 md:h-16"
               />
             </div>
-            <span className="hidden sm:inline gradient-text">eDutch Management</span>
+            <span className="hidden sm:inline text-black text-2xl md:text-3xl font-space">eDutch Management</span>
           </a>
 
           <nav className="hidden md:flex items-center space-x-8">
