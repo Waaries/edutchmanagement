@@ -8,7 +8,7 @@ const Footer = () => {
 
   return (
     <footer className="bg-slate-900 text-white">
-      <div className="container mx-auto container-padding">
+      <div className="container-full container-padding">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 py-20">
           {/* Logo and Description */}

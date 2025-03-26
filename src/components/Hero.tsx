@@ -20,7 +20,7 @@ const Hero = () => {
       <div className="absolute top-1/3 -left-20 w-80 h-80 bg-violet-500 opacity-5 blob-shape-alt"></div>
       <div className="absolute bottom-20 right-1/4 w-64 h-64 bg-fuchsia-500 opacity-5 blob-shape"></div>
       
-      <div className="container mx-auto container-padding z-10">
+      <div className="container-full container-padding z-10">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
           <div className="lg:col-span-3 space-y-8">
             <div className={`transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100' : 'opacity-0 translate-y-10'}`}>

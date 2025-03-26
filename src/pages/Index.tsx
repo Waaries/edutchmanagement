@@ -33,9 +33,9 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <div className="min-h-screen w-full relative overflow-hidden">
       <Navbar />
-      <main>
+      <main className="w-full">
         <Hero />
         <Features />
         <Services />

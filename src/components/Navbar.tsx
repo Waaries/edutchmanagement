@@ -31,7 +31,7 @@ const Navbar = () => {
           : "bg-transparent py-4"
       }`}
     >
-      <div className="container mx-auto container-padding">
+      <div className="container-full container-padding">
         <div className="flex items-center justify-between">
           <a 
             href="#" 
@@ -88,7 +88,7 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="md:hidden bg-white absolute top-full left-0 right-0 shadow-2xl animate-fade-in">
-          <div className="container mx-auto py-5 container-padding">
+          <div className="container-full container-padding py-5">
             <div className="flex flex-col space-y-4">
               {["Home", "Diensten", "Voordelen", "Getuigenissen", "Contact"].map((item) => (
                 <a
