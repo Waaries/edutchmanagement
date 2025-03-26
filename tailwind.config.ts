@@ -70,10 +70,12 @@ export default {
 				},
 				brand: {
 					silver: '#f5f5f7',
-					charcoal: '#1d1d1f',
-					purple: '#9333ea',
-					lightpurple: '#e9d5ff',
-					mediumgray: '#86868b'
+					charcoal: '#403E43',
+					darkgrey: '#221F26',
+					blue: '#1EAEDB',
+					skyblue: '#33C3F0',
+					mediumgray: '#8A898C',
+					lightgray: '#F6F6F7'
 				}
 			},
 			borderRadius: {

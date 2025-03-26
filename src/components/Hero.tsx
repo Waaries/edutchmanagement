@@ -13,12 +13,12 @@ const Hero = () => {
   return (
     <section 
       id="home" 
-      className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-white"
+      className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-slate-50"
     >
       {/* Background elements */}
-      <div className="absolute top-0 -right-40 w-96 h-96 bg-purple-500 opacity-5 blob-shape"></div>
-      <div className="absolute top-1/3 -left-20 w-80 h-80 bg-violet-500 opacity-5 blob-shape-alt"></div>
-      <div className="absolute bottom-20 right-1/4 w-64 h-64 bg-fuchsia-500 opacity-5 blob-shape"></div>
+      <div className="absolute top-0 -right-40 w-96 h-96 bg-blue-500 opacity-5 blob-shape"></div>
+      <div className="absolute top-1/3 -left-20 w-80 h-80 bg-slate-500 opacity-5 blob-shape-alt"></div>
+      <div className="absolute bottom-20 right-1/4 w-64 h-64 bg-blue-400 opacity-5 blob-shape"></div>
       
       <div className="container-full container-padding z-10">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
@@ -76,7 +76,7 @@ const Hero = () => {
                   alt="Modern office space" 
                   className="w-full h-[500px] object-cover object-center"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-purple-900/70 to-transparent flex flex-col justify-end p-8">
+                <div className="absolute inset-0 bg-gradient-to-t from-blue-900/70 to-transparent flex flex-col justify-end p-8">
                   <div className="glass-card rounded-2xl p-6 max-w-md backdrop-blur-md bg-white/20">
                     <div className="flex items-center mb-3">
                       <div className="h-8 w-8 bg-white/30 rounded-full flex items-center justify-center mr-3">
