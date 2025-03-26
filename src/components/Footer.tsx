@@ -1,4 +1,5 @@
-import { ArrowRight, Facebook, Twitter, Linkedin, Instagram, MapPin, Phone, Mail } from "lucide-react";
+
+import { Facebook, Twitter, Linkedin, Instagram, MapPin, Phone, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
@@ -14,7 +15,7 @@ const Footer = () => {
               <img 
                 src="/lovable-uploads/39d6c2c8-b4a1-4f97-86fb-dd3a6e9fcdbd.png" 
                 alt="eDutch Management Logo" 
-                className="h-14 mr-3" // Increased from h-10 to h-14 and mr-2 to mr-3
+                className="h-14 mr-3" 
               />
               <h3 className="text-xl font-bold">eDutch Management</h3>
             </div>
@@ -114,21 +115,6 @@ const Footer = () => {
                 <span className="text-white/70">Ma-Vr: 09:00 - 17:00</span>
               </li>
             </ul>
-            
-            <h4 className="text-lg font-semibold mb-4 mt-8">Nieuwsbrief</h4>
-            <p className="text-white/70 mb-4">
-              Schrijf u in voor onze nieuwsbrief om op de hoogte te blijven van aanbiedingen en updates.
-            </p>
-            <div className="flex">
-              <input 
-                type="email" 
-                placeholder="Uw e-mailadres" 
-                className="px-4 py-2 rounded-l-md bg-white/10 border-white/10 border focus:outline-none focus:ring-1 focus:ring-[#F97316] w-full"
-              />
-              <Button className="bg-[#F97316] hover:bg-[#F97316]/90 text-white rounded-l-none" aria-label="Subscribe">
-                <ArrowRight className="h-5 w-5" />
-              </Button>
-            </div>
           </div>
         </div>
         
