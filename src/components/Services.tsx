@@ -1,7 +1,7 @@
 
 import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Check, Sparkles } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 
 const Services = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -78,7 +78,6 @@ const Services = () => {
       <div className="container mx-auto container-padding reveal">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="inline-block px-3 py-1 text-sm font-medium bg-primary/10 text-primary mb-4 rounded-2xl flex items-center justify-center mx-auto">
-            <Sparkles className="h-4 w-4 mr-2" />
             Onze Diensten
           </div>
           <h2 className="mb-6">Flexibele <span className="gradient-text">Adresoplossingen</span> Voor Uw Bedrijf</h2>
@@ -99,7 +98,6 @@ const Services = () => {
             >
               {service.mostPopular && (
                 <div className="absolute top-0 right-0 gradient-primary text-white px-4 py-1 text-sm font-medium rounded-bl-2xl rounded-tr-3xl">
-                  <Sparkles className="h-4 w-4 inline-block mr-1" />
                   Meest Gekozen
                 </div>
               )}

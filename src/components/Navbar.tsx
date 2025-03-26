@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { Menu, X, LogIn, LogOut, Sparkles } from "lucide-react";
+import { Menu, X, LogIn, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { Link } from "react-router-dom";
@@ -97,7 +97,6 @@ const Navbar = () => {
                   className="text-slate-700 hover:text-primary transition-colors py-2 font-medium flex items-center"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  <Sparkles className="h-4 w-4 mr-2 text-primary" />
                   {item}
                 </a>
               ))}

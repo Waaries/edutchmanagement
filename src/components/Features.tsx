@@ -1,6 +1,6 @@
 
 import { useEffect, useRef } from "react";
-import { Shield, Clock, Award, Briefcase, Mail, Phone, Sparkles } from "lucide-react";
+import { Shield, Clock, Award, Briefcase, Mail, Phone } from "lucide-react";
 
 const Features = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -64,7 +64,6 @@ const Features = () => {
       <div className="container mx-auto container-padding reveal">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="inline-block px-3 py-1 text-sm font-medium bg-primary/10 text-primary mb-4 rounded-2xl flex items-center justify-center mx-auto">
-            <Sparkles className="h-4 w-4 mr-2" />
             Waarom Kiezen Voor Ons
           </div>
           <h2 className="mb-6">Voordelen van een <span className="gradient-text">Bedrijfsadres</span></h2>

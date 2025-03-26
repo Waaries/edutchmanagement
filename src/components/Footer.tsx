@@ -1,5 +1,5 @@
 
-import { Facebook, Twitter, Linkedin, Instagram, MapPin, Phone, Mail, Clock, ChevronRight, Sparkles } from "lucide-react";
+import { Facebook, Twitter, Linkedin, Instagram, MapPin, Phone, Mail, Clock, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
@@ -47,8 +47,7 @@ const Footer = () => {
           
           {/* Services Column */}
           <div className="md:col-span-2 text-left">
-            <h4 className="text-xl font-semibold mb-6 border-b border-white/10 pb-2 flex items-center">
-              <Sparkles className="h-4 w-4 mr-2 text-primary" />
+            <h4 className="text-xl font-semibold mb-6 border-b border-white/10 pb-2">
               Diensten
             </h4>
             <ul className="space-y-4">
@@ -72,8 +71,7 @@ const Footer = () => {
           
           {/* Links Column */}
           <div className="md:col-span-2 text-left">
-            <h4 className="text-xl font-semibold mb-6 border-b border-white/10 pb-2 flex items-center">
-              <Sparkles className="h-4 w-4 mr-2 text-primary" />
+            <h4 className="text-xl font-semibold mb-6 border-b border-white/10 pb-2">
               Links
             </h4>
             <ul className="space-y-4">
@@ -98,8 +96,7 @@ const Footer = () => {
           
           {/* Contact Information */}
           <div className="md:col-span-3 text-left">
-            <h4 className="text-xl font-semibold mb-6 border-b border-white/10 pb-2 flex items-center">
-              <Sparkles className="h-4 w-4 mr-2 text-primary" />
+            <h4 className="text-xl font-semibold mb-6 border-b border-white/10 pb-2">
               Contact
             </h4>
             <ul className="space-y-5">

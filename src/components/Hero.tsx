@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { ChevronRight, ArrowRight, Building, MapPin, Mail, Sparkles } from "lucide-react";
+import { ChevronRight, ArrowRight, Building, MapPin, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Hero = () => {
@@ -25,7 +25,6 @@ const Hero = () => {
           <div className="lg:col-span-3 space-y-8">
             <div className={`transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100' : 'opacity-0 translate-y-10'}`}>
               <div className="inline-block px-3 py-1 text-sm font-medium bg-primary/10 text-primary mb-6 rounded-2xl animate-fade-in">
-                <Sparkles className="h-4 w-4 inline-block mr-2" />
                 Professioneel Bedrijfsadres
               </div>
               <h1 className="font-bold mb-6 leading-tight text-balance">
@@ -80,7 +79,6 @@ const Hero = () => {
                   <div className="glass-card rounded-2xl p-6 max-w-md backdrop-blur-md bg-white/20">
                     <div className="flex items-center mb-3">
                       <div className="h-8 w-8 bg-white/30 rounded-full flex items-center justify-center mr-3">
-                        <Sparkles className="h-4 w-4 text-white" />
                       </div>
                       <h3 className="text-white font-semibold text-2xl">Premium Locaties</h3>
                     </div>

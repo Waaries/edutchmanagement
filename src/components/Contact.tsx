@@ -1,7 +1,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { MapPin, Phone, Mail, ArrowRight, Check, Sparkles } from "lucide-react";
+import { MapPin, Phone, Mail, ArrowRight, Check } from "lucide-react";
 
 const Contact = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -62,7 +62,6 @@ const Contact = () => {
       <div className="container mx-auto container-padding reveal">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="inline-block px-3 py-1 text-sm font-medium bg-primary/10 text-primary mb-4 rounded-2xl flex items-center justify-center mx-auto">
-            <Sparkles className="h-4 w-4 mr-2" />
             Contact Opnemen
           </div>
           <h2 className="mb-6">Klaar Om Uw <span className="gradient-text">Bedrijfsadres</span> Te Upgraden?</h2>
@@ -73,8 +72,7 @@ const Contact = () => {
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           <div className="stacked-card bg-white rounded-3xl p-8 md:p-10 card-shadow">
-            <h3 className="text-2xl font-semibold mb-6 flex items-center">
-              <Sparkles className="h-5 w-5 mr-2 text-primary" />
+            <h3 className="text-2xl font-semibold mb-6">
               Stuur ons een bericht
             </h3>
             
@@ -185,8 +183,7 @@ const Contact = () => {
           
           <div className="bg-white rounded-3xl p-8 md:p-10 card-shadow flex flex-col justify-between stacked-card">
             <div>
-              <h3 className="text-2xl font-semibold mb-6 flex items-center">
-                <Sparkles className="h-5 w-5 mr-2 text-primary" />
+              <h3 className="text-2xl font-semibold mb-6">
                 Contactgegevens
               </h3>
               
