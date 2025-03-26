@@ -129,6 +129,19 @@
   .text-balance {
     text-wrap: balance;
   }
+  
+  /* Footer specific styles */
+  footer a.link-hover-effect:hover {
+    @apply text-[#F97316] transform translate-x-1 transition-all duration-300;
+  }
+  
+  footer .social-icon {
+    @apply transition-transform duration-300;
+  }
+  
+  footer .social-icon:hover {
+    @apply transform scale-110;
+  }
 }
 
 /* Custom Animations */
