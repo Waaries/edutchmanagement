@@ -23,7 +23,7 @@ const Footer = () => {
               </div>
               <h3 className="text-2xl font-bold gradient-text">eDutch Management</h3>
             </div>
-            <p className="text-white/80 text-lg leading-relaxed max-w-md">
+            <p className="text-white/80 text-lg leading-relaxed max-w-md text-left">
               Wij bieden professionele bedrijfsadressen voor ondernemers en bedrijven die hun uitstraling willen verbeteren zonder de kosten van een fysiek kantoor.
             </p>
             <div className="flex space-x-5 pt-6">
@@ -46,7 +46,7 @@ const Footer = () => {
           </div>
           
           {/* Services Column */}
-          <div className="md:col-span-2">
+          <div className="md:col-span-2 text-left">
             <h4 className="text-xl font-semibold mb-6 border-b border-white/10 pb-2 flex items-center">
               <Sparkles className="h-4 w-4 mr-2 text-primary" />
               Diensten
@@ -71,7 +71,7 @@ const Footer = () => {
           </div>
           
           {/* Links Column */}
-          <div className="md:col-span-2">
+          <div className="md:col-span-2 text-left">
             <h4 className="text-xl font-semibold mb-6 border-b border-white/10 pb-2 flex items-center">
               <Sparkles className="h-4 w-4 mr-2 text-primary" />
               Links
@@ -97,7 +97,7 @@ const Footer = () => {
           </div>
           
           {/* Contact Information */}
-          <div className="md:col-span-3">
+          <div className="md:col-span-3 text-left">
             <h4 className="text-xl font-semibold mb-6 border-b border-white/10 pb-2 flex items-center">
               <Sparkles className="h-4 w-4 mr-2 text-primary" />
               Contact
@@ -160,7 +160,7 @@ const Footer = () => {
         
         {/* Bottom Bar with Copyright and Links */}
         <div className="border-t border-white/10 py-8">
-          <div className="flex flex-col md:flex-row justify-between items-center">
+          <div className="flex flex-col md:flex-row justify-between items-center text-left">
             <p className="text-sm text-slate-400 mb-4 md:mb-0">
               &copy; {currentYear} eDutch Management. Alle rechten voorbehouden.
             </p>
