@@ -37,11 +37,11 @@ const Navbar = () => {
             href="#" 
             className="flex items-center text-2xl font-bold tracking-tight"
           >
-            <div className="h-14 w-14 md:h-16 md:w-16 mr-3 gradient-primary flex items-center justify-center rounded-2xl shadow-lg shadow-primary/20">
+            <div className="h-14 w-14 md:h-16 md:w-16 mr-3 flex items-center justify-center rounded-2xl">
               <img 
                 src="/lovable-uploads/39d6c2c8-b4a1-4f97-86fb-dd3a6e9fcdbd.png" 
                 alt="eDutch Management Logo" 
-                className="h-10 md:h-12 invert"
+                className="h-10 md:h-12"
               />
             </div>
             <span className="hidden sm:inline gradient-text">eDutch Management</span>

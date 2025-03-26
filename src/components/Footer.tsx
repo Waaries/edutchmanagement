@@ -14,11 +14,11 @@ const Footer = () => {
           {/* Logo and Description */}
           <div className="md:col-span-5 space-y-6">
             <div className="flex items-center mb-6">
-              <div className="h-14 w-14 mr-4 gradient-primary flex items-center justify-center rounded-2xl shadow-lg shadow-primary/20">
+              <div className="h-14 w-14 mr-4 flex items-center justify-center rounded-2xl">
                 <img 
                   src="/lovable-uploads/39d6c2c8-b4a1-4f97-86fb-dd3a6e9fcdbd.png" 
                   alt="eDutch Management Logo" 
-                  className="h-10 invert"
+                  className="h-10"
                 />
               </div>
               <h3 className="text-2xl font-bold gradient-text">eDutch Management</h3>
