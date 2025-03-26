@@ -1,11 +1,12 @@
 
 import { useState, useEffect } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate, useLocation, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import LoginForm from '@/components/auth/LoginForm';
 import RegisterForm from '@/components/auth/RegisterForm';
 import SuccessDialog from '@/components/auth/SuccessDialog';
+import { Shield } from 'lucide-react';
 
 const Auth = () => {
   const { user, signInWithGoogle, signInWithFacebook, loading } = useAuth();
@@ -13,9 +14,19 @@ const Auth = () => {
   const [success, setSuccess] = useState<string | null>(null);
   const [showDialog, setShowDialog] = useState(false);
   const location = useLocation();
+  const [searchParams] = useSearchParams();
+  const [activeTab, setActiveTab] = useState<string>('login');
 
-  // Check if coming back from OAuth redirect
+  // Check if coming back from OAuth redirect or password reset
   useEffect(() => {
+    // Check URL params
+    const reset = searchParams.get('reset');
+    if (reset === 'true') {
+      setSuccess("You can now set a new password.");
+      setShowDialog(true);
+    }
+    
+    // Check hash for OAuth redirects
     const hash = location.hash;
     if (hash && (hash.includes('access_token') || hash.includes('error'))) {
       // Clear the hash after checking
@@ -27,7 +38,12 @@ const Auth = () => {
         setError(errorMessage || 'Authentication failed');
       }
     }
-  }, [location]);
+    
+    // If 'register' is in the URL, show the register tab
+    if (location.search.includes('register')) {
+      setActiveTab('register');
+    }
+  }, [location, searchParams]);
 
   // If user is already logged in, redirect to home
   if (user && !loading) {
@@ -68,7 +84,14 @@ const Auth = () => {
           <p className="text-brand-mediumgray mt-2">Login or create an account to continue</p>
         </div>
 
-        <Tabs defaultValue="login" className="w-full">
+        <div className="flex justify-center items-center mb-6">
+          <div className="bg-blue-50 p-2 rounded-full">
+            <Shield className="h-6 w-6 text-blue-600" />
+          </div>
+          <span className="ml-2 text-sm text-blue-700">Secure authentication</span>
+        </div>
+
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2 mb-8">
             <TabsTrigger value="login">Login</TabsTrigger>
             <TabsTrigger value="register">Register</TabsTrigger>

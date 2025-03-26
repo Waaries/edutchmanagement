@@ -4,7 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, CheckCircle2, Info } from 'lucide-react';
 import { SocialAuthButtons } from './SocialAuthButtons';
 
 interface RegisterFormProps {
@@ -23,11 +23,39 @@ const RegisterForm = ({ onSuccess, onSocialAuth }: RegisterFormProps) => {
   const [lastName, setLastName] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  
+  // Password validation
+  const hasMinLength = password.length >= 8;
+  const hasUppercase = /[A-Z]/.test(password);
+  const hasLowercase = /[a-z]/.test(password);
+  const hasNumber = /[0-9]/.test(password);
+  const hasSpecialChar = /[^A-Za-z0-9]/.test(password);
+  
+  const isPasswordValid = 
+    hasMinLength && 
+    hasUppercase && 
+    hasLowercase && 
+    hasNumber && 
+    hasSpecialChar;
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
     setError(null);
+    
+    // Validate password before submission
+    if (!isPasswordValid) {
+      setError("Please ensure your password meets all the requirements");
+      setSubmitting(false);
+      return;
+    }
+    
+    // Check if email is valid
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      setError("Please enter a valid email address");
+      setSubmitting(false);
+      return;
+    }
     
     const { error } = await signUp(email, password, firstName, lastName);
     
@@ -86,7 +114,30 @@ const RegisterForm = ({ onSuccess, onSocialAuth }: RegisterFormProps) => {
           placeholder="••••••••"
           required
         />
-        <p className="text-xs text-brand-mediumgray">Password must be at least 6 characters</p>
+        
+        <div className="text-xs space-y-1 mt-2 bg-gray-50 p-3 rounded-md">
+          <p className="font-medium text-brand-mediumgray mb-1">Password requirements:</p>
+          <div className="flex items-start gap-2">
+            {hasMinLength ? <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5" /> : <Info className="h-4 w-4 text-amber-500 mt-0.5" />}
+            <p className={`${hasMinLength ? 'text-green-700' : 'text-brand-mediumgray'}`}>At least 8 characters</p>
+          </div>
+          <div className="flex items-start gap-2">
+            {hasUppercase ? <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5" /> : <Info className="h-4 w-4 text-amber-500 mt-0.5" />}
+            <p className={`${hasUppercase ? 'text-green-700' : 'text-brand-mediumgray'}`}>At least one uppercase letter</p>
+          </div>
+          <div className="flex items-start gap-2">
+            {hasLowercase ? <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5" /> : <Info className="h-4 w-4 text-amber-500 mt-0.5" />}
+            <p className={`${hasLowercase ? 'text-green-700' : 'text-brand-mediumgray'}`}>At least one lowercase letter</p>
+          </div>
+          <div className="flex items-start gap-2">
+            {hasNumber ? <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5" /> : <Info className="h-4 w-4 text-amber-500 mt-0.5" />}
+            <p className={`${hasNumber ? 'text-green-700' : 'text-brand-mediumgray'}`}>At least one number</p>
+          </div>
+          <div className="flex items-start gap-2">
+            {hasSpecialChar ? <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5" /> : <Info className="h-4 w-4 text-amber-500 mt-0.5" />}
+            <p className={`${hasSpecialChar ? 'text-green-700' : 'text-brand-mediumgray'}`}>At least one special character</p>
+          </div>
+        </div>
       </div>
       
       {error && (
