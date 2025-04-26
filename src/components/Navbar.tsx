@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Menu, X, LogIn, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -23,7 +22,7 @@ const Navbar = () => {
     setIsMenuOpen(false);
   };
 
-  const menuItems = ["Home", "Diensten", "Voordelen", "Contact"];
+  const menuItems = ["Home", "Diensten", "Contact"];
 
   return (
     <header
