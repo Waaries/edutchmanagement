@@ -23,6 +23,8 @@ const Navbar = () => {
     setIsMenuOpen(false);
   };
 
+  const menuItems = ["Home", "Diensten", "Voordelen", "Contact"];
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
@@ -48,7 +50,7 @@ const Navbar = () => {
           </a>
 
           <nav className="hidden md:flex items-center space-x-8">
-            {["Home", "Diensten", "Voordelen", "Getuigenissen", "Contact"].map((item) => (
+            {menuItems.map((item) => (
               <a
                 key={item}
                 href={`#${item.toLowerCase()}`}
@@ -90,7 +92,7 @@ const Navbar = () => {
         <div className="md:hidden bg-white absolute top-full left-0 right-0 shadow-2xl animate-fade-in">
           <div className="container-full container-padding py-5">
             <div className="flex flex-col space-y-4">
-              {["Home", "Diensten", "Voordelen", "Getuigenissen", "Contact"].map((item) => (
+              {menuItems.map((item) => (
                 <a
                   key={item}
                   href={`#${item.toLowerCase()}`}
