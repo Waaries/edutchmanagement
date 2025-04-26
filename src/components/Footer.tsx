@@ -1,3 +1,4 @@
+
 import { Facebook, Twitter, Linkedin, Instagram, MapPin, Phone, Mail, Clock, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -58,9 +59,11 @@ const Footer = () => {
                 "Telefonische Beantwoording"
               ].map((item, index) => (
                 <li key={index}>
-                  <a href="#diensten" className="text-slate-300 hover:text-primary transition-colors duration-300 flex items-center group text-base">
-                    <ChevronRight className="h-4 w-4 mr-2 opacity-0 -ml-6 group-hover:opacity-100 group-hover:ml-0 transition-all" />
-                    {item}
+                  <a href="#diensten" className="text-slate-300 hover:text-primary transition-colors duration-300 flex items-center group">
+                    <span className="w-5 flex-shrink-0 inline-flex justify-center">
+                      <ChevronRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-all" />
+                    </span>
+                    <span>{item}</span>
                   </a>
                 </li>
               ))}
@@ -85,10 +88,12 @@ const Footer = () => {
               <li key={index}>
                 <a 
                   href={`#${item.toLowerCase().replace(/ /g, '-')}`} 
-                  className="text-slate-300 hover:text-primary transition-colors duration-300 flex items-center group text-base relative hover-stable-link"
+                  className="text-slate-300 hover:text-primary transition-colors duration-300 flex items-center group"
                 >
-                  <ChevronRight className="h-4 w-4 mr-2 opacity-0 -ml-6 group-hover:opacity-100 group-hover:ml-0 transition-all" />
-                  {item}
+                  <span className="w-5 flex-shrink-0 inline-flex justify-center">
+                    <ChevronRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-all" />
+                  </span>
+                  <span>{item}</span>
                 </a>
               </li>
             ))}
