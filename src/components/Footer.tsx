@@ -1,4 +1,3 @@
-
 import { Facebook, Twitter, Linkedin, Instagram, MapPin, Phone, Mail, Clock, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -68,31 +67,34 @@ const Footer = () => {
             </ul>
           </div>
           
-          {/* Links Column */}
-          <div className="md:col-span-2 text-left">
-            <h4 className="text-xl font-semibold mb-6 border-b border-white/10 pb-2">
-              Links
-            </h4>
-            <ul className="space-y-4">
-              {[
-                "Home",
-                "Over Ons",
-                "Diensten",
-                "Tarieven",
-                "Veelgestelde Vragen",
-                "Blog",
-                "Contact"
-              ].map((item, index) => (
-                <li key={index}>
-                  <a href={`#${item.toLowerCase().replace(/ /g, '-')}`} className="text-slate-300 hover:text-primary transition-colors duration-300 flex items-center group text-base">
-                    <ChevronRight className="h-4 w-4 mr-2 opacity-0 -ml-6 group-hover:opacity-100 group-hover:ml-0 transition-all" />
-                    {item}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-          
+        {/* Links Column */}
+        <div className="md:col-span-2 text-left">
+          <h4 className="text-xl font-semibold mb-6 border-b border-white/10 pb-2">
+            Links
+          </h4>
+          <ul className="space-y-4">
+            {[
+              "Home",
+              "Over Ons",
+              "Diensten",
+              "Tarieven",
+              "Veelgestelde Vragen",
+              "Blog",
+              "Contact"
+            ].map((item, index) => (
+              <li key={index}>
+                <a 
+                  href={`#${item.toLowerCase().replace(/ /g, '-')}`} 
+                  className="text-slate-300 hover:text-primary transition-colors duration-300 flex items-center group text-base relative hover-stable-link"
+                >
+                  <ChevronRight className="h-4 w-4 mr-2 opacity-0 -ml-6 group-hover:opacity-100 group-hover:ml-0 transition-all" />
+                  {item}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+        
           {/* Contact Information */}
           <div className="md:col-span-3 text-left">
             <h4 className="text-xl font-semibold mb-6 border-b border-white/10 pb-2">
