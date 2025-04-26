@@ -33,6 +33,9 @@ const Hero = () => {
               <p className="text-lg md:text-xl text-slate-600 mb-8 max-w-xl text-balance">
                 Huur een professioneel bedrijfsadres op een toplocatie en maak een uitstekende eerste indruk. Volledig beheer zonder zorgen.
               </p>
+              <p className="text-md text-slate-600 mb-8 max-w-xl text-balance">
+                Geschikt voor KVK-inschrijving, btw-registratie en professionele postafhandeling
+              </p>
               
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 <Button className="px-8 py-6 group">
