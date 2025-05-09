@@ -1,3 +1,4 @@
+
 import { Facebook, Instagram, MapPin, Phone, Mail, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -79,9 +80,7 @@ const Footer = () => {
                 "Basis Bedrijfsadres",
                 "Premium Bedrijfsadres",
                 "Zakelijk Compleet",
-                "Aangepaste Pakketten",
-                "Post Doorsturen",
-                "Telefonische Beantwoording"
+                "Aangepaste Pakketten"
               ].map((item, index) => (
                 <li key={index}>
                   <a href="#diensten" className="text-slate-300 hover:text-primary transition-colors duration-300">
