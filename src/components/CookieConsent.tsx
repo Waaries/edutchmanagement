@@ -13,6 +13,8 @@ import {
 import { getCookie, setConsentCookies } from "@/lib/cookie-utils";
 import { useToast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
 
 const CookieConsent = () => {
   const [open, setOpen] = useState(false);
@@ -46,65 +48,65 @@ const CookieConsent = () => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="sm:max-w-md rounded-2xl">
-        <DialogHeader>
-          <DialogTitle className="font-['Montserrat',sans-serif] text-xl">Cookie-instellingen</DialogTitle>
-          <DialogDescription>
+      <DialogContent className="sm:max-w-md rounded-xl border-none p-8 shadow-lg">
+        <DialogHeader className="text-left pb-2">
+          <DialogTitle className="font-['Poppins',sans-serif] text-xl font-semibold">
+            Cookie-instellingen
+          </DialogTitle>
+          <DialogDescription className="text-sm text-gray-600 pt-1">
             Wij gebruiken cookies om uw ervaring op onze website te verbeteren.
             Deze cookies helpen ons te begrijpen hoe bezoekers onze site gebruiken.
           </DialogDescription>
         </DialogHeader>
-        <div className="space-y-4 py-4">
-          <div className="flex items-start space-x-3">
-            <div className="w-5 h-5 mt-0.5 bg-[#F97316] rounded-full flex items-center justify-center">
-              <span className="text-white text-xs">✓</span>
-            </div>
+        
+        <div className="space-y-4 py-3 text-left">
+          <div className="flex items-start space-x-3 border-l-4 border-orange-500 pl-3 py-1">
             <div>
               <h4 className="font-semibold text-sm">Essentiële cookies</h4>
-              <p className="text-sm text-gray-500">
-                Deze cookies zijn noodzakelijk voor het functioneren van de website.
+              <p className="text-xs text-gray-500 pr-4">
+                Deze cookies zijn noodzakelijk voor het functioneren van de website. 
                 Ze kunnen niet worden uitgeschakeld.
               </p>
             </div>
           </div>
-          <div className="flex items-start space-x-3">
-            <div className="w-5 h-5 mt-0.5 border border-gray-300 rounded-full flex items-center justify-center">
-              <span className="text-white text-xs"></span>
-            </div>
+
+          <div className="flex items-center justify-between border-l-4 border-transparent pl-3 py-1">
             <div>
               <h4 className="font-semibold text-sm">Analytische cookies</h4>
-              <p className="text-sm text-gray-500">
+              <p className="text-xs text-gray-500 pr-4">
                 Helpen ons te begrijpen hoe bezoekers omgaan met onze website.
                 Deze informatie gebruiken wij om onze site te verbeteren.
               </p>
             </div>
+            <Checkbox id="analytics" className="h-5 w-5 rounded-sm border-gray-300" />
           </div>
-          <div className="flex items-start space-x-3">
-            <div className="w-5 h-5 mt-0.5 border border-gray-300 rounded-full flex items-center justify-center">
-              <span className="text-white text-xs"></span>
-            </div>
+          
+          <div className="flex items-center justify-between border-l-4 border-transparent pl-3 py-1">
             <div>
               <h4 className="font-semibold text-sm">Marketing cookies</h4>
-              <p className="text-sm text-gray-500">
+              <p className="text-xs text-gray-500 pr-4">
                 Worden gebruikt om bezoekers te volgen op verschillende websites.
                 Het doel is advertenties te tonen die relevant en boeiend zijn voor de individuele gebruiker.
               </p>
             </div>
+            <Checkbox id="marketing" className="h-5 w-5 rounded-sm border-gray-300" />
           </div>
         </div>
-        <div className="text-xs text-gray-500 mb-2">
+
+        <div className="text-left text-xs text-gray-500 mt-2">
           Bekijk ons <Link to="/cookie-policy" className="text-blue-600 hover:underline">cookiebeleid</Link> voor meer informatie.
         </div>
-        <DialogFooter className="flex-col sm:flex-row sm:justify-between gap-2">
+
+        <DialogFooter className="flex-col sm:flex-row justify-between gap-2 pt-4">
           <Button
             variant="outline"
             onClick={handleAcceptEssential}
-            className="w-full sm:w-auto border-gray-300"
+            className="w-full sm:w-auto px-6 py-2 h-auto text-sm rounded-full border border-gray-300 hover:bg-gray-50"
           >
             Alleen essentiële cookies
           </Button>
           <Button
-            className="w-full sm:w-auto bg-[#F97316] hover:bg-[#F97316]/90"
+            className="w-full sm:w-auto px-6 py-2 h-auto text-sm rounded-full bg-orange-500 hover:bg-orange-600"
             onClick={handleAcceptAll}
           >
             Alle cookies accepteren
