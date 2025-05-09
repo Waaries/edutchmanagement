@@ -35,7 +35,7 @@ const Navbar = () => {
     >
       <div className="container-full container-padding">
         <div className="flex items-center justify-between">
-          <div className="flex-1"></div> {/* This creates space on the left */}
+          <div className="flex-1 flex justify-start max-w-[100px]"></div> {/* Reduced space on the left */}
           
           <a 
             href="#" 
