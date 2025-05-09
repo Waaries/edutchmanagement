@@ -187,12 +187,12 @@ const Contact = () => {
                 Contactgegevens
               </h3>
               
-              <div className="space-y-6 mb-12">
-                <div className="flex items-start group hover:bg-primary/5 p-3 rounded-2xl transition-all">
-                  <div className="w-10 h-10 blob-shape bg-primary/10 flex items-center justify-center mr-4 flex-shrink-0">
+              <div className="space-y-8 mb-12">
+                <div className="flex items-start">
+                  <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center flex-shrink-0">
                     <MapPin className="h-5 w-5 text-primary" />
                   </div>
-                  <div>
+                  <div className="ml-4">
                     <h4 className="font-semibold text-lg mb-1">Ons Adres</h4>
                     <p className="text-slate-600">
                       Reigersbos 100 P<br />
@@ -201,22 +201,22 @@ const Contact = () => {
                   </div>
                 </div>
                 
-                <div className="flex items-start group hover:bg-primary/5 p-3 rounded-2xl transition-all">
-                  <div className="w-10 h-10 blob-shape bg-primary/10 flex items-center justify-center mr-4 flex-shrink-0">
+                <div className="flex items-start">
+                  <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center flex-shrink-0">
                     <Phone className="h-5 w-5 text-primary" />
                   </div>
-                  <div>
+                  <div className="ml-4">
                     <h4 className="font-semibold text-lg mb-1">Telefoonnummer</h4>
                     <p className="text-slate-600">+31 (0)20 737 03 85</p>
                     <p className="text-sm text-slate-500">Ma-Vr: 09:00 - 17:00</p>
                   </div>
                 </div>
                 
-                <div className="flex items-start group hover:bg-primary/5 p-3 rounded-2xl transition-all">
-                  <div className="w-10 h-10 blob-shape bg-primary/10 flex items-center justify-center mr-4 flex-shrink-0">
+                <div className="flex items-start">
+                  <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center flex-shrink-0">
                     <Mail className="h-5 w-5 text-primary" />
                   </div>
-                  <div>
+                  <div className="ml-4">
                     <h4 className="font-semibold text-lg mb-1">E-mail</h4>
                     <p className="text-slate-600">info@edutchmanagement.nl</p>
                     <p className="text-sm text-slate-500">Antwoord binnen 24 uur</p>
