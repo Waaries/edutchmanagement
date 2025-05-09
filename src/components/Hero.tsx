@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { ChevronRight, ArrowRight, Building, MapPin, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -30,11 +29,7 @@ const Hero = () => {
                 {translate("hero.badge")}
               </div>
               <h1 className="font-bold mb-6 leading-tight text-balance text-center lg:text-left">
-                {translate("hero.title").split("professionele").join(" ")}
-                <span className="gradient-text">
-                  {translate("hero.title").includes("professionele") ? "professionele" : "professional"}
-                </span>
-                {translate("hero.title").includes("appearance") ? " appearance" : ""}
+                {translate("hero.title")}
               </h1>
               <p className="text-lg md:text-xl text-slate-600 mb-8 max-w-xl text-balance text-center lg:text-left mx-auto lg:mx-0">
                 {translate("hero.subtitle")}
