@@ -28,6 +28,20 @@ const Navbar = () => {
   // Added "Recensies" between "Diensten" and "Contact"
   const menuItems = ["Diensten", "Recensies", "Contact"];
 
+  const handleNavClick = (event, itemId) => {
+    setIsMenuOpen(false);
+    
+    // If we're already on the home page, use smooth scrolling behavior
+    if (isHomePage) {
+      event.preventDefault();
+      const element = document.getElementById(itemId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+    // If not on home page, the Link component will handle navigation to /#section
+  };
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
@@ -54,16 +68,19 @@ const Navbar = () => {
           </Link>
 
           <nav className="hidden md:flex items-center space-x-8 flex-1 justify-end">
-            {menuItems.map((item) => (
-              <Link
-                key={item}
-                to={isHomePage ? `#${item === "Recensies" ? "getuigenissen" : item.toLowerCase()}` : `/#${item === "Recensies" ? "getuigenissen" : item.toLowerCase()}`}
-                className="text-slate-700 hover:text-primary transition-colors font-bold font-poppins border-animate"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {item}
-              </Link>
-            ))}
+            {menuItems.map((item) => {
+              const itemId = item === "Recensies" ? "getuigenissen" : item.toLowerCase();
+              return (
+                <Link
+                  key={item}
+                  to={isHomePage ? `#${itemId}` : `/#${itemId}`}
+                  className="text-slate-700 hover:text-primary transition-colors font-bold font-poppins border-animate"
+                  onClick={(e) => handleNavClick(e, itemId)}
+                >
+                  {item}
+                </Link>
+              );
+            })}
             {user ? (
               <Button 
                 onClick={handleLogout}
@@ -97,16 +114,19 @@ const Navbar = () => {
         <div className="md:hidden bg-white absolute top-full left-0 right-0 shadow-2xl animate-fade-in">
           <div className="container-full container-padding py-5">
             <div className="flex flex-col space-y-4">
-              {menuItems.map((item) => (
-                <Link
-                  key={item}
-                  to={isHomePage ? `#${item === "Recensies" ? "getuigenissen" : item.toLowerCase()}` : `/#${item === "Recensies" ? "getuigenissen" : item.toLowerCase()}`}
-                  className="text-slate-700 hover:text-primary transition-colors py-2 font-bold font-poppins flex items-center"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {item}
-                </Link>
-              ))}
+              {menuItems.map((item) => {
+                const itemId = item === "Recensies" ? "getuigenissen" : item.toLowerCase();
+                return (
+                  <Link
+                    key={item}
+                    to={isHomePage ? `#${itemId}` : `/#${itemId}`}
+                    className="text-slate-700 hover:text-primary transition-colors py-2 font-bold font-poppins flex items-center"
+                    onClick={(e) => handleNavClick(e, itemId)}
+                  >
+                    {item}
+                  </Link>
+                );
+              })}
               {user ? (
                 <Button 
                   onClick={handleLogout}
