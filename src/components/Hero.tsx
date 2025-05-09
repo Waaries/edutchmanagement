@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { ChevronRight, ArrowRight, Building, MapPin, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -29,7 +30,11 @@ const Hero = () => {
                 {translate("hero.badge")}
               </div>
               <h1 className="font-bold mb-6 leading-tight text-balance text-center lg:text-left">
-                {translate("hero.title")}
+                {translate("hero.title").split("professionele")[0]}
+                <span className="text-blue-500">
+                  professionele
+                </span>
+                {translate("hero.title").split("professionele")[1]}
               </h1>
               <p className="text-lg md:text-xl text-slate-600 mb-8 max-w-xl text-balance text-center lg:text-left mx-auto lg:mx-0">
                 {translate("hero.subtitle")}

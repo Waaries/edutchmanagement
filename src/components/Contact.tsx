@@ -2,9 +2,11 @@
 import { useRef, useEffect } from "react";
 import ContactForm from "@/components/contact/ContactForm";
 import ContactInfo from "@/components/contact/ContactInfo";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Contact = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const { translate } = useLanguage();
   
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -32,11 +34,13 @@ const Contact = () => {
       <div className="container mx-auto container-padding reveal">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="inline-block px-3 py-1 text-sm font-medium bg-primary/10 text-primary mb-4 rounded-2xl flex items-center justify-center mx-auto">
-            Contact Opnemen
+            {translate("contact.title")}
           </div>
-          <h2 className="mb-6">Klaar Om Uw <span className="gradient-text">Bedrijfsadres</span> Te Upgraden?</h2>
+          <h2 className="mb-6">
+            Klaar Om Uw <span className="text-blue-500">Bedrijfsadres</span> Te Upgraden?
+          </h2>
           <p className="text-lg text-slate-600">
-            Neem contact met ons op voor meer informatie of om een pakket te kiezen dat bij uw bedrijf past.
+            {translate("contact.description")}
           </p>
         </div>
         
