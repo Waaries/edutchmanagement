@@ -22,3 +22,61 @@ export const getCookie = (name: string): string | null => {
 export const eraseCookie = (name: string) => {
   document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT; SameSite=Strict;';
 };
+
+export const getAllCookies = (): Record<string, string> => {
+  const cookies: Record<string, string> = {};
+  const cookieArr = document.cookie.split(';');
+  
+  cookieArr.forEach(cookie => {
+    const cookiePair = cookie.split('=');
+    if (cookiePair[0].trim()) {
+      cookies[cookiePair[0].trim()] = cookiePair[1] || '';
+    }
+  });
+  
+  return cookies;
+};
+
+export const clearAllCookies = (exceptions: string[] = []) => {
+  const cookies = getAllCookies();
+  
+  Object.keys(cookies).forEach(cookie => {
+    if (!exceptions.includes(cookie)) {
+      eraseCookie(cookie);
+    }
+  });
+};
+
+// Cookie consent helper functions
+export const getConsentStatus = (): 'all' | 'essential' | null => {
+  return getCookie('cookieConsent') as 'all' | 'essential' | null;
+};
+
+export const hasAnalyticsConsent = (): boolean => {
+  return getConsentStatus() === 'all';
+};
+
+export const hasMarketingConsent = (): boolean => {
+  return getConsentStatus() === 'all';
+};
+
+// Set cookies based on consent
+export const setConsentCookies = (consentType: 'all' | 'essential') => {
+  // Set the consent cookie itself
+  setCookie('cookieConsent', consentType);
+  
+  // Set consent timestamp
+  setCookie('cookieConsentTimestamp', new Date().toISOString());
+  
+  if (consentType === 'all') {
+    // Enable analytics cookies if we have full consent
+    setCookie('analyticsEnabled', 'true');
+    // You would initialize analytics services here
+    console.log('Analytics tracking enabled');
+  } else {
+    // Remove analytics cookies if we only have essential consent
+    eraseCookie('analyticsEnabled');
+    // You would disable analytics services here
+    console.log('Analytics tracking disabled');
+  }
+};

@@ -20,7 +20,7 @@ const FooterBottom = ({ currentYear }: FooterBottomProps) => {
           <a href="#algemene-voorwaarden" className="text-sm text-slate-400 hover:text-white transition-colors">
             Algemene Voorwaarden
           </a>
-          <Link to="/cookiebeleid" className="text-sm text-slate-400 hover:text-white transition-colors">
+          <Link to="/cookie-policy" className="text-sm text-slate-400 hover:text-white transition-colors">
             Cookiebeleid
           </Link>
         </div>

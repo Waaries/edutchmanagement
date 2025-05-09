@@ -5,6 +5,8 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 import CookiePolicy from "./pages/CookiePolicy";
+import CookieConsent from "./components/CookieConsent";
+import { Toaster } from "./components/ui/toaster";
 import "./App.css";
 
 function App() {
@@ -17,6 +19,8 @@ function App() {
           <Route path="/cookie-policy" element={<CookiePolicy />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <CookieConsent />
+        <Toaster />
       </AuthProvider>
     </BrowserRouter>
   );

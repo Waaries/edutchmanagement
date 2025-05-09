@@ -10,28 +10,38 @@ import {
   DialogHeader,
   DialogTitle
 } from "@/components/ui/dialog";
+import { getCookie, setConsentCookies } from "@/lib/cookie-utils";
+import { useToast } from "@/hooks/use-toast";
+import { Link } from "react-router-dom";
 
 const CookieConsent = () => {
   const [open, setOpen] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     // Check if user has already consented
-    const hasConsented = localStorage.getItem("cookieConsent");
+    const hasConsented = getCookie("cookieConsent");
     if (!hasConsented) {
       setOpen(true);
     }
   }, []);
 
   const handleAcceptAll = () => {
-    localStorage.setItem("cookieConsent", "all");
-    localStorage.setItem("cookieConsentTimestamp", new Date().toISOString());
+    setConsentCookies('all');
     setOpen(false);
+    toast({
+      title: "Cookies geaccepteerd",
+      description: "Al uw cookie voorkeuren zijn opgeslagen."
+    });
   };
 
   const handleAcceptEssential = () => {
-    localStorage.setItem("cookieConsent", "essential");
-    localStorage.setItem("cookieConsentTimestamp", new Date().toISOString());
+    setConsentCookies('essential');
     setOpen(false);
+    toast({
+      title: "Essentiële cookies geaccepteerd",
+      description: "Alleen essentiële cookies worden gebruikt."
+    });
   };
 
   return (
@@ -81,6 +91,9 @@ const CookieConsent = () => {
               </p>
             </div>
           </div>
+        </div>
+        <div className="text-xs text-gray-500 mb-2">
+          Bekijk ons <Link to="/cookie-policy" className="text-blue-600 hover:underline">cookiebeleid</Link> voor meer informatie.
         </div>
         <DialogFooter className="flex-col sm:flex-row sm:justify-between gap-2">
           <Button
