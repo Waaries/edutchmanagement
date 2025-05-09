@@ -3,12 +3,14 @@ import { useState, useEffect } from "react";
 import { Menu, X, LogIn, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, signOut } = useAuth();
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,8 +40,8 @@ const Navbar = () => {
         <div className="flex items-center justify-between">
           <div className="flex-1 flex justify-start max-w-[100px]"></div> {/* Reduced space on the left */}
           
-          <a 
-            href="#" 
+          <Link 
+            to="/" 
             className="flex items-center text-2xl font-bold tracking-tight"
           >
             <div className="h-24 w-24 md:h-28 md:w-28 mx-auto flex items-center justify-center rounded-2xl">
@@ -49,17 +51,18 @@ const Navbar = () => {
                 className="h-22 md:h-26 w-auto" 
               />
             </div>
-          </a>
+          </Link>
 
           <nav className="hidden md:flex items-center space-x-8 flex-1 justify-end">
             {menuItems.map((item) => (
-              <a
+              <Link
                 key={item}
-                href={`#${item === "Recensies" ? "getuigenissen" : item.toLowerCase()}`}
+                to={isHomePage ? `#${item === "Recensies" ? "getuigenissen" : item.toLowerCase()}` : `/#${item === "Recensies" ? "getuigenissen" : item.toLowerCase()}`}
                 className="text-slate-700 hover:text-primary transition-colors font-bold font-poppins border-animate"
+                onClick={() => setIsMenuOpen(false)}
               >
                 {item}
-              </a>
+              </Link>
             ))}
             {user ? (
               <Button 
@@ -95,14 +98,14 @@ const Navbar = () => {
           <div className="container-full container-padding py-5">
             <div className="flex flex-col space-y-4">
               {menuItems.map((item) => (
-                <a
+                <Link
                   key={item}
-                  href={`#${item === "Recensies" ? "getuigenissen" : item.toLowerCase()}`}
+                  to={isHomePage ? `#${item === "Recensies" ? "getuigenissen" : item.toLowerCase()}` : `/#${item === "Recensies" ? "getuigenissen" : item.toLowerCase()}`}
                   className="text-slate-700 hover:text-primary transition-colors py-2 font-bold font-poppins flex items-center"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item}
-                </a>
+                </Link>
               ))}
               {user ? (
                 <Button 
