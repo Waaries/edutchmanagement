@@ -5,7 +5,7 @@ const ContactInfo = () => {
   return (
     <div className="bg-white rounded-3xl p-8 md:p-10 card-shadow flex flex-col justify-between stacked-card">
       <div>
-        <h3 className="text-2xl font-semibold mb-6">
+        <h3 className="text-2xl font-semibold mb-6 text-left">
           Contactgegevens
         </h3>
         
@@ -14,7 +14,7 @@ const ContactInfo = () => {
             <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center flex-shrink-0">
               <MapPin className="h-5 w-5 text-primary" />
             </div>
-            <div className="ml-4">
+            <div className="ml-4 text-left">
               <h4 className="font-semibold text-lg mb-1">Ons Adres</h4>
               <p className="text-slate-600">
                 Reigersbos 100 P<br />
@@ -27,7 +27,7 @@ const ContactInfo = () => {
             <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center flex-shrink-0">
               <Phone className="h-5 w-5 text-primary" />
             </div>
-            <div className="ml-4">
+            <div className="ml-4 text-left">
               <h4 className="font-semibold text-lg mb-1">Telefoonnummer</h4>
               <p className="text-slate-600">+31 (0)20 737 03 85</p>
               <p className="text-sm text-slate-500">Ma-Vr: 09:00 - 17:00</p>
@@ -38,7 +38,7 @@ const ContactInfo = () => {
             <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center flex-shrink-0">
               <Mail className="h-5 w-5 text-primary" />
             </div>
-            <div className="ml-4">
+            <div className="ml-4 text-left">
               <h4 className="font-semibold text-lg mb-1">E-mail</h4>
               <p className="text-slate-600">info@edutchmanagement.nl</p>
               <p className="text-sm text-slate-500">Antwoord binnen 24 uur</p>
