@@ -1,5 +1,5 @@
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Features from "@/components/Features";
@@ -9,6 +9,8 @@ import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 
 const Index = () => {
+  const mounted = useRef(false);
+
   useEffect(() => {
     // Update the document title
     document.title = "eDutch Management | Professionele Bedrijfsadressen";
@@ -28,6 +30,19 @@ const Index = () => {
 
     window.addEventListener('scroll', handleScroll);
     handleScroll(); // Trigger once on load
+
+    // Handle hash navigation on initial load
+    if (window.location.hash && !mounted.current) {
+      mounted.current = true;
+      const hash = window.location.hash.substring(1);
+      const element = document.getElementById(hash);
+      if (element) {
+        // Add slight delay to ensure all elements are properly rendered
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    }
     
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);

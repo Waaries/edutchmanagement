@@ -3,13 +3,14 @@ import { useState, useEffect } from "react";
 import { Menu, X, LogIn, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, signOut } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
   const isHomePage = location.pathname === '/';
 
   useEffect(() => {
@@ -42,6 +43,19 @@ const Navbar = () => {
     // If not on home page, the Link component will handle navigation to /#section
   };
 
+  const handleLogoClick = (event) => {
+    setIsMenuOpen(false);
+    
+    // If already on home page, scroll to top
+    if (isHomePage) {
+      event.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      // If not on home page, navigate to home page
+      navigate('/');
+    }
+  };
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
@@ -56,7 +70,8 @@ const Navbar = () => {
           
           <Link 
             to="/" 
-            className="flex items-center text-2xl font-bold tracking-tight"
+            className="flex items-center text-2xl font-bold tracking-tight cursor-pointer"
+            onClick={handleLogoClick}
           >
             <div className="h-24 w-24 md:h-28 md:w-28 mx-auto flex items-center justify-center rounded-2xl">
               <img 
