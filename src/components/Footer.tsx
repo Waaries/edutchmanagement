@@ -1,5 +1,5 @@
 
-import { Facebook, Instagram, MapPin, Phone, Mail, Clock, TikTok } from "lucide-react";
+import { Facebook, Instagram, MapPin, Phone, Mail, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
@@ -27,9 +27,37 @@ const Footer = () => {
             </p>
             <div className="flex space-x-5 pt-6">
               {[
-                { icon: <Facebook size={20} />, label: "Facebook", href: "#facebook" },
-                { icon: <TikTok size={20} />, label: "TikTok", href: "#tiktok" },
-                { icon: <Instagram size={20} />, label: "Instagram", href: "#instagram" }
+                { 
+                  icon: <Facebook size={20} />, 
+                  label: "Facebook", 
+                  href: "#facebook" 
+                },
+                { 
+                  icon: (
+                    <svg 
+                      xmlns="http://www.w3.org/2000/svg" 
+                      width="20" 
+                      height="20" 
+                      viewBox="0 0 24 24" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      strokeWidth="2" 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round"
+                    >
+                      <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"></path>
+                      <path d="M16.657 18.657a8 8 0 1 0 -9.314 0"></path>
+                      <path d="M18 18.25v1.75l-3 -3l.5 -2l2.5 2v-7.25a1.25 1.25 0 0 0 -2.5 0v7.25"></path>
+                    </svg>
+                  ), 
+                  label: "TikTok", 
+                  href: "#tiktok" 
+                },
+                { 
+                  icon: <Instagram size={20} />, 
+                  label: "Instagram", 
+                  href: "#instagram" 
+                }
               ].map((social, index) => (
                 <a 
                   key={index}
