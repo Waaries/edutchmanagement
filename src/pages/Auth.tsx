@@ -1,12 +1,13 @@
 
 import { useState, useEffect } from 'react';
-import { Navigate, useLocation, useSearchParams } from 'react-router-dom';
+import { Navigate, useLocation, useSearchParams, Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import LoginForm from '@/components/auth/LoginForm';
 import RegisterForm from '@/components/auth/RegisterForm';
 import SuccessDialog from '@/components/auth/SuccessDialog';
-import { Shield } from 'lucide-react';
+import { Shield, HomeIcon } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const Auth = () => {
   const { user, signInWithGoogle, signInWithFacebook, loading } = useAuth();
@@ -79,6 +80,18 @@ const Auth = () => {
   return (
     <div className="bg-brand-silver min-h-screen pt-32 pb-12 px-4">
       <div className="max-w-md mx-auto glass-card rounded-xl p-8">
+        <div className="flex justify-between items-center mb-6">
+          <Link to="/">
+            <Button 
+              variant="ghost" 
+              className="flex items-center gap-2 text-brand-mediumgray hover:text-primary"
+            >
+              <HomeIcon size={18} />
+              <span>Terug naar home</span>
+            </Button>
+          </Link>
+        </div>
+
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold">Welcome to eDutch Management</h1>
           <p className="text-brand-mediumgray mt-2">Login or create an account to continue</p>
