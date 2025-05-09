@@ -22,10 +22,7 @@ const Footer = () => {
     { text: "Home", href: "#home" },
     { text: "Over Ons", href: "#over-ons" },
     { text: "Diensten", href: "#diensten" },
-    { text: "Tarieven", href: "#tarieven" },
-    { text: "Veelgestelde Vragen", href: "#veelgestelde-vragen" },
-    { text: "Blog", href: "#blog" },
-    { text: "Contact", href: "#contact" }
+    { text: "Tarieven", href: "#tarieven" }
   ];
 
   return (
