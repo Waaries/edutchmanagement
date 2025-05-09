@@ -1,6 +1,5 @@
 
 import { useState, useEffect } from "react";
-import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -14,7 +13,6 @@ import { getCookie, setConsentCookies } from "@/lib/cookie-utils";
 import { useToast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Sheet, SheetContent } from "@/components/ui/sheet";
 
 const CookieConsent = () => {
   const [open, setOpen] = useState(false);
@@ -48,7 +46,7 @@ const CookieConsent = () => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="sm:max-w-md rounded-xl border-none p-8 shadow-lg">
+      <DialogContent className="sm:max-w-md max-w-[90%] w-full rounded-xl border-none p-6 shadow-lg">
         <DialogHeader className="text-left pb-2">
           <DialogTitle className="font-['Poppins',sans-serif] text-xl font-semibold">
             Cookie-instellingen
@@ -61,9 +59,9 @@ const CookieConsent = () => {
         
         <div className="space-y-4 py-3 text-left">
           <div className="flex items-start space-x-3 border-l-4 border-orange-500 pl-3 py-1">
-            <div>
+            <div className="w-full">
               <h4 className="font-semibold text-sm">Essentiële cookies</h4>
-              <p className="text-xs text-gray-500 pr-4">
+              <p className="text-xs text-gray-500">
                 Deze cookies zijn noodzakelijk voor het functioneren van de website. 
                 Ze kunnen niet worden uitgeschakeld.
               </p>
@@ -71,9 +69,9 @@ const CookieConsent = () => {
           </div>
 
           <div className="flex items-center justify-between border-l-4 border-transparent pl-3 py-1">
-            <div>
+            <div className="flex-1 pr-4">
               <h4 className="font-semibold text-sm">Analytische cookies</h4>
-              <p className="text-xs text-gray-500 pr-4">
+              <p className="text-xs text-gray-500">
                 Helpen ons te begrijpen hoe bezoekers omgaan met onze website.
                 Deze informatie gebruiken wij om onze site te verbeteren.
               </p>
@@ -82,9 +80,9 @@ const CookieConsent = () => {
           </div>
           
           <div className="flex items-center justify-between border-l-4 border-transparent pl-3 py-1">
-            <div>
+            <div className="flex-1 pr-4">
               <h4 className="font-semibold text-sm">Marketing cookies</h4>
-              <p className="text-xs text-gray-500 pr-4">
+              <p className="text-xs text-gray-500">
                 Worden gebruikt om bezoekers te volgen op verschillende websites.
                 Het doel is advertenties te tonen die relevant en boeiend zijn voor de individuele gebruiker.
               </p>
