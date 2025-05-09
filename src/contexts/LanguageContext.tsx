@@ -124,7 +124,7 @@ const translations = {
         description: "Al uw zakelijke post en pakketten worden veilig ontvangen en beheerd, met doorstuuropties."
       },
       reception: {
-        title: "Receptie Service",
+        title: "Receptieservice",
         description: "Optionele telefoondiensten zodat u nooit een belangrijke zakelijke oproep mist."
       }
     },
@@ -279,7 +279,7 @@ const translations = {
       acceptEssential: "Alleen essentiële cookies",
       acceptAll: "Alle cookies accepteren",
       toastTitle: "Cookies geaccepteerd",
-      toastAllDesc: "Al uw cookie voorkeuren zijn opgeslagen.",
+      toastAllDesc: "Al uw cookievoorkeuren zijn opgeslagen.",
       toastEssentialDesc: "Alleen essentiële cookies worden gebruikt."
     }
   },

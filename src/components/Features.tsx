@@ -1,9 +1,11 @@
 
 import { useEffect, useRef } from "react";
 import { Shield, Clock, Award, Briefcase, Mail, Phone } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Features = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const { translate } = useLanguage();
   
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -26,36 +28,36 @@ const Features = () => {
     };
   }, []);
 
-  const features = [
+  const featureItems = [
     {
       icon: Shield,
-      title: "Betrouwbaarheid",
-      description: "Uw bedrijfsadres in vertrouwde handen met gegarandeerde privacy en professionele afhandeling."
+      title: translate("features.reliability.title"),
+      description: translate("features.reliability.description")
     },
     {
       icon: Clock,
-      title: "Tijdbesparing",
-      description: "Geen zorgen over postafhandeling of kantooronderhoud, zodat u zich kunt richten op uw kernactiviteiten."
+      title: translate("features.timeSaving.title"),
+      description: translate("features.timeSaving.description")
     },
     {
       icon: Award,
-      title: "Professionele Uitstraling",
-      description: "Een prestigieus zakelijk adres verbetert uw bedrijfsimago en maakt indruk op potentiële klanten."
+      title: translate("features.professional.title"),
+      description: translate("features.professional.description")
     },
     {
       icon: Briefcase,
-      title: "Flexibiliteit",
-      description: "Werk vanuit waar dan ook terwijl u profiteert van een vaste, professionele zakelijke aanwezigheid."
+      title: translate("features.flexibility.title"),
+      description: translate("features.flexibility.description")
     },
     {
       icon: Mail,
-      title: "Post & Pakketten",
-      description: "Al uw zakelijke post en pakketten worden veilig ontvangen en beheerd, met doorstuuropties."
+      title: translate("features.mailPackages.title"),
+      description: translate("features.mailPackages.description")
     },
     {
       icon: Phone,
-      title: "Receptie Service",
-      description: "Optionele telefoondiensten zodat u nooit een belangrijke zakelijke oproep mist."
+      title: translate("features.reception.title"),
+      description: translate("features.reception.description")
     }
   ];
 
@@ -64,16 +66,16 @@ const Features = () => {
       <div className="container mx-auto container-padding reveal">
         <div className="text-left max-w-3xl mx-auto mb-16">
           <div className="inline-block px-3 py-1 text-sm font-medium bg-primary/10 text-primary mb-4 rounded-2xl flex items-center justify-start">
-            Waarom Kiezen Voor Ons
+            {translate("features.title")}
           </div>
-          <h2 className="mb-6">Voordelen van een <span className="gradient-text">Bedrijfsadres</span></h2>
+          <h2 className="mb-6">{translate("features.subtitle").split(" van ")[0]} <span className="gradient-text">{translate("features.subtitle").includes(" van ") ? "van een Bedrijfsadres" : "of a Business Address"}</span></h2>
           <p className="text-lg text-slate-600">
-            Ontdek hoe een professioneel bedrijfsadres uw bedrijf naar een hoger niveau kan tillen.
+            {translate("features.description")}
           </p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {features.map((feature, index) => (
+          {featureItems.map((feature, index) => (
             <div 
               key={index} 
               className="bg-white rounded-3xl p-8 hover-lift transition-all duration-300 card-shadow text-left"

@@ -2,9 +2,11 @@
 import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Check } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Services = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const { translate } = useLanguage();
   
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -29,46 +31,28 @@ const Services = () => {
   
   const services = [
     {
-      title: "Basis Bedrijfsadres",
-      price: "€59",
-      period: "per maand excl. BTW",
-      description: "Perfect voor startende ondernemers en ZZP'ers",
-      features: [
-        "Prestigieus zakelijk adres",
-        "Post ontvangen en bewaren",
-        "Digitale notificatie van ontvangen post",
-        "KVK/BTW registratie mogelijk",
-        "3 maanden minimale contractduur"
-      ],
+      title: translate("services.basic.title"),
+      price: translate("services.basic.price"),
+      period: translate("services.basic.period"),
+      description: translate("services.basic.description"),
+      features: translate("services.basic.features"),
       mostPopular: false
     },
     {
-      title: "Premium Bedrijfsadres",
-      price: "€89",
-      period: "per maand excl. BTW",
-      description: "Ideaal voor groeiende bedrijven met meer behoeften",
-      features: [
-        "Alles uit het Basis pakket",
-        "Wekelijks doorsturen van post",
-        "Pakketten ontvangen en tijdelijk opslaan",
-        "Telefonische bereikbaarheid via receptie",
-        "Gebruik van vergaderruimte (2u/maand)"
-      ],
-      mostPopular: true
+      title: translate("services.premium.title"),
+      price: translate("services.premium.price"),
+      period: translate("services.premium.period"),
+      description: translate("services.premium.description"),
+      features: translate("services.premium.features"),
+      mostPopular: true,
+      mostPopularText: translate("services.premium.mostPopular")
     },
     {
-      title: "Zakelijk Compleet",
-      price: "€149",
-      period: "per maand excl. BTW",
-      description: "Complete oplossing voor gevestigde bedrijven",
-      features: [
-        "Alles uit het Premium pakket",
-        "Dagelijks doorsturen van post",
-        "Bezoekersregistratie voor gasten",
-        "Persoonlijke telefoniste",
-        "Gebruik van vergaderruimte (10u/maand)",
-        "Gratis koffie voor bezoekers"
-      ],
+      title: translate("services.complete.title"),
+      price: translate("services.complete.price"),
+      period: translate("services.complete.period"),
+      description: translate("services.complete.description"),
+      features: translate("services.complete.features"),
       mostPopular: false
     }
   ];
@@ -78,11 +62,11 @@ const Services = () => {
       <div className="container mx-auto container-padding reveal">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="inline-block px-3 py-1 text-sm font-medium bg-primary/10 text-primary mb-4 rounded-2xl flex items-center justify-center mx-auto">
-            Onze Diensten
+            {translate("services.title")}
           </div>
-          <h2 className="mb-6">Flexibele <span className="gradient-text">Adresoplossingen</span> Voor Uw Bedrijf</h2>
+          <h2 className="mb-6">{translate("services.subtitle").split("Adresoplossingen")[0]}<span className="gradient-text">{translate("services.subtitle").includes("Adresoplossingen") ? "Adresoplossingen" : "Address Solutions"}</span>{translate("services.subtitle").includes("For Your Business") ? " For Your Business" : " Voor Uw Bedrijf"}</h2>
           <p className="text-lg text-slate-600">
-            Kies het pakket dat het beste past bij de behoeften van uw bedrijf.
+            {translate("services.description")}
           </p>
         </div>
         
@@ -98,7 +82,7 @@ const Services = () => {
             >
               {service.mostPopular && (
                 <div className="absolute top-0 right-0 gradient-primary text-white px-4 py-1 text-sm font-medium rounded-bl-2xl rounded-tr-3xl">
-                  Meest Gekozen
+                  {service.mostPopularText}
                 </div>
               )}
               <div className="p-8">
@@ -110,7 +94,7 @@ const Services = () => {
                 <p className="text-slate-600 mb-6">{service.description}</p>
                 
                 <ul className="space-y-3 mb-8">
-                  {service.features.map((feature, idx) => (
+                  {service.features.map((feature: string, idx: number) => (
                     <li key={idx} className="flex items-start">
                       <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center mr-2 flex-shrink-0">
                         <Check className="h-3 w-3 text-primary" />
@@ -128,7 +112,7 @@ const Services = () => {
                   }`}
                   variant={service.mostPopular ? "default" : "outline"}
                 >
-                  <span>Selecteer Plan</span>
+                  <span>{translate("services.selectPlan")}</span>
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </div>
@@ -138,10 +122,10 @@ const Services = () => {
 
         <div className="mt-12 text-center">
           <p className="text-slate-600 mb-4">
-            Heeft u specifieke behoeften die niet in onze standaardpakketten worden gedekt?
+            {translate("services.customNeeds")}
           </p>
           <Button variant="outline">
-            Vraag Een Aangepast Pakket Aan
+            {translate("services.customBtn")}
           </Button>
         </div>
       </div>

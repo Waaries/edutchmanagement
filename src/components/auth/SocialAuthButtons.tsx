@@ -16,9 +16,7 @@ export const SocialAuthButtons = ({ context }: SocialAuthButtonsProps) => {
       </div>
       <div className="relative flex justify-center text-xs uppercase">
         <span className="bg-background px-2 text-muted-foreground">
-          {context === 'login' 
-            ? translate("auth.secureAuth") 
-            : translate("auth.secureAuth")}
+          {translate("auth.secureAuth")}
         </span>
       </div>
     </div>
