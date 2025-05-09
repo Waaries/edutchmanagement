@@ -1,5 +1,6 @@
 
 import { Link } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
 import SocialLinks from "./footer/SocialLinks";
 import FooterColumn from "./footer/FooterColumn";
 import FooterLinkList from "./footer/FooterLinkList";
@@ -8,20 +9,21 @@ import FooterBottom from "./footer/FooterBottom";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const { translate } = useLanguage();
 
   // Service links data
   const serviceLinks = [
-    { text: "Basis Bedrijfsadres", href: "#diensten" },
-    { text: "Premium Bedrijfsadres", href: "#diensten" },
-    { text: "Zakelijk Compleet", href: "#diensten" },
-    { text: "Aangepaste Pakketten", href: "#diensten" }
+    { text: translate("services.basic.title"), href: "#diensten" },
+    { text: translate("services.premium.title"), href: "#diensten" },
+    { text: translate("services.complete.title"), href: "#diensten" },
+    { text: translate("services.customBtn"), href: "#diensten" }
   ];
 
   // Navigation links data
   const navLinks = [
-    { text: "Home", href: "#home" },
+    { text: translate("nav.home"), href: "#home" },
     { text: "Over Ons", href: "#over-ons" },
-    { text: "Diensten", href: "#diensten" },
+    { text: translate("nav.services"), href: "#diensten" },
     { text: "Tarieven", href: "#tarieven" }
   ];
 
@@ -49,28 +51,34 @@ const Footer = () => {
           
           {/* Services Column */}
           <div className="md:col-span-2">
-            <FooterColumn title="Diensten">
+            <FooterColumn title={translate("footer.services")}>
               <FooterLinkList links={serviceLinks} />
             </FooterColumn>
           </div>
           
           {/* Links Column */}
           <div className="md:col-span-2">
-            <FooterColumn title="Links">
+            <FooterColumn title={translate("footer.links")}>
               <FooterLinkList links={navLinks} />
             </FooterColumn>
           </div>
           
           {/* Contact Information */}
           <div className="md:col-span-3">
-            <FooterColumn title="Contact">
+            <FooterColumn title={translate("footer.contact")}>
               <ContactInfo />
             </FooterColumn>
           </div>
         </div>
         
         {/* Bottom Bar with Copyright and Links */}
-        <FooterBottom currentYear={currentYear} />
+        <FooterBottom 
+          currentYear={currentYear} 
+          copyright={translate("footer.copyright").replace("{year}", currentYear.toString())}
+          terms={translate("footer.terms")}
+          privacy={translate("footer.privacy")}
+          cookies={translate("footer.cookies")}
+        />
       </div>
     </footer>
   );

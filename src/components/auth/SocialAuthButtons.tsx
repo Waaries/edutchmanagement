@@ -1,4 +1,5 @@
 
+import { useLanguage } from '@/contexts/LanguageContext';
 import { Separator } from '@/components/ui/separator';
 
 interface SocialAuthButtonsProps {
@@ -6,6 +7,8 @@ interface SocialAuthButtonsProps {
 }
 
 export const SocialAuthButtons = ({ context }: SocialAuthButtonsProps) => {
+  const { translate } = useLanguage();
+  
   return (
     <div className="relative my-6">
       <div className="absolute inset-0 flex items-center">
@@ -13,7 +16,9 @@ export const SocialAuthButtons = ({ context }: SocialAuthButtonsProps) => {
       </div>
       <div className="relative flex justify-center text-xs uppercase">
         <span className="bg-background px-2 text-muted-foreground">
-          {context === 'login' ? 'Secure login' : 'Secure registration'}
+          {context === 'login' 
+            ? translate("auth.secureAuth") 
+            : translate("auth.secureAuth")}
         </span>
       </div>
     </div>

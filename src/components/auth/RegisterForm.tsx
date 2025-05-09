@@ -1,6 +1,7 @@
 
 import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -13,6 +14,7 @@ interface RegisterFormProps {
 
 const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
   const { signUp } = useAuth();
+  const { translate } = useLanguage();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -68,70 +70,70 @@ const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
     <form onSubmit={handleRegister} className="space-y-4">
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="firstName">First Name</Label>
+          <Label htmlFor="firstName">{translate("auth.register.firstName")}</Label>
           <Input 
             id="firstName"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
-            placeholder="John"
+            placeholder={translate("auth.register.firstNamePlaceholder")}
           />
         </div>
         
         <div className="space-y-2">
-          <Label htmlFor="lastName">Last Name</Label>
+          <Label htmlFor="lastName">{translate("auth.register.lastName")}</Label>
           <Input 
             id="lastName"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
-            placeholder="Doe"
+            placeholder={translate("auth.register.lastNamePlaceholder")}
           />
         </div>
       </div>
       
       <div className="space-y-2">
-        <Label htmlFor="registerEmail">Email</Label>
+        <Label htmlFor="registerEmail">{translate("auth.register.email")}</Label>
         <Input 
           id="registerEmail"
           type="email" 
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="your@email.com"
+          placeholder={translate("auth.register.emailPlaceholder")}
           required
         />
       </div>
       
       <div className="space-y-2">
-        <Label htmlFor="registerPassword">Password</Label>
+        <Label htmlFor="registerPassword">{translate("auth.register.password")}</Label>
         <Input 
           id="registerPassword"
           type="password" 
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="••••••••"
+          placeholder={translate("auth.register.passwordPlaceholder")}
           required
         />
         
         <div className="text-xs space-y-1 mt-2 bg-gray-50 p-3 rounded-md">
-          <p className="font-medium text-brand-mediumgray mb-1">Password requirements:</p>
+          <p className="font-medium text-brand-mediumgray mb-1">{translate("auth.register.passwordRequirements")}</p>
           <div className="flex items-start gap-2">
             {hasMinLength ? <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5" /> : <Info className="h-4 w-4 text-amber-500 mt-0.5" />}
-            <p className={`${hasMinLength ? 'text-green-700' : 'text-brand-mediumgray'}`}>At least 8 characters</p>
+            <p className={`${hasMinLength ? 'text-green-700' : 'text-brand-mediumgray'}`}>{translate("auth.register.minLength")}</p>
           </div>
           <div className="flex items-start gap-2">
             {hasUppercase ? <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5" /> : <Info className="h-4 w-4 text-amber-500 mt-0.5" />}
-            <p className={`${hasUppercase ? 'text-green-700' : 'text-brand-mediumgray'}`}>At least one uppercase letter</p>
+            <p className={`${hasUppercase ? 'text-green-700' : 'text-brand-mediumgray'}`}>{translate("auth.register.uppercase")}</p>
           </div>
           <div className="flex items-start gap-2">
             {hasLowercase ? <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5" /> : <Info className="h-4 w-4 text-amber-500 mt-0.5" />}
-            <p className={`${hasLowercase ? 'text-green-700' : 'text-brand-mediumgray'}`}>At least one lowercase letter</p>
+            <p className={`${hasLowercase ? 'text-green-700' : 'text-brand-mediumgray'}`}>{translate("auth.register.lowercase")}</p>
           </div>
           <div className="flex items-start gap-2">
             {hasNumber ? <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5" /> : <Info className="h-4 w-4 text-amber-500 mt-0.5" />}
-            <p className={`${hasNumber ? 'text-green-700' : 'text-brand-mediumgray'}`}>At least one number</p>
+            <p className={`${hasNumber ? 'text-green-700' : 'text-brand-mediumgray'}`}>{translate("auth.register.number")}</p>
           </div>
           <div className="flex items-start gap-2">
             {hasSpecialChar ? <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5" /> : <Info className="h-4 w-4 text-amber-500 mt-0.5" />}
-            <p className={`${hasSpecialChar ? 'text-green-700' : 'text-brand-mediumgray'}`}>At least one special character</p>
+            <p className={`${hasSpecialChar ? 'text-green-700' : 'text-brand-mediumgray'}`}>{translate("auth.register.special")}</p>
           </div>
         </div>
       </div>
@@ -148,7 +150,7 @@ const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
         className="w-full bg-[#F97316] hover:bg-[#F97316]/90"
         disabled={submitting}
       >
-        {submitting ? 'Creating account...' : 'Create Account'}
+        {submitting ? translate("auth.register.creating") : translate("auth.register.button")}
       </Button>
 
       <SocialAuthButtons context="register" />

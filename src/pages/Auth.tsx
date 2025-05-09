@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Navigate, useLocation, useSearchParams, Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import LoginForm from '@/components/auth/LoginForm';
 import RegisterForm from '@/components/auth/RegisterForm';
@@ -11,6 +12,7 @@ import { Button } from '@/components/ui/button';
 
 const Auth = () => {
   const { user, loading } = useAuth();
+  const { translate } = useLanguage();
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [showDialog, setShowDialog] = useState(false);
@@ -66,27 +68,27 @@ const Auth = () => {
               className="flex items-center gap-2 text-brand-mediumgray hover:text-primary"
             >
               <HomeIcon size={18} />
-              <span>Terug naar home</span>
+              <span>{translate("auth.backToHome")}</span>
             </Button>
           </Link>
         </div>
 
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold">Welcome to eDutch Management</h1>
-          <p className="text-brand-mediumgray mt-2">Login or create an account to continue</p>
+          <h1 className="text-2xl font-bold">{translate("auth.welcome")}</h1>
+          <p className="text-brand-mediumgray mt-2">{translate("auth.welcomeDesc")}</p>
         </div>
 
         <div className="flex justify-center items-center mb-6">
           <div className="bg-blue-50 p-2 rounded-full">
             <Shield className="h-6 w-6 text-blue-600" />
           </div>
-          <span className="ml-2 text-sm text-blue-700">Secure authentication</span>
+          <span className="ml-2 text-sm text-blue-700">{translate("auth.secureAuth")}</span>
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2 mb-8">
-            <TabsTrigger value="login">Login</TabsTrigger>
-            <TabsTrigger value="register">Register</TabsTrigger>
+            <TabsTrigger value="login">{translate("auth.login.title")}</TabsTrigger>
+            <TabsTrigger value="register">{translate("auth.register.title")}</TabsTrigger>
           </TabsList>
           
           <TabsContent value="login">

@@ -1,9 +1,12 @@
+
 import { useState, useEffect } from "react";
 import { ChevronRight, ArrowRight, Building, MapPin, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Hero = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const { translate } = useLanguage();
 
   useEffect(() => {
     setIsVisible(true);
@@ -24,34 +27,50 @@ const Hero = () => {
           <div className="lg:col-span-3 space-y-8 mx-auto text-center lg:text-left">
             <div className={`transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100' : 'opacity-0 translate-y-10'}`}>
               <div className="inline-block px-3 py-1 text-sm font-medium bg-primary/10 text-primary mb-6 rounded-2xl animate-fade-in mx-auto">
-                Professioneel Bedrijfsadres
+                {translate("hero.badge")}
               </div>
               <h1 className="font-bold mb-6 leading-tight text-balance text-center lg:text-left">
-                Geef uw bedrijf een <span className="gradient-text">professionele</span> uitstraling
+                {translate("hero.title").split("professionele").join(" ")}
+                <span className="gradient-text">
+                  {translate("hero.title").includes("professionele") ? "professionele" : "professional"}
+                </span>
+                {translate("hero.title").includes("appearance") ? " appearance" : ""}
               </h1>
               <p className="text-lg md:text-xl text-slate-600 mb-8 max-w-xl text-balance text-center lg:text-left mx-auto lg:mx-0">
-                Huur een professioneel bedrijfsadres op een toplocatie en maak een uitstekende eerste indruk. Volledig beheer zonder zorgen.
+                {translate("hero.subtitle")}
               </p>
               <p className="text-md text-slate-600 mb-8 max-w-xl text-balance text-center lg:text-left mx-auto lg:mx-0">
-                Geschikt voor KVK-inschrijving, btw-registratie en professionele postafhandeling
+                {translate("hero.description")}
               </p>
               
               <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
                 <Button className="px-8 py-6 group">
-                  <span>Ontdek Onze Diensten</span>
+                  <span>{translate("hero.discoverBtn")}</span>
                   <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Button>
                 <Button variant="outline" className="px-8 py-6">
-                  Contact Opnemen
+                  {translate("hero.contactBtn")}
                 </Button>
               </div>
             </div>
             
             <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6 text-center lg:text-left">
               {[
-                { icon: Building, title: "Professioneel adres", desc: "Op toplocatie" },
-                { icon: MapPin, title: "Volledig beheer", desc: "Zonder zorgen" },
-                { icon: Mail, title: "Post & pakketten", desc: "Veilig ontvangen" },
+                { 
+                  icon: Building, 
+                  title: translate("hero.features.address.title"), 
+                  desc: translate("hero.features.address.desc") 
+                },
+                { 
+                  icon: MapPin, 
+                  title: translate("hero.features.management.title"), 
+                  desc: translate("hero.features.management.desc") 
+                },
+                { 
+                  icon: Mail, 
+                  title: translate("hero.features.mail.title"), 
+                  desc: translate("hero.features.mail.desc") 
+                },
               ].map((item, index) => (
                 <div 
                   key={index} 
@@ -83,9 +102,9 @@ const Hero = () => {
                     <div className="flex items-center mb-3">
                       <div className="h-8 w-8 bg-white/30 rounded-full flex items-center justify-center mr-3">
                       </div>
-                      <h3 className="text-white font-semibold text-2xl">Premium Locaties</h3>
+                      <h3 className="text-white font-semibold text-2xl">{translate("hero.premium")}</h3>
                     </div>
-                    <p className="text-white/90">Indrukwekkende adressen in de beste zakendistricten voor uw bedrijf.</p>
+                    <p className="text-white/90">{translate("hero.premiumDesc")}</p>
                   </div>
                 </div>
               </div>

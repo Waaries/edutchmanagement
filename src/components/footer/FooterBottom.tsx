@@ -1,31 +1,44 @@
 
 import { Link } from "react-router-dom";
+import { Separator } from "@/components/ui/separator";
 
 interface FooterBottomProps {
   currentYear: number;
+  copyright: string;
+  terms: string;
+  privacy: string;
+  cookies: string;
 }
 
-const FooterBottom = ({ currentYear }: FooterBottomProps) => {
+const FooterBottom = ({ 
+  currentYear, 
+  copyright, 
+  terms, 
+  privacy, 
+  cookies
+}: FooterBottomProps) => {
   return (
-    <div className="border-t border-white/10 py-8">
-      <div className="flex flex-col md:flex-row justify-between items-center text-left">
-        <p className="text-sm text-slate-400 mb-4 md:mb-0">
-          &copy; {currentYear} eDutch Management. Alle rechten voorbehouden.
+    <>
+      <Separator className="bg-white/10" />
+      
+      <div className="py-6 flex flex-col md:flex-row items-center justify-between gap-4">
+        <p className="text-white/60 text-sm">
+          {copyright}
         </p>
         
-        <div className="flex flex-wrap justify-center space-x-6">
-          <a href="#privacybeleid" className="text-sm text-slate-400 hover:text-white transition-colors">
-            Privacybeleid
-          </a>
-          <a href="#algemene-voorwaarden" className="text-sm text-slate-400 hover:text-white transition-colors">
-            Algemene Voorwaarden
-          </a>
-          <Link to="/cookie-policy" className="text-sm text-slate-400 hover:text-white transition-colors">
-            Cookiebeleid
+        <div className="flex items-center gap-6 text-sm">
+          <Link to="/terms" className="text-white/60 hover:text-white transition-colors">
+            {terms}
+          </Link>
+          <Link to="/privacy" className="text-white/60 hover:text-white transition-colors">
+            {privacy}
+          </Link>
+          <Link to="/cookie-policy" className="text-white/60 hover:text-white transition-colors">
+            {cookies}
           </Link>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

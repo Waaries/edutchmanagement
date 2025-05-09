@@ -1,6 +1,7 @@
 
 import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -10,6 +11,7 @@ import { useToast } from '@/hooks/use-toast';
 
 const LoginForm = () => {
   const { signIn, resetPassword } = useAuth();
+  const { translate } = useLanguage();
   const { toast } = useToast();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -75,13 +77,13 @@ const LoginForm = () => {
   return (
     <form onSubmit={handleLogin} className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
+        <Label htmlFor="email">{translate("auth.login.email")}</Label>
         <Input 
           id="email"
           type="email" 
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="your@email.com"
+          placeholder={translate("auth.login.emailPlaceholder")}
           required
           autoComplete="email"
         />
@@ -89,13 +91,13 @@ const LoginForm = () => {
       
       <div className="space-y-2">
         <div className="flex justify-between items-center">
-          <Label htmlFor="password">Password</Label>
+          <Label htmlFor="password">{translate("auth.login.password")}</Label>
           <button 
             onClick={handlePasswordReset}
             className="text-xs text-primary hover:underline"
             disabled={submitting || resetRequested}
           >
-            {resetRequested ? 'Check your email' : 'Forgot password?'}
+            {resetRequested ? translate("auth.login.checkEmail") : translate("auth.login.forgotPassword")}
           </button>
         </div>
         <Input 
@@ -103,7 +105,7 @@ const LoginForm = () => {
           type="password" 
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="••••••••"
+          placeholder={translate("auth.login.passwordPlaceholder")}
           required
           autoComplete="current-password"
         />
@@ -118,7 +120,7 @@ const LoginForm = () => {
       
       <div className="p-3 bg-blue-50 text-blue-700 rounded-md flex items-start text-sm">
         <LockKeyhole className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" />
-        <span>Your connection is secure. We never store your password in plain text.</span>
+        <span>{translate("auth.login.secure")}</span>
       </div>
       
       <Button 
@@ -126,7 +128,7 @@ const LoginForm = () => {
         className="w-full bg-[#F97316] hover:bg-[#F97316]/90"
         disabled={submitting}
       >
-        {submitting ? 'Logging in...' : 'Login'}
+        {submitting ? translate("auth.login.loggingIn") : translate("auth.login.button")}
       </Button>
 
       <SocialAuthButtons context="login" />
