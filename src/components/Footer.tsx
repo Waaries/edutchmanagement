@@ -1,5 +1,4 @@
-
-import { Facebook, Twitter, Linkedin, Instagram, MapPin, Phone, Mail, Clock } from "lucide-react";
+import { Facebook, Linkedin, Instagram, MapPin, Phone, Mail, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
@@ -28,7 +27,6 @@ const Footer = () => {
             <div className="flex space-x-5 pt-6">
               {[
                 { icon: <Facebook size={20} />, label: "Facebook", href: "#facebook" },
-                { icon: <Twitter size={20} />, label: "Twitter", href: "#twitter" },
                 { icon: <Linkedin size={20} />, label: "LinkedIn", href: "#linkedin" },
                 { icon: <Instagram size={20} />, label: "Instagram", href: "#instagram" }
               ].map((social, index) => (
