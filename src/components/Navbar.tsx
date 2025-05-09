@@ -23,7 +23,8 @@ const Navbar = () => {
     setIsMenuOpen(false);
   };
 
-  const menuItems = ["Home", "Diensten", "Contact"];
+  // Removed "Home" from the menuItems array
+  const menuItems = ["Diensten", "Contact"];
 
   return (
     <header
