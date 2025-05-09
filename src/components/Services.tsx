@@ -30,8 +30,8 @@ const Services = () => {
   const services = [
     {
       title: "Basis Bedrijfsadres",
-      price: "€49",
-      period: "per maand",
+      price: "€59",
+      period: "per maand excl. BTW",
       description: "Perfect voor startende ondernemers en ZZP'ers",
       features: [
         "Prestigieus zakelijk adres",
@@ -45,7 +45,7 @@ const Services = () => {
     {
       title: "Premium Bedrijfsadres",
       price: "€89",
-      period: "per maand",
+      period: "per maand excl. BTW",
       description: "Ideaal voor groeiende bedrijven met meer behoeften",
       features: [
         "Alles uit het Basis pakket",
@@ -59,7 +59,7 @@ const Services = () => {
     {
       title: "Zakelijk Compleet",
       price: "€149",
-      period: "per maand",
+      period: "per maand excl. BTW",
       description: "Complete oplossing voor gevestigde bedrijven",
       features: [
         "Alles uit het Premium pakket",
