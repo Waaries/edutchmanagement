@@ -1,4 +1,3 @@
-
 import { Facebook, Instagram, MapPin, Phone, Mail, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -13,14 +12,13 @@ const Footer = () => {
           {/* Logo and Description */}
           <div className="md:col-span-5 space-y-6">
             <div className="flex items-center mb-6">
-              <div className="h-24 w-24 md:h-28 md:w-28 mr-4 flex items-center justify-center rounded-2xl">
+              <div className="h-24 w-24 md:h-28 md:w-28 flex items-center justify-center rounded-2xl">
                 <img 
                   src="/lovable-uploads/39d6c2c8-b4a1-4f97-86fb-dd3a6e9fcdbd.png" 
                   alt="eDutch Management Logo" 
                   className="h-20 md:h-24 invert" // Increased logo size
                 />
               </div>
-              <h3 className="text-2xl font-bold text-white font-space">eDutch Management</h3>
             </div>
             <p className="text-white/80 text-lg leading-relaxed max-w-md text-left">
               Wij bieden professionele bedrijfsadressen voor ondernemers en bedrijven die hun uitstraling willen verbeteren zonder de kosten van een fysiek kantoor.
