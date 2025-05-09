@@ -29,13 +29,14 @@ const Services = () => {
     };
   }, []);
   
+  // Cast the features to string[] to ensure TypeScript knows it's an array
   const services = [
     {
       title: translate("services.basic.title"),
       price: translate("services.basic.price"),
       period: translate("services.basic.period"),
       description: translate("services.basic.description"),
-      features: translate("services.basic.features"),
+      features: translate("services.basic.features") as unknown as string[],
       mostPopular: false
     },
     {
@@ -43,7 +44,7 @@ const Services = () => {
       price: translate("services.premium.price"),
       period: translate("services.premium.period"),
       description: translate("services.premium.description"),
-      features: translate("services.premium.features"),
+      features: translate("services.premium.features") as unknown as string[],
       mostPopular: true,
       mostPopularText: translate("services.premium.mostPopular")
     },
@@ -52,7 +53,7 @@ const Services = () => {
       price: translate("services.complete.price"),
       period: translate("services.complete.period"),
       description: translate("services.complete.description"),
-      features: translate("services.complete.features"),
+      features: translate("services.complete.features") as unknown as string[],
       mostPopular: false
     }
   ];
