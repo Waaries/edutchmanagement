@@ -23,8 +23,8 @@ const Navbar = () => {
     setIsMenuOpen(false);
   };
 
-  // Removed "Home" from the menuItems array
-  const menuItems = ["Diensten", "Contact"];
+  // Added "Recensies" between "Diensten" and "Contact"
+  const menuItems = ["Diensten", "Recensies", "Contact"];
 
   return (
     <header
@@ -55,7 +55,7 @@ const Navbar = () => {
             {menuItems.map((item) => (
               <a
                 key={item}
-                href={`#${item.toLowerCase()}`}
+                href={`#${item === "Recensies" ? "getuigenissen" : item.toLowerCase()}`}
                 className="text-slate-700 hover:text-primary transition-colors font-bold font-poppins border-animate"
               >
                 {item}
@@ -97,7 +97,7 @@ const Navbar = () => {
               {menuItems.map((item) => (
                 <a
                   key={item}
-                  href={`#${item.toLowerCase()}`}
+                  href={`#${item === "Recensies" ? "getuigenissen" : item.toLowerCase()}`}
                   className="text-slate-700 hover:text-primary transition-colors py-2 font-bold font-poppins flex items-center"
                   onClick={() => setIsMenuOpen(false)}
                 >
