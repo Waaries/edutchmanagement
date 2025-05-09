@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Menu, X, LogIn, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -38,14 +39,13 @@ const Navbar = () => {
             href="#" 
             className="flex items-center text-2xl font-bold tracking-tight"
           >
-            <div className="h-16 w-16 md:h-20 md:w-20 mr-3 flex items-center justify-center rounded-2xl">
+            <div className="h-20 w-20 md:h-24 md:w-24 mr-3 flex items-center justify-center rounded-2xl">
               <img 
                 src="/lovable-uploads/39d6c2c8-b4a1-4f97-86fb-dd3a6e9fcdbd.png" 
                 alt="eDutch Management Logo" 
-                className="h-14 md:h-16"
+                className="h-18 md:h-20"
               />
             </div>
-            <span className="hidden sm:inline text-black text-2xl md:text-3xl font-space">eDutch Management</span>
           </a>
 
           <nav className="hidden md:flex items-center space-x-8">
