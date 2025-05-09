@@ -10,7 +10,7 @@ import { Shield, HomeIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const Auth = () => {
-  const { user, signInWithGoogle, signInWithFacebook, loading } = useAuth();
+  const { user, loading } = useAuth();
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [showDialog, setShowDialog] = useState(false);
@@ -51,30 +51,9 @@ const Auth = () => {
     return <Navigate to="/" />;
   }
 
-  const handleGoogleSignIn = async () => {
-    setError(null);
-    const { error } = await signInWithGoogle();
-    if (error) {
-      setError(error.message);
-    }
-  };
-
-  const handleFacebookSignIn = async () => {
-    setError(null);
-    const { error } = await signInWithFacebook();
-    if (error) {
-      setError(error.message);
-    }
-  };
-
   const handleRegistrationSuccess = (message: string) => {
     setSuccess(message);
     setShowDialog(true);
-  };
-
-  const socialAuthHandlers = {
-    handleGoogleSignIn,
-    handleFacebookSignIn
   };
 
   return (
@@ -111,14 +90,11 @@ const Auth = () => {
           </TabsList>
           
           <TabsContent value="login">
-            <LoginForm onSocialAuth={socialAuthHandlers} />
+            <LoginForm />
           </TabsContent>
           
           <TabsContent value="register">
-            <RegisterForm 
-              onSuccess={handleRegistrationSuccess} 
-              onSocialAuth={socialAuthHandlers} 
-            />
+            <RegisterForm onSuccess={handleRegistrationSuccess} />
           </TabsContent>
         </Tabs>
       </div>

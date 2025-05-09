@@ -9,13 +9,9 @@ import { SocialAuthButtons } from './SocialAuthButtons';
 
 interface RegisterFormProps {
   onSuccess: (message: string) => void;
-  onSocialAuth: {
-    handleGoogleSignIn: () => Promise<void>;
-    handleFacebookSignIn: () => Promise<void>;
-  };
 }
 
-const RegisterForm = ({ onSuccess, onSocialAuth }: RegisterFormProps) => {
+const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
   const { signUp } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -155,11 +151,7 @@ const RegisterForm = ({ onSuccess, onSocialAuth }: RegisterFormProps) => {
         {submitting ? 'Creating account...' : 'Create Account'}
       </Button>
 
-      <SocialAuthButtons 
-        onGoogleSignIn={onSocialAuth.handleGoogleSignIn}
-        onFacebookSignIn={onSocialAuth.handleFacebookSignIn}
-        context="register"
-      />
+      <SocialAuthButtons context="register" />
     </form>
   );
 };

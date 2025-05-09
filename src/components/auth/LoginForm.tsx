@@ -8,14 +8,7 @@ import { AlertCircle, LockKeyhole } from 'lucide-react';
 import { SocialAuthButtons } from './SocialAuthButtons';
 import { useToast } from '@/hooks/use-toast';
 
-interface LoginFormProps {
-  onSocialAuth: {
-    handleGoogleSignIn: () => Promise<void>;
-    handleFacebookSignIn: () => Promise<void>;
-  };
-}
-
-const LoginForm = ({ onSocialAuth }: LoginFormProps) => {
+const LoginForm = () => {
   const { signIn, resetPassword } = useAuth();
   const { toast } = useToast();
   const [email, setEmail] = useState('');
@@ -136,11 +129,7 @@ const LoginForm = ({ onSocialAuth }: LoginFormProps) => {
         {submitting ? 'Logging in...' : 'Login'}
       </Button>
 
-      <SocialAuthButtons 
-        onGoogleSignIn={onSocialAuth.handleGoogleSignIn}
-        onFacebookSignIn={onSocialAuth.handleFacebookSignIn}
-        context="login"
-      />
+      <SocialAuthButtons context="login" />
     </form>
   );
 };
