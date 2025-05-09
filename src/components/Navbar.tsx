@@ -35,20 +35,22 @@ const Navbar = () => {
     >
       <div className="container-full container-padding">
         <div className="flex items-center justify-between">
+          <div className="flex-1"></div> {/* This creates space on the left */}
+          
           <a 
             href="#" 
             className="flex items-center text-2xl font-bold tracking-tight"
           >
-            <div className="h-20 w-20 md:h-24 md:w-24 mr-3 flex items-center justify-center rounded-2xl">
+            <div className="h-24 w-24 md:h-28 md:w-28 mx-auto flex items-center justify-center rounded-2xl">
               <img 
                 src="/lovable-uploads/39d6c2c8-b4a1-4f97-86fb-dd3a6e9fcdbd.png" 
                 alt="eDutch Management Logo" 
-                className="h-18 md:h-20"
+                className="h-22 md:h-26 w-auto" 
               />
             </div>
           </a>
 
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden md:flex items-center space-x-8 flex-1 justify-end">
             {menuItems.map((item) => (
               <a
                 key={item}
