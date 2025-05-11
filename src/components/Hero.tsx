@@ -12,6 +12,13 @@ const Hero = () => {
     setIsVisible(true);
   }, []);
 
+  const scrollToSection = (sectionId: string) => {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section 
       id="home" 
@@ -44,11 +51,18 @@ const Hero = () => {
               </p>
               
               <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-                <Button className="px-8 py-6 group">
+                <Button 
+                  className="px-8 py-6 group"
+                  onClick={() => scrollToSection('diensten')}
+                >
                   <span>{translate("hero.discoverBtn")}</span>
                   <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Button>
-                <Button variant="outline" className="px-8 py-6">
+                <Button 
+                  variant="outline" 
+                  className="px-8 py-6"
+                  onClick={() => scrollToSection('contact')}
+                >
                   {translate("hero.contactBtn")}
                 </Button>
               </div>
