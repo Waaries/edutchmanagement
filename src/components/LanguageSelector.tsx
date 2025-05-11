@@ -2,6 +2,7 @@
 import React from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
+import { Globe } from "lucide-react";
 
 export default function LanguageSelector() {
   const { language, setLanguage } = useLanguage();
@@ -13,11 +14,12 @@ export default function LanguageSelector() {
   return (
     <Button 
       onClick={toggleLanguage} 
-      variant="ghost" 
+      variant="outline" 
       size="sm" 
-      className="px-2 py-1 text-sm h-8 flex items-center"
+      className="px-3 py-1 text-sm h-8 flex items-center gap-2 bg-primary/10 hover:bg-primary/20 border-2 border-primary/20 rounded-xl"
     >
-      <span className="font-semibold">
+      <Globe className="h-4 w-4 text-primary" />
+      <span className="font-bold">
         {language === "nl" ? "EN" : "NL"}
       </span>
     </Button>
