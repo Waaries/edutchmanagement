@@ -63,8 +63,8 @@ const Features = () => {
 
   return (
     <section id="voordelen" className="section-padding" ref={sectionRef}>
-      <div className="container mx-auto container-padding reveal">
-        <div className="text-left max-w-3xl mx-auto mb-16">
+      <div className="container-narrow mx-auto container-padding reveal">
+        <div className="text-left max-w-2xl mx-auto mb-16">
           <div className="inline-block px-3 py-1 text-sm font-medium bg-primary/10 text-primary mb-4 rounded-2xl flex items-center justify-start">
             {translate("features.title")}
           </div>
@@ -74,18 +74,18 @@ const Features = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {featureItems.map((feature, index) => (
             <div 
               key={index} 
-              className="bg-white rounded-3xl p-8 hover-lift transition-all duration-300 card-shadow text-left"
+              className="bg-white rounded-3xl p-6 hover-lift transition-all duration-300 card-shadow text-left"
               style={{ animationDelay: `${index * 100}ms` }}
             >
-              <div className="w-14 h-14 blob-shape bg-primary/10 flex items-center justify-center mb-6">
-                <feature.icon className="h-7 w-7 text-primary" />
+              <div className="w-12 h-12 blob-shape bg-primary/10 flex items-center justify-center mb-4">
+                <feature.icon className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
-              <p className="text-slate-600">{feature.description}</p>
+              <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
+              <p className="text-slate-600 text-sm">{feature.description}</p>
             </div>
           ))}
         </div>

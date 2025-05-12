@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -125,7 +126,7 @@
   }
   
   .container-padding {
-    @apply px-6 md:px-12 lg:px-24;
+    @apply px-4 md:px-6 lg:px-8;
   }
 
   .text-balance {
@@ -136,6 +137,14 @@
   .container-full {
     width: 100%;
     max-width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  
+  /* Container with max width */
+  .container-narrow {
+    width: 100%;
+    max-width: 896px; /* 56rem / max-w-4xl */
     margin-right: auto;
     margin-left: auto;
   }

@@ -51,11 +51,13 @@ const Index = () => {
     <div className="min-h-screen w-full relative overflow-hidden">
       <Navbar />
       <main className="w-full">
-        <Hero />
-        <Features />
-        <Services />
-        <Testimonials />
-        <Contact />
+        <div className="max-w-4xl mx-auto">
+          <Hero />
+          <Features />
+          <Services />
+          <Testimonials />
+          <Contact />
+        </div>
       </main>
       <Footer />
     </div>
