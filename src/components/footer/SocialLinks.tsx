@@ -15,6 +15,11 @@ const SocialLinks = ({ className }: SocialLinksProps) => {
           href: "#facebook" 
         },
         { 
+          icon: <Instagram size={20} />, 
+          label: "Instagram", 
+          href: "#instagram" 
+        },
+        { 
           icon: (
             <svg 
               xmlns="http://www.w3.org/2000/svg" 
@@ -34,11 +39,6 @@ const SocialLinks = ({ className }: SocialLinksProps) => {
           ), 
           label: "TikTok", 
           href: "#tiktok" 
-        },
-        { 
-          icon: <Instagram size={20} />, 
-          label: "Instagram", 
-          href: "#instagram" 
         }
       ].map((social, index) => (
         <a 
