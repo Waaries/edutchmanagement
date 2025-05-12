@@ -125,7 +125,7 @@
   }
   
   .container-padding {
-    @apply px-6 md:px-12 lg:px-16; /* Reduced from lg:px-24 to lg:px-16 */
+    @apply px-6 md:px-12 lg:px-24;
   }
 
   .text-balance {
@@ -140,16 +140,6 @@
     margin-left: auto;
   }
   
-  /* Content width container */
-  .container-content {
-    width: 100%;
-    max-width: 1024px; /* 1024px is narrower than the default container */
-    margin-right: auto;
-    margin-left: auto;
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-
   /* Footer specific styles */
   footer a.link-hover-effect:hover {
     @apply text-primary transform translate-x-1 transition-all duration-300;
