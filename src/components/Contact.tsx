@@ -31,8 +31,8 @@ const Contact = () => {
 
   return (
     <section id="contact" className="section-padding bg-white" ref={sectionRef}>
-      <div className="container-narrow mx-auto container-padding reveal">
-        <div className="text-center max-w-2xl mx-auto mb-12">
+      <div className="container mx-auto container-padding reveal">
+        <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="inline-block px-3 py-1 text-sm font-medium bg-primary/10 text-primary mb-4 rounded-2xl flex items-center justify-center mx-auto">
             {translate("contact.title")}
           </div>
@@ -44,7 +44,7 @@ const Contact = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           <ContactForm />
           <ContactInfo />
         </div>
