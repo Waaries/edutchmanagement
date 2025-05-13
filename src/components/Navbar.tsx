@@ -13,7 +13,7 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const { user, signOut } = useAuth();
-  const { translate, currentLanguage } = useLanguage();
+  const { language, translate } = useLanguage();
   const isMobile = useIsMobile();
 
   useEffect(() => {
@@ -26,15 +26,15 @@ const Navbar = () => {
 
   // Taal-specifieke teksten om vertaalproblemen op te lossen
   const getSignInText = () => {
-    return currentLanguage === 'nl' ? 'Inloggen' : 'Sign In';
+    return language === 'nl' ? 'Inloggen' : 'Sign In';
   };
 
   const getSignOutText = () => {
-    return currentLanguage === 'nl' ? 'Uitloggen' : 'Sign Out';
+    return language === 'nl' ? 'Uitloggen' : 'Sign Out';
   };
 
   const getProfileText = () => {
-    return currentLanguage === 'nl' ? 'Profiel' : 'Profile';
+    return language === 'nl' ? 'Profiel' : 'Profile';
   };
 
   return (

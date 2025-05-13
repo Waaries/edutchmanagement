@@ -8,11 +8,11 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 const Profile = () => {
   const { user } = useAuth();
-  const { currentLanguage } = useLanguage();
+  const { language } = useLanguage();
   
   useEffect(() => {
-    document.title = currentLanguage === 'nl' ? 'Gebruikersprofiel' : 'User Profile';
-  }, [currentLanguage]);
+    document.title = language === 'nl' ? 'Gebruikersprofiel' : 'User Profile';
+  }, [language]);
   
   return (
     <div className="min-h-screen w-full relative">
@@ -22,10 +22,10 @@ const Profile = () => {
           <Card>
             <CardHeader>
               <CardTitle>
-                {currentLanguage === 'nl' ? 'Mijn Profiel' : 'My Profile'}
+                {language === 'nl' ? 'Mijn Profiel' : 'My Profile'}
               </CardTitle>
               <CardDescription>
-                {currentLanguage === 'nl' 
+                {language === 'nl' 
                   ? 'Bekijk en beheer uw accountinformatie' 
                   : 'View and manage your account information'}
               </CardDescription>
@@ -35,20 +35,20 @@ const Profile = () => {
                 <div className="space-y-4">
                   <div>
                     <h3 className="text-sm font-medium">
-                      {currentLanguage === 'nl' ? 'E-mailadres' : 'Email address'}
+                      {language === 'nl' ? 'E-mailadres' : 'Email address'}
                     </h3>
                     <p className="text-lg">{user.email}</p>
                   </div>
                   <div>
                     <h3 className="text-sm font-medium">
-                      {currentLanguage === 'nl' ? 'Account ID' : 'Account ID'}
+                      {language === 'nl' ? 'Account ID' : 'Account ID'}
                     </h3>
                     <p className="text-sm text-muted-foreground">{user.id}</p>
                   </div>
                 </div>
               ) : (
                 <p>
-                  {currentLanguage === 'nl' 
+                  {language === 'nl' 
                     ? 'U bent niet ingelogd.' 
                     : 'You are not logged in.'}
                 </p>
