@@ -46,8 +46,8 @@ export function useAuthState() {
         if (currentSession?.user) {
           // Use setTimeout to prevent potential deadlocks
           setTimeout(async () => {
-            const isAdminUser = await checkAdminStatus(currentSession.user.id);
-            console.log('Admin status after auth change:', isAdminUser);
+            await checkAdminStatus(currentSession.user.id);
+            console.log('Admin status after auth change:', isAdmin);
           }, 0);
         } else {
           setIsAdmin(false);
@@ -59,18 +59,22 @@ export function useAuthState() {
 
     // THEN check for existing session
     const initializeAuth = async () => {
-      const { data: { session: currentSession } } = await supabase.auth.getSession();
-      
-      setSession(currentSession);
-      setUser(currentSession?.user ?? null);
-      
-      if (currentSession?.user) {
-        console.log('Found existing session for user:', currentSession.user.email);
-        const isAdminUser = await checkAdminStatus(currentSession.user.id);
-        console.log('Admin status at initialization:', isAdminUser);
+      try {
+        const { data: { session: currentSession } } = await supabase.auth.getSession();
+        
+        setSession(currentSession);
+        setUser(currentSession?.user ?? null);
+        
+        if (currentSession?.user) {
+          console.log('Found existing session for user:', currentSession.user.email);
+          await checkAdminStatus(currentSession.user.id);
+          console.log('Admin status at initialization:', isAdmin);
+        }
+      } catch (error) {
+        console.error('Error initializing auth:', error);
+      } finally {
+        setLoading(false);
       }
-      
-      setLoading(false);
     };
     
     initializeAuth();
