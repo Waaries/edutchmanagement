@@ -2,7 +2,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableRow } from "@/components/ui/table";
-import DeleteUserDialog from "./DeleteUserDialog";
 import { formatDutchDate } from "@/lib/date-utils";
 import { useAdminStatus } from "@/hooks/use-admin-status";
 import { UserData } from "@/types/user";
@@ -10,11 +9,12 @@ import { Check, X } from "lucide-react"; // Import icons from lucide-react
 
 interface UserRowProps {
   user: UserData;
-  refreshUsers: () => void;
+  onStatusChange: () => void;
+  onDeleteClick: (user: UserData) => void;
 }
 
-const UserRow: React.FC<UserRowProps> = ({ user, refreshUsers }) => {
-  const { isProcessing, toggleAdminStatus } = useAdminStatus(refreshUsers);
+const UserRow: React.FC<UserRowProps> = ({ user, onStatusChange, onDeleteClick }) => {
+  const { isProcessing, toggleAdminStatus } = useAdminStatus(onStatusChange);
 
   const handleToggleAdminStatus = async () => {
     await toggleAdminStatus(user);
@@ -48,7 +48,14 @@ const UserRow: React.FC<UserRowProps> = ({ user, refreshUsers }) => {
           >
             {user.is_admin ? "Admin rechten intrekken" : "Maak admin"}
           </Button>
-          <DeleteUserDialog userId={user.id} userEmail={user.email} onDelete={refreshUsers} />
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => onDeleteClick(user)}
+            className="text-destructive"
+          >
+            Verwijderen
+          </Button>
         </div>
       </TableCell>
     </TableRow>
