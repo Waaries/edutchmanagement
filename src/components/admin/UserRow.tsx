@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Shield, UserX, CheckCircle, XCircle } from "lucide-react";
+import { Shield, UserX, UserMinus, CheckCircle, XCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -15,9 +15,10 @@ type UserRowProps = {
     last_sign_in_at: string | null;
   };
   onStatusChange: () => void;
+  onDeleteClick: (user: UserRowProps["user"]) => void;
 };
 
-export const UserRow = ({ user, onStatusChange }: UserRowProps) => {
+export const UserRow = ({ user, onStatusChange, onDeleteClick }: UserRowProps) => {
   const [isProcessing, setIsProcessing] = useState(false);
   const { toast } = useToast();
 
@@ -92,6 +93,10 @@ export const UserRow = ({ user, onStatusChange }: UserRowProps) => {
     }
   };
 
+  const handleDeleteClick = () => {
+    onDeleteClick(user);
+  };
+
   return (
     <TableRow>
       <TableCell className="font-medium">{user.email}</TableCell>
@@ -108,7 +113,7 @@ export const UserRow = ({ user, onStatusChange }: UserRowProps) => {
           <XCircle className="h-5 w-5 text-gray-300" />
         )}
       </TableCell>
-      <TableCell className="text-right">
+      <TableCell className="text-right space-x-2">
         <Button 
           variant="outline" 
           size="sm"
@@ -127,6 +132,16 @@ export const UserRow = ({ user, onStatusChange }: UserRowProps) => {
               Maak admin
             </>
           )}
+        </Button>
+        
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleDeleteClick}
+          className="text-red-500 ml-2"
+        >
+          <UserMinus className="h-4 w-4 mr-2" />
+          Verwijder
         </Button>
       </TableCell>
     </TableRow>
