@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Check } from "lucide-react";
@@ -14,28 +15,39 @@ const ContactForm = () => {
   });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormState(prev => ({ ...prev, [name]: value }));
+    // Clear error when user starts typing again
+    if (error) setError(null);
   };
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setError(null);
     
     try {
+      console.log("Submitting form data:", formState);
+      
       // Send the contact form data to the Supabase edge function
       const { data, error } = await supabase.functions.invoke('send-contact-email', {
         body: formState
       });
       
       if (error) {
+        console.error("Supabase function error:", error);
         throw new Error(error.message || "Failed to send message");
       }
       
       console.log("Form submission response:", data);
+      
+      if (!data.success) {
+        throw new Error(data.message || "Failed to send message");
+      }
       
       // Show success state
       setSubmitted(true);
@@ -55,11 +67,13 @@ const ContactForm = () => {
           message: ""
         });
       }, 3000);
-    } catch (error) {
-      console.error("Error submitting form:", error);
+    } catch (err) {
+      console.error("Error submitting form:", err);
+      const errorMessage = err instanceof Error ? err.message : "Er is een onbekende fout opgetreden";
+      setError(errorMessage);
       toast({
         title: "Fout bij verzenden",
-        description: "Er is een fout opgetreden bij het verzenden van uw bericht. Probeer het later opnieuw.",
+        description: `Er is een fout opgetreden bij het verzenden van uw bericht: ${errorMessage}`,
         variant: "destructive",
       });
     } finally {
@@ -85,6 +99,12 @@ const ContactForm = () => {
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-6 text-left">
+          {error && (
+            <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
+              {error}
+            </div>
+          )}
+          
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <label htmlFor="name" className="block text-sm font-medium">
