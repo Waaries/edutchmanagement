@@ -1,8 +1,8 @@
-
 import { useState, useEffect } from 'react';
 import { Navigate, useLocation, useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { usePasswordReset } from '@/hooks/use-password-reset';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import LoginForm from '@/components/auth/LoginForm';
 import RegisterForm from '@/components/auth/RegisterForm';
@@ -13,13 +13,16 @@ import { Button } from '@/components/ui/button';
 const Auth = () => {
   const { user, loading, isAdmin } = useAuth();
   const { translate } = useLanguage();
-  const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [showDialog, setShowDialog] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState<string>('login');
+  const [error, setError] = useState<string | null>(null);
+  
+  // Use the password reset hook
+  usePasswordReset();
 
   // Check if coming back from OAuth redirect or password reset
   useEffect(() => {
@@ -30,31 +33,25 @@ const Auth = () => {
       setShowDialog(true);
     }
     
+    // Check if 'register' is in the URL, show the register tab
+    if (location.search.includes('register')) {
+      setActiveTab('register');
+    }
+    
     // Check hash for OAuth redirects
     const hash = location.hash;
-    if (hash && (hash.includes('access_token') || hash.includes('error'))) {
+    if (hash && hash.includes('access_token')) {
       // Clear the hash after checking
       window.history.replaceState(null, document.title, window.location.pathname);
       
-      // Check for errors
-      if (hash.includes('error')) {
-        const errorMessage = new URLSearchParams(hash.substring(1)).get('error_description');
-        setError(errorMessage || 'Authentication failed');
-      } else if (hash.includes('access_token')) {
-        // If OAuth login was successful, redirect after a short delay
-        setTimeout(() => {
-          if (isAdmin) {
-            navigate('/admin');
-          } else {
-            navigate('/');
-          }
-        }, 1000);
-      }
-    }
-    
-    // If 'register' is in the URL, show the register tab
-    if (location.search.includes('register')) {
-      setActiveTab('register');
+      // If OAuth login was successful, redirect after a short delay
+      setTimeout(() => {
+        if (isAdmin) {
+          navigate('/admin');
+        } else {
+          navigate('/');
+        }
+      }, 1000);
     }
   }, [location, searchParams, navigate, isAdmin]);
 
