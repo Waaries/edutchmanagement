@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -28,17 +27,12 @@ const Dashboard = () => {
     }
   }, [user, loading, isAdmin]);
 
-  // Direct check against the user_roles table
+  // Check admin status via RPC
   const checkAdminStatus = async () => {
     if (!user) return;
     
     try {
-      const { data, error } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', user.id)
-        .eq('role', 'admin')
-        .maybeSingle();
+      const { data, error } = await supabase.rpc('is_admin');
       
       if (error) {
         console.error("Error checking admin status:", error);

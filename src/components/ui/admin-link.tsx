@@ -12,15 +12,12 @@ export function AdminLink() {
   const [showAdmin, setShowAdmin] = useState(false);
   const [directAdminCheck, setDirectAdminCheck] = useState<boolean | null>(null);
   
-  // Function to directly check admin status against user_roles
-  const checkAdminStatusDirectly = async (userId: string) => {
+  // Function to directly check admin status through RPC
+  const checkAdminStatusDirectly = async () => {
+    if (!user) return false;
+    
     try {
-      const { data, error } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', userId)
-        .eq('role', 'admin')
-        .maybeSingle();
+      const { data, error } = await supabase.rpc('is_admin');
       
       if (error) {
         console.error("Admin link - Error checking admin status:", error);
@@ -38,8 +35,8 @@ export function AdminLink() {
     // Only check when user is logged in
     if (user) {
       const checkStatus = async () => {
-        // Check directly from user_roles table
-        const isAdminUser = await checkAdminStatusDirectly(user.id);
+        // Check directly with RPC function
+        const isAdminUser = await checkAdminStatusDirectly();
         setDirectAdminCheck(isAdminUser);
         
         // Show admin link if either check passes

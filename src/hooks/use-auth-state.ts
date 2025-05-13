@@ -13,13 +13,8 @@ export function useAuthState() {
     try {
       console.log("Checking admin status for userId:", userId);
       
-      // Direct query to user_roles table to check admin status - avoiding the function
-      const { data, error } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', userId)
-        .eq('role', 'admin')
-        .maybeSingle();
+      // Use the is_admin() function via RPC
+      const { data, error } = await supabase.rpc('is_admin');
       
       if (error) {
         console.error('Error checking admin status:', error);

@@ -31,13 +31,8 @@ const AdminSecurityCheck: React.FC<AdminSecurityCheckProps> = ({
     if (!user) return;
     
     try {
-      // Direct query to user_roles table instead of using RPC function
-      const { data, error } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', user.id)
-        .eq('role', 'admin')
-        .maybeSingle();
+      // Use the is_admin() function via RPC instead of direct query
+      const { data, error } = await supabase.rpc('is_admin');
       
       if (error) {
         console.error("Error checking admin status:", error);
