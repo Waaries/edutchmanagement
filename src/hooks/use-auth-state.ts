@@ -13,6 +13,7 @@ export function useAuthState() {
     try {
       console.log("Checking admin status for userId:", userId);
       
+      // This is the fixed call to check admin status
       const { data, error } = await supabase
         .rpc('is_admin');
       
@@ -43,7 +44,11 @@ export function useAuthState() {
         
         // Check admin status when user signs in
         if (currentSession?.user) {
-          await checkAdminStatus(currentSession.user.id);
+          // Use setTimeout to prevent potential deadlocks
+          setTimeout(async () => {
+            const isAdminUser = await checkAdminStatus(currentSession.user.id);
+            console.log('Admin status after auth change:', isAdminUser);
+          }, 0);
         } else {
           setIsAdmin(false);
         }
@@ -61,7 +66,8 @@ export function useAuthState() {
       
       if (currentSession?.user) {
         console.log('Found existing session for user:', currentSession.user.email);
-        await checkAdminStatus(currentSession.user.id);
+        const isAdminUser = await checkAdminStatus(currentSession.user.id);
+        console.log('Admin status at initialization:', isAdminUser);
       }
       
       setLoading(false);

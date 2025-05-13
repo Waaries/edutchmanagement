@@ -24,10 +24,10 @@ export function AdminLink() {
   if (!showAdmin) return null;
   
   return (
-    <Button variant="ghost" asChild className={cn("flex items-center gap-2 bg-amber-100 hover:bg-amber-200")}>
+    <Button variant="ghost" asChild className={cn("flex items-center gap-2 bg-amber-100 hover:bg-amber-200 border border-amber-300")}>
       <Link to="/admin">
         <Shield className="h-4 w-4 text-amber-600" />
-        <span>Admin</span>
+        <span>Admin Dashboard</span>
       </Link>
     </Button>
   );

@@ -1,25 +1,26 @@
 
 import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { User, LayoutDashboard, Settings, Calendar } from "lucide-react";
+import { User, LayoutDashboard, Settings, Calendar, Shield } from "lucide-react";
 import { AdminLink } from "@/components/ui/admin-link";
 
 const Dashboard = () => {
-  const { user, loading } = useAuth();
+  const { user, loading, isAdmin } = useAuth();
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("overview");
 
   useEffect(() => {
     // Update the document title
     document.title = "Dashboard | eDutch Management";
     
-    console.log('Dashboard page - Auth state:', { user: !!user, loading });
-  }, [user, loading]);
+    console.log('Dashboard page - Auth state:', { user: !!user, loading, isAdmin });
+  }, [user, loading, isAdmin]);
 
   // If still loading, show a loading indicator
   if (loading) {
@@ -38,6 +39,10 @@ const Dashboard = () => {
     return <Navigate to="/auth" />;
   }
 
+  const goToAdmin = () => {
+    navigate('/admin');
+  };
+
   return (
     <div className="container mx-auto py-8 px-4 pt-32">
       <div className="flex items-center gap-4 mb-6 justify-between">
@@ -45,7 +50,19 @@ const Dashboard = () => {
           <LayoutDashboard className="h-8 w-8 text-primary" />
           <h1 className="text-3xl font-bold">Dashboard</h1>
         </div>
-        <AdminLink />
+        <div className="flex items-center gap-2">
+          <AdminLink />
+          {isAdmin && (
+            <Button 
+              onClick={goToAdmin}
+              variant="outline" 
+              className="bg-amber-100 hover:bg-amber-200 flex items-center gap-2"
+            >
+              <Shield className="h-4 w-4 text-amber-600" />
+              <span>Ga naar Admin Dashboard</span>
+            </Button>
+          )}
+        </div>
       </div>
       
       <Card className="mb-8">
@@ -57,6 +74,9 @@ const Dashboard = () => {
         </CardHeader>
         <CardContent>
           <p>Vanuit dit dashboard kunt u al uw gegevens en activiteiten beheren.</p>
+          <div className="mt-4 p-3 border rounded bg-slate-50">
+            <p><strong>Account Type:</strong> {isAdmin ? 'Administrator' : 'Standaard Gebruiker'}</p>
+          </div>
         </CardContent>
       </Card>
 
