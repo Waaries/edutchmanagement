@@ -28,7 +28,7 @@ serve(async (req) => {
     
     // Get SMTP settings from environment variables
     const smtpHost = Deno.env.get("SMTP_HOST");
-    const smtpPort = Deno.env.get("SMTP_PORT");
+    const smtpPort = parseInt(Deno.env.get("SMTP_PORT") || "587");
     const smtpUsername = Deno.env.get("SMTP_USERNAME");
     const smtpPassword = Deno.env.get("SMTP_PASSWORD");
     const adminEmail = Deno.env.get("ADMIN_EMAIL");
@@ -56,7 +56,7 @@ serve(async (req) => {
     const client = new SMTPClient({
       connection: {
         hostname: smtpHost,
-        port: Number(smtpPort) || 587,
+        port: smtpPort,
         tls: true,
         auth: {
           username: smtpUsername,
@@ -106,7 +106,7 @@ serve(async (req) => {
           <p>${message}</p>
           <hr>
           <p>Met vriendelijke groet,</p>
-          <p>E-Dutch Management</p>
+          <p>${senderName}</p>
         `
       });
       

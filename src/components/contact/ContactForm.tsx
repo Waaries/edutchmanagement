@@ -5,8 +5,12 @@ import { ArrowRight, Check } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 const ContactForm = () => {
+  const { translate } = useLanguage();
   const [formState, setFormState] = useState({
     name: "",
     email: "",
@@ -63,12 +67,12 @@ const ContactForm = () => {
         body: formState
       });
       
+      console.log("Form submission response:", data);
+      
       if (functionError) {
         console.error("Supabase function error:", functionError);
         throw new Error(functionError.message || "Fout bij verzenden bericht");
       }
-      
-      console.log("Form submission response:", data);
       
       if (!data.success) {
         throw new Error(data.message || data.error || "Fout bij verzenden bericht");
@@ -81,7 +85,7 @@ const ContactForm = () => {
         description: "Bedankt voor uw bericht. We nemen zo snel mogelijk contact met u op.",
       });
       
-      // Reset form after 3 seconds
+      // Reset form after 5 seconds
       setTimeout(() => {
         setSubmitted(false);
         setFormState({
@@ -91,7 +95,7 @@ const ContactForm = () => {
           service: "",
           message: ""
         });
-      }, 3000);
+      }, 5000);
     } catch (err: any) {
       console.error("Error submitting form:", err);
       const errorMessage = err instanceof Error ? err.message : "Er is een onbekende fout opgetreden";
@@ -114,7 +118,7 @@ const ContactForm = () => {
       
       {submitted ? (
         <div className="flex flex-col items-center justify-center py-12 text-center">
-          <div className="w-16 h-16 blob-shape bg-green-100 flex items-center justify-center mb-4 rounded-full">
+          <div className="w-16 h-16 bg-green-100 flex items-center justify-center mb-4 rounded-full">
             <Check className="h-8 w-8 text-green-600" />
           </div>
           <h4 className="text-xl font-semibold mb-2">Bericht Verzonden!</h4>
@@ -138,7 +142,7 @@ const ContactForm = () => {
               <label htmlFor="name" className="block text-sm font-medium">
                 Naam <span className="text-red-500">*</span>
               </label>
-              <input
+              <Input
                 type="text"
                 id="name"
                 name="name"
@@ -155,7 +159,7 @@ const ContactForm = () => {
               <label htmlFor="email" className="block text-sm font-medium">
                 E-mail <span className="text-red-500">*</span>
               </label>
-              <input
+              <Input
                 type="email"
                 id="email"
                 name="email"
@@ -174,7 +178,7 @@ const ContactForm = () => {
               <label htmlFor="phone" className="block text-sm font-medium">
                 Telefoonnummer
               </label>
-              <input
+              <Input
                 type="tel"
                 id="phone"
                 name="phone"
@@ -211,7 +215,7 @@ const ContactForm = () => {
             <label htmlFor="message" className="block text-sm font-medium">
               Uw Bericht <span className="text-red-500">*</span>
             </label>
-            <textarea
+            <Textarea
               id="message"
               name="message"
               value={formState.message}
@@ -221,7 +225,7 @@ const ContactForm = () => {
               placeholder="Vertel ons wat meer over uw behoeften..."
               disabled={loading}
               required
-            ></textarea>
+            ></Textarea>
           </div>
           
           <Button 
