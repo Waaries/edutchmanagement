@@ -11,7 +11,7 @@ import { useToast } from '@/hooks/use-toast';
 
 const LoginForm = () => {
   const { signIn, resetPassword } = useAuth();
-  const { translate } = useLanguage();
+  const { translate, language } = useLanguage();
   const { toast } = useToast();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -45,6 +45,10 @@ const LoginForm = () => {
     } else {
       // Reset login attempts on successful login
       setLoginAttempts(0);
+      toast({
+        title: language === 'nl' ? "Ingelogd" : "Logged In",
+        description: language === 'nl' ? "U bent succesvol ingelogd." : "You have successfully logged in.",
+      });
     }
     
     setSubmitting(false);
@@ -66,8 +70,10 @@ const LoginForm = () => {
     } else {
       setResetRequested(true);
       toast({
-        title: "Password Reset Requested",
-        description: "If an account exists with this email, you will receive reset instructions shortly.",
+        title: language === 'nl' ? "Wachtwoord Reset Aangevraagd" : "Password Reset Requested",
+        description: language === 'nl' 
+          ? "Als er een account bestaat met dit e-mailadres, ontvangt u binnenkort reset-instructies."
+          : "If an account exists with this email, you will receive reset instructions shortly.",
       });
     }
     
@@ -128,7 +134,9 @@ const LoginForm = () => {
         className="w-full bg-[#F97316] hover:bg-[#F97316]/90"
         disabled={submitting}
       >
-        {submitting ? translate("auth.login.loggingIn") : translate("auth.login.button")}
+        {submitting 
+          ? (language === 'nl' ? "Inloggen..." : translate("auth.login.loggingIn")) 
+          : (language === 'nl' ? "Inloggen" : translate("auth.login.button"))}
       </Button>
 
       <SocialAuthButtons context="login" />

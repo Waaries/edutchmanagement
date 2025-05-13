@@ -14,7 +14,7 @@ interface RegisterFormProps {
 
 const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
   const { signUp } = useAuth();
-  const { translate } = useLanguage();
+  const { translate, language } = useLanguage();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -43,14 +43,18 @@ const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
     
     // Validate password before submission
     if (!isPasswordValid) {
-      setError("Please ensure your password meets all the requirements");
+      setError(language === 'nl' 
+        ? "Zorg ervoor dat uw wachtwoord aan alle vereisten voldoet" 
+        : "Please ensure your password meets all the requirements");
       setSubmitting(false);
       return;
     }
     
     // Check if email is valid
     if (!/\S+@\S+\.\S+/.test(email)) {
-      setError("Please enter a valid email address");
+      setError(language === 'nl'
+        ? "Voer een geldig e-mailadres in"
+        : "Please enter a valid email address");
       setSubmitting(false);
       return;
     }
@@ -60,7 +64,9 @@ const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
     if (error) {
       setError(error.message);
     } else {
-      onSuccess("Registration successful! Please check your email to confirm your account.");
+      onSuccess(language === 'nl'
+        ? "Registratie succesvol! Controleer uw e-mail om uw account te bevestigen."
+        : "Registration successful! Please check your email to confirm your account.");
     }
     
     setSubmitting(false);
@@ -150,7 +156,9 @@ const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
         className="w-full bg-[#F97316] hover:bg-[#F97316]/90"
         disabled={submitting}
       >
-        {submitting ? translate("auth.register.creating") : translate("auth.register.button")}
+        {submitting 
+          ? (language === 'nl' ? "Account aanmaken..." : translate("auth.register.creating")) 
+          : (language === 'nl' ? "Account aanmaken" : translate("auth.register.button"))}
       </Button>
 
       <SocialAuthButtons context="register" />

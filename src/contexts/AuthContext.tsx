@@ -58,6 +58,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signIn = async (email: string, password: string) => {
     try {
+      // Clean up local storage to prevent auth conflicts
+      Object.keys(localStorage).forEach((key) => {
+        if (key.startsWith('supabase.auth.token') && key !== 'supabase.auth.token') {
+          localStorage.removeItem(key);
+        }
+      });
+      
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (!error) {
         // Successful login
@@ -133,7 +140,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signOut = async () => {
     try {
+      // Clean up auth state first
+      Object.keys(localStorage).forEach((key) => {
+        if (key.startsWith('supabase.auth.') || key.includes('sb-')) {
+          localStorage.removeItem(key);
+        }
+      });
+      
+      // Attempt sign out
       await supabase.auth.signOut();
+      
       toast({
         title: "Signed Out",
         description: "You have been successfully signed out.",
