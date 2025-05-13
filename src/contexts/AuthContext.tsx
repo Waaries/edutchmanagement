@@ -1,10 +1,29 @@
 
 import { createContext, useContext, useEffect, useState } from 'react';
-import type { Session } from '@supabase/supabase-js/dist/module/lib/types';
-import type { User } from '@supabase/supabase-js/dist/module/lib/types';
-import type { AuthError } from '@supabase/supabase-js/dist/module/lib/errors';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import type { SupabaseClient } from '@supabase/supabase-js/dist/module';
+
+// Define our own type definitions based on what we need
+type Session = {
+  access_token: string;
+  refresh_token: string;
+  expires_at: number;
+  user: User;
+};
+
+type User = {
+  id: string;
+  email?: string;
+  app_metadata: Record<string, any>;
+  user_metadata: Record<string, any>;
+  aud: string;
+};
+
+type AuthError = {
+  message: string;
+  status?: number;
+};
 
 type AuthContextType = {
   session: Session | null;
@@ -55,8 +74,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, currentSession) => {
-        setSession(currentSession);
-        setUser(currentSession?.user ?? null);
+        setSession(currentSession as Session);
+        setUser(currentSession?.user as User ?? null);
         setLoading(false);
         
         // Check admin status if user is logged in
@@ -85,8 +104,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     // THEN check for existing session
     supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
-      setSession(currentSession);
-      setUser(currentSession?.user ?? null);
+      setSession(currentSession as Session);
+      setUser(currentSession?.user as User ?? null);
       
       if (currentSession?.user) {
         checkAdminStatus(currentSession.user.id);
