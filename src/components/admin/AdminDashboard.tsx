@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { Shield, Users, Database, Settings } from "lucide-react";
+import UsersTable from "./UsersTable";
 
 const AdminDashboard = () => {
   const { user, isAdmin } = useAuth();
@@ -119,9 +120,7 @@ const AdminDashboard = () => {
               <CardDescription>Bekijk en beheer gebruikersaccounts</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground mb-4">
-                Deze functie wordt momenteel ontwikkeld. Binnenkort kunt u hier gebruikers beheren.
-              </p>
+              <UsersTable />
             </CardContent>
           </Card>
         </TabsContent>
