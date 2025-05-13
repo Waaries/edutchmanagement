@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { Shield, Users, Database, Settings, LogOut } from "lucide-react";
+import { Shield, Users, Database, Settings, LogOut, LayoutDashboard } from "lucide-react";
 import UsersTable from "./UsersTable";
 
 const AdminDashboard = () => {
@@ -37,6 +37,10 @@ const AdminDashboard = () => {
     navigate('/auth');
   };
 
+  const goToDashboard = () => {
+    navigate('/dashboard');
+  };
+
   return (
     <div className="container mx-auto py-8 px-4">
       <div className="flex items-center justify-between mb-6">
@@ -44,14 +48,24 @@ const AdminDashboard = () => {
           <Shield className="h-8 w-8 text-primary" />
           <h1 className="text-3xl font-bold">Administrator Dashboard</h1>
         </div>
-        <Button 
-          onClick={handleLogout}
-          variant="destructive" 
-          className="flex items-center gap-2"
-        >
-          <LogOut className="h-4 w-4" />
-          <span>Uitloggen</span>
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button 
+            onClick={goToDashboard}
+            variant="outline" 
+            className="flex items-center gap-2"
+          >
+            <LayoutDashboard className="h-4 w-4" />
+            <span>Naar Gebruikersdashboard</span>
+          </Button>
+          <Button 
+            onClick={handleLogout}
+            variant="destructive" 
+            className="flex items-center gap-2"
+          >
+            <LogOut className="h-4 w-4" />
+            <span>Uitloggen</span>
+          </Button>
+        </div>
       </div>
       
       <Card className="mb-8">
