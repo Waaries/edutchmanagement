@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Navigate, useLocation, useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -36,6 +37,15 @@ const Auth = () => {
     // Check if 'register' is in the URL, show the register tab
     if (location.search.includes('register')) {
       setActiveTab('register');
+    }
+    
+    // Set activeTab to login if there's an error in the URL hash
+    if (location.hash && location.hash.includes('error')) {
+      setActiveTab('login');
+      // Clear the hash to prevent showing the error again
+      if (window.history && window.history.replaceState) {
+        window.history.replaceState(null, document.title, window.location.pathname);
+      }
     }
     
     // Check hash for OAuth redirects
