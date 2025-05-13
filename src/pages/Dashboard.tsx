@@ -1,15 +1,19 @@
 
 import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { Navigate, useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Navigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { User, LayoutDashboard, Calendar, Shield, LogOut } from "lucide-react";
+import { User, LayoutDashboard, Calendar } from "lucide-react";
+
+// Import the new components
+import DashboardHeader from "@/components/dashboard/DashboardHeader";
+import WelcomeCard from "@/components/dashboard/WelcomeCard";
+import OverviewTab from "@/components/dashboard/OverviewTab";
+import ProfileTab from "@/components/dashboard/ProfileTab";
+import AppointmentsTab from "@/components/dashboard/AppointmentsTab";
 
 const Dashboard = () => {
-  const { user, loading, isAdmin, signOut } = useAuth();
-  const navigate = useNavigate();
+  const { user, loading, isAdmin } = useAuth();
   const [activeTab, setActiveTab] = useState("overview");
 
   useEffect(() => {
@@ -40,57 +44,11 @@ const Dashboard = () => {
     return <Navigate to="/auth" />;
   }
 
-  const goToAdmin = () => {
-    navigate('/admin');
-  };
-
-  const handleLogout = async () => {
-    await signOut();
-  };
-
   return (
     <div className="container mx-auto py-8 px-4 pt-32">
-      <div className="flex items-center gap-4 mb-6 justify-between">
-        <div className="flex items-center gap-2">
-          <LayoutDashboard className="h-8 w-8 text-primary" />
-          <h1 className="text-3xl font-bold">Dashboard</h1>
-        </div>
-        <div className="flex items-center gap-2">
-          {isAdmin && (
-            <Button 
-              onClick={goToAdmin}
-              variant="outline" 
-              className="bg-amber-100 hover:bg-amber-200 flex items-center gap-2"
-            >
-              <Shield className="h-4 w-4 text-amber-600" />
-              <span>Ga naar Admin Dashboard</span>
-            </Button>
-          )}
-          <Button 
-            onClick={handleLogout}
-            variant="destructive" 
-            className="flex items-center gap-2"
-          >
-            <LogOut className="h-4 w-4" />
-            <span>Uitloggen</span>
-          </Button>
-        </div>
-      </div>
+      <DashboardHeader isAdmin={isAdmin} />
       
-      <Card className="mb-8">
-        <CardHeader>
-          <CardTitle>Welkom, {user.email}</CardTitle>
-          <CardDescription>
-            Bekijk uw persoonlijke dashboard bij eDutch Management.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p>Vanuit dit dashboard kunt u al uw gegevens en activiteiten beheren.</p>
-          <div className="mt-4 p-3 border rounded bg-slate-50">
-            <p><strong>Account Type:</strong> {isAdmin ? 'Administrator' : 'Standaard Gebruiker'}</p>
-          </div>
-        </CardContent>
-      </Card>
+      <WelcomeCard user={user} isAdmin={isAdmin} />
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="grid grid-cols-3 mb-8">
@@ -109,84 +67,15 @@ const Dashboard = () => {
         </TabsList>
         
         <TabsContent value="overview">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Profiel</CardTitle>
-                <CardDescription>Bekijk en bewerk uw profiel</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>Bekijk en bewerk uw persoonlijke gegevens.</p>
-              </CardContent>
-              <CardFooter>
-                <Button onClick={() => setActiveTab("profile")}>Naar profiel</Button>
-              </CardFooter>
-            </Card>
-            
-            <Card>
-              <CardHeader>
-                <CardTitle>Afspraken</CardTitle>
-                <CardDescription>Beheer uw afspraken</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>Bekijk en beheer uw geplande afspraken.</p>
-              </CardContent>
-              <CardFooter>
-                <Button onClick={() => setActiveTab("appointments")}>Bekijk afspraken</Button>
-              </CardFooter>
-            </Card>
-            
-            <Card>
-              <CardHeader>
-                <CardTitle>Instellingen</CardTitle>
-                <CardDescription>Pas uw voorkeuren aan</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p>Pas uw account- en notificatie-instellingen aan.</p>
-              </CardContent>
-              <CardFooter>
-                <Button variant="outline">Instellingen bekijken</Button>
-              </CardFooter>
-            </Card>
-          </div>
+          <OverviewTab setActiveTab={setActiveTab} />
         </TabsContent>
         
         <TabsContent value="profile">
-          <Card>
-            <CardHeader>
-              <CardTitle>Profielgegevens</CardTitle>
-              <CardDescription>Bekijk en bewerk uw profiel</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex flex-col">
-                  <span className="font-medium text-sm text-muted-foreground">E-mail</span>
-                  <span>{user.email}</span>
-                </div>
-                <div>
-                  <p className="text-muted-foreground mb-4">
-                    Profielbewerking wordt momenteel ontwikkeld. Binnenkort kunt u hier uw gegevens bijwerken.
-                  </p>
-                  <Button variant="outline" disabled>Profiel bewerken</Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <ProfileTab user={user} />
         </TabsContent>
         
         <TabsContent value="appointments">
-          <Card>
-            <CardHeader>
-              <CardTitle>Afsprakenbeheer</CardTitle>
-              <CardDescription>Bekijk en beheer uw afspraken</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground mb-4">
-                Afsprakenbeheer wordt momenteel ontwikkeld. Binnenkort kunt u hier uw afspraken inzien en beheren.
-              </p>
-              <Button variant="outline" disabled>Nieuwe afspraak maken</Button>
-            </CardContent>
-          </Card>
+          <AppointmentsTab />
         </TabsContent>
       </Tabs>
     </div>
