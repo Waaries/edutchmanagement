@@ -26,6 +26,14 @@ export const UserRow = ({ user, onStatusChange }: UserRowProps) => {
     try {
       setIsProcessing(true);
       
+      // Check if the current user is an admin to ensure the operation is allowed
+      const { data: isCurrentUserAdmin, error: adminCheckError } = await supabase
+        .rpc('is_admin');
+        
+      if (adminCheckError || !isCurrentUserAdmin) {
+        throw new Error("Only administrators can manage roles");
+      }
+      
       if (user.is_admin) {
         // Remove admin role
         const { error } = await supabase
