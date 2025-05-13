@@ -66,16 +66,22 @@ export function useUsersData() {
 
       // Create a Set of admin user IDs for quick lookup
       const adminUserIds = new Set(adminRoles?.map(role => role.user_id) || []);
+      console.log("Admin user IDs:", Array.from(adminUserIds));
 
       // Map users with their admin status
-      const usersWithRoles = userData.map(user => ({
-        id: user.id,
-        email: user.email,
-        created_at: user.created_at,
-        last_sign_in_at: user.last_sign_in_at,
-        is_admin: adminUserIds.has(user.id),
-        raw_app_meta_data: user.raw_app_meta_data
-      }));
+      const usersWithRoles = userData.map(user => {
+        const isAdmin = adminUserIds.has(user.id);
+        console.log(`User ${user.email} (${user.id}) is admin: ${isAdmin}`);
+        
+        return {
+          id: user.id,
+          email: user.email,
+          created_at: user.created_at,
+          last_sign_in_at: user.last_sign_in_at,
+          is_admin: isAdmin,
+          raw_app_meta_data: user.raw_app_meta_data
+        };
+      });
 
       setUsers(usersWithRoles);
     } catch (error) {

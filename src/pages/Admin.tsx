@@ -51,6 +51,11 @@ const Admin = () => {
           });
         } else {
           setError(null);
+          
+          // Force reload the page to refresh admin components if user is admin
+          if (!!data) {
+            window.location.reload();
+          }
         }
       }
     } catch (err) {

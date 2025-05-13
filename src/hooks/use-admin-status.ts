@@ -51,8 +51,12 @@ export function useAdminStatus(onStatusChange: () => void) {
         });
       }
       
-      // Refresh user list via parent component
-      onStatusChange();
+      // Force a slight delay before refreshing to ensure the database has updated
+      setTimeout(() => {
+        // Refresh user list via parent component
+        onStatusChange();
+        setIsProcessing(false);
+      }, 500);
     } catch (error: any) {
       console.error("Error toggling admin status:", error);
       toast({
@@ -60,7 +64,6 @@ export function useAdminStatus(onStatusChange: () => void) {
         description: error.message || "Er is een fout opgetreden.",
         variant: "destructive",
       });
-    } finally {
       setIsProcessing(false);
     }
   };
