@@ -48,20 +48,17 @@ const Testimonials = () => {
     {
       quote: "Het huren van een bedrijfsadres via deze dienst heeft onze professionele uitstraling aanzienlijk verbeterd. Onze klanten zijn onder de indruk van ons prestigieuze adres, terwijl wij flexibel blijven werken.",
       author: "Sophie van den Berg",
-      company: "Directeur, InnovateTech BV",
-      avatar: "https://randomuser.me/api/portraits/women/45.jpg"
+      company: "Directeur, InnovateTech BV"
     },
     {
       quote: "Als startende ondernemer was dit precies wat ik nodig had. Een betaalbaar professioneel adres zonder de kosten van een fysiek kantoor. De postafhandeling is uiterst efficiënt en betrouwbaar.",
       author: "Thomas Bakker",
-      company: "Oprichter, WebSolutions",
-      avatar: "https://randomuser.me/api/portraits/men/32.jpg"
+      company: "Oprichter, WebSolutions"
     },
     {
       quote: "De klantenservice is uitzonderlijk. Ze gaan verder dan verwacht om onze specifieke behoeften te vervullen. Het Premium pakket biedt alles wat we nodig hebben voor ons groeiende team.",
       author: "Emma Visser",
-      company: "Marketing Manager, GrowBiz",
-      avatar: "https://randomuser.me/api/portraits/women/65.jpg"
+      company: "Marketing Manager, GrowBiz"
     }
   ];
 
@@ -101,16 +98,9 @@ const Testimonials = () => {
                     "{testimonial.quote}"
                   </p>
                   
-                  <div className="flex items-center">
-                    <img 
-                      src={testimonial.avatar} 
-                      alt={testimonial.author} 
-                      className="w-14 h-14 rounded-full mr-4 border-2 border-white/30"
-                    />
-                    <div className="text-left">
-                      <p className="font-semibold">{testimonial.author}</p>
-                      <p className="text-white/70 text-sm">{testimonial.company}</p>
-                    </div>
+                  <div className="text-center">
+                    <p className="font-semibold">{testimonial.author}</p>
+                    <p className="text-white/70 text-sm">{testimonial.company}</p>
                   </div>
                 </div>
               </div>
