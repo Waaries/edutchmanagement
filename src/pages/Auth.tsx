@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import LoginForm from '@/components/auth/LoginForm';
 import RegisterForm from '@/components/auth/RegisterForm';
 import SuccessDialog from '@/components/auth/SuccessDialog';
-import { Shield, HomeIcon } from 'lucide-react';
+import { Shield, HomeIcon, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const Auth = () => {
