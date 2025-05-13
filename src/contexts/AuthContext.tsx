@@ -8,6 +8,7 @@ type AuthContextType = {
   session: Session | null;
   user: User | null;
   loading: boolean;
+  isAdmin: boolean;
   signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>;
   signUp: (email: string, password: string, firstName?: string, lastName?: string) => Promise<{ error: AuthError | null }>;
   signOut: () => Promise<void>;
@@ -22,7 +23,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
   const { toast } = useToast();
+
+  const checkAdminStatus = async (userId: string) => {
+    try {
+      const { data, error } = await supabase
+        .rpc('is_admin');
+      
+      if (error) {
+        console.error('Error checking admin status:', error);
+        return;
+      }
+      
+      setIsAdmin(data === true);
+    } catch (err) {
+      console.error('Failed to check admin status:', err);
+    }
+  };
 
   useEffect(() => {
     // Set up auth state listener FIRST
@@ -32,10 +50,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser(currentSession?.user ?? null);
         setLoading(false);
         
-        // Log authentication events for security monitoring
-        if (event === 'SIGNED_IN') {
+        // Check admin status when user signs in
+        if (event === 'SIGNED_IN' && currentSession?.user) {
+          checkAdminStatus(currentSession.user.id);
           console.log('User signed in:', currentSession?.user?.email);
         } else if (event === 'SIGNED_OUT') {
+          setIsAdmin(false);
           console.log('User signed out');
         } else if (event === 'PASSWORD_RECOVERY') {
           toast({
@@ -50,6 +70,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
       setSession(currentSession);
       setUser(currentSession?.user ?? null);
+      
+      if (currentSession?.user) {
+        checkAdminStatus(currentSession.user.id);
+      }
+      
       setLoading(false);
     });
 
@@ -169,6 +194,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       session, 
       user, 
       loading, 
+      isAdmin,
       signIn, 
       signUp, 
       signOut, 
