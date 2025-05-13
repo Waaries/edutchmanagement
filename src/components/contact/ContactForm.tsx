@@ -2,6 +2,8 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Check } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const ContactForm = () => {
   const [formState, setFormState] = useState({
@@ -12,27 +14,58 @@ const ContactForm = () => {
     message: ""
   });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormState(prev => ({ ...prev, [name]: value }));
   };
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formState);
-    // Here you would normally send the data to your server
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
-      setFormState({
-        name: "",
-        email: "",
-        phone: "",
-        service: "",
-        message: ""
+    setLoading(true);
+    
+    try {
+      // Send the contact form data to the Supabase edge function
+      const { data, error } = await supabase.functions.invoke('send-contact-email', {
+        body: formState
       });
-    }, 3000);
+      
+      if (error) {
+        throw new Error(error.message || "Failed to send message");
+      }
+      
+      console.log("Form submission response:", data);
+      
+      // Show success state
+      setSubmitted(true);
+      toast({
+        title: "Bericht verzonden",
+        description: "Bedankt voor uw bericht. We nemen zo snel mogelijk contact met u op.",
+      });
+      
+      // Reset form after 3 seconds
+      setTimeout(() => {
+        setSubmitted(false);
+        setFormState({
+          name: "",
+          email: "",
+          phone: "",
+          service: "",
+          message: ""
+        });
+      }, 3000);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast({
+        title: "Fout bij verzenden",
+        description: "Er is een fout opgetreden bij het verzenden van uw bericht. Probeer het later opnieuw.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -67,6 +100,7 @@ const ContactForm = () => {
                 required
                 className="w-full px-4 py-3 rounded-2xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                 placeholder="Uw volledige naam"
+                disabled={loading}
               />
             </div>
             
@@ -83,6 +117,7 @@ const ContactForm = () => {
                 required
                 className="w-full px-4 py-3 rounded-2xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                 placeholder="uw@email.nl"
+                disabled={loading}
               />
             </div>
           </div>
@@ -100,6 +135,7 @@ const ContactForm = () => {
                 onChange={handleChange}
                 className="w-full px-4 py-3 rounded-2xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                 placeholder="Uw telefoonnummer"
+                disabled={loading}
               />
             </div>
             
@@ -113,6 +149,7 @@ const ContactForm = () => {
                 value={formState.service}
                 onChange={handleChange}
                 className="w-full px-4 py-3 rounded-2xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-white"
+                disabled={loading}
               >
                 <option value="">Selecteer een pakket</option>
                 <option value="basic">Basis Bedrijfsadres</option>
@@ -135,12 +172,17 @@ const ContactForm = () => {
               rows={4}
               className="w-full px-4 py-3 rounded-2xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
               placeholder="Vertel ons wat meer over uw behoeften..."
+              disabled={loading}
             ></textarea>
           </div>
           
-          <Button type="submit" className="w-full py-6">
-            <span>Verstuur Bericht</span>
-            <ArrowRight className="ml-2 h-4 w-4" />
+          <Button 
+            type="submit" 
+            className="w-full py-6"
+            disabled={loading}
+          >
+            <span>{loading ? "Versturen..." : "Verstuur Bericht"}</span>
+            {!loading && <ArrowRight className="ml-2 h-4 w-4" />}
           </Button>
         </form>
       )}
