@@ -5,7 +5,8 @@ import { TableCell, TableRow } from "@/components/ui/table";
 import { formatDutchDate } from "@/lib/date-utils";
 import { useAdminStatus } from "@/hooks/use-admin-status";
 import { UserData } from "@/types/user";
-import { Check, X } from "lucide-react"; // Import icons from lucide-react
+import { Check, X, User } from "lucide-react"; // Added User icon
+import { useAuth } from "@/contexts/AuthContext";
 
 interface UserRowProps {
   user: UserData;
@@ -15,14 +16,28 @@ interface UserRowProps {
 
 const UserRow: React.FC<UserRowProps> = ({ user, onStatusChange, onDeleteClick }) => {
   const { isProcessing, toggleAdminStatus } = useAdminStatus(onStatusChange);
+  const { user: currentUser } = useAuth();
+  
+  // Check if this row represents the current logged in user
+  const isCurrentUser = currentUser?.id === user.id;
 
   const handleToggleAdminStatus = async () => {
     await toggleAdminStatus(user);
   };
 
   return (
-    <TableRow>
-      <TableCell className="font-medium">{user.email}</TableCell>
+    <TableRow className={isCurrentUser ? "bg-blue-50" : ""}>
+      <TableCell className="font-medium">
+        <div className="flex items-center gap-2">
+          {isCurrentUser && (
+            <span className="inline-flex items-center rounded-full bg-blue-100 px-2 py-1 text-xs">
+              <User className="h-3 w-3 text-blue-500 mr-1" />
+              U
+            </span>
+          )}
+          {user.email}
+        </div>
+      </TableCell>
       <TableCell>{formatDutchDate(user.created_at)}</TableCell>
       <TableCell>{formatDutchDate(user.last_sign_in_at)}</TableCell>
       <TableCell>
@@ -40,22 +55,39 @@ const UserRow: React.FC<UserRowProps> = ({ user, onStatusChange, onDeleteClick }
       </TableCell>
       <TableCell>
         <div className="flex space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleToggleAdminStatus}
-            disabled={isProcessing}
-          >
-            {user.is_admin ? "Admin rechten intrekken" : "Maak admin"}
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => onDeleteClick(user)}
-            className="text-destructive"
-          >
-            Verwijderen
-          </Button>
+          {/* Don't show toggle admin button if already admin */}
+          {!user.is_admin && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleToggleAdminStatus}
+              disabled={isProcessing}
+            >
+              Maak admin
+            </Button>
+          )}
+          {/* For admins, show "intrek rechten" button instead */}
+          {user.is_admin && !isCurrentUser && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleToggleAdminStatus}
+              disabled={isProcessing}
+            >
+              Admin rechten intrekken
+            </Button>
+          )}
+          {/* Don't show delete button for current user */}
+          {!isCurrentUser && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => onDeleteClick(user)}
+              className="text-destructive"
+            >
+              Verwijderen
+            </Button>
+          )}
         </div>
       </TableCell>
     </TableRow>
