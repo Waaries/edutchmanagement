@@ -8,6 +8,7 @@ type AuthContextType = {
   session: Session | null;
   user: User | null;
   loading: boolean;
+  isAdmin: boolean;
   signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>;
   signUp: (email: string, password: string, firstName?: string, lastName?: string) => Promise<{ error: AuthError | null }>;
   signOut: () => Promise<void>;
@@ -22,7 +23,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
   const { toast } = useToast();
+
+  // Function to check if user is an admin
+  const checkAdminStatus = async (userId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', userId)
+        .eq('role', 'admin')
+        .single();
+      
+      if (error) {
+        console.error('Error checking admin status:', error);
+        setIsAdmin(false);
+        return;
+      }
+      
+      setIsAdmin(data !== null);
+    } catch (err) {
+      console.error('Failed to check admin status:', err);
+      setIsAdmin(false);
+    }
+  };
 
   useEffect(() => {
     // Set up auth state listener FIRST
@@ -31,6 +56,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setSession(currentSession);
         setUser(currentSession?.user ?? null);
         setLoading(false);
+        
+        // Check admin status if user is logged in
+        if (currentSession?.user) {
+          // Use setTimeout to avoid deadlocks with Supabase auth
+          setTimeout(() => {
+            checkAdminStatus(currentSession.user.id);
+          }, 0);
+        } else {
+          setIsAdmin(false);
+        }
         
         // Log authentication events for security monitoring
         if (event === 'SIGNED_IN') {
@@ -50,6 +85,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
       setSession(currentSession);
       setUser(currentSession?.user ?? null);
+      
+      if (currentSession?.user) {
+        checkAdminStatus(currentSession.user.id);
+      }
+      
       setLoading(false);
     });
 
@@ -153,6 +193,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       session, 
       user, 
       loading, 
+      isAdmin,
       signIn, 
       signUp, 
       signOut, 

@@ -1,175 +1,98 @@
-
-import { useState, useEffect } from "react";
-import { Menu, X, LogIn, LogOut } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useAuth } from "@/contexts/AuthContext";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import LanguageSelector from "@/components/LanguageSelector";
+import { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { Menu, X, LogIn, User } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useAuth } from '@/contexts/AuthContext';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { useMobile } from '@/hooks/use-mobile';
+import LanguageSelector from './LanguageSelector';
+import AdminBanner from './AdminBanner';
 
 const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
   const { user, signOut } = useAuth();
   const { translate } = useLanguage();
-  const location = useLocation();
-  const navigate = useNavigate();
-  const isHomePage = location.pathname === '/';
+  const { isMobile } = useMobile();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const handleLogout = async () => {
-    await signOut();
     setIsMenuOpen(false);
-  };
+  }, [location]);
 
-  // Menu items with their translated values
-  const menuItems = [
-    { key: "services", id: "diensten", label: translate("nav.services") },
-    { key: "testimonials", id: "getuigenissen", label: translate("nav.testimonials") },
-    { key: "contact", id: "contact", label: translate("nav.contact") }
-  ];
-
-  const handleNavClick = (event, itemId) => {
-    setIsMenuOpen(false);
-    
-    // If we're already on the home page, use smooth scrolling behavior
-    if (isHomePage) {
-      event.preventDefault();
-      const element = document.getElementById(itemId);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-    // If not on home page, the Link component will handle navigation to /#section
-  };
-
-  const handleLogoClick = (event) => {
-    setIsMenuOpen(false);
-    
-    // If already on home page, scroll to top
-    if (isHomePage) {
-      event.preventDefault();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else {
-      // If not on home page, navigate to home page
-      navigate('/');
-    }
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
   };
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        isScrolled 
-          ? "bg-white/90 backdrop-blur-md shadow-lg py-2" 
-          : "bg-transparent py-4"
-      }`}
-    >
-      <div className="container-full container-padding">
-        <div className="flex items-center justify-between">
-          <div className="flex-1 flex justify-start max-w-[100px]"></div> {/* Reduced space on the left */}
-          
-          <Link 
-            to="/" 
-            className="flex items-center text-2xl font-bold tracking-tight cursor-pointer"
-            onClick={handleLogoClick}
-          >
-            <div className="h-24 w-24 md:h-28 md:w-28 mx-auto flex items-center justify-center rounded-2xl">
-              <img 
-                src="/lovable-uploads/39d6c2c8-b4a1-4f97-86fb-dd3a6e9fcdbd.png" 
-                alt="eDutch Management Logo" 
-                className="h-22 md:h-26 w-auto" 
-              />
-            </div>
-          </Link>
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm">
+      <AdminBanner />
+      <div className="container relative flex items-center justify-between h-16">
+        <Link to="/" className="font-bold text-xl">
+          LOV
+        </Link>
 
-          <nav className="hidden md:flex items-center space-x-8 flex-1 justify-end">
-            {menuItems.map((item) => (
-              <Link
-                key={item.key}
-                to={isHomePage ? `#${item.id}` : `/#${item.id}`}
-                className="text-slate-700 hover:text-primary transition-colors font-bold font-poppins border-animate"
-                onClick={(e) => handleNavClick(e, item.id)}
-              >
-                {item.label}
+        <div className="hidden md:flex items-center gap-4">
+          <LanguageSelector />
+          {user ? (
+            <>
+              <Link to="/profile">
+                <Button variant="ghost">
+                  <User className="mr-2 h-4 w-4" />
+                  Profile
+                </Button>
               </Link>
-            ))}
-
-            <LanguageSelector />
-            
-            {user ? (
-              <Button 
-                onClick={handleLogout}
-                variant="outline"
-                className="flex items-center gap-2"
-              >
-                <LogOut className="h-4 w-4" />
-                <span>{translate("nav.logout")}</span>
+              <Button onClick={() => signOut()} variant="outline">
+                {translate("nav.signOut")}
               </Button>
-            ) : (
-              <Link to="/auth">
-                <Button className="flex items-center gap-2">
-                  <LogIn className="h-4 w-4" />
-                  <span>{translate("nav.login")}</span>
-                </Button>
-              </Link>
-            )}
-          </nav>
-
-          <div className="md:hidden flex items-center gap-2">
-            <LanguageSelector />
-            <button 
-              className="text-slate-800 bg-slate-100 p-2 rounded-xl"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
+            </>
+          ) : (
+            <Link to="/auth">
+              <Button>
+                <LogIn className="mr-2 h-4 w-4" />
+                {translate("nav.signIn")}
+              </Button>
+            </Link>
+          )}
         </div>
-      </div>
 
-      {/* Mobile Menu */}
-      {isMenuOpen && (
-        <div className="md:hidden bg-white absolute top-full left-0 right-0 shadow-2xl animate-fade-in">
-          <div className="container-full container-padding py-5">
-            <div className="flex flex-col space-y-4">
-              {menuItems.map((item) => (
-                <Link
-                  key={item.key}
-                  to={isHomePage ? `#${item.id}` : `/#${item.id}`}
-                  className="text-slate-700 hover:text-primary transition-colors py-2 font-bold font-poppins flex items-center"
-                  onClick={(e) => handleNavClick(e, item.id)}
-                >
-                  {item.label}
-                </Link>
-              ))}
+        {isMobile && (
+          <button onClick={toggleMenu}>
+            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+        )}
+
+        {isMobile && (
+          <div
+            className={`absolute top-16 left-0 right-0 bg-white shadow-md rounded-md overflow-hidden transition-all duration-300 ${
+              isMenuOpen ? 'max-h-96 py-4' : 'max-h-0'
+            }`}
+          >
+            <div className="flex flex-col items-center gap-4">
+              <LanguageSelector />
               {user ? (
-                <Button 
-                  onClick={handleLogout}
-                  variant="outline"
-                  className="w-full flex items-center justify-center gap-2 mt-4"
-                >
-                  <LogOut className="h-4 w-4" />
-                  <span>{translate("nav.logout")}</span>
-                </Button>
+                <>
+                  <Link to="/profile" className="block w-full text-center">
+                    <Button variant="ghost" className="w-full justify-center">
+                      <User className="mr-2 h-4 w-4" />
+                      Profile
+                    </Button>
+                  </Link>
+                  <Button onClick={() => signOut()} variant="outline" className="w-full">
+                    {translate("nav.signOut")}
+                  </Button>
+                </>
               ) : (
-                <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
-                  <Button className="w-full flex items-center justify-center gap-2 mt-4">
-                    <LogIn className="h-4 w-4" />
-                    <span>{translate("nav.login")}</span>
+                <Link to="/auth" className="block w-full text-center">
+                  <Button className="w-full">
+                    <LogIn className="mr-2 h-4 w-4" />
+                    {translate("nav.signIn")}
                   </Button>
                 </Link>
               )}
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </header>
   );
 };
