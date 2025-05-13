@@ -126,6 +126,9 @@ export function useAuthMethods() {
         title: "Signed Out",
         description: "You have been successfully signed out.",
       });
+      
+      // Redirect to home page instead of auth page
+      window.location.href = '/';
     } catch (error) {
       console.error('Sign out error:', error);
       toast({

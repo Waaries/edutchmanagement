@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -34,7 +33,7 @@ const AdminDashboard = () => {
 
   const handleLogout = async () => {
     await signOut();
-    navigate('/auth');
+    // No need to navigate here, the signOut method will handle the redirection
   };
 
   const goToDashboard = () => {

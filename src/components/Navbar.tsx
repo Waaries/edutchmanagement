@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Menu, X, LogIn, LogOut, LayoutDashboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -26,7 +25,7 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     await signOut();
-    setIsMenuOpen(false);
+    // No need to set menu state or navigate here, signOut handles redirection
   };
 
   // Menu items with their translated values
