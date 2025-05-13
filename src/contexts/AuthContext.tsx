@@ -33,12 +33,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       
       if (error) {
         console.error('Error checking admin status:', error);
-        return;
+        return false;
       }
       
       setIsAdmin(data === true);
+      return data === true;
     } catch (err) {
       console.error('Failed to check admin status:', err);
+      return false;
     }
   };
 

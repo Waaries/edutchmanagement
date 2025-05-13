@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { Navigate, useLocation, useSearchParams, Link } from 'react-router-dom';
+import { Navigate, useLocation, useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -11,12 +11,13 @@ import { Shield, HomeIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const Auth = () => {
-  const { user, loading } = useAuth();
+  const { user, loading, isAdmin } = useAuth();
   const { translate } = useLanguage();
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [showDialog, setShowDialog] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState<string>('login');
 
@@ -39,6 +40,15 @@ const Auth = () => {
       if (hash.includes('error')) {
         const errorMessage = new URLSearchParams(hash.substring(1)).get('error_description');
         setError(errorMessage || 'Authentication failed');
+      } else if (hash.includes('access_token')) {
+        // If OAuth login was successful, redirect after a short delay
+        setTimeout(() => {
+          if (isAdmin) {
+            navigate('/admin');
+          } else {
+            navigate('/');
+          }
+        }, 1000);
       }
     }
     
@@ -46,11 +56,22 @@ const Auth = () => {
     if (location.search.includes('register')) {
       setActiveTab('register');
     }
-  }, [location, searchParams]);
+  }, [location, searchParams, navigate, isAdmin]);
 
-  // If user is already logged in, redirect to home
+  // If user is already logged in, redirect to appropriate page
+  useEffect(() => {
+    if (user && !loading) {
+      if (isAdmin) {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
+    }
+  }, [user, loading, isAdmin, navigate]);
+
+  // If user is already logged in, don't render the auth page
   if (user && !loading) {
-    return <Navigate to="/" />;
+    return null;
   }
 
   const handleRegistrationSuccess = (message: string) => {

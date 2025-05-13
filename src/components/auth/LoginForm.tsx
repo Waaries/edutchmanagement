@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -8,11 +7,13 @@ import { Label } from '@/components/ui/label';
 import { AlertCircle, LockKeyhole } from 'lucide-react';
 import { SocialAuthButtons } from './SocialAuthButtons';
 import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
-  const { signIn, resetPassword } = useAuth();
+  const { signIn, resetPassword, isAdmin } = useAuth();
   const { translate, language } = useLanguage();
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -49,6 +50,15 @@ const LoginForm = () => {
         title: language === 'nl' ? "Ingelogd" : "Logged In",
         description: language === 'nl' ? "U bent succesvol ingelogd." : "You have successfully logged in.",
       });
+      
+      // Redirect to admin dashboard if user is admin, otherwise to home page
+      setTimeout(() => {
+        if (isAdmin) {
+          navigate('/admin');
+        } else {
+          navigate('/');
+        }
+      }, 500);
     }
     
     setSubmitting(false);
