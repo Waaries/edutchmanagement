@@ -33,7 +33,7 @@ const AdminSecurityCheck: React.FC<AdminSecurityCheckProps> = ({
         // Log admin access attempt for security monitoring
         console.log("Admin access verification for:", user.email);
         
-        // Use the optimized is_admin() function via RPC
+        // Use the fixed is_admin() function via RPC
         const { data, error } = await supabase.rpc('is_admin');
         
         if (error) {

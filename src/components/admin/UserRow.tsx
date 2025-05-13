@@ -5,7 +5,7 @@ import { TableCell, TableRow } from "@/components/ui/table";
 import { formatDutchDate } from "@/lib/date-utils";
 import { useAdminStatus } from "@/hooks/use-admin-status";
 import { UserData } from "@/types/user";
-import { Check, X, User } from "lucide-react"; // Added User icon
+import { Check, X, User } from "lucide-react"; 
 import { useAuth } from "@/contexts/AuthContext";
 
 interface UserRowProps {
@@ -55,7 +55,6 @@ const UserRow: React.FC<UserRowProps> = ({ user, onStatusChange, onDeleteClick }
       </TableCell>
       <TableCell>
         <div className="flex space-x-2">
-          {/* Don't show toggle admin button if already admin */}
           {!user.is_admin && (
             <Button
               variant="outline"
@@ -66,7 +65,6 @@ const UserRow: React.FC<UserRowProps> = ({ user, onStatusChange, onDeleteClick }
               Maak admin
             </Button>
           )}
-          {/* For admins, show "intrek rechten" button instead */}
           {user.is_admin && !isCurrentUser && (
             <Button
               variant="outline"
@@ -77,7 +75,6 @@ const UserRow: React.FC<UserRowProps> = ({ user, onStatusChange, onDeleteClick }
               Admin rechten intrekken
             </Button>
           )}
-          {/* Don't show delete button for current user */}
           {!isCurrentUser && (
             <Button
               variant="outline"

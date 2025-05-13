@@ -49,30 +49,33 @@ export function useUsersData() {
         return;
       }
 
-      // Fetch admin status for each user
-      const usersWithRoles = await Promise.all(
-        userData.map(async (user) => {
-          const { data: roleData, error: roleError } = await supabase
-            .from('user_roles')
-            .select('*')
-            .eq('user_id', user.id)
-            .eq('role', 'admin')
-            .maybeSingle();
-            
-          if (roleError) {
-            console.error(`Error checking admin status for user ${user.id}:`, roleError);
-          }
+      // Instead of querying each user individually, let's get all admin users at once
+      const { data: adminRoles, error: rolesError } = await supabase
+        .from('user_roles')
+        .select('user_id')
+        .eq('role', 'admin');
+      
+      if (rolesError) {
+        console.error("Error fetching admin roles:", rolesError);
+        toast({
+          title: "Fout bij ophalen rollen",
+          description: rolesError.message,
+          variant: "destructive",
+        });
+      }
 
-          return {
-            id: user.id,
-            email: user.email,
-            created_at: user.created_at,
-            last_sign_in_at: user.last_sign_in_at,
-            is_admin: !!roleData,
-            raw_app_meta_data: user.raw_app_meta_data
-          };
-        })
-      );
+      // Create a Set of admin user IDs for quick lookup
+      const adminUserIds = new Set(adminRoles?.map(role => role.user_id) || []);
+
+      // Map users with their admin status
+      const usersWithRoles = userData.map(user => ({
+        id: user.id,
+        email: user.email,
+        created_at: user.created_at,
+        last_sign_in_at: user.last_sign_in_at,
+        is_admin: adminUserIds.has(user.id),
+        raw_app_meta_data: user.raw_app_meta_data
+      }));
 
       setUsers(usersWithRoles);
     } catch (error) {
