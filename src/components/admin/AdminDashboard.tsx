@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -12,14 +12,28 @@ const AdminDashboard = () => {
   const { user, isAdmin } = useAuth();
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("overview");
+  const [showToast, setShowToast] = useState(false);
+
+  useEffect(() => {
+    // Show toast only when component mounts, not during render
+    if (!user || !isAdmin) {
+      setShowToast(true);
+    }
+  }, [user, isAdmin]);
+
+  useEffect(() => {
+    // Display the toast in a useEffect to avoid React state updates during render
+    if (showToast) {
+      toast({
+        title: "Toegang geweigerd",
+        description: "U heeft geen toegang tot het admin dashboard.",
+        variant: "destructive",
+      });
+    }
+  }, [showToast, toast]);
 
   // If not logged in or not admin, redirect to home
   if (!user || !isAdmin) {
-    toast({
-      title: "Toegang geweigerd",
-      description: "U heeft geen toegang tot het admin dashboard.",
-      variant: "destructive",
-    });
     return <Navigate to="/" />;
   }
 

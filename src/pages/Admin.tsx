@@ -58,8 +58,10 @@ const Admin = () => {
       isAdmin, 
       loading 
     });
-    
-    // Show toast when non-admin tries to access
+  }, [user, isAdmin, loading]);
+
+  // Effect for handling access denied toast
+  useEffect(() => {
     if (!loading && user && !isAdmin && directAdminCheck === false) {
       toast({
         title: "Toegang geweigerd",
@@ -67,12 +69,14 @@ const Admin = () => {
         variant: "destructive",
       });
     }
+  }, [loading, user, isAdmin, directAdminCheck, toast]);
 
-    // Check admin status when component mounts
+  // Check admin status when component mounts
+  useEffect(() => {
     if (user && !loading) {
       checkAdminStatus();
     }
-  }, [user, isAdmin, loading]);
+  }, [user, loading]);
 
   // If still loading, show a loading indicator
   if (loading) {

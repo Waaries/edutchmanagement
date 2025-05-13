@@ -14,6 +14,20 @@ export function useUsersData() {
     try {
       setLoading(true);
       
+      // First verify the user is an admin
+      const { data: isAdminData, error: isAdminError } = await supabase.rpc('is_admin');
+      
+      if (isAdminError || !isAdminData) {
+        console.error("Error checking admin permissions:", isAdminError);
+        toast({
+          title: "Toegang geweigerd",
+          description: "U heeft geen admin rechten om gebruikersgegevens te bekijken.",
+          variant: "destructive",
+        });
+        setLoading(false);
+        return;
+      }
+      
       // Use the secure get_users function to get user data
       const { data: userData, error: userError } = await supabase
         .rpc('get_users');
@@ -25,6 +39,7 @@ export function useUsersData() {
           description: userError.message,
           variant: "destructive",
         });
+        setLoading(false);
         return;
       }
 

@@ -143,7 +143,7 @@ const Dashboard = () => {
             <Card>
               <CardHeader>
                 <CardTitle>Profiel</CardTitle>
-                <CardDescription>Bekijk en bewerk uw profiel</CardDescription>
+                <CardDescription>Bekijk en bewerk uw profiel</CardHeader>
               </CardHeader>
               <CardContent>
                 <p>Bekijk en bewerk uw persoonlijke gegevens.</p>
