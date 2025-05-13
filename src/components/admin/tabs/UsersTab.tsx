@@ -2,6 +2,8 @@
 import React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import UsersTable from "@/components/admin/UsersTable";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
 
 const UsersTab: React.FC = () => {
   return (
@@ -11,12 +13,14 @@ const UsersTab: React.FC = () => {
         <CardDescription>Beheer gebruikersaccounts en toegangsrechten</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="text-sm text-muted-foreground mb-4">
-          <p>
+        <Alert className="mb-4">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Belangrijk</AlertTitle>
+          <AlertDescription>
             U kunt hier gebruikers beheren, adminrechten toekennen of intrekken. Uw eigen gebruikersaccount 
             is gemarkeerd en kan niet verwijderd worden.
-          </p>
-        </div>
+          </AlertDescription>
+        </Alert>
         <UsersTable />
       </CardContent>
     </Card>
