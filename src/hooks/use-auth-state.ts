@@ -34,42 +34,54 @@ export function useAuthState() {
   };
 
   useEffect(() => {
-    let isUnmounted = false;
+    let mounted = true;
     
-    // Set up auth state listener FIRST
+    // Helper to safely update state only if component is still mounted
+    const safeSetState = {
+      session: (value: Session | null) => {
+        if (mounted) setSession(value);
+      },
+      user: (value: User | null) => {
+        if (mounted) setUser(value);
+      },
+      isAdmin: (value: boolean) => {
+        if (mounted) setIsAdmin(value);
+      },
+      loading: (value: boolean) => {
+        if (mounted) setLoading(value);
+      }
+    };
+    
+    // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, currentSession) => {
         console.log('Auth state changed:', event, currentSession?.user?.email);
         
-        if (isUnmounted) return;
+        if (!mounted) return;
         
-        setSession(currentSession);
-        setUser(currentSession?.user ?? null);
+        safeSetState.session(currentSession);
+        safeSetState.user(currentSession?.user ?? null);
         
         // Check admin status when user signs in
         if (currentSession?.user) {
-          // Use setTimeout to prevent potential deadlocks
-          setTimeout(async () => {
-            if (isUnmounted) return;
-            await checkAdminStatus(currentSession.user.id);
-          }, 0);
+          await checkAdminStatus(currentSession.user.id);
         } else {
-          setIsAdmin(false);
+          safeSetState.isAdmin(false);
         }
         
-        setLoading(false);
+        safeSetState.loading(false);
       }
     );
 
-    // THEN check for existing session
+    // Check for existing session
     const initializeAuth = async () => {
       try {
         const { data: { session: currentSession } } = await supabase.auth.getSession();
         
-        if (isUnmounted) return;
+        if (!mounted) return;
         
-        setSession(currentSession);
-        setUser(currentSession?.user ?? null);
+        safeSetState.session(currentSession);
+        safeSetState.user(currentSession?.user ?? null);
         
         if (currentSession?.user) {
           console.log('Found existing session for user:', currentSession.user.email);
@@ -78,8 +90,8 @@ export function useAuthState() {
       } catch (error) {
         console.error('Error initializing auth:', error);
       } finally {
-        if (!isUnmounted) {
-          setLoading(false);
+        if (mounted) {
+          safeSetState.loading(false);
         }
       }
     };
@@ -87,7 +99,7 @@ export function useAuthState() {
     initializeAuth();
 
     return () => {
-      isUnmounted = true;
+      mounted = false;
       subscription.unsubscribe();
     };
   }, []);

@@ -5,50 +5,23 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useToast } from "@/hooks/use-toast";
-import { User, LayoutDashboard, Settings, Calendar, Shield, LogOut } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { User, LayoutDashboard, Calendar, Shield, LogOut } from "lucide-react";
 
 const Dashboard = () => {
   const { user, loading, isAdmin, signOut } = useAuth();
-  const { toast } = useToast();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("overview");
-  const [directAdminCheck, setDirectAdminCheck] = useState<boolean | null>(null);
 
   useEffect(() => {
     // Update the document title
     document.title = "Dashboard | eDutch Management";
     
-    console.log('Dashboard page - Auth state:', { user: !!user, loading, isAdmin });
-    
-    // Do direct admin check when user is loaded
-    if (user && !loading) {
-      checkAdminStatus();
-    }
+    console.log('Dashboard page - Auth state:', { 
+      user: !!user, 
+      loading, 
+      isAdmin 
+    });
   }, [user, loading, isAdmin]);
-
-  // Check admin status via RPC
-  const checkAdminStatus = async () => {
-    if (!user) return;
-    
-    try {
-      const { data, error } = await supabase.rpc('is_admin');
-      
-      if (error) {
-        console.error("Error checking admin status:", error);
-        setDirectAdminCheck(false);
-        return;
-      }
-      
-      const isAdminUser = !!data;
-      console.log("Direct admin check result:", isAdminUser);
-      setDirectAdminCheck(isAdminUser);
-    } catch (err) {
-      console.error("Error in admin check:", err);
-      setDirectAdminCheck(false);
-    }
-  };
 
   // If still loading, show a loading indicator
   if (loading) {
@@ -73,11 +46,7 @@ const Dashboard = () => {
 
   const handleLogout = async () => {
     await signOut();
-    // No need to navigate here, the signOut method will handle the redirection
   };
-
-  // Use either the context isAdmin or directly checked admin status
-  const userIsAdmin = isAdmin || directAdminCheck;
 
   return (
     <div className="container mx-auto py-8 px-4 pt-32">
@@ -87,7 +56,7 @@ const Dashboard = () => {
           <h1 className="text-3xl font-bold">Dashboard</h1>
         </div>
         <div className="flex items-center gap-2">
-          {userIsAdmin && (
+          {isAdmin && (
             <Button 
               onClick={goToAdmin}
               variant="outline" 
@@ -118,7 +87,7 @@ const Dashboard = () => {
         <CardContent>
           <p>Vanuit dit dashboard kunt u al uw gegevens en activiteiten beheren.</p>
           <div className="mt-4 p-3 border rounded bg-slate-50">
-            <p><strong>Account Type:</strong> {userIsAdmin ? 'Administrator' : 'Standaard Gebruiker'}</p>
+            <p><strong>Account Type:</strong> {isAdmin ? 'Administrator' : 'Standaard Gebruiker'}</p>
           </div>
         </CardContent>
       </Card>
