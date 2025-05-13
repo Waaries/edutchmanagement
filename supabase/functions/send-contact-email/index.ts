@@ -28,11 +28,11 @@ serve(async (req) => {
     
     // Get SMTP settings from environment variables
     const smtpHost = Deno.env.get("SMTP_HOST");
-    const smtpPort = parseInt(Deno.env.get("SMTP_PORT") || "587");
+    const smtpPort = parseInt(Deno.env.get("SMTP_PORT") || "465"); // Use 465 as default for SSL
     const smtpUsername = Deno.env.get("SMTP_USERNAME");
     const smtpPassword = Deno.env.get("SMTP_PASSWORD");
     const adminEmail = Deno.env.get("ADMIN_EMAIL");
-    const senderName = Deno.env.get("SENDER_NAME") || "E-Dutch Management";
+    const senderName = Deno.env.get("SENDER_NAME") || "eDutchmanagement";
     
     // Log the SMTP settings (without password)
     console.log("SMTP settings:", {
@@ -57,7 +57,7 @@ serve(async (req) => {
       connection: {
         hostname: smtpHost,
         port: smtpPort,
-        tls: true,
+        tls: true, // Always use TLS for port 465
         auth: {
           username: smtpUsername,
           password: smtpPassword,

@@ -74,8 +74,8 @@ const ContactForm = () => {
         throw new Error(functionError.message || "Fout bij verzenden bericht");
       }
       
-      if (!data.success) {
-        throw new Error(data.message || data.error || "Fout bij verzenden bericht");
+      if (!data?.success) {
+        throw new Error((data?.message || data?.error || "Fout bij verzenden bericht"));
       }
       
       // Show success state
