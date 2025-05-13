@@ -41,6 +41,13 @@ const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
     setSubmitting(true);
     setError(null);
     
+    // Clean up auth state first to prevent conflicts
+    Object.keys(localStorage).forEach((key) => {
+      if (key.startsWith('supabase.auth.') || key.includes('sb-')) {
+        localStorage.removeItem(key);
+      }
+    });
+    
     // Validate password before submission
     if (!isPasswordValid) {
       setError(language === 'nl' 
@@ -62,7 +69,24 @@ const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
     const { error } = await signUp(email, password, firstName, lastName);
     
     if (error) {
-      setError(error.message);
+      // Provide more user-friendly Dutch error messages
+      let errorMessage = error.message;
+      
+      if (error.message.includes('User already registered')) {
+        errorMessage = language === 'nl'
+          ? "Dit e-mailadres is al geregistreerd. Probeer in te loggen of gebruik een ander e-mailadres."
+          : "This email is already registered. Try logging in or use a different email address.";
+      } else if (error.message.includes('Invalid email')) {
+        errorMessage = language === 'nl'
+          ? "Ongeldig e-mailadres. Controleer het e-mailadres en probeer het opnieuw."
+          : "Invalid email address. Please check and try again.";
+      } else if (error.message.includes('Password should be')) {
+        errorMessage = language === 'nl'
+          ? "Wachtwoord voldoet niet aan de veiligheidseisen. Probeer een ander wachtwoord."
+          : "Password doesn't meet security requirements. Please try a different password.";
+      }
+      
+      setError(errorMessage);
     } else {
       onSuccess(language === 'nl'
         ? "Registratie succesvol! Controleer uw e-mail om uw account te bevestigen."

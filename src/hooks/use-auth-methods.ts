@@ -10,7 +10,7 @@ export function useAuthMethods() {
     try {
       // Clean up local storage to prevent auth conflicts
       Object.keys(localStorage).forEach((key) => {
-        if (key.startsWith('supabase.auth.token') && key !== 'supabase.auth.token') {
+        if (key.startsWith('supabase.auth.') || key.includes('sb-')) {
           localStorage.removeItem(key);
         }
       });
@@ -29,6 +29,13 @@ export function useAuthMethods() {
 
   const signUp = async (email: string, password: string, firstName?: string, lastName?: string) => {
     try {
+      // Clean up auth state first to prevent conflicts
+      Object.keys(localStorage).forEach((key) => {
+        if (key.startsWith('supabase.auth.') || key.includes('sb-')) {
+          localStorage.removeItem(key);
+        }
+      });
+      
       const { error } = await supabase.auth.signUp({
         email,
         password,
@@ -37,6 +44,7 @@ export function useAuthMethods() {
             first_name: firstName,
             last_name: lastName,
           },
+          emailRedirectTo: `${window.location.origin}/auth`,
         },
       });
       return { error };
@@ -48,6 +56,13 @@ export function useAuthMethods() {
 
   const signInWithGoogle = async () => {
     try {
+      // Clean up auth state first to prevent conflicts
+      Object.keys(localStorage).forEach((key) => {
+        if (key.startsWith('supabase.auth.') || key.includes('sb-')) {
+          localStorage.removeItem(key);
+        }
+      });
+      
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
@@ -63,6 +78,13 @@ export function useAuthMethods() {
 
   const signInWithFacebook = async () => {
     try {
+      // Clean up auth state first to prevent conflicts
+      Object.keys(localStorage).forEach((key) => {
+        if (key.startsWith('supabase.auth.') || key.includes('sb-')) {
+          localStorage.removeItem(key);
+        }
+      });
+      
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'facebook',
         options: {
