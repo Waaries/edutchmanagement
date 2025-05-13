@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
@@ -6,17 +5,12 @@ import { Shield, UserX, UserMinus, CheckCircle, XCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+import { UserData } from "@/types/user";
 
 type UserRowProps = {
-  user: {
-    id: string;
-    email: string;
-    created_at: string;
-    is_admin: boolean;
-    last_sign_in_at: string | null;
-  };
+  user: UserData;
   onStatusChange: () => void;
-  onDeleteClick: (user: UserRowProps["user"]) => void;
+  onDeleteClick: (user: UserData) => void;
 };
 
 export const UserRow = ({ user, onStatusChange, onDeleteClick }: UserRowProps) => {
