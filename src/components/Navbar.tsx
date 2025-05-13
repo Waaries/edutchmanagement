@@ -1,10 +1,11 @@
+
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, LogIn, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { useMobile } from '@/hooks/use-mobile';
+import { useIsMobile } from '@/hooks/use-mobile';
 import LanguageSelector from './LanguageSelector';
 import AdminBanner from './AdminBanner';
 
@@ -13,7 +14,7 @@ const Navbar = () => {
   const location = useLocation();
   const { user, signOut } = useAuth();
   const { translate } = useLanguage();
-  const { isMobile } = useMobile();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     setIsMenuOpen(false);

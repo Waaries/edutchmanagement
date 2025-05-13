@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
@@ -18,19 +17,16 @@ const AdminTools = () => {
 
     setLoading(true);
     try {
-      // First check if the user exists
-      const { data: userData, error: userError } = await supabase
-        .from('auth.users')
-        .select('id')
-        .eq('id', userId)
-        .single();
+      // Check if the user exists using the auth API
+      const { data: userData, error: userError } = await supabase.auth.admin.getUserById(userId);
 
-      if (userError) {
+      if (userError || !userData.user) {
         toast({
           title: "User Not Found",
           description: "Please check the user ID and try again.",
           variant: "destructive",
         });
+        setLoading(false);
         return;
       }
 

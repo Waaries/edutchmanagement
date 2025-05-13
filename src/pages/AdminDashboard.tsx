@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -37,13 +36,11 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        // Fetch all users (this requires an RLS policy allowing admins to view all users)
-        const { data: userData, error: userError } = await supabase
-          .from('auth.users')
-          .select('id, email, created_at');
-
+        // Fetch all users from the auth API
+        const { data: userData, error: userError } = await supabase.auth.admin.listUsers();
+        
         if (userError) throw userError;
-
+        
         // Fetch admin roles
         const { data: rolesData, error: rolesError } = await supabase
           .from('user_roles')
@@ -56,7 +53,7 @@ const AdminDashboard = () => {
         const adminIds = new Set(rolesData.map(role => role.user_id));
 
         // Combine the data
-        const combinedData = userData.map(user => ({
+        const combinedData = userData.users.map((user: any) => ({
           id: user.id,
           email: user.email,
           created_at: user.created_at,
@@ -79,7 +76,7 @@ const AdminDashboard = () => {
     if (isAdmin) {
       fetchUsers();
     }
-  }, [isAdmin]);
+  }, [isAdmin, toast]);
 
   const makeAdmin = async (userId: string) => {
     try {
