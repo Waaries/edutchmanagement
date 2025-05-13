@@ -41,7 +41,7 @@ const Navbar = () => {
     <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm">
       <AdminBanner />
       <div className="container relative flex items-center justify-between h-16">
-        <Link to="/" className="font-bold text-xl">
+        <Link to="/" className="font-bold text-xl text-primary">
           LOV
         </Link>
 
@@ -50,18 +50,18 @@ const Navbar = () => {
           {user ? (
             <>
               <Link to="/profile">
-                <Button variant="ghost">
+                <Button variant="ghost" className="text-foreground">
                   <User className="mr-2 h-4 w-4" />
                   {getProfileText()}
                 </Button>
               </Link>
-              <Button onClick={() => signOut()} variant="outline">
+              <Button onClick={() => signOut()} variant="outline" className="text-foreground border-foreground hover:bg-primary/10">
                 {getSignOutText()}
               </Button>
             </>
           ) : (
             <Link to="/auth">
-              <Button>
+              <Button className="bg-primary text-white hover:bg-primary/90">
                 <LogIn className="mr-2 h-4 w-4" />
                 {getSignInText()}
               </Button>
@@ -70,7 +70,7 @@ const Navbar = () => {
         </div>
 
         {isMobile && (
-          <button onClick={toggleMenu}>
+          <button onClick={toggleMenu} className="text-primary">
             {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         )}
@@ -86,18 +86,18 @@ const Navbar = () => {
               {user ? (
                 <>
                   <Link to="/profile" className="block w-full text-center">
-                    <Button variant="ghost" className="w-full justify-center">
+                    <Button variant="ghost" className="w-full justify-center text-foreground">
                       <User className="mr-2 h-4 w-4" />
                       {getProfileText()}
                     </Button>
                   </Link>
-                  <Button onClick={() => signOut()} variant="outline" className="w-full">
+                  <Button onClick={() => signOut()} variant="outline" className="w-full text-foreground border-foreground hover:bg-primary/10">
                     {getSignOutText()}
                   </Button>
                 </>
               ) : (
                 <Link to="/auth" className="block w-full text-center">
-                  <Button className="w-full">
+                  <Button className="w-full bg-primary text-white hover:bg-primary/90">
                     <LogIn className="mr-2 h-4 w-4" />
                     {getSignInText()}
                   </Button>
