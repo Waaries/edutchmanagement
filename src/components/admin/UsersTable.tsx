@@ -26,13 +26,15 @@ export const UsersTable = () => {
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
 
-  // Fetch users data
+  // Fetch users data using a different approach that works with authenticated users
   const fetchUsers = async () => {
     try {
       setLoading(true);
       
-      // First get users from auth schema (only accessible through admin api)
-      const { data: authUsers, error: authError } = await supabase.auth.admin.listUsers();
+      // First get all authenticated users from the auth.users view (uses RPC instead of admin API)
+      const { data: authData, error: authError } = await supabase
+        .from('auth_users_view')
+        .select('*');
       
       if (authError) {
         console.error("Error fetching users:", authError);
@@ -44,9 +46,14 @@ export const UsersTable = () => {
         return;
       }
 
+      if (!authData) {
+        setUsers([]);
+        return;
+      }
+
       // Then get admin status for each user
       const usersWithRoles = await Promise.all(
-        authUsers.users.map(async (user) => {
+        authData.map(async (user) => {
           // Check if user is admin by querying the user_roles table
           const { data: roleData } = await supabase
             .from("user_roles")
