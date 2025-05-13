@@ -3,11 +3,22 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Shield } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export function AdminLink() {
-  const { isAdmin } = useAuth();
+  const { isAdmin, user } = useAuth();
+  const [showAdmin, setShowAdmin] = useState(false);
   
-  if (!isAdmin) return null;
+  useEffect(() => {
+    if (user && isAdmin) {
+      setShowAdmin(true);
+      console.log("Admin link should be visible", { isAdmin, userId: user.id });
+    } else {
+      setShowAdmin(false);
+    }
+  }, [isAdmin, user]);
+  
+  if (!showAdmin) return null;
   
   return (
     <Button variant="ghost" asChild className="flex items-center gap-2">

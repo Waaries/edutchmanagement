@@ -33,13 +33,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       
       if (error) {
         console.error('Error checking admin status:', error);
+        setIsAdmin(false);
         return false;
       }
       
-      setIsAdmin(data === true);
-      return data === true;
+      console.log('Admin check result:', data);
+      setIsAdmin(!!data); // Convert to boolean
+      return !!data;
     } catch (err) {
       console.error('Failed to check admin status:', err);
+      setIsAdmin(false);
       return false;
     }
   };
@@ -47,14 +50,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, currentSession) => {
+      async (event, currentSession) => {
         setSession(currentSession);
         setUser(currentSession?.user ?? null);
         setLoading(false);
         
         // Check admin status when user signs in
         if (event === 'SIGNED_IN' && currentSession?.user) {
-          checkAdminStatus(currentSession.user.id);
+          await checkAdminStatus(currentSession.user.id);
           console.log('User signed in:', currentSession?.user?.email);
         } else if (event === 'SIGNED_OUT') {
           setIsAdmin(false);
@@ -69,12 +72,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     );
 
     // THEN check for existing session
-    supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
+    supabase.auth.getSession().then(async ({ data: { session: currentSession } }) => {
       setSession(currentSession);
       setUser(currentSession?.user ?? null);
       
       if (currentSession?.user) {
-        checkAdminStatus(currentSession.user.id);
+        await checkAdminStatus(currentSession.user.id);
       }
       
       setLoading(false);

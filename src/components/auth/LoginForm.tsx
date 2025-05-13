@@ -51,14 +51,16 @@ const LoginForm = () => {
         description: language === 'nl' ? "U bent succesvol ingelogd." : "You have successfully logged in.",
       });
       
-      // Redirect to admin dashboard if user is admin, otherwise to home page
+      // Wait a bit before redirecting to make sure admin status is updated
       setTimeout(() => {
         if (isAdmin) {
           navigate('/admin');
+          console.log('Redirecting to admin dashboard');
         } else {
           navigate('/');
+          console.log('Redirecting to home page');
         }
-      }, 500);
+      }, 1000);
     }
     
     setSubmitting(false);
