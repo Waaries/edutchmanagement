@@ -11,8 +11,7 @@ export function AdminLink() {
   const [showAdmin, setShowAdmin] = useState(false);
   
   useEffect(() => {
-    // Simple check based on the auth context state
-    // The useAuth hook already verifies with the database
+    // Only show admin link when both user is logged in and has admin role
     if (user && isAdmin) {
       setShowAdmin(true);
     } else {

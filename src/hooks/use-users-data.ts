@@ -14,7 +14,7 @@ export function useUsersData() {
     try {
       setLoading(true);
       
-      // First verify the user is an admin
+      // First verify the user is an admin using the optimized function
       const { data: isAdminData, error: isAdminError } = await supabase.rpc('is_admin');
       
       if (isAdminError || !isAdminData) {
@@ -49,13 +49,12 @@ export function useUsersData() {
         return;
       }
 
-      // Fetch admin status for each user directly
+      // Fetch admin status for each user
       const usersWithRoles = await Promise.all(
         userData.map(async (user) => {
-          // Direct query to user_roles table - avoiding the problematic function
           const { data: roleData, error: roleError } = await supabase
             .from('user_roles')
-            .select('*')  // Select all columns to avoid potential ambiguity
+            .select('*')
             .eq('user_id', user.id)
             .eq('role', 'admin')
             .maybeSingle();
@@ -69,7 +68,7 @@ export function useUsersData() {
             email: user.email,
             created_at: user.created_at,
             last_sign_in_at: user.last_sign_in_at,
-            is_admin: !!roleData, // User is admin if we found an admin role record
+            is_admin: !!roleData,
             raw_app_meta_data: user.raw_app_meta_data
           };
         })

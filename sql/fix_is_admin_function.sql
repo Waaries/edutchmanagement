@@ -10,15 +10,15 @@ DECLARE
   is_admin_user boolean;
 BEGIN
   -- Cache the user ID to avoid multiple calls to auth.uid()
-  _user_id := auth.uid();
+  _user_id := (SELECT auth.uid());
   
-  -- Skip RLS completely by using a direct query without policy checks
-  -- This prevents the infinite recursion
-  EXECUTE 'SELECT EXISTS (
+  -- Use a SELECT statement to bypass RLS and prevent infinite recursion
+  -- This follows the recommended pattern for improved performance
+  SELECT EXISTS (
     SELECT 1
     FROM public.user_roles
-    WHERE user_id = $1 AND role = ''admin''
-  )' INTO is_admin_user USING _user_id;
+    WHERE user_id = _user_id AND role = 'admin'
+  ) INTO is_admin_user;
   
   RETURN is_admin_user;
 END;

@@ -13,7 +13,7 @@ export function useAuthState() {
     try {
       console.log("Checking admin status for userId:", userId);
       
-      // Use the is_admin() function via RPC
+      // Use the optimized is_admin() function via RPC
       const { data, error } = await supabase.rpc('is_admin');
       
       if (error) {
@@ -36,19 +36,28 @@ export function useAuthState() {
   useEffect(() => {
     let mounted = true;
     
-    // Helper to safely update state only if component is still mounted
-    const safeSetState = {
-      session: (value: Session | null) => {
-        if (mounted) setSession(value);
-      },
-      user: (value: User | null) => {
-        if (mounted) setUser(value);
-      },
-      isAdmin: (value: boolean) => {
-        if (mounted) setIsAdmin(value);
-      },
-      loading: (value: boolean) => {
-        if (mounted) setLoading(value);
+    // Initialize auth state
+    const initializeAuth = async () => {
+      try {
+        const { data: { session: currentSession } } = await supabase.auth.getSession();
+        
+        if (!mounted) return;
+        
+        setSession(currentSession);
+        setUser(currentSession?.user ?? null);
+        
+        if (currentSession?.user) {
+          console.log('Found existing session for user:', currentSession.user.email);
+          await checkAdminStatus(currentSession.user.id);
+        } else {
+          setIsAdmin(false);
+        }
+      } catch (error) {
+        console.error('Error initializing auth:', error);
+      } finally {
+        if (mounted) {
+          setLoading(false);
+        }
       }
     };
     
@@ -59,43 +68,21 @@ export function useAuthState() {
         
         if (!mounted) return;
         
-        safeSetState.session(currentSession);
-        safeSetState.user(currentSession?.user ?? null);
+        setSession(currentSession);
+        setUser(currentSession?.user ?? null);
         
         // Check admin status when user signs in
         if (currentSession?.user) {
           await checkAdminStatus(currentSession.user.id);
         } else {
-          safeSetState.isAdmin(false);
+          setIsAdmin(false);
         }
         
-        safeSetState.loading(false);
+        setLoading(false);
       }
     );
-
-    // Check for existing session
-    const initializeAuth = async () => {
-      try {
-        const { data: { session: currentSession } } = await supabase.auth.getSession();
-        
-        if (!mounted) return;
-        
-        safeSetState.session(currentSession);
-        safeSetState.user(currentSession?.user ?? null);
-        
-        if (currentSession?.user) {
-          console.log('Found existing session for user:', currentSession.user.email);
-          await checkAdminStatus(currentSession.user.id);
-        }
-      } catch (error) {
-        console.error('Error initializing auth:', error);
-      } finally {
-        if (mounted) {
-          safeSetState.loading(false);
-        }
-      }
-    };
     
+    // Initialize auth state
     initializeAuth();
 
     return () => {
