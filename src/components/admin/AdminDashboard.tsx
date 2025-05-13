@@ -26,8 +26,8 @@ const AdminDashboard = () => {
   return (
     <AdminSecurityCheck user={user} isAdmin={isAdmin}>
       <div className="container mx-auto py-8 px-4">
-        <AdminHeader userEmail={user.email} />
-        <WelcomeCard userEmail={user.email} />
+        <AdminHeader userEmail={user.email || ''} />
+        <WelcomeCard userEmail={user.email || ''} />
         <AdminTabs activeTab={activeTab} setActiveTab={setActiveTab} />
       </div>
     </AdminSecurityCheck>

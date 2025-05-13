@@ -1,10 +1,11 @@
 
 import React, { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { UserData } from "@/types/user";
+import { User } from "@supabase/supabase-js";
+import { convertToUserData } from "@/types/user";
 
 interface AdminSecurityCheckProps {
-  user: UserData | null;
+  user: User;
   isAdmin: boolean;
   children: React.ReactNode;
 }
