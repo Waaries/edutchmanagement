@@ -34,10 +34,14 @@ export function useAuthState() {
   };
 
   useEffect(() => {
+    let isUnmounted = false;
+    
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, currentSession) => {
         console.log('Auth state changed:', event, currentSession?.user?.email);
+        
+        if (isUnmounted) return;
         
         setSession(currentSession);
         setUser(currentSession?.user ?? null);
@@ -46,6 +50,7 @@ export function useAuthState() {
         if (currentSession?.user) {
           // Use setTimeout to prevent potential deadlocks
           setTimeout(async () => {
+            if (isUnmounted) return;
             await checkAdminStatus(currentSession.user.id);
             console.log('Admin status after auth change:', isAdmin);
           }, 0);
@@ -62,6 +67,8 @@ export function useAuthState() {
       try {
         const { data: { session: currentSession } } = await supabase.auth.getSession();
         
+        if (isUnmounted) return;
+        
         setSession(currentSession);
         setUser(currentSession?.user ?? null);
         
@@ -73,14 +80,19 @@ export function useAuthState() {
       } catch (error) {
         console.error('Error initializing auth:', error);
       } finally {
-        setLoading(false);
+        if (!isUnmounted) {
+          setLoading(false);
+        }
       }
     };
     
     initializeAuth();
 
-    return () => subscription.unsubscribe();
+    return () => {
+      isUnmounted = true;
+      subscription.unsubscribe();
+    };
   }, []);
 
-  return { session, user, loading, isAdmin, setIsAdmin };
+  return { session, user, loading, isAdmin };
 }
