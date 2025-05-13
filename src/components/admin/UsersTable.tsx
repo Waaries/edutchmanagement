@@ -26,34 +26,34 @@ export const UsersTable = () => {
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
 
-  // Fetch users data using a different approach that works with authenticated users
+  // Fetch users data using the secure function
   const fetchUsers = async () => {
     try {
       setLoading(true);
       
-      // First get all authenticated users from the auth.users view (uses RPC instead of admin API)
-      const { data: authData, error: authError } = await supabase
-        .from('auth_users_view')
-        .select('*');
+      // Use the secure get_users function to get user data
+      const { data: userData, error: userError } = await supabase
+        .rpc('get_users');
       
-      if (authError) {
-        console.error("Error fetching users:", authError);
+      if (userError) {
+        console.error("Error fetching users:", userError);
         toast({
           title: "Fout bij ophalen gebruikers",
-          description: authError.message,
+          description: userError.message,
           variant: "destructive",
         });
         return;
       }
 
-      if (!authData) {
+      if (!userData || userData.length === 0) {
         setUsers([]);
+        setLoading(false);
         return;
       }
 
       // Then get admin status for each user
       const usersWithRoles = await Promise.all(
-        authData.map(async (user) => {
+        userData.map(async (user) => {
           // Check if user is admin by querying the user_roles table
           const { data: roleData } = await supabase
             .from("user_roles")
