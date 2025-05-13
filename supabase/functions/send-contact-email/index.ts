@@ -26,94 +26,104 @@ serve(async (req) => {
     
     console.log("Received contact form data:", { name, email, phone, service, message });
     
-    // Verify all required SMTP environment variables are set
-    const requiredEnvVars = ["SMTP_HOST", "SMTP_PORT", "SMTP_USERNAME", "SMTP_PASSWORD", "ADMIN_EMAIL"];
-    const missingEnvVars = requiredEnvVars.filter(varName => {
-      const value = Deno.env.get(varName);
-      return !value || value.trim() === '';
-    });
+    // Check for required environment variables
+    const smtpHost = Deno.env.get("SMTP_HOST");
+    const smtpPort = Deno.env.get("SMTP_PORT");
+    const smtpUsername = Deno.env.get("SMTP_USERNAME");
+    const smtpPassword = Deno.env.get("SMTP_PASSWORD");
+    const adminEmail = Deno.env.get("ADMIN_EMAIL");
+    
+    // Comprehensive environment variable checking with detailed error messages
+    const missingEnvVars = [];
+    
+    if (!smtpHost) missingEnvVars.push("SMTP_HOST");
+    if (!smtpPort) missingEnvVars.push("SMTP_PORT");
+    if (!smtpUsername) missingEnvVars.push("SMTP_USERNAME");
+    if (!smtpPassword) missingEnvVars.push("SMTP_PASSWORD");
+    if (!adminEmail) missingEnvVars.push("ADMIN_EMAIL");
     
     if (missingEnvVars.length > 0) {
       console.error("Missing required environment variables:", missingEnvVars);
-      throw new Error(`Missing required environment variables: ${missingEnvVars.join(", ")}`);
+      throw new Error(`Ontbrekende configuratie: ${missingEnvVars.join(", ")}. Controleer de Edge Function instellingen.`);
     }
-    
-    const smtpHost = Deno.env.get("SMTP_HOST") || "";
-    const smtpPort = Number(Deno.env.get("SMTP_PORT")) || 587;
-    const smtpUsername = Deno.env.get("SMTP_USERNAME") || "";
-    const smtpPassword = Deno.env.get("SMTP_PASSWORD") || "";
     
     console.log(`Configuring SMTP client with host: ${smtpHost}, port: ${smtpPort}`);
     
-    // Configure SMTP client
-    const client = new SMTPClient({
-      connection: {
-        hostname: smtpHost,
-        port: smtpPort,
-        tls: true,
-        auth: {
-          username: smtpUsername,
-          password: smtpPassword,
-        }
-      }
-    });
-    
-    // Build email content
-    const adminEmail = Deno.env.get("ADMIN_EMAIL") || "";
-    const replyToEmail = email;
-    
-    console.log(`Sending email to admin (${adminEmail}) from ${smtpUsername}`);
-    
+    // Configure SMTP client with proper error handling
     try {
-      // Email to admin
-      await client.send({
-        from: smtpUsername,
-        to: adminEmail,
-        subject: `Nieuwe contactaanvraag van ${name}`,
-        html: `
-          <h2>Nieuwe contactaanvraag</h2>
-          <p><strong>Naam:</strong> ${name}</p>
-          <p><strong>E-mail:</strong> ${email}</p>
-          <p><strong>Telefoon:</strong> ${phone || "Niet opgegeven"}</p>
-          <p><strong>Gewenst Pakket:</strong> ${service || "Niet opgegeven"}</p>
-          <h3>Bericht:</h3>
-          <p>${message}</p>
-        `,
-        replyTo: replyToEmail
+      const client = new SMTPClient({
+        connection: {
+          hostname: smtpHost,
+          port: Number(smtpPort) || 587,
+          tls: true,
+          auth: {
+            username: smtpUsername,
+            password: smtpPassword,
+          }
+        }
       });
       
-      console.log("Admin email sent successfully");
+      console.log("SMTP client configured successfully");
       
-      // Confirmation email to sender
-      await client.send({
-        from: smtpUsername,
-        to: email,
-        subject: "Bedankt voor uw bericht",
-        html: `
-          <h2>Bedankt voor uw bericht!</h2>
-          <p>Beste ${name},</p>
-          <p>Wij hebben uw bericht in goede orde ontvangen en zullen zo spoedig mogelijk contact met u opnemen.</p>
-          <p>Hieronder vindt u een kopie van uw bericht:</p>
-          <hr>
-          <p><strong>Naam:</strong> ${name}</p>
-          <p><strong>E-mail:</strong> ${email}</p>
-          <p><strong>Telefoon:</strong> ${phone || "Niet opgegeven"}</p>
-          <p><strong>Gewenst Pakket:</strong> ${service || "Niet opgegeven"}</p>
-          <p><strong>Bericht:</strong></p>
-          <p>${message}</p>
-          <hr>
-          <p>Met vriendelijke groet,</p>
-          <p>Het Team</p>
-        `
-      });
+      // Build email content
+      const replyToEmail = email;
       
-      console.log("Confirmation email sent successfully");
-    } catch (emailError) {
-      console.error("Error sending email:", emailError);
-      throw new Error(`Failed to send email: ${emailError.message}`);
-    } finally {
-      // Close the SMTP connection
-      await client.close();
+      console.log(`Sending email to admin (${adminEmail}) from ${smtpUsername}`);
+      
+      try {
+        // Email to admin
+        await client.send({
+          from: smtpUsername,
+          to: adminEmail,
+          subject: `Nieuwe contactaanvraag van ${name}`,
+          html: `
+            <h2>Nieuwe contactaanvraag</h2>
+            <p><strong>Naam:</strong> ${name}</p>
+            <p><strong>E-mail:</strong> ${email}</p>
+            <p><strong>Telefoon:</strong> ${phone || "Niet opgegeven"}</p>
+            <p><strong>Gewenst Pakket:</strong> ${service || "Niet opgegeven"}</p>
+            <h3>Bericht:</h3>
+            <p>${message}</p>
+          `,
+          replyTo: replyToEmail
+        });
+        
+        console.log("Admin email sent successfully");
+        
+        // Confirmation email to sender
+        await client.send({
+          from: smtpUsername,
+          to: email,
+          subject: "Bedankt voor uw bericht",
+          html: `
+            <h2>Bedankt voor uw bericht!</h2>
+            <p>Beste ${name},</p>
+            <p>Wij hebben uw bericht in goede orde ontvangen en zullen zo spoedig mogelijk contact met u opnemen.</p>
+            <p>Hieronder vindt u een kopie van uw bericht:</p>
+            <hr>
+            <p><strong>Naam:</strong> ${name}</p>
+            <p><strong>E-mail:</strong> ${email}</p>
+            <p><strong>Telefoon:</strong> ${phone || "Niet opgegeven"}</p>
+            <p><strong>Gewenst Pakket:</strong> ${service || "Niet opgegeven"}</p>
+            <p><strong>Bericht:</strong></p>
+            <p>${message}</p>
+            <hr>
+            <p>Met vriendelijke groet,</p>
+            <p>Het Team</p>
+          `
+        });
+        
+        console.log("Confirmation email sent successfully");
+      } catch (emailError) {
+        console.error("Error sending email:", emailError);
+        throw new Error(`Fout bij het verzenden van e-mail: ${emailError.message}`);
+      } finally {
+        // Close the SMTP connection
+        await client.close();
+      }
+    } catch (smtpError) {
+      console.error("Error configuring SMTP client:", smtpError);
+      throw new Error(`Fout bij SMTP configuratie: ${smtpError.message}`);
     }
     
     // Return success response
@@ -133,7 +143,7 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({ 
         success: false, 
-        message: "Failed to process contact form", 
+        message: "Fout bij verwerken contactformulier", 
         error: error.message 
       }),
       { 

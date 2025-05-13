@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Check } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 
 const ContactForm = () => {
   const [formState, setFormState] = useState({
@@ -100,9 +101,12 @@ const ContactForm = () => {
       ) : (
         <form onSubmit={handleSubmit} className="space-y-6 text-left">
           {error && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
-              {error}
-            </div>
+            <Alert variant="destructive">
+              <AlertTitle>Fout bij verzenden</AlertTitle>
+              <AlertDescription>
+                {error}
+              </AlertDescription>
+            </Alert>
           )}
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
