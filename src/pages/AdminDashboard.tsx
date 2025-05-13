@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
+import AuthGuard from '@/components/auth/AuthGuard';
 import {
   Table,
   TableBody,
@@ -14,6 +14,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Shield, User, Users, UserPlus, Trash2, LogOut } from 'lucide-react';
+import { Navigate } from 'react-router-dom';
 
 interface UserData {
   id: string;
@@ -23,7 +24,7 @@ interface UserData {
 }
 
 const AdminDashboard = () => {
-  const { user, isAdmin, loading, signOut } = useAuth();
+  const { user, signOut, isAdmin, loading } = useAuth();
   const [users, setUsers] = useState<UserData[]>([]);
   const [loadingUsers, setLoadingUsers] = useState(true);
   const { toast } = useToast();
@@ -134,89 +135,91 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="flex justify-between items-center mb-6">
-          <div className="flex items-center">
-            <Shield className="h-8 w-8 text-primary mr-2" />
-            <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
-          </div>
-          <Button 
-            variant="outline" 
-            className="flex items-center gap-2"
-            onClick={() => signOut()}
-          >
-            <LogOut className="h-4 w-4" />
-            Sign Out
-          </Button>
-        </div>
-
-        <div className="bg-white shadow rounded-lg p-6 mb-6">
-          <h2 className="text-lg font-medium text-gray-900 mb-4 flex items-center">
-            <Users className="h-5 w-5 mr-2 text-primary" />
-            User Management
-          </h2>
-          
-          {loadingUsers ? (
-            <div className="flex justify-center py-8">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+    <AuthGuard requireAdmin>
+      <div className="min-h-screen bg-gray-50 pt-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="flex justify-between items-center mb-6">
+            <div className="flex items-center">
+              <Shield className="h-8 w-8 text-primary mr-2" />
+              <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
             </div>
-          ) : (
-            <Table>
-              <TableCaption>List of all registered users</TableCaption>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Joined</TableHead>
-                  <TableHead>Role</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {users.map((userData) => (
-                  <TableRow key={userData.id}>
-                    <TableCell>{userData.email}</TableCell>
-                    <TableCell>{new Date(userData.created_at).toLocaleDateString()}</TableCell>
-                    <TableCell>
-                      <span className={`px-2 py-1 rounded-full text-xs ${
-                        userData.is_admin 
-                          ? 'bg-primary/10 text-primary' 
-                          : 'bg-gray-100 text-gray-600'
-                      }`}>
-                        {userData.is_admin ? 'Admin' : 'User'}
-                      </span>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      {userData.is_admin ? (
-                        <Button 
-                          variant="destructive" 
-                          size="sm"
-                          className="flex items-center gap-1"
-                          onClick={() => removeAdmin(userData.id)}
-                        >
-                          <Trash2 className="h-3.5 w-3.5" />
-                          Remove Admin
-                        </Button>
-                      ) : (
-                        <Button 
-                          variant="outline" 
-                          size="sm"
-                          className="flex items-center gap-1"
-                          onClick={() => makeAdmin(userData.id)}
-                        >
-                          <UserPlus className="h-3.5 w-3.5" />
-                          Make Admin
-                        </Button>
-                      )}
-                    </TableCell>
+            <Button 
+              variant="outline" 
+              className="flex items-center gap-2"
+              onClick={() => signOut()}
+            >
+              <LogOut className="h-4 w-4" />
+              Sign Out
+            </Button>
+          </div>
+
+          <div className="bg-white shadow rounded-lg p-6 mb-6">
+            <h2 className="text-lg font-medium text-gray-900 mb-4 flex items-center">
+              <Users className="h-5 w-5 mr-2 text-primary" />
+              User Management
+            </h2>
+            
+            {loadingUsers ? (
+              <div className="flex justify-center py-8">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+              </div>
+            ) : (
+              <Table>
+                <TableCaption>List of all registered users</TableCaption>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Email</TableHead>
+                    <TableHead>Joined</TableHead>
+                    <TableHead>Role</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          )}
+                </TableHeader>
+                <TableBody>
+                  {users.map((userData) => (
+                    <TableRow key={userData.id}>
+                      <TableCell>{userData.email}</TableCell>
+                      <TableCell>{new Date(userData.created_at).toLocaleDateString()}</TableCell>
+                      <TableCell>
+                        <span className={`px-2 py-1 rounded-full text-xs ${
+                          userData.is_admin 
+                            ? 'bg-primary/10 text-primary' 
+                            : 'bg-gray-100 text-gray-600'
+                        }`}>
+                          {userData.is_admin ? 'Admin' : 'User'}
+                        </span>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {userData.is_admin ? (
+                          <Button 
+                            variant="destructive" 
+                            size="sm"
+                            className="flex items-center gap-1"
+                            onClick={() => removeAdmin(userData.id)}
+                          >
+                            <Trash2 className="h-3.5 w-3.5" />
+                            Remove Admin
+                          </Button>
+                        ) : (
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            className="flex items-center gap-1"
+                            onClick={() => makeAdmin(userData.id)}
+                          >
+                            <UserPlus className="h-3.5 w-3.5" />
+                            Make Admin
+                          </Button>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </AuthGuard>
   );
 };
 

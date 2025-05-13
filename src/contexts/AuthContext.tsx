@@ -1,8 +1,8 @@
-
 import { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import type { SupabaseClient } from '@supabase/supabase-js/dist/module';
+import { cleanupAuthState } from '@/utils/auth-utils';
 
 // Define our own type definitions based on what we need
 type Session = {
@@ -50,12 +50,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // Function to check if user is an admin
   const checkAdminStatus = async (userId: string) => {
     try {
-      const { data, error } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', userId)
-        .eq('role', 'admin')
-        .single();
+      // Use the is_admin database function for improved security
+      const { data, error } = await supabase.rpc('is_admin');
       
       if (error) {
         console.error('Error checking admin status:', error);
@@ -63,7 +59,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return;
       }
       
-      setIsAdmin(data !== null);
+      setIsAdmin(!!data);
     } catch (err) {
       console.error('Failed to check admin status:', err);
       setIsAdmin(false);
@@ -119,6 +115,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signIn = async (email: string, password: string) => {
     try {
+      // First clean up any existing auth state to prevent issues
+      cleanupAuthState();
+
+      // Try global sign out first to ensure a clean state
+      try {
+        await supabase.auth.signOut({ scope: 'global' });
+      } catch (err) {
+        // Continue even if global sign out fails
+        console.log('Global sign out failed, continuing with login');
+      }
+
+      // Now perform the actual sign in
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (!error) {
         // Successful login
@@ -194,11 +202,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signOut = async () => {
     try {
-      await supabase.auth.signOut();
+      // First clean up local storage to prevent auth limbo
+      cleanupAuthState();
+      
+      // Then try global sign out from Supabase
+      await supabase.auth.signOut({ scope: 'global' });
+      
       toast({
         title: "Signed Out",
         description: "You have been successfully signed out.",
       });
+      
+      // Force page reload for a clean state
+      window.location.href = '/auth';
     } catch (error) {
       console.error('Sign out error:', error);
       toast({
