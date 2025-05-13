@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -143,7 +144,7 @@ const Dashboard = () => {
             <Card>
               <CardHeader>
                 <CardTitle>Profiel</CardTitle>
-                <CardDescription>Bekijk en bewerk uw profiel</CardHeader>
+                <CardDescription>Bekijk en bewerk uw profiel</CardDescription>
               </CardHeader>
               <CardContent>
                 <p>Bekijk en bewerk uw persoonlijke gegevens.</p>
