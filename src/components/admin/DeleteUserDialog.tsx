@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -12,14 +11,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-
-type UserData = {
-  id: string;
-  email: string;
-  created_at: string;
-  is_admin: boolean;
-  last_sign_in_at: string | null;
-};
+import { UserData } from "@/types/user";
 
 interface DeleteUserDialogProps {
   userToDelete: UserData | null;

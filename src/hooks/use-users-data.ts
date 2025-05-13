@@ -2,14 +2,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-
-export type UserData = {
-  id: string;
-  email: string;
-  created_at: string;
-  is_admin: boolean;
-  last_sign_in_at: string | null;
-};
+import { UserData } from "@/types/user";
 
 export function useUsersData() {
   const [users, setUsers] = useState<UserData[]>([]);
