@@ -34,23 +34,21 @@ export function useUsersData() {
         return;
       }
 
-      // Then get admin status for each user
+      // Check if user is admin directly via the is_admin RPC function
+      // This avoids the recursion issue with user_roles table
       const usersWithRoles = await Promise.all(
         userData.map(async (user) => {
-          // Check if user is admin by querying the user_roles table
-          const { data: roleData } = await supabase
-            .from("user_roles")
-            .select("*")
-            .eq("user_id", user.id)
-            .eq("role", "admin")
-            .single();
+          // Check admin status by using the is_admin function
+          const { data: isAdminResult } = await supabase
+            .rpc('is_admin');
 
           return {
             id: user.id,
             email: user.email,
             created_at: user.created_at,
             last_sign_in_at: user.last_sign_in_at,
-            is_admin: !!roleData, // Convert to boolean
+            is_admin: isAdminResult, // Use the result from is_admin function
+            raw_app_meta_data: user.raw_app_meta_data
           };
         })
       );

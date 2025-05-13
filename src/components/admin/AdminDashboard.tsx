@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -7,22 +8,46 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { Shield, Users, Database, Settings, LogOut, LayoutDashboard } from "lucide-react";
 import UsersTable from "./UsersTable";
+import { supabase } from "@/integrations/supabase/client";
 
 const AdminDashboard = () => {
   const { user, isAdmin, signOut } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("overview");
+  const [localAdminCheck, setLocalAdminCheck] = useState<boolean | null>(null);
 
   useEffect(() => {
     // Log admin access for security monitoring
-    if (isAdmin) {
-      console.log("Admin dashboard accessed by:", user?.email);
+    if (user && isAdmin) {
+      console.log("Admin dashboard accessed by:", user.email);
+      // Double check admin status directly with Supabase
+      checkAdminStatusDirectly();
     }
   }, [isAdmin, user]);
 
+  // Function to check admin status directly with Supabase
+  const checkAdminStatusDirectly = async () => {
+    if (!user) return;
+    
+    try {
+      const { data, error } = await supabase.rpc('is_admin');
+      
+      if (error) {
+        console.error("Error checking admin status:", error);
+        setLocalAdminCheck(false);
+        return;
+      }
+      
+      setLocalAdminCheck(!!data);
+    } catch (err) {
+      console.error("Exception during admin check:", err);
+      setLocalAdminCheck(false);
+    }
+  };
+
   // If not logged in or not admin, redirect to home
-  if (!user || !isAdmin) {
+  if (!user || (!isAdmin && localAdminCheck === false)) {
     toast({
       title: "Toegang geweigerd",
       description: "U heeft geen toegang tot het admin dashboard.",
@@ -69,7 +94,7 @@ const AdminDashboard = () => {
       
       <Card className="mb-8">
         <CardHeader>
-          <CardTitle>Welkom, {user.email}</CardTitle>
+          <CardTitle>Welkom, {user?.email}</CardTitle>
           <CardDescription>
             U bent ingelogd als beheerder van eDutch Management.
           </CardDescription>

@@ -13,7 +13,7 @@ export function useAuthState() {
     try {
       console.log("Checking admin status for userId:", userId);
       
-      // This is the fixed call to check admin status
+      // Direct call to check admin status
       const { data, error } = await supabase
         .rpc('is_admin');
       
