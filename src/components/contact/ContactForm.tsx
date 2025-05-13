@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Check } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 
 const ContactForm = () => {
@@ -41,13 +41,13 @@ const ContactForm = () => {
       
       if (error) {
         console.error("Supabase function error:", error);
-        throw new Error(error.message || "Failed to send message");
+        throw new Error(error.message || "Fout bij verzenden bericht");
       }
       
       console.log("Form submission response:", data);
       
       if (!data.success) {
-        throw new Error(data.message || "Failed to send message");
+        throw new Error(data.message || "Fout bij verzenden bericht");
       }
       
       // Show success state
@@ -196,6 +196,7 @@ const ContactForm = () => {
               className="w-full px-4 py-3 rounded-2xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
               placeholder="Vertel ons wat meer over uw behoeften..."
               disabled={loading}
+              required
             ></textarea>
           </div>
           

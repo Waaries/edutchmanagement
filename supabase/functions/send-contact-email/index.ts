@@ -26,14 +26,24 @@ serve(async (req) => {
     
     console.log("Received contact form data:", { name, email, phone, service, message });
     
-    // Check for required environment variables
+    // Haal SMTP instellingen op uit environment variables
     const smtpHost = Deno.env.get("SMTP_HOST");
     const smtpPort = Deno.env.get("SMTP_PORT");
     const smtpUsername = Deno.env.get("SMTP_USERNAME");
     const smtpPassword = Deno.env.get("SMTP_PASSWORD");
     const adminEmail = Deno.env.get("ADMIN_EMAIL");
+    const senderName = Deno.env.get("SENDER_NAME") || "E-Dutch Management";
     
-    // Comprehensive environment variable checking with detailed error messages
+    // Log de SMTP instellingen (zonder wachtwoord)
+    console.log("SMTP settings:", {
+      host: smtpHost,
+      port: smtpPort,
+      username: smtpUsername,
+      adminEmail: adminEmail,
+      senderName: senderName
+    });
+    
+    // Controleer of alle vereiste omgevingsvariabelen zijn ingesteld
     const missingEnvVars = [];
     
     if (!smtpHost) missingEnvVars.push("SMTP_HOST");
@@ -43,14 +53,14 @@ serve(async (req) => {
     if (!adminEmail) missingEnvVars.push("ADMIN_EMAIL");
     
     if (missingEnvVars.length > 0) {
-      console.error("Missing required environment variables:", missingEnvVars);
+      console.error("Ontbrekende omgevingsvariabelen:", missingEnvVars);
       throw new Error(`Ontbrekende configuratie: ${missingEnvVars.join(", ")}. Controleer de Edge Function instellingen.`);
     }
     
     console.log(`Configuring SMTP client with host: ${smtpHost}, port: ${smtpPort}`);
     
-    // Configure SMTP client with proper error handling
     try {
+      // Configureer SMTP client
       const client = new SMTPClient({
         connection: {
           hostname: smtpHost,
@@ -65,65 +75,55 @@ serve(async (req) => {
       
       console.log("SMTP client configured successfully");
       
-      // Build email content
-      const replyToEmail = email;
+      // Email naar beheerder
+      await client.send({
+        from: `${senderName} <${smtpUsername}>`,
+        to: adminEmail,
+        subject: `Nieuwe contactaanvraag van ${name}`,
+        html: `
+          <h2>Nieuwe contactaanvraag</h2>
+          <p><strong>Naam:</strong> ${name}</p>
+          <p><strong>E-mail:</strong> ${email}</p>
+          <p><strong>Telefoon:</strong> ${phone || "Niet opgegeven"}</p>
+          <p><strong>Gewenst Pakket:</strong> ${service || "Niet opgegeven"}</p>
+          <h3>Bericht:</h3>
+          <p>${message}</p>
+        `,
+        replyTo: email
+      });
       
-      console.log(`Sending email to admin (${adminEmail}) from ${smtpUsername}`);
+      console.log("Admin email sent successfully");
       
-      try {
-        // Email to admin
-        await client.send({
-          from: smtpUsername,
-          to: adminEmail,
-          subject: `Nieuwe contactaanvraag van ${name}`,
-          html: `
-            <h2>Nieuwe contactaanvraag</h2>
-            <p><strong>Naam:</strong> ${name}</p>
-            <p><strong>E-mail:</strong> ${email}</p>
-            <p><strong>Telefoon:</strong> ${phone || "Niet opgegeven"}</p>
-            <p><strong>Gewenst Pakket:</strong> ${service || "Niet opgegeven"}</p>
-            <h3>Bericht:</h3>
-            <p>${message}</p>
-          `,
-          replyTo: replyToEmail
-        });
-        
-        console.log("Admin email sent successfully");
-        
-        // Confirmation email to sender
-        await client.send({
-          from: smtpUsername,
-          to: email,
-          subject: "Bedankt voor uw bericht",
-          html: `
-            <h2>Bedankt voor uw bericht!</h2>
-            <p>Beste ${name},</p>
-            <p>Wij hebben uw bericht in goede orde ontvangen en zullen zo spoedig mogelijk contact met u opnemen.</p>
-            <p>Hieronder vindt u een kopie van uw bericht:</p>
-            <hr>
-            <p><strong>Naam:</strong> ${name}</p>
-            <p><strong>E-mail:</strong> ${email}</p>
-            <p><strong>Telefoon:</strong> ${phone || "Niet opgegeven"}</p>
-            <p><strong>Gewenst Pakket:</strong> ${service || "Niet opgegeven"}</p>
-            <p><strong>Bericht:</strong></p>
-            <p>${message}</p>
-            <hr>
-            <p>Met vriendelijke groet,</p>
-            <p>Het Team</p>
-          `
-        });
-        
-        console.log("Confirmation email sent successfully");
-      } catch (emailError) {
-        console.error("Error sending email:", emailError);
-        throw new Error(`Fout bij het verzenden van e-mail: ${emailError.message}`);
-      } finally {
-        // Close the SMTP connection
-        await client.close();
-      }
-    } catch (smtpError) {
-      console.error("Error configuring SMTP client:", smtpError);
-      throw new Error(`Fout bij SMTP configuratie: ${smtpError.message}`);
+      // Bevestigingse-mail naar afzender
+      await client.send({
+        from: `${senderName} <${smtpUsername}>`,
+        to: email,
+        subject: "Bedankt voor uw bericht",
+        html: `
+          <h2>Bedankt voor uw bericht!</h2>
+          <p>Beste ${name},</p>
+          <p>Wij hebben uw bericht in goede orde ontvangen en zullen zo spoedig mogelijk contact met u opnemen.</p>
+          <p>Hieronder vindt u een kopie van uw bericht:</p>
+          <hr>
+          <p><strong>Naam:</strong> ${name}</p>
+          <p><strong>E-mail:</strong> ${email}</p>
+          <p><strong>Telefoon:</strong> ${phone || "Niet opgegeven"}</p>
+          <p><strong>Gewenst Pakket:</strong> ${service || "Niet opgegeven"}</p>
+          <p><strong>Bericht:</strong></p>
+          <p>${message}</p>
+          <hr>
+          <p>Met vriendelijke groet,</p>
+          <p>E-Dutch Management</p>
+        `
+      });
+      
+      console.log("Confirmation email sent successfully");
+      
+      // Sluit de SMTP connectie
+      await client.close();
+    } catch (emailError) {
+      console.error("Error sending email:", emailError);
+      throw new Error(`Fout bij het verzenden van e-mail: ${emailError.message}`);
     }
     
     // Return success response
