@@ -56,7 +56,7 @@ const Dashboard = () => {
           <h1 className="text-3xl font-bold">Dashboard</h1>
         </div>
         <div className="flex items-center gap-2">
-          <AdminLink />
+          {/* Removed the AdminLink component which was creating duplication */}
           {isAdmin && (
             <Button 
               onClick={goToAdmin}

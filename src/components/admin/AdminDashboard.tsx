@@ -1,17 +1,18 @@
 
 import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { Shield, Users, Database, Settings } from "lucide-react";
+import { Shield, Users, Database, Settings, LogOut } from "lucide-react";
 import UsersTable from "./UsersTable";
 
 const AdminDashboard = () => {
-  const { user, isAdmin } = useAuth();
+  const { user, isAdmin, signOut } = useAuth();
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("overview");
 
   useEffect(() => {
@@ -31,11 +32,26 @@ const AdminDashboard = () => {
     return <Navigate to="/" />;
   }
 
+  const handleLogout = async () => {
+    await signOut();
+    navigate('/auth');
+  };
+
   return (
     <div className="container mx-auto py-8 px-4">
-      <div className="flex items-center gap-2 mb-6">
-        <Shield className="h-8 w-8 text-primary" />
-        <h1 className="text-3xl font-bold">Administrator Dashboard</h1>
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-2">
+          <Shield className="h-8 w-8 text-primary" />
+          <h1 className="text-3xl font-bold">Administrator Dashboard</h1>
+        </div>
+        <Button 
+          onClick={handleLogout}
+          variant="destructive" 
+          className="flex items-center gap-2"
+        >
+          <LogOut className="h-4 w-4" />
+          <span>Uitloggen</span>
+        </Button>
       </div>
       
       <Card className="mb-8">
