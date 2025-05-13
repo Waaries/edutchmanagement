@@ -1,195 +1,112 @@
 
-import { useEffect, useState } from "react";
-import AdminDashboard from "@/components/admin/AdminDashboard";
-import { useAuth } from "@/contexts/AuthContext";
+import React, { useState, useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
-import { Button } from "@/components/ui/button";
+import { useAuth } from "@/contexts/AuthContext";
+import AdminDashboard from "@/components/admin/AdminDashboard";
 import { supabase } from "@/integrations/supabase/client";
-import { AlertCircle } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
-const Admin = () => {
-  const { user, isAdmin, loading } = useAuth();
-  const { toast } = useToast();
-  const navigate = useNavigate();
-  const [debugInfo, setDebugInfo] = useState<any>(null);
-  const [checkingAdmin, setCheckingAdmin] = useState<boolean>(false);
-  const [directAdminCheck, setDirectAdminCheck] = useState<boolean | null>(null);
+const Admin: React.FC = () => {
+  const { user, loading, isAdmin } = useAuth();
+  const [verifying, setVerifying] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
+  const { toast } = useToast();
   
-  // Function to manually check admin status using the fixed function
-  const checkAdminStatus = async () => {
-    if (!user) return;
-    
-    setCheckingAdmin(true);
-    try {
-      // Call the is_admin() function through RPC
-      const { data, error } = await supabase.rpc('is_admin');
+  // Directly verify admin status to handle edge cases
+  useEffect(() => {
+    const verifyAdminAccess = async () => {
+      if (loading) return;
       
-      if (error) {
-        console.error("Admin check error:", error);
-        setDebugInfo({ error: error.message, email: user.email });
-        setDirectAdminCheck(false);
-        setError("Er is een fout opgetreden bij het controleren van uw admin status.");
-      } else {
-        console.log("Admin check result:", data);
-        setDebugInfo({ 
-          isAdmin: !!data, 
-          email: user.email,
-          userId: user.id,
-          timestamp: new Date().toISOString(),
-          method: "rpc"
-        });
-        setDirectAdminCheck(!!data);
+      if (!user) {
+        // Not logged in
+        setVerifying(false);
+        return;
+      }
+
+      try {
+        // Direct database check to avoid potential recursion issues
+        const { data, error } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', user.id)
+          .eq('role', 'admin')
+          .maybeSingle();
         
-        if (!data) {
-          setError("U heeft geen admin rechten voor deze pagina.");
+        if (error) {
+          console.error("Admin verification error:", error);
+          setError("Er is een fout opgetreden bij het verifiëren van uw toegangsrechten.");
+          
           toast({
-            title: "Toegang geweigerd",
-            description: "U heeft geen toegang tot het admin dashboard.",
+            title: "Toegangsfout",
+            description: "Er is een fout opgetreden bij het verifiëren van uw beheerdersrechten.",
             variant: "destructive",
           });
         } else {
           setError(null);
           
-          // Force reload the page to refresh admin components if user is admin
-          if (!!data) {
+          // If user has admin role but isAdmin in context is false, refresh the page
+          if (data && !isAdmin) {
+            console.log("User has admin role but isAdmin is false. Refreshing...");
             window.location.reload();
           }
+          
+          // If user does not have admin role, redirect to dashboard
+          if (!data && isAdmin) {
+            console.log("User does not have admin role but isAdmin is true. Redirecting...");
+            toast({
+              title: "Toegang geweigerd",
+              description: "U heeft geen toegang tot het admin dashboard.",
+              variant: "destructive",
+            });
+            navigate('/dashboard');
+          }
         }
+      } catch (err) {
+        console.error("Exception during admin verification:", err);
+        setError("Er is een onbekende fout opgetreden.");
+      } finally {
+        setVerifying(false);
       }
-    } catch (err) {
-      console.error("Exception during admin check:", err);
-      setDebugInfo({ exception: String(err), email: user.email });
-      setDirectAdminCheck(false);
-      setError("Er is een fout opgetreden bij het controleren van uw admin status.");
-    } finally {
-      setCheckingAdmin(false);
-    }
-  };
-
-  useEffect(() => {
-    // Update the document title
-    document.title = "Admin Dashboard | eDutch Management";
+    };
     
-    console.log('Admin page - Auth state:', { 
-      user: user?.email || '(no user)', 
-      userId: user?.id, 
-      isAdmin, 
-      loading 
-    });
-  }, [user, isAdmin, loading]);
-
-  // Check admin status when component mounts
-  useEffect(() => {
-    if (user && !loading) {
-      checkAdminStatus();
-    }
-
-    // Force redirect to auth page if not logged in after loading completes
-    if (!loading && !user) {
-      console.log("User is not logged in, redirecting to auth page");
-      navigate("/auth");
-    }
-  }, [user, loading, navigate]);
-
-  // Show a loading indicator while checking authentication
-  if (loading) {
+    verifyAdminAccess();
+  }, [user, loading, isAdmin, navigate, toast]);
+  
+  // Show loading indicator while verifying
+  if (loading || verifying) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-4">Bezig met laden...</p>
+        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+  
+  // Redirect if user is not logged in
+  if (!user) {
+    return <Navigate to="/auth" replace />;
+  }
+  
+  // Show error message if there was an error
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center p-8 bg-red-50 rounded-lg border border-red-200 max-w-md">
+          <h1 className="text-2xl font-bold text-red-700 mb-4">Toegangsfout</h1>
+          <p className="text-red-600">{error}</p>
+          <button 
+            onClick={() => navigate('/dashboard')}
+            className="mt-6 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90"
+          >
+            Terug naar Dashboard
+          </button>
         </div>
       </div>
     );
   }
 
-  // If not logged in, redirect to login
-  if (!user) {
-    return <Navigate to="/auth" />;
-  }
-
-  // If admin status checked directly and user is admin, show dashboard
-  if (user && (isAdmin || directAdminCheck === true)) {
-    return <AdminDashboard />;
-  }
-
-  // If not admin, show access denied
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4">
-      <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-        <h2 className="text-2xl font-bold mb-4">Toegang geweigerd</h2>
-        
-        {error && (
-          <div className="p-3 mb-4 bg-red-50 text-red-600 rounded-md flex items-start">
-            <AlertCircle className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" />
-            <span>{error}</span>
-          </div>
-        )}
-        
-        <p className="mb-6">U heeft geen admin rechten of bent niet ingelogd.</p>
-        
-        {user && (
-          <>
-            <div className="bg-slate-50 p-4 rounded-md mb-4">
-              <h3 className="font-medium mb-2">Gebruikersinformatie:</h3>
-              <p>Email: {user.email}</p>
-              <p>User ID: {user.id}</p>
-              <p>Admin volgens AuthContext: {isAdmin ? 'Ja' : 'Nee'}</p>
-              <p>Admin volgens directe check: {directAdminCheck === null ? 'Nog niet gecontroleerd' : directAdminCheck ? 'Ja' : 'Nee'}</p>
-            </div>
-            
-            <div className="mb-4">
-              <Button 
-                onClick={checkAdminStatus}
-                disabled={checkingAdmin}
-                className="w-full"
-              >
-                {checkingAdmin ? 'Controleren...' : 'Controleer admin status opnieuw'}
-              </Button>
-            </div>
-            
-            {debugInfo && (
-              <div className="bg-slate-50 p-4 rounded-md overflow-auto max-h-48 text-xs">
-                <h3 className="font-medium mb-2">Debug Informatie:</h3>
-                <pre>{JSON.stringify(debugInfo, null, 2)}</pre>
-              </div>
-            )}
-            
-            <div className="mt-4">
-              <Button 
-                onClick={() => navigate('/dashboard')}
-                variant="outline"
-                className="w-full mb-2"
-              >
-                Naar dashboard
-              </Button>
-              
-              <Button 
-                onClick={() => navigate('/')}
-                variant="outline"
-                className="w-full"
-              >
-                Terug naar homepage
-              </Button>
-            </div>
-          </>
-        )}
-        
-        {!user && (
-          <div className="mt-4">
-            <Button 
-              onClick={() => navigate('/auth')}
-              className="w-full"
-            >
-              Inloggen
-            </Button>
-          </div>
-        )}
-      </div>
-    </div>
-  );
+  // Only render the admin dashboard if the user is an admin
+  return isAdmin ? <AdminDashboard /> : <Navigate to="/dashboard" replace />;
 };
 
 export default Admin;

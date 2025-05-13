@@ -9,13 +9,18 @@ export function useUsersData() {
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
 
-  // Fetch users data using the secure function
+  // Fetch users data using direct queries to avoid recursion issues
   const fetchUsers = async () => {
     try {
       setLoading(true);
       
-      // First verify the user is an admin using the optimized function
-      const { data: isAdminData, error: isAdminError } = await supabase.rpc('is_admin');
+      // Direct database query instead of using is_admin function
+      const { data: isAdminData, error: isAdminError } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', supabase.auth.getUser().then(({data}) => data.user?.id))
+        .eq('role', 'admin')
+        .maybeSingle();
       
       if (isAdminError || !isAdminData) {
         console.error("Error checking admin permissions:", isAdminError);
@@ -28,7 +33,7 @@ export function useUsersData() {
         return;
       }
       
-      // Use the secure get_users function to get user data
+      // Get all users from auth.users via secure function
       const { data: userData, error: userError } = await supabase
         .rpc('get_users');
       
@@ -49,7 +54,7 @@ export function useUsersData() {
         return;
       }
 
-      // Instead of querying each user individually, let's get all admin users at once
+      // Get all admin roles directly
       const { data: adminRoles, error: rolesError } = await supabase
         .from('user_roles')
         .select('user_id')
