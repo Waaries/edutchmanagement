@@ -11,6 +11,8 @@ export function useAuthState() {
 
   const checkAdminStatus = async (userId: string) => {
     try {
+      console.log("Checking admin status for userId:", userId);
+      
       const { data, error } = await supabase
         .rpc('is_admin');
       
@@ -34,32 +36,38 @@ export function useAuthState() {
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, currentSession) => {
+        console.log('Auth state changed:', event, currentSession?.user?.email);
+        
         setSession(currentSession);
         setUser(currentSession?.user ?? null);
-        setLoading(false);
         
         // Check admin status when user signs in
-        if (event === 'SIGNED_IN' && currentSession?.user) {
+        if (currentSession?.user) {
           await checkAdminStatus(currentSession.user.id);
-          console.log('User signed in:', currentSession?.user?.email);
-        } else if (event === 'SIGNED_OUT') {
+        } else {
           setIsAdmin(false);
-          console.log('User signed out');
         }
+        
+        setLoading(false);
       }
     );
 
     // THEN check for existing session
-    supabase.auth.getSession().then(async ({ data: { session: currentSession } }) => {
+    const initializeAuth = async () => {
+      const { data: { session: currentSession } } = await supabase.auth.getSession();
+      
       setSession(currentSession);
       setUser(currentSession?.user ?? null);
       
       if (currentSession?.user) {
+        console.log('Found existing session for user:', currentSession.user.email);
         await checkAdminStatus(currentSession.user.id);
       }
       
       setLoading(false);
-    });
+    };
+    
+    initializeAuth();
 
     return () => subscription.unsubscribe();
   }, []);

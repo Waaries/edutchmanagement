@@ -33,6 +33,13 @@ const LoginForm = () => {
       return;
     }
     
+    // Clean up auth state first to prevent conflicts
+    Object.keys(localStorage).forEach((key) => {
+      if (key.startsWith('supabase.auth.') || key.includes('sb-')) {
+        localStorage.removeItem(key);
+      }
+    });
+    
     const { error } = await signIn(email, password);
     
     if (error) {
@@ -51,6 +58,8 @@ const LoginForm = () => {
         description: language === 'nl' ? "U bent succesvol ingelogd." : "You have successfully logged in.",
       });
       
+      console.log("Login successful, isAdmin:", isAdmin);
+      
       // Wait a bit before redirecting to make sure admin status is updated
       setTimeout(() => {
         if (isAdmin) {
@@ -60,7 +69,7 @@ const LoginForm = () => {
           navigate('/');
           console.log('Redirecting to home page');
         }
-      }, 1000);
+      }, 1500); // Increased timeout to ensure admin status is updated
     }
     
     setSubmitting(false);
