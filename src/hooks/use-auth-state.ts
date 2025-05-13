@@ -13,9 +13,13 @@ export function useAuthState() {
     try {
       console.log("Checking admin status for userId:", userId);
       
-      // Direct call to check admin status
+      // Direct query to user_roles table to check admin status
       const { data, error } = await supabase
-        .rpc('is_admin');
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', userId)
+        .eq('role', 'admin')
+        .maybeSingle();
       
       if (error) {
         console.error('Error checking admin status:', error);
@@ -23,9 +27,10 @@ export function useAuthState() {
         return false;
       }
       
-      console.log('Admin check result:', data);
-      setIsAdmin(!!data); // Convert to boolean
-      return !!data;
+      const hasAdminRole = !!data;
+      console.log('Admin check result:', hasAdminRole);
+      setIsAdmin(hasAdminRole);
+      return hasAdminRole;
     } catch (err) {
       console.error('Failed to check admin status:', err);
       setIsAdmin(false);

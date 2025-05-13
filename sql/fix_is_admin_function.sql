@@ -12,7 +12,7 @@ BEGIN
   -- Cache the user ID to avoid multiple calls to auth.uid()
   _user_id := auth.uid();
   
-  -- Check if the current user has the admin role
+  -- Use direct query without RLS to prevent recursion
   SELECT EXISTS (
     SELECT 1
     FROM public.user_roles

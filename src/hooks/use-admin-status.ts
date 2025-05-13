@@ -13,20 +13,6 @@ export function useAdminStatus(onStatusChange: () => void) {
     try {
       setIsProcessing(true);
       
-      // Check if the current user is an admin through RPC
-      const { data: isCurrentUserAdmin, error: adminCheckError } = await supabase
-        .rpc('is_admin');
-        
-      if (adminCheckError) {
-        console.error("Admin check error:", adminCheckError);
-        throw new Error("Fout bij controleren admin-status");
-      }
-      
-      // Only allow admin operations if current user is admin
-      if (!isCurrentUserAdmin) {
-        throw new Error("Alleen administrators kunnen rollen beheren");
-      }
-      
       console.log("Toggling admin status for:", user.email, "Current status:", user.is_admin);
       
       if (user.is_admin) {
