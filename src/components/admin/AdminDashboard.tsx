@@ -31,7 +31,13 @@ const AdminDashboard = () => {
     if (!user) return;
     
     try {
-      const { data, error } = await supabase.rpc('is_admin');
+      // Direct query to user_roles table instead of using RPC function
+      const { data, error } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id)
+        .eq('role', 'admin')
+        .maybeSingle();
       
       if (error) {
         console.error("Error checking admin status:", error);

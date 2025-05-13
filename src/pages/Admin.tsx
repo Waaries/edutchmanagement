@@ -21,8 +21,13 @@ const Admin = () => {
     
     setCheckingAdmin(true);
     try {
-      // Direct check of is_admin RPC function
-      const { data, error } = await supabase.rpc('is_admin');
+      // Direct query to user_roles table
+      const { data, error } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id)
+        .eq('role', 'admin')
+        .maybeSingle();
       
       if (error) {
         console.error("Admin check error:", error);

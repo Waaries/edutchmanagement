@@ -5,19 +5,58 @@ import { Button } from "@/components/ui/button";
 import { Shield } from "lucide-react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { supabase } from "@/integrations/supabase/client";
 
 export function AdminLink() {
   const { isAdmin, user } = useAuth();
   const [showAdmin, setShowAdmin] = useState(false);
+  const [directAdminCheck, setDirectAdminCheck] = useState<boolean | null>(null);
+  
+  // Function to directly check admin status against user_roles
+  const checkAdminStatusDirectly = async (userId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', userId)
+        .eq('role', 'admin')
+        .maybeSingle();
+      
+      if (error) {
+        console.error("Admin link - Error checking admin status:", error);
+        return false;
+      }
+      
+      return !!data;
+    } catch (err) {
+      console.error("Admin link - Exception during admin check:", err);
+      return false;
+    }
+  };
   
   useEffect(() => {
-    // Only show the admin link when both user is logged in and isAdmin is true
-    if (user && isAdmin) {
-      setShowAdmin(true);
-      console.log("Admin link should be visible", { isAdmin, userId: user.id });
+    // Only check when user is logged in
+    if (user) {
+      const checkStatus = async () => {
+        // Check directly from user_roles table
+        const isAdminUser = await checkAdminStatusDirectly(user.id);
+        setDirectAdminCheck(isAdminUser);
+        
+        // Show admin link if either check passes
+        const shouldShowAdmin = isAdmin || isAdminUser;
+        setShowAdmin(shouldShowAdmin);
+        console.log("Admin link visibility check:", { 
+          isAdmin, 
+          directCheck: isAdminUser, 
+          shouldShow: shouldShowAdmin,
+          userId: user.id 
+        });
+      };
+      
+      checkStatus();
     } else {
       setShowAdmin(false);
-      console.log("Admin link hidden", { isAdmin, userId: user?.id });
+      setDirectAdminCheck(false);
     }
   }, [isAdmin, user]);
   

@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -6,20 +7,53 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { User, LayoutDashboard, Settings, Calendar, Shield, LogOut } from "lucide-react";
-import { AdminLink } from "@/components/ui/admin-link";
+import { supabase } from "@/integrations/supabase/client";
 
 const Dashboard = () => {
   const { user, loading, isAdmin, signOut } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("overview");
+  const [directAdminCheck, setDirectAdminCheck] = useState<boolean | null>(null);
 
   useEffect(() => {
     // Update the document title
     document.title = "Dashboard | eDutch Management";
     
     console.log('Dashboard page - Auth state:', { user: !!user, loading, isAdmin });
+    
+    // Do direct admin check when user is loaded
+    if (user && !loading) {
+      checkAdminStatus();
+    }
   }, [user, loading, isAdmin]);
+
+  // Direct check against the user_roles table
+  const checkAdminStatus = async () => {
+    if (!user) return;
+    
+    try {
+      const { data, error } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id)
+        .eq('role', 'admin')
+        .maybeSingle();
+      
+      if (error) {
+        console.error("Error checking admin status:", error);
+        setDirectAdminCheck(false);
+        return;
+      }
+      
+      const isAdminUser = !!data;
+      console.log("Direct admin check result:", isAdminUser);
+      setDirectAdminCheck(isAdminUser);
+    } catch (err) {
+      console.error("Error in admin check:", err);
+      setDirectAdminCheck(false);
+    }
+  };
 
   // If still loading, show a loading indicator
   if (loading) {
@@ -47,6 +81,9 @@ const Dashboard = () => {
     // No need to navigate here, the signOut method will handle the redirection
   };
 
+  // Use either the context isAdmin or directly checked admin status
+  const userIsAdmin = isAdmin || directAdminCheck;
+
   return (
     <div className="container mx-auto py-8 px-4 pt-32">
       <div className="flex items-center gap-4 mb-6 justify-between">
@@ -55,8 +92,7 @@ const Dashboard = () => {
           <h1 className="text-3xl font-bold">Dashboard</h1>
         </div>
         <div className="flex items-center gap-2">
-          {/* Removed the AdminLink component which was creating duplication */}
-          {isAdmin && (
+          {userIsAdmin && (
             <Button 
               onClick={goToAdmin}
               variant="outline" 
@@ -87,7 +123,7 @@ const Dashboard = () => {
         <CardContent>
           <p>Vanuit dit dashboard kunt u al uw gegevens en activiteiten beheren.</p>
           <div className="mt-4 p-3 border rounded bg-slate-50">
-            <p><strong>Account Type:</strong> {isAdmin ? 'Administrator' : 'Standaard Gebruiker'}</p>
+            <p><strong>Account Type:</strong> {userIsAdmin ? 'Administrator' : 'Standaard Gebruiker'}</p>
           </div>
         </CardContent>
       </Card>
