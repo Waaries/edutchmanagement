@@ -6,11 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { User, LayoutDashboard, Settings, Calendar, Shield } from "lucide-react";
+import { User, LayoutDashboard, Settings, Calendar, Shield, LogOut } from "lucide-react";
 import { AdminLink } from "@/components/ui/admin-link";
 
 const Dashboard = () => {
-  const { user, loading, isAdmin } = useAuth();
+  const { user, loading, isAdmin, signOut } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("overview");
@@ -43,6 +43,11 @@ const Dashboard = () => {
     navigate('/admin');
   };
 
+  const handleLogout = async () => {
+    await signOut();
+    navigate('/auth');
+  };
+
   return (
     <div className="container mx-auto py-8 px-4 pt-32">
       <div className="flex items-center gap-4 mb-6 justify-between">
@@ -62,6 +67,14 @@ const Dashboard = () => {
               <span>Ga naar Admin Dashboard</span>
             </Button>
           )}
+          <Button 
+            onClick={handleLogout}
+            variant="destructive" 
+            className="flex items-center gap-2"
+          >
+            <LogOut className="h-4 w-4" />
+            <span>Uitloggen</span>
+          </Button>
         </div>
       </div>
       
