@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Check } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 
 const ContactForm = () => {
@@ -26,8 +26,32 @@ const ContactForm = () => {
     if (error) setError(null);
   };
   
+  const validateForm = () => {
+    if (!formState.name.trim()) {
+      setError("Vul a.u.b. uw naam in");
+      return false;
+    }
+    
+    if (!formState.email.trim() || !/^\S+@\S+\.\S+$/.test(formState.email)) {
+      setError("Vul a.u.b. een geldig e-mailadres in");
+      return false;
+    }
+    
+    if (!formState.message.trim()) {
+      setError("Vul a.u.b. een bericht in");
+      return false;
+    }
+    
+    return true;
+  };
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!validateForm()) {
+      return;
+    }
+    
     setLoading(true);
     setError(null);
     
@@ -35,19 +59,19 @@ const ContactForm = () => {
       console.log("Submitting form data:", formState);
       
       // Send the contact form data to the Supabase edge function
-      const { data, error } = await supabase.functions.invoke('send-contact-email', {
+      const { data, error: functionError } = await supabase.functions.invoke('send-contact-email', {
         body: formState
       });
       
-      if (error) {
-        console.error("Supabase function error:", error);
-        throw new Error(error.message || "Fout bij verzenden bericht");
+      if (functionError) {
+        console.error("Supabase function error:", functionError);
+        throw new Error(functionError.message || "Fout bij verzenden bericht");
       }
       
       console.log("Form submission response:", data);
       
       if (!data.success) {
-        throw new Error(data.message || "Fout bij verzenden bericht");
+        throw new Error(data.message || data.error || "Fout bij verzenden bericht");
       }
       
       // Show success state
@@ -68,7 +92,7 @@ const ContactForm = () => {
           message: ""
         });
       }, 3000);
-    } catch (err) {
+    } catch (err: any) {
       console.error("Error submitting form:", err);
       const errorMessage = err instanceof Error ? err.message : "Er is een onbekende fout opgetreden";
       setError(errorMessage);
@@ -90,7 +114,7 @@ const ContactForm = () => {
       
       {submitted ? (
         <div className="flex flex-col items-center justify-center py-12 text-center">
-          <div className="w-16 h-16 blob-shape bg-green-100 flex items-center justify-center mb-4">
+          <div className="w-16 h-16 blob-shape bg-green-100 flex items-center justify-center mb-4 rounded-full">
             <Check className="h-8 w-8 text-green-600" />
           </div>
           <h4 className="text-xl font-semibold mb-2">Bericht Verzonden!</h4>
@@ -112,7 +136,7 @@ const ContactForm = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <label htmlFor="name" className="block text-sm font-medium">
-                Naam
+                Naam <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -129,7 +153,7 @@ const ContactForm = () => {
             
             <div className="space-y-2">
               <label htmlFor="email" className="block text-sm font-medium">
-                E-mail
+                E-mail <span className="text-red-500">*</span>
               </label>
               <input
                 type="email"
@@ -185,7 +209,7 @@ const ContactForm = () => {
           
           <div className="space-y-2">
             <label htmlFor="message" className="block text-sm font-medium">
-              Uw Bericht
+              Uw Bericht <span className="text-red-500">*</span>
             </label>
             <textarea
               id="message"

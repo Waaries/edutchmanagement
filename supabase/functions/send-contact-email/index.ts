@@ -26,7 +26,7 @@ serve(async (req) => {
     
     console.log("Received contact form data:", { name, email, phone, service, message });
     
-    // Haal SMTP instellingen op uit environment variables
+    // Get SMTP settings from environment variables
     const smtpHost = Deno.env.get("SMTP_HOST");
     const smtpPort = Deno.env.get("SMTP_PORT");
     const smtpUsername = Deno.env.get("SMTP_USERNAME");
@@ -34,7 +34,7 @@ serve(async (req) => {
     const adminEmail = Deno.env.get("ADMIN_EMAIL");
     const senderName = Deno.env.get("SENDER_NAME") || "E-Dutch Management";
     
-    // Log de SMTP instellingen (zonder wachtwoord)
+    // Log the SMTP settings (without password)
     console.log("SMTP settings:", {
       host: smtpHost,
       port: smtpPort,
@@ -43,39 +43,32 @@ serve(async (req) => {
       senderName: senderName
     });
     
-    // Controleer of alle vereiste omgevingsvariabelen zijn ingesteld
-    const missingEnvVars = [];
-    
-    if (!smtpHost) missingEnvVars.push("SMTP_HOST");
-    if (!smtpPort) missingEnvVars.push("SMTP_PORT");
-    if (!smtpUsername) missingEnvVars.push("SMTP_USERNAME");
-    if (!smtpPassword) missingEnvVars.push("SMTP_PASSWORD");
-    if (!adminEmail) missingEnvVars.push("ADMIN_EMAIL");
-    
-    if (missingEnvVars.length > 0) {
-      console.error("Ontbrekende omgevingsvariabelen:", missingEnvVars);
-      throw new Error(`Ontbrekende configuratie: ${missingEnvVars.join(", ")}. Controleer de Edge Function instellingen.`);
-    }
+    // Check if all required environment variables are set
+    if (!smtpHost) throw new Error("SMTP_HOST is niet geconfigureerd");
+    if (!smtpPort) throw new Error("SMTP_PORT is niet geconfigureerd");
+    if (!smtpUsername) throw new Error("SMTP_USERNAME is niet geconfigureerd");
+    if (!smtpPassword) throw new Error("SMTP_PASSWORD is niet geconfigureerd");
+    if (!adminEmail) throw new Error("ADMIN_EMAIL is niet geconfigureerd");
     
     console.log(`Configuring SMTP client with host: ${smtpHost}, port: ${smtpPort}`);
     
-    try {
-      // Configureer SMTP client
-      const client = new SMTPClient({
-        connection: {
-          hostname: smtpHost,
-          port: Number(smtpPort) || 587,
-          tls: true,
-          auth: {
-            username: smtpUsername,
-            password: smtpPassword,
-          }
+    // Configure SMTP client
+    const client = new SMTPClient({
+      connection: {
+        hostname: smtpHost,
+        port: Number(smtpPort) || 587,
+        tls: true,
+        auth: {
+          username: smtpUsername,
+          password: smtpPassword,
         }
-      });
-      
-      console.log("SMTP client configured successfully");
-      
-      // Email naar beheerder
+      }
+    });
+    
+    console.log("SMTP client configured successfully");
+    
+    // Email to admin
+    try {
       await client.send({
         from: `${senderName} <${smtpUsername}>`,
         to: adminEmail,
@@ -94,7 +87,7 @@ serve(async (req) => {
       
       console.log("Admin email sent successfully");
       
-      // Bevestigingse-mail naar afzender
+      // Confirmation email to sender
       await client.send({
         from: `${senderName} <${smtpUsername}>`,
         to: email,
@@ -119,11 +112,12 @@ serve(async (req) => {
       
       console.log("Confirmation email sent successfully");
       
-      // Sluit de SMTP connectie
-      await client.close();
     } catch (emailError) {
       console.error("Error sending email:", emailError);
       throw new Error(`Fout bij het verzenden van e-mail: ${emailError.message}`);
+    } finally {
+      // Close the SMTP connection
+      await client.close();
     }
     
     // Return success response
