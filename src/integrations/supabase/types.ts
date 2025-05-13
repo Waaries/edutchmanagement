@@ -63,7 +63,10 @@ export type Database = {
     }
     Functions: {
       has_role: {
-        Args: { requested_role: Database["public"]["Enums"]["user_role"] }
+        Args:
+          | { requested_role: Database["public"]["Enums"]["user_role"] }
+          | { role_name: string }
+          | { user_id: number; role_name: string }
         Returns: boolean
       }
       is_admin: {

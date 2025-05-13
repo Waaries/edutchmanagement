@@ -1,6 +1,8 @@
 
 import { createContext, useContext, useEffect, useState } from 'react';
-import { type Session, type User, type AuthError } from '@supabase/supabase-js';
+import type { Session } from '@supabase/supabase-js/dist/module/lib/types';
+import type { User } from '@supabase/supabase-js/dist/module/lib/types';
+import type { AuthError } from '@supabase/supabase-js/dist/module/lib/errors';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
