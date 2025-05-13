@@ -10,6 +10,7 @@ const Admin: React.FC = () => {
   const { user, loading, isAdmin } = useAuth();
   const [verifying, setVerifying] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [localIsAdmin, setLocalIsAdmin] = useState<boolean | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
   
@@ -25,13 +26,14 @@ const Admin: React.FC = () => {
       }
 
       try {
+        console.log("Admin page - Verifying admin access for:", user.email);
+        
         // Direct database check to avoid potential recursion issues
         const { data, error } = await supabase
           .from('user_roles')
-          .select('role')
+          .select('*')
           .eq('user_id', user.id)
-          .eq('role', 'admin')
-          .maybeSingle();
+          .eq('role', 'admin');
         
         if (error) {
           console.error("Admin verification error:", error);
@@ -44,16 +46,12 @@ const Admin: React.FC = () => {
           });
         } else {
           setError(null);
-          
-          // If user has admin role but isAdmin in context is false, refresh the page
-          if (data && !isAdmin) {
-            console.log("User has admin role but isAdmin is false. Refreshing...");
-            window.location.reload();
-          }
+          const hasAdminRole = Array.isArray(data) && data.length > 0;
+          console.log("Admin page - Direct check result:", hasAdminRole, data);
+          setLocalIsAdmin(hasAdminRole);
           
           // If user does not have admin role, redirect to dashboard
-          if (!data && isAdmin) {
-            console.log("User does not have admin role but isAdmin is true. Redirecting...");
+          if (!hasAdminRole) {
             toast({
               title: "Toegang geweigerd",
               description: "U heeft geen toegang tot het admin dashboard.",
@@ -71,7 +69,7 @@ const Admin: React.FC = () => {
     };
     
     verifyAdminAccess();
-  }, [user, loading, isAdmin, navigate, toast]);
+  }, [user, loading, navigate, toast]);
   
   // Show loading indicator while verifying
   if (loading || verifying) {
@@ -105,8 +103,8 @@ const Admin: React.FC = () => {
     );
   }
 
-  // Only render the admin dashboard if the user is an admin
-  return isAdmin ? <AdminDashboard /> : <Navigate to="/dashboard" replace />;
+  // Only render the admin dashboard if the user has admin privileges
+  return (localIsAdmin || isAdmin) ? <AdminDashboard /> : <Navigate to="/dashboard" replace />;
 };
 
 export default Admin;

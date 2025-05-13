@@ -13,13 +13,12 @@ export function useAuthState() {
     try {
       console.log("Checking admin status for userId:", userId);
       
-      // Direct database query instead of using the RPC function to avoid recursion
+      // Direct database query with no functions to avoid recursion
       const { data, error } = await supabase
         .from('user_roles')
-        .select('role')
+        .select('*')
         .eq('user_id', userId)
-        .eq('role', 'admin')
-        .maybeSingle();
+        .eq('role', 'admin');
       
       if (error) {
         console.error('Error checking admin status:', error);
@@ -27,8 +26,8 @@ export function useAuthState() {
         return false;
       }
       
-      const hasAdminRole = !!data;
-      console.log('Admin check result:', hasAdminRole);
+      const hasAdminRole = Array.isArray(data) && data.length > 0;
+      console.log('Admin check result:', hasAdminRole, data);
       setIsAdmin(hasAdminRole);
       return hasAdminRole;
     } catch (err) {

@@ -33,13 +33,12 @@ const AdminSecurityCheck: React.FC<AdminSecurityCheckProps> = ({
         // Log admin access attempt for security monitoring
         console.log("Admin access verification for:", user.email);
         
-        // Direct database check to avoid recursion issues
+        // Use a simpler query without using functions to avoid recursion
         const { data, error } = await supabase
           .from('user_roles')
-          .select('role')
+          .select('*')
           .eq('user_id', user.id)
-          .eq('role', 'admin')
-          .maybeSingle();
+          .eq('role', 'admin');
         
         if (error) {
           console.error("Error verifying admin status:", error);
@@ -55,8 +54,8 @@ const AdminSecurityCheck: React.FC<AdminSecurityCheckProps> = ({
           return;
         }
         
-        const hasAdminRole = !!data;
-        console.log("Admin verification result:", hasAdminRole);
+        const hasAdminRole = Array.isArray(data) && data.length > 0;
+        console.log("Admin verification result:", hasAdminRole, data);
         setVerifiedAdmin(hasAdminRole);
         
         // Redirect non-admins with a message

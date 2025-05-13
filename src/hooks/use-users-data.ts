@@ -32,12 +32,11 @@ export function useUsersData() {
       // Direct database query instead of using is_admin function
       const { data: isAdminData, error: isAdminError } = await supabase
         .from('user_roles')
-        .select('role')
+        .select('*')
         .eq('user_id', currentUserId)
-        .eq('role', 'admin')
-        .maybeSingle();
+        .eq('role', 'admin');
       
-      if (isAdminError || !isAdminData) {
+      if (isAdminError || !isAdminData || isAdminData.length === 0) {
         console.error("Error checking admin permissions:", isAdminError);
         toast({
           title: "Toegang geweigerd",
