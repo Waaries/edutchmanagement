@@ -34,13 +34,13 @@ export function useUsersData() {
         return;
       }
 
-      // Fetch admin status for each user
+      // Fetch admin status for each user directly
       const usersWithRoles = await Promise.all(
         userData.map(async (user) => {
-          // Check if this user has admin role by checking user_roles table directly
+          // Direct query to user_roles table - avoiding the problematic function
           const { data: roleData, error: roleError } = await supabase
             .from('user_roles')
-            .select('role')
+            .select('*')  // Select all columns to avoid potential ambiguity
             .eq('user_id', user.id)
             .eq('role', 'admin')
             .maybeSingle();

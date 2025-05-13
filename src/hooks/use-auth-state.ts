@@ -13,7 +13,7 @@ export function useAuthState() {
     try {
       console.log("Checking admin status for userId:", userId);
       
-      // Direct query to user_roles table to check admin status
+      // Direct query to user_roles table to check admin status - avoiding the function
       const { data, error } = await supabase
         .from('user_roles')
         .select('role')
@@ -56,9 +56,7 @@ export function useAuthState() {
           // Use setTimeout to prevent potential deadlocks
           setTimeout(async () => {
             if (isUnmounted) return;
-            const adminStatus = await checkAdminStatus(currentSession.user.id);
-            setIsAdmin(adminStatus);
-            console.log('Admin status after auth change:', adminStatus);
+            await checkAdminStatus(currentSession.user.id);
           }, 0);
         } else {
           setIsAdmin(false);
@@ -80,9 +78,7 @@ export function useAuthState() {
         
         if (currentSession?.user) {
           console.log('Found existing session for user:', currentSession.user.email);
-          const adminStatus = await checkAdminStatus(currentSession.user.id);
-          setIsAdmin(adminStatus);
-          console.log('Admin status at initialization:', adminStatus);
+          await checkAdminStatus(currentSession.user.id);
         }
       } catch (error) {
         console.error('Error initializing auth:', error);
