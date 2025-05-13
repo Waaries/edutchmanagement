@@ -15,19 +15,14 @@ const Admin = () => {
   const [checkingAdmin, setCheckingAdmin] = useState<boolean>(false);
   const [directAdminCheck, setDirectAdminCheck] = useState<boolean | null>(null);
   
-  // Function to manually check admin status
+  // Function to manually check admin status using the fixed function
   const checkAdminStatus = async () => {
     if (!user) return;
     
     setCheckingAdmin(true);
     try {
-      // Direct query to user_roles table
-      const { data, error } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', user.id)
-        .eq('role', 'admin')
-        .maybeSingle();
+      // Call the is_admin() function through RPC
+      const { data, error } = await supabase.rpc('is_admin');
       
       if (error) {
         console.error("Admin check error:", error);
@@ -39,7 +34,8 @@ const Admin = () => {
           isAdmin: !!data, 
           email: user.email,
           userId: user.id,
-          timestamp: new Date().toISOString()
+          timestamp: new Date().toISOString(),
+          method: "rpc"
         });
         setDirectAdminCheck(!!data);
       }
