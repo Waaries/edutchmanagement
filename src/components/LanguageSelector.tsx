@@ -16,10 +16,10 @@ export default function LanguageSelector() {
       onClick={toggleLanguage} 
       variant="outline" 
       size="sm" 
-      className="px-3 py-1 text-sm h-8 flex items-center gap-2 bg-primary/10 hover:bg-primary/20 border-2 border-primary/20 rounded-xl text-foreground"
+      className="px-3 py-1 text-sm h-8 flex items-center gap-2 bg-primary/10 hover:bg-primary/20 border-2 border-primary/20 rounded-xl"
     >
       <Globe className="h-4 w-4 text-primary" />
-      <span className="font-bold text-foreground">
+      <span className="font-bold">
         {language === "nl" ? "EN" : "NL"}
       </span>
     </Button>
