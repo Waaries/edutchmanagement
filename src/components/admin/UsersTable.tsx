@@ -4,7 +4,8 @@ import {
   Table, 
   TableBody
 } from "@/components/ui/table";
-import { useUsersData, type UserData } from "@/hooks/use-users-data";
+import { useUsersData } from "@/hooks/use-users-data";
+import { UserData } from "@/types/user";
 import UsersTableHeader from "./UsersTableHeader";
 import UserRow from "./UserRow";
 import EmptyUsersList from "./EmptyUsersList";
