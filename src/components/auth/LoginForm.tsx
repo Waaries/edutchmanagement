@@ -29,7 +29,7 @@ const LoginForm = () => {
     
     // Check for multiple failed login attempts
     if (loginAttempts >= 5) {
-      setError("Too many login attempts. Please try again later or reset your password.");
+      setError("Te veel inlogpogingen. Probeer later opnieuw of reset uw wachtwoord.");
       setSubmitting(false);
       return;
     }
@@ -46,10 +46,11 @@ const LoginForm = () => {
     if (error) {
       setLoginAttempts(prev => prev + 1);
       setError(error.message);
+      console.log("Login failed:", error.message);
       
       // After 3 failed attempts, suggest password reset
       if (loginAttempts >= 2) {
-        setError(`${error.message} You may want to reset your password.`);
+        setError(`${error.message} U kunt overwegen uw wachtwoord te resetten.`);
       }
     } else {
       // Reset login attempts on successful login
@@ -59,18 +60,10 @@ const LoginForm = () => {
         description: language === 'nl' ? "U bent succesvol ingelogd." : "You have successfully logged in.",
       });
       
-      console.log("Login successful, isAdmin:", isAdmin);
+      console.log("Login successful, redirecting to dashboard");
       
-      // Wait a bit before redirecting to make sure admin status is updated
-      setTimeout(() => {
-        if (isAdmin) {
-          navigate('/admin');
-          console.log('Redirecting to admin dashboard');
-        } else {
-          navigate('/dashboard');
-          console.log('Redirecting to user dashboard');
-        }
-      }, 1500); // Increased timeout to ensure admin status is updated
+      // Force a refresh of the page to ensure clean state
+      window.location.href = '/dashboard';
     }
     
     setSubmitting(false);
@@ -80,7 +73,7 @@ const LoginForm = () => {
     e.preventDefault();
     
     if (!email) {
-      setError("Please enter your email address to reset your password");
+      setError("Voer uw e-mailadres in om uw wachtwoord te resetten");
       return;
     }
     

@@ -30,7 +30,7 @@ const Auth = () => {
     // Check URL params
     const reset = searchParams.get('reset');
     if (reset === 'true') {
-      setSuccess("You can now set a new password.");
+      setSuccess("U kunt nu een nieuw wachtwoord instellen.");
       setShowDialog(true);
     }
     
@@ -42,32 +42,18 @@ const Auth = () => {
     // Set activeTab to login if there's an error in the URL hash
     if (location.hash && location.hash.includes('error')) {
       setActiveTab('login');
+      setError("Er is een fout opgetreden bij het inloggen. Probeer het opnieuw.");
       // Clear the hash to prevent showing the error again
       if (window.history && window.history.replaceState) {
         window.history.replaceState(null, document.title, window.location.pathname);
       }
     }
-    
-    // Check hash for OAuth redirects
-    const hash = location.hash;
-    if (hash && hash.includes('access_token')) {
-      // Clear the hash after checking
-      window.history.replaceState(null, document.title, window.location.pathname);
-      
-      // If OAuth login was successful, redirect after a short delay
-      setTimeout(() => {
-        if (isAdmin) {
-          navigate('/admin');
-        } else {
-          navigate('/dashboard');
-        }
-      }, 1000);
-    }
-  }, [location, searchParams, navigate, isAdmin]);
+  }, [location, searchParams]);
 
   // If user is already logged in, redirect to appropriate page
   useEffect(() => {
     if (user && !loading) {
+      console.log("User is logged in, redirecting to appropriate page:", isAdmin ? "/admin" : "/dashboard");
       if (isAdmin) {
         navigate('/admin');
       } else {
@@ -76,9 +62,21 @@ const Auth = () => {
     }
   }, [user, loading, isAdmin, navigate]);
 
+  // Show loading indicator when checking authentication
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-4">Bezig met laden...</p>
+        </div>
+      </div>
+    );
+  }
+
   // If user is already logged in, don't render the auth page
-  if (user && !loading) {
-    return null;
+  if (user) {
+    return <Navigate to={isAdmin ? "/admin" : "/dashboard"} />;
   }
 
   const handleRegistrationSuccess = (message: string) => {
@@ -112,6 +110,13 @@ const Auth = () => {
           </div>
           <span className="ml-2 text-sm text-blue-700">{translate("auth.secureAuth")}</span>
         </div>
+
+        {error && (
+          <div className="p-3 mb-4 bg-red-50 text-red-600 rounded-md flex items-start">
+            <AlertCircle className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" />
+            <span>{error}</span>
+          </div>
+        )}
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2 mb-8">

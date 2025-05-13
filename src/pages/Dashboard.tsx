@@ -1,20 +1,23 @@
 
 import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { User, LayoutDashboard, Calendar } from "lucide-react";
 
-// Import the new components
+// Import the components
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import WelcomeCard from "@/components/dashboard/WelcomeCard";
 import OverviewTab from "@/components/dashboard/OverviewTab";
 import ProfileTab from "@/components/dashboard/ProfileTab";
 import AppointmentsTab from "@/components/dashboard/AppointmentsTab";
+import { useToast } from "@/hooks/use-toast";
 
 const Dashboard = () => {
   const { user, loading, isAdmin } = useAuth();
   const [activeTab, setActiveTab] = useState("overview");
+  const navigate = useNavigate();
+  const { toast } = useToast();
 
   useEffect(() => {
     // Update the document title
@@ -22,12 +25,18 @@ const Dashboard = () => {
     
     console.log('Dashboard page - Auth state:', { 
       user: !!user, 
-      loading, 
+      loading,
       isAdmin 
     });
-  }, [user, loading, isAdmin]);
 
-  // If still loading, show a loading indicator
+    // Force redirect to auth page if not logged in after loading completes
+    if (!loading && !user) {
+      console.log("User is not logged in, redirecting to auth page");
+      navigate("/auth");
+    }
+  }, [user, loading, isAdmin, navigate]);
+
+  // Show a loading indicator while checking authentication
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">

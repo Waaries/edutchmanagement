@@ -39,22 +39,39 @@ export function useAuthState() {
     // Initialize auth state
     const initializeAuth = async () => {
       try {
+        setLoading(true);
+        
+        // Clean up existing auth state to prevent conflicts
+        Object.keys(localStorage).forEach((key) => {
+          if (key.startsWith('supabase.auth.') && key.includes('previous-session')) {
+            localStorage.removeItem(key);
+          }
+        });
+        
         const { data: { session: currentSession } } = await supabase.auth.getSession();
         
         if (!mounted) return;
         
-        setSession(currentSession);
-        setUser(currentSession?.user ?? null);
-        
         if (currentSession?.user) {
           console.log('Found existing session for user:', currentSession.user.email);
-          await checkAdminStatus(currentSession.user.id);
+          setSession(currentSession);
+          setUser(currentSession.user);
+          
+          // Wait a moment before checking admin status to ensure auth is ready
+          setTimeout(async () => {
+            if (mounted && currentSession.user) {
+              await checkAdminStatus(currentSession.user.id);
+              setLoading(false);
+            }
+          }, 500);
         } else {
+          setSession(null);
+          setUser(null);
           setIsAdmin(false);
+          setLoading(false);
         }
       } catch (error) {
         console.error('Error initializing auth:', error);
-      } finally {
         if (mounted) {
           setLoading(false);
         }
@@ -68,17 +85,25 @@ export function useAuthState() {
         
         if (!mounted) return;
         
-        setSession(currentSession);
-        setUser(currentSession?.user ?? null);
-        
-        // Check admin status when user signs in
-        if (currentSession?.user) {
-          await checkAdminStatus(currentSession.user.id);
-        } else {
+        if (event === 'SIGNED_OUT') {
+          setSession(null);
+          setUser(null);
           setIsAdmin(false);
+          setLoading(false);
+        } else if (currentSession?.user) {
+          setSession(currentSession);
+          setUser(currentSession.user);
+          
+          // Wait a moment before checking admin status to ensure auth is ready
+          setTimeout(async () => {
+            if (mounted && currentSession.user) {
+              await checkAdminStatus(currentSession.user.id);
+              setLoading(false);
+            }
+          }, 500);
+        } else {
+          setLoading(false);
         }
-        
-        setLoading(false);
       }
     );
     
