@@ -79,34 +79,36 @@ const Services = () => {
                 service.mostPopular 
                   ? 'border-primary shadow-xl shadow-primary/10' 
                   : 'border-slate-200'
-              } hover-lift rounded-3xl bg-white`}
+              } hover-lift rounded-3xl bg-white flex flex-col`}
             >
               {service.mostPopular && (
                 <div className="absolute top-0 right-0 gradient-primary text-white px-4 py-1 text-sm font-medium rounded-bl-2xl rounded-tr-3xl">
                   {service.mostPopularText}
                 </div>
               )}
-              <div className="p-8">
-                <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
-                <div className="flex items-end gap-1 mb-2">
-                  <span className="text-3xl font-bold gradient-text">{service.price}</span>
-                  <span className="text-slate-500 mb-1">{service.period}</span>
+              <div className="p-8 flex-grow flex flex-col">
+                <div className="flex-grow">
+                  <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
+                  <div className="flex items-end gap-1 mb-2">
+                    <span className="text-3xl font-bold gradient-text">{service.price}</span>
+                    <span className="text-slate-500 mb-1">{service.period}</span>
+                  </div>
+                  <p className="text-slate-600 mb-6">{service.description}</p>
+                  
+                  <ul className="space-y-3 mb-8">
+                    {service.features.map((feature: string, idx: number) => (
+                      <li key={idx} className="flex items-start">
+                        <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center mr-2 flex-shrink-0">
+                          <Check className="h-3 w-3 text-primary" />
+                        </div>
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <p className="text-slate-600 mb-6">{service.description}</p>
-                
-                <ul className="space-y-3 mb-8">
-                  {service.features.map((feature: string, idx: number) => (
-                    <li key={idx} className="flex items-start">
-                      <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center mr-2 flex-shrink-0">
-                        <Check className="h-3 w-3 text-primary" />
-                      </div>
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
                 
                 <Button 
-                  className={`w-full ${
+                  className={`w-full mt-auto ${
                     service.mostPopular 
                       ? '' 
                       : 'variant-outline'
