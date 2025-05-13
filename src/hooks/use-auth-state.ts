@@ -51,8 +51,9 @@ export function useAuthState() {
           // Use setTimeout to prevent potential deadlocks
           setTimeout(async () => {
             if (isUnmounted) return;
-            await checkAdminStatus(currentSession.user.id);
-            console.log('Admin status after auth change:', isAdmin);
+            const adminStatus = await checkAdminStatus(currentSession.user.id);
+            setIsAdmin(adminStatus);
+            console.log('Admin status after auth change:', adminStatus);
           }, 0);
         } else {
           setIsAdmin(false);
@@ -74,8 +75,9 @@ export function useAuthState() {
         
         if (currentSession?.user) {
           console.log('Found existing session for user:', currentSession.user.email);
-          await checkAdminStatus(currentSession.user.id);
-          console.log('Admin status at initialization:', isAdmin);
+          const adminStatus = await checkAdminStatus(currentSession.user.id);
+          setIsAdmin(adminStatus);
+          console.log('Admin status at initialization:', adminStatus);
         }
       } catch (error) {
         console.error('Error initializing auth:', error);

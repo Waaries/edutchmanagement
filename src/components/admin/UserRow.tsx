@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Shield, UserX, UserMinus, CheckCircle, XCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
 
 type UserRowProps = {
   user: {
@@ -21,6 +22,10 @@ type UserRowProps = {
 export const UserRow = ({ user, onStatusChange, onDeleteClick }: UserRowProps) => {
   const [isProcessing, setIsProcessing] = useState(false);
   const { toast } = useToast();
+  const { user: currentUser } = useAuth();
+  
+  // Don't show admin toggle for the current user
+  const isCurrentUser = currentUser && currentUser.id === user.id;
 
   // Toggle admin status
   const toggleAdminStatus = async () => {
@@ -114,25 +119,27 @@ export const UserRow = ({ user, onStatusChange, onDeleteClick }: UserRowProps) =
         )}
       </TableCell>
       <TableCell className="text-right space-x-2">
-        <Button 
-          variant="outline" 
-          size="sm"
-          onClick={toggleAdminStatus}
-          disabled={isProcessing}
-          className={user.is_admin ? "text-red-500" : "text-green-500"}
-        >
-          {user.is_admin ? (
-            <>
-              <UserX className="h-4 w-4 mr-2" />
-              Verwijder admin
-            </>
-          ) : (
-            <>
-              <Shield className="h-4 w-4 mr-2" />
-              Maak admin
-            </>
-          )}
-        </Button>
+        {!isCurrentUser && (
+          <Button 
+            variant="outline" 
+            size="sm"
+            onClick={toggleAdminStatus}
+            disabled={isProcessing}
+            className={user.is_admin ? "text-red-500" : "text-green-500"}
+          >
+            {user.is_admin ? (
+              <>
+                <UserX className="h-4 w-4 mr-2" />
+                Verwijder admin
+              </>
+            ) : (
+              <>
+                <Shield className="h-4 w-4 mr-2" />
+                Maak admin
+              </>
+            )}
+          </Button>
+        )}
         
         <Button
           variant="outline"
