@@ -13,7 +13,7 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const { user, signOut } = useAuth();
-  const { translate } = useLanguage();
+  const { translate, currentLanguage } = useLanguage();
   const isMobile = useIsMobile();
 
   useEffect(() => {
@@ -22,6 +22,19 @@ const Navbar = () => {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  // Taal-specifieke teksten om vertaalproblemen op te lossen
+  const getSignInText = () => {
+    return currentLanguage === 'nl' ? 'Inloggen' : 'Sign In';
+  };
+
+  const getSignOutText = () => {
+    return currentLanguage === 'nl' ? 'Uitloggen' : 'Sign Out';
+  };
+
+  const getProfileText = () => {
+    return currentLanguage === 'nl' ? 'Profiel' : 'Profile';
   };
 
   return (
@@ -39,18 +52,18 @@ const Navbar = () => {
               <Link to="/profile">
                 <Button variant="ghost">
                   <User className="mr-2 h-4 w-4" />
-                  Profile
+                  {getProfileText()}
                 </Button>
               </Link>
               <Button onClick={() => signOut()} variant="outline">
-                {translate("nav.signOut")}
+                {getSignOutText()}
               </Button>
             </>
           ) : (
             <Link to="/auth">
               <Button>
                 <LogIn className="mr-2 h-4 w-4" />
-                {translate("nav.signIn")}
+                {getSignInText()}
               </Button>
             </Link>
           )}
@@ -75,18 +88,18 @@ const Navbar = () => {
                   <Link to="/profile" className="block w-full text-center">
                     <Button variant="ghost" className="w-full justify-center">
                       <User className="mr-2 h-4 w-4" />
-                      Profile
+                      {getProfileText()}
                     </Button>
                   </Link>
                   <Button onClick={() => signOut()} variant="outline" className="w-full">
-                    {translate("nav.signOut")}
+                    {getSignOutText()}
                   </Button>
                 </>
               ) : (
                 <Link to="/auth" className="block w-full text-center">
                   <Button className="w-full">
                     <LogIn className="mr-2 h-4 w-4" />
-                    {translate("nav.signIn")}
+                    {getSignInText()}
                   </Button>
                 </Link>
               )}
