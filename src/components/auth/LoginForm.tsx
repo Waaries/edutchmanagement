@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -66,8 +67,8 @@ const LoginForm = () => {
           navigate('/admin');
           console.log('Redirecting to admin dashboard');
         } else {
-          navigate('/');
-          console.log('Redirecting to home page');
+          navigate('/dashboard');
+          console.log('Redirecting to user dashboard');
         }
       }, 1500); // Increased timeout to ensure admin status is updated
     }

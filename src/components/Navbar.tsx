@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { Menu, X, LogIn, LogOut } from "lucide-react";
+import { Menu, X, LogIn, LogOut, LayoutDashboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -101,6 +101,16 @@ const Navbar = () => {
               </Link>
             ))}
 
+            {user && (
+              <Link 
+                to="/dashboard"
+                className="text-slate-700 hover:text-primary transition-colors font-bold font-poppins border-animate flex items-center gap-1"
+              >
+                <LayoutDashboard className="h-4 w-4" />
+                <span>Dashboard</span>
+              </Link>
+            )}
+
             <LanguageSelector />
             
             {user ? (
@@ -149,6 +159,18 @@ const Navbar = () => {
                   {item.label}
                 </Link>
               ))}
+              
+              {user && (
+                <Link 
+                  to="/dashboard"
+                  className="text-slate-700 hover:text-primary transition-colors py-2 font-bold font-poppins flex items-center gap-2"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <LayoutDashboard className="h-4 w-4" />
+                  <span>Dashboard</span>
+                </Link>
+              )}
+              
               {user ? (
                 <Button 
                   onClick={handleLogout}
