@@ -14,11 +14,26 @@ export function useUsersData() {
     try {
       setLoading(true);
       
+      // Get current user ID first
+      const { data: { user } } = await supabase.auth.getUser();
+      const currentUserId = user?.id;
+      
+      if (!currentUserId) {
+        console.error("No authenticated user found");
+        toast({
+          title: "Toegang geweigerd",
+          description: "U bent niet ingelogd.",
+          variant: "destructive",
+        });
+        setLoading(false);
+        return;
+      }
+      
       // Direct database query instead of using is_admin function
       const { data: isAdminData, error: isAdminError } = await supabase
         .from('user_roles')
         .select('role')
-        .eq('user_id', supabase.auth.getUser().then(({data}) => data.user?.id))
+        .eq('user_id', currentUserId)
         .eq('role', 'admin')
         .maybeSingle();
       
