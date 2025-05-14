@@ -16,7 +16,8 @@ const UsersTab: React.FC = () => {
     const verifyAccess = async () => {
       try {
         // Get current user ID first
-        const { data: { user } } = await supabase.auth.getUser();
+        const { data: userData } = await supabase.auth.getUser();
+        const user = userData?.user;
         
         if (!user) {
           setHasAccess(false);

@@ -14,9 +14,9 @@ export function useUsersData() {
     try {
       setLoading(true);
       
-      // Get current user ID first
-      const { data: { user } } = await supabase.auth.getUser();
-      const currentUserId = user?.id;
+      // Get current user ID first - properly await the Promise
+      const { data: userData, error: userError } = await supabase.auth.getUser();
+      const currentUserId = userData?.user?.id;
       
       if (!currentUserId) {
         console.error("No authenticated user found");

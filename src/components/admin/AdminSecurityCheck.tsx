@@ -33,7 +33,7 @@ const AdminSecurityCheck: React.FC<AdminSecurityCheckProps> = ({
         // Log admin access attempt for security monitoring
         console.log("Admin access verification for:", user.email);
         
-        // Use a simpler query without using functions to avoid recursion
+        // Use a direct database query to avoid recursion
         const { data, error } = await supabase
           .from('user_roles')
           .select('*')
