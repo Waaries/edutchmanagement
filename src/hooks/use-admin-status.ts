@@ -34,11 +34,11 @@ export function useAdminStatus(onStatusChange: () => void) {
           description: "De gebruiker is geen administrator meer.",
         });
       } else {
-        // Add admin role
+        // Add admin role - Fix the issue with inserting admin role
         console.log("Adding admin role to:", user.id);
         const { error } = await supabase
           .from("user_roles")
-          .insert({ user_id: user.id, role: "admin" });
+          .insert([{ user_id: user.id, role: "admin" }]); // Fix: Use array for insert
 
         if (error) {
           console.error("Error adding admin role:", error);
