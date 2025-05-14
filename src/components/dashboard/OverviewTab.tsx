@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/contexts/AuthContext";
-import { Calendar, CalendarCheck, CalendarX } from "lucide-react";
+import { Mail, CalendarCheck, CalendarX } from "lucide-react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 interface OverviewTabProps {
@@ -14,21 +14,21 @@ interface OverviewTabProps {
 
 interface ActivityData {
   month: string;
-  appointments: number;
+  posts: number;
 }
 
 const MOCK_ACTIVITY_DATA: ActivityData[] = [
-  { month: 'Jan', appointments: 5 },
-  { month: 'Feb', appointments: 7 },
-  { month: 'Mar', appointments: 4 },
-  { month: 'Apr', appointments: 8 },
-  { month: 'Mei', appointments: 12 },
-  { month: 'Jun', appointments: 8 },
-  { month: 'Jul', appointments: 6 },
-  { month: 'Aug', appointments: 9 },
+  { month: 'Jan', posts: 5 },
+  { month: 'Feb', posts: 7 },
+  { month: 'Mar', posts: 4 },
+  { month: 'Apr', posts: 8 },
+  { month: 'Mei', posts: 12 },
+  { month: 'Jun', posts: 8 },
+  { month: 'Jul', posts: 6 },
+  { month: 'Aug', posts: 9 },
 ];
 
-const MOCK_UPCOMING_APPOINTMENTS = [
+const MOCK_UPCOMING_POSTS = [
   { id: 1, title: "Belastingbrief 2025", date: "2025-05-20T10:00:00", status: "confirmed" },
   { id: 2, title: "UWV uitkering bevestiging", date: "2025-05-27T14:30:00", status: "confirmed" },
   { id: 3, title: "Waterschapsbelasting", date: "2025-06-05T11:00:00", status: "pending" },
@@ -74,7 +74,7 @@ const OverviewTab = ({ setActiveTab }: OverviewTabProps) => {
                     <XAxis dataKey="month" />
                     <YAxis />
                     <Tooltip />
-                    <Bar dataKey="appointments" fill="#3b82f6" />
+                    <Bar dataKey="posts" fill="#3b82f6" />
                   </BarChart>
                 </ResponsiveContainer>
               </AspectRatio>
@@ -106,7 +106,7 @@ const OverviewTab = ({ setActiveTab }: OverviewTabProps) => {
               <p>Configureer notificaties, privacy en andere systeeminstellingen.</p>
             </CardContent>
             <CardFooter>
-              <Button variant="outline" onClick={() => alert("Instellingen functionaliteit wordt binnenkort toegevoegd!")}>Instellingen bekijken</Button>
+              <Button variant="outline" onClick={() => setActiveTab("settings")}>Instellingen bekijken</Button>
             </CardFooter>
           </Card>
         </div>
@@ -117,7 +117,7 @@ const OverviewTab = ({ setActiveTab }: OverviewTabProps) => {
         <Card className="h-full">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Calendar className="h-5 w-5" /> Ontvangen post
+              <Mail className="h-5 w-5" /> Ontvangen post
             </CardTitle>
             <CardDescription>Uw geregistreerde post</CardDescription>
           </CardHeader>
@@ -128,16 +128,16 @@ const OverviewTab = ({ setActiveTab }: OverviewTabProps) => {
                 <Skeleton className="h-16 w-full" />
                 <Skeleton className="h-16 w-full" />
               </div>
-            ) : MOCK_UPCOMING_APPOINTMENTS.length > 0 ? (
+            ) : MOCK_UPCOMING_POSTS.length > 0 ? (
               <div className="space-y-4">
-                {MOCK_UPCOMING_APPOINTMENTS.map(appointment => (
-                  <div key={appointment.id} className="p-3 border rounded-lg bg-slate-50">
+                {MOCK_UPCOMING_POSTS.map(post => (
+                  <div key={post.id} className="p-3 border rounded-lg bg-slate-50">
                     <div className="flex justify-between items-start">
                       <div>
-                        <h4 className="font-medium">{appointment.title}</h4>
-                        <p className="text-sm text-slate-500">{formatDate(appointment.date)}</p>
+                        <h4 className="font-medium">{post.title}</h4>
+                        <p className="text-sm text-slate-500">{formatDate(post.date)}</p>
                       </div>
-                      {appointment.status === "confirmed" ? (
+                      {post.status === "confirmed" ? (
                         <CalendarCheck className="h-5 w-5 text-green-600" />
                       ) : (
                         <CalendarX className="h-5 w-5 text-amber-500" />

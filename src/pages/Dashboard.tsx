@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate, useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { User, LayoutDashboard, Calendar, Settings } from "lucide-react";
+import { User, LayoutDashboard, Mail, Settings } from "lucide-react";
 
 // Import components
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
@@ -86,7 +86,7 @@ const Dashboard = () => {
             <span>Profiel</span>
           </TabsTrigger>
           <TabsTrigger value="appointments" className="flex items-center gap-2">
-            <Calendar className="h-4 w-4" />
+            <Mail className="h-4 w-4" />
             <span>Ontvangen post</span>
           </TabsTrigger>
           <TabsTrigger value="settings" className="flex items-center gap-2">
