@@ -9,7 +9,7 @@ export function useUsersData() {
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
 
-  // Fetch users data using direct queries to avoid recursion issues
+  // Fetch users data using the fixed is_admin function
   const fetchUsers = async () => {
     try {
       setLoading(true);
@@ -49,41 +49,62 @@ export function useUsersData() {
         return;
       }
 
-      // Get all admin roles directly
-      const { data: adminRoles, error: rolesError } = await supabase
-        .from('user_roles')
-        .select('user_id')
-        .eq('role', 'admin');
-      
-      if (rolesError) {
-        console.error("Error fetching admin roles:", rolesError);
-        toast({
-          title: "Fout bij ophalen rollen",
-          description: rolesError.message,
-          variant: "destructive",
-        });
-      }
-
-      // Create a Set of admin user IDs for quick lookup
-      const adminUserIds = new Set(adminRoles?.map(role => role.user_id) || []);
-      console.log("Admin user IDs:", Array.from(adminUserIds));
-
-      // Map users with their admin status
-      const usersWithRoles = usersData.map(user => {
-        const isAdmin = adminUserIds.has(user.id);
-        console.log(`User ${user.email} (${user.id}) is admin: ${isAdmin}`);
+      // Get all admin roles with a try-catch to handle potential errors
+      try {
+        const { data: adminRoles, error: rolesError } = await supabase
+          .from('user_roles')
+          .select('user_id')
+          .eq('role', 'admin');
         
-        return {
+        if (rolesError) {
+          console.error("Error fetching admin roles:", rolesError);
+          toast({
+            title: "Fout bij ophalen rollen",
+            description: rolesError.message,
+            variant: "destructive",
+          });
+        }
+
+        // Create a Set of admin user IDs for quick lookup
+        const adminUserIds = new Set(adminRoles?.map(role => role.user_id) || []);
+        console.log("Admin user IDs:", Array.from(adminUserIds));
+
+        // Map users with their admin status
+        const usersWithRoles = usersData.map(user => {
+          const isAdmin = adminUserIds.has(user.id);
+          console.log(`User ${user.email} (${user.id}) is admin: ${isAdmin}`);
+          
+          return {
+            id: user.id,
+            email: user.email,
+            created_at: user.created_at,
+            last_sign_in_at: user.last_sign_in_at,
+            is_admin: isAdmin,
+            raw_app_meta_data: user.raw_app_meta_data
+          };
+        });
+
+        setUsers(usersWithRoles);
+      } catch (error) {
+        // If there's an error fetching admin roles, still display users without admin status
+        console.error("Error processing admin roles:", error);
+        
+        const usersWithoutRoles = usersData.map(user => ({
           id: user.id,
           email: user.email,
           created_at: user.created_at,
           last_sign_in_at: user.last_sign_in_at,
-          is_admin: isAdmin,
+          is_admin: false, // Default to false if we can't determine admin status
           raw_app_meta_data: user.raw_app_meta_data
-        };
-      });
-
-      setUsers(usersWithRoles);
+        }));
+        
+        setUsers(usersWithoutRoles);
+        
+        toast({
+          title: "Waarschuwing",
+          description: "Gebruikers worden weergegeven zonder admin-status informatie.",
+        });
+      }
     } catch (error) {
       console.error("Error in fetching users:", error);
       toast({
