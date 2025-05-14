@@ -15,8 +15,12 @@ export function useUsersData() {
       setLoading(true);
       
       // Get current user ID first - properly await the Promise
-      const { data: userData, error: userError } = await supabase.auth.getUser();
-      const currentUserId = userData?.user?.id;
+      const { data: authData, error: authError } = await supabase.auth.getUser();
+      const currentUserId = authData?.user?.id;
+      
+      if (authError) {
+        console.error("Error getting current user:", authError);
+      }
       
       if (!currentUserId) {
         console.error("No authenticated user found");
@@ -48,21 +52,21 @@ export function useUsersData() {
       }
       
       // Get all users from auth.users via secure function
-      const { data: userData, error: userError } = await supabase
+      const { data: usersData, error: usersError } = await supabase
         .rpc('get_users');
       
-      if (userError) {
-        console.error("Error fetching users:", userError);
+      if (usersError) {
+        console.error("Error fetching users:", usersError);
         toast({
           title: "Fout bij ophalen gebruikers",
-          description: userError.message,
+          description: usersError.message,
           variant: "destructive",
         });
         setLoading(false);
         return;
       }
 
-      if (!userData || userData.length === 0) {
+      if (!usersData || usersData.length === 0) {
         setUsers([]);
         setLoading(false);
         return;
@@ -88,7 +92,7 @@ export function useUsersData() {
       console.log("Admin user IDs:", Array.from(adminUserIds));
 
       // Map users with their admin status
-      const usersWithRoles = userData.map(user => {
+      const usersWithRoles = usersData.map(user => {
         const isAdmin = adminUserIds.has(user.id);
         console.log(`User ${user.email} (${user.id}) is admin: ${isAdmin}`);
         
