@@ -6,14 +6,14 @@ const AppointmentsTab = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Afsprakenbeheer</CardTitle>
-        <CardDescription>Bekijk en beheer uw afspraken</CardDescription>
+        <CardTitle>Ontvangen post</CardTitle>
+        <CardDescription>Bekijk en beheer uw ontvangen post</CardDescription>
       </CardHeader>
       <CardContent>
         <p className="text-muted-foreground mb-4">
-          Afsprakenbeheer wordt momenteel ontwikkeld. Binnenkort kunt u hier uw afspraken inzien en beheren.
+          Ontvangen post wordt momenteel ontwikkeld. Binnenkort kunt u hier uw ontvangen post inzien en beheren.
         </p>
-        <Button variant="outline" disabled>Nieuwe afspraak maken</Button>
+        <Button variant="outline" disabled>Nieuwe post registreren</Button>
       </CardContent>
     </Card>
   );

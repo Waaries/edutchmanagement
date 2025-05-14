@@ -29,9 +29,9 @@ const MOCK_ACTIVITY_DATA: ActivityData[] = [
 ];
 
 const MOCK_UPCOMING_APPOINTMENTS = [
-  { id: 1, title: "Introductiegesprek", date: "2025-05-20T10:00:00", status: "confirmed" },
-  { id: 2, title: "Voortgangsbeoordeling", date: "2025-05-27T14:30:00", status: "confirmed" },
-  { id: 3, title: "Training evaluatie", date: "2025-06-05T11:00:00", status: "pending" },
+  { id: 1, title: "Belastingbrief 2025", date: "2025-05-20T10:00:00", status: "confirmed" },
+  { id: 2, title: "UWV uitkering bevestiging", date: "2025-05-27T14:30:00", status: "confirmed" },
+  { id: 3, title: "Waterschapsbelasting", date: "2025-06-05T11:00:00", status: "pending" },
 ];
 
 const OverviewTab = ({ setActiveTab }: OverviewTabProps) => {
@@ -60,7 +60,7 @@ const OverviewTab = ({ setActiveTab }: OverviewTabProps) => {
         <Card>
           <CardHeader>
             <CardTitle>Uw activiteit</CardTitle>
-            <CardDescription>Overzicht van uw afspraken door de tijd</CardDescription>
+            <CardDescription>Overzicht van uw ontvangen post door de tijd</CardDescription>
           </CardHeader>
           <CardContent>
             {loading ? (
@@ -112,14 +112,14 @@ const OverviewTab = ({ setActiveTab }: OverviewTabProps) => {
         </div>
       </div>
 
-      {/* Right column with upcoming appointments */}
+      {/* Right column with upcoming posts */}
       <div className="space-y-6">
         <Card className="h-full">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Calendar className="h-5 w-5" /> Aankomende afspraken
+              <Calendar className="h-5 w-5" /> Ontvangen post
             </CardTitle>
-            <CardDescription>Uw geplande afspraken</CardDescription>
+            <CardDescription>Uw geregistreerde post</CardDescription>
           </CardHeader>
           <CardContent>
             {loading ? (
@@ -147,12 +147,12 @@ const OverviewTab = ({ setActiveTab }: OverviewTabProps) => {
                 ))}
               </div>
             ) : (
-              <p className="text-center py-4 text-slate-500">Geen aankomende afspraken</p>
+              <p className="text-center py-4 text-slate-500">Geen ontvangen post</p>
             )}
           </CardContent>
           <CardFooter>
             <Button onClick={() => setActiveTab("appointments")} className="w-full">
-              Alle afspraken bekijken
+              Alle ontvangen post bekijken
             </Button>
           </CardFooter>
         </Card>

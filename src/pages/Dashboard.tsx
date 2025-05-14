@@ -72,7 +72,7 @@ const Dashboard = () => {
           </TabsTrigger>
           <TabsTrigger value="appointments" className="flex items-center gap-2">
             <Calendar className="h-4 w-4" />
-            <span>Afspraken</span>
+            <span>Ontvangen post</span>
           </TabsTrigger>
           <TabsTrigger value="settings" className="flex items-center gap-2">
             <Settings className="h-4 w-4" />
