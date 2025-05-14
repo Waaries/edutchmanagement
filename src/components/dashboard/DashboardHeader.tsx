@@ -6,6 +6,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 interface DashboardHeaderProps {
   isAdmin: boolean;
@@ -15,17 +16,26 @@ const DashboardHeader = ({ isAdmin }: DashboardHeaderProps) => {
   const { signOut, user } = useAuth();
   const navigate = useNavigate();
   const [hasAdminRole, setHasAdminRole] = useState(false);
+  const { toast } = useToast();
   
   useEffect(() => {
     const verifyAdminRole = async () => {
       if (!user) return;
       
       try {
-        // Use the fixed is_admin function
+        // Gebruik de fixed is_admin function
         const { data, error } = await supabase.rpc('is_admin');
         
-        if (!error) {
+        if (error) {
+          console.error("Error verifying admin role:", error);
+          toast({
+            title: "Verificatie fout",
+            description: "Er was een probleem bij het controleren van uw beheerdersrechten.",
+            variant: "destructive",
+          });
+        } else {
           setHasAdminRole(!!data);
+          console.log("Admin check result:", data);
         }
       } catch (err) {
         console.error("Error verifying admin role:", err);
@@ -33,14 +43,27 @@ const DashboardHeader = ({ isAdmin }: DashboardHeaderProps) => {
     };
     
     verifyAdminRole();
-  }, [user]);
+  }, [user, toast]);
 
   const goToAdmin = () => {
     navigate('/admin');
   };
 
   const handleLogout = async () => {
-    await signOut();
+    try {
+      await signOut();
+      toast({
+        title: "Uitgelogd",
+        description: "U bent succesvol uitgelogd.",
+      });
+    } catch (error) {
+      console.error("Logout error:", error);
+      toast({
+        title: "Uitloggen mislukt",
+        description: "Er was een probleem bij het uitloggen.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (

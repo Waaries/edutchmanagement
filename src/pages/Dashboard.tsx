@@ -5,7 +5,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { User, LayoutDashboard, Calendar, Settings } from "lucide-react";
 
-// Import the components
+// Import components
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import WelcomeCard from "@/components/dashboard/WelcomeCard";
 import OverviewTab from "@/components/dashboard/OverviewTab";
@@ -13,6 +13,7 @@ import ProfileTab from "@/components/dashboard/ProfileTab";
 import AppointmentsTab from "@/components/dashboard/AppointmentsTab";
 import SettingsTab from "@/components/dashboard/SettingsTab";
 import { useToast } from "@/hooks/use-toast";
+import { ensureProfileExists } from "@/lib/profile-utils";
 
 const Dashboard = () => {
   const { user, loading, isAdmin } = useAuth();
@@ -35,6 +36,20 @@ const Dashboard = () => {
       console.log("User is not logged in, redirecting to auth page");
       navigate("/auth");
     }
+    
+    // Zorg ervoor dat het gebruikersprofiel bestaat
+    const initProfile = async () => {
+      if (user) {
+        const profileCreated = await ensureProfileExists(user);
+        if (profileCreated) {
+          console.log("Profile ensured for user:", user.email);
+        } else {
+          console.warn("Could not ensure profile for user:", user.email);
+        }
+      }
+    };
+    
+    initProfile();
   }, [user, loading, isAdmin, navigate]);
 
   // Show a loading indicator while checking authentication
