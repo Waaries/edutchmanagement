@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate, useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { User, LayoutDashboard, Calendar } from "lucide-react";
+import { User, LayoutDashboard, Calendar, Settings } from "lucide-react";
 
 // Import the components
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
@@ -11,6 +11,7 @@ import WelcomeCard from "@/components/dashboard/WelcomeCard";
 import OverviewTab from "@/components/dashboard/OverviewTab";
 import ProfileTab from "@/components/dashboard/ProfileTab";
 import AppointmentsTab from "@/components/dashboard/AppointmentsTab";
+import SettingsTab from "@/components/dashboard/SettingsTab";
 import { useToast } from "@/hooks/use-toast";
 
 const Dashboard = () => {
@@ -60,7 +61,7 @@ const Dashboard = () => {
       <WelcomeCard user={user} isAdmin={isAdmin} />
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid grid-cols-3 mb-8">
+        <TabsList className="grid grid-cols-4 mb-8">
           <TabsTrigger value="overview" className="flex items-center gap-2">
             <LayoutDashboard className="h-4 w-4" />
             <span>Overzicht</span>
@@ -72,6 +73,10 @@ const Dashboard = () => {
           <TabsTrigger value="appointments" className="flex items-center gap-2">
             <Calendar className="h-4 w-4" />
             <span>Afspraken</span>
+          </TabsTrigger>
+          <TabsTrigger value="settings" className="flex items-center gap-2">
+            <Settings className="h-4 w-4" />
+            <span>Instellingen</span>
           </TabsTrigger>
         </TabsList>
         
@@ -85,6 +90,10 @@ const Dashboard = () => {
         
         <TabsContent value="appointments">
           <AppointmentsTab />
+        </TabsContent>
+        
+        <TabsContent value="settings">
+          <SettingsTab />
         </TabsContent>
       </Tabs>
     </div>
