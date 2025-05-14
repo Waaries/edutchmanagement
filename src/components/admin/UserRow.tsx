@@ -5,7 +5,7 @@ import { TableCell, TableRow } from "@/components/ui/table";
 import { formatDutchDate } from "@/lib/date-utils";
 import { useAdminStatus } from "@/hooks/use-admin-status";
 import { UserData } from "@/types/user";
-import { Check, X, User } from "lucide-react"; 
+import { Check, X, User, Shield } from "lucide-react"; 
 import { useAuth } from "@/contexts/AuthContext";
 
 interface UserRowProps {
@@ -55,33 +55,41 @@ const UserRow: React.FC<UserRowProps> = ({ user, onStatusChange, onDeleteClick }
       </TableCell>
       <TableCell>
         <div className="flex space-x-2">
+          {/* Only show "Maak admin" button when user is not already an admin */}
           {!user.is_admin && (
             <Button
               variant="outline"
               size="sm"
               onClick={handleToggleAdminStatus}
               disabled={isProcessing}
+              className="flex items-center gap-1"
             >
+              <Shield className="h-3 w-3 text-green-600" />
               Maak admin
             </Button>
           )}
+          {/* Only show "Admin rechten intrekken" when user is an admin and not the current user */}
           {user.is_admin && !isCurrentUser && (
             <Button
               variant="outline"
               size="sm"
               onClick={handleToggleAdminStatus}
               disabled={isProcessing}
+              className="flex items-center gap-1"
             >
+              <X className="h-3 w-3 text-orange-600" />
               Admin rechten intrekken
             </Button>
           )}
+          {/* Only show delete button for non-current users */}
           {!isCurrentUser && (
             <Button
               variant="outline"
               size="sm"
               onClick={() => onDeleteClick(user)}
-              className="text-destructive"
+              className="text-destructive flex items-center gap-1"
             >
+              <X className="h-3 w-3" />
               Verwijderen
             </Button>
           )}

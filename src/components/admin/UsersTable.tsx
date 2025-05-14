@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { 
   Table, 
   TableBody
@@ -16,12 +16,24 @@ export const UsersTable = () => {
   const { users, loading, fetchUsers } = useUsersData();
   const [userToDelete, setUserToDelete] = useState<UserData | null>(null);
 
+  // Refresh data when the component mounts
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
   const handleDeleteClick = (user: UserData) => {
     setUserToDelete(user);
   };
 
   const handleCloseDeleteDialog = () => {
     setUserToDelete(null);
+  };
+
+  const handleStatusChange = () => {
+    // Add a small delay to ensure database has updated
+    setTimeout(() => {
+      fetchUsers();
+    }, 500);
   };
 
   if (loading) {
@@ -41,7 +53,7 @@ export const UsersTable = () => {
                 <UserRow 
                   key={user.id} 
                   user={user} 
-                  onStatusChange={fetchUsers}
+                  onStatusChange={handleStatusChange}
                   onDeleteClick={handleDeleteClick}
                 />
               ))
