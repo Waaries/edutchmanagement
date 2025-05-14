@@ -33,12 +33,8 @@ const AdminSecurityCheck: React.FC<AdminSecurityCheckProps> = ({
         // Log admin access attempt for security monitoring
         console.log("Admin access verification for:", user.email);
         
-        // Use a direct database query to avoid recursion
-        const { data, error } = await supabase
-          .from('user_roles')
-          .select('*')
-          .eq('user_id', user.id)
-          .eq('role', 'admin');
+        // Use the fixed is_admin() function via RPC call
+        const { data, error } = await supabase.rpc('is_admin');
         
         if (error) {
           console.error("Error verifying admin status:", error);
@@ -54,12 +50,12 @@ const AdminSecurityCheck: React.FC<AdminSecurityCheckProps> = ({
           return;
         }
         
-        const hasAdminRole = Array.isArray(data) && data.length > 0;
-        console.log("Admin verification result:", hasAdminRole, data);
-        setVerifiedAdmin(hasAdminRole);
+        // data will be true or false from the is_admin function
+        console.log("Admin verification result:", data);
+        setVerifiedAdmin(data);
         
         // Redirect non-admins with a message
-        if (!hasAdminRole) {
+        if (!data) {
           toast({
             title: "Toegang geweigerd",
             description: "U heeft geen toegang tot het admin dashboard.",

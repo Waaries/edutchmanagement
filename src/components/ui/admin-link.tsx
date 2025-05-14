@@ -5,21 +5,43 @@ import { Button } from "@/components/ui/button";
 import { Shield } from "lucide-react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { supabase } from "@/integrations/supabase/client";
 
 export function AdminLink() {
-  const { isAdmin, user } = useAuth();
+  const { user } = useAuth();
   const [showAdmin, setShowAdmin] = useState(false);
+  const [checking, setChecking] = useState(true);
   
   useEffect(() => {
-    // Only show admin link when both user is logged in and has admin role
-    if (user && isAdmin) {
-      setShowAdmin(true);
-    } else {
-      setShowAdmin(false);
-    }
-  }, [isAdmin, user]);
+    const checkAdminStatus = async () => {
+      if (!user) {
+        setShowAdmin(false);
+        setChecking(false);
+        return;
+      }
+      
+      try {
+        // Use the fixed is_admin function 
+        const { data, error } = await supabase.rpc('is_admin');
+        
+        if (error || !data) {
+          console.error("Error checking admin status:", error);
+          setShowAdmin(false);
+        } else {
+          setShowAdmin(data);
+        }
+      } catch (err) {
+        console.error("Exception checking admin status:", err);
+        setShowAdmin(false);
+      } finally {
+        setChecking(false);
+      }
+    };
+    
+    checkAdminStatus();
+  }, [user]);
   
-  if (!showAdmin) return null;
+  if (checking || !showAdmin) return null;
   
   return (
     <Button variant="ghost" asChild className={cn("flex items-center gap-2 bg-amber-100 hover:bg-amber-200 border border-amber-300")}>

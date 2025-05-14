@@ -4,14 +4,36 @@ import { Shield, LogOut } from "lucide-react";
 import { LayoutDashboard } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 interface DashboardHeaderProps {
   isAdmin: boolean;
 }
 
 const DashboardHeader = ({ isAdmin }: DashboardHeaderProps) => {
-  const { signOut } = useAuth();
+  const { signOut, user } = useAuth();
   const navigate = useNavigate();
+  const [hasAdminRole, setHasAdminRole] = useState(false);
+  
+  useEffect(() => {
+    const verifyAdminRole = async () => {
+      if (!user) return;
+      
+      try {
+        // Use the fixed is_admin function
+        const { data, error } = await supabase.rpc('is_admin');
+        
+        if (!error) {
+          setHasAdminRole(!!data);
+        }
+      } catch (err) {
+        console.error("Error verifying admin role:", err);
+      }
+    };
+    
+    verifyAdminRole();
+  }, [user]);
 
   const goToAdmin = () => {
     navigate('/admin');
@@ -28,7 +50,7 @@ const DashboardHeader = ({ isAdmin }: DashboardHeaderProps) => {
         <h1 className="text-3xl font-bold">Dashboard</h1>
       </div>
       <div className="flex items-center gap-2">
-        {isAdmin && (
+        {(isAdmin || hasAdminRole) && (
           <Button 
             onClick={goToAdmin}
             variant="outline" 

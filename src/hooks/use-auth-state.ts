@@ -9,16 +9,10 @@ export function useAuthState() {
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
 
-  const checkAdminStatus = async (userId: string) => {
+  const checkAdminStatus = async () => {
     try {
-      console.log("Checking admin status for userId:", userId);
-      
-      // Direct database query with no functions to avoid recursion
-      const { data, error } = await supabase
-        .from('user_roles')
-        .select('*')
-        .eq('user_id', userId)
-        .eq('role', 'admin');
+      // Use the fixed is_admin function
+      const { data, error } = await supabase.rpc('is_admin');
       
       if (error) {
         console.error('Error checking admin status:', error);
@@ -26,10 +20,9 @@ export function useAuthState() {
         return false;
       }
       
-      const hasAdminRole = Array.isArray(data) && data.length > 0;
-      console.log('Admin check result:', hasAdminRole, data);
-      setIsAdmin(hasAdminRole);
-      return hasAdminRole;
+      console.log('Admin check result:', data);
+      setIsAdmin(data);
+      return data;
     } catch (err) {
       console.error('Failed to check admin status:', err);
       setIsAdmin(false);
@@ -63,8 +56,8 @@ export function useAuthState() {
           
           // Wait a moment before checking admin status to ensure auth is ready
           setTimeout(async () => {
-            if (mounted && currentSession.user) {
-              await checkAdminStatus(currentSession.user.id);
+            if (mounted) {
+              await checkAdminStatus();
               setLoading(false);
             }
           }, 500);
@@ -100,8 +93,8 @@ export function useAuthState() {
           
           // Wait a moment before checking admin status to ensure auth is ready
           setTimeout(async () => {
-            if (mounted && currentSession.user) {
-              await checkAdminStatus(currentSession.user.id);
+            if (mounted) {
+              await checkAdminStatus();
               setLoading(false);
             }
           }, 500);

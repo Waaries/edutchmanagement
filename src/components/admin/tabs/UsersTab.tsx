@@ -15,29 +15,14 @@ const UsersTab: React.FC = () => {
   useEffect(() => {
     const verifyAccess = async () => {
       try {
-        // Get current user ID first
-        const { data: userData } = await supabase.auth.getUser();
-        const user = userData?.user;
-        
-        if (!user) {
-          setHasAccess(false);
-          setVerifying(false);
-          return;
-        }
-        
-        // Check admin status directly
-        const { data, error } = await supabase
-          .from('user_roles')
-          .select('*')
-          .eq('user_id', user.id)
-          .eq('role', 'admin');
+        // Use the fixed is_admin function
+        const { data, error } = await supabase.rpc('is_admin');
         
         if (error) {
           console.error("Error verifying admin access for UsersTab:", error);
           setHasAccess(false);
         } else {
-          const isAdmin = Array.isArray(data) && data.length > 0;
-          setHasAccess(isAdmin);
+          setHasAccess(data);
         }
       } catch (err) {
         console.error("Exception checking access for UsersTab:", err);

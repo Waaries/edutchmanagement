@@ -7,14 +7,14 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
 const Admin: React.FC = () => {
-  const { user, loading, isAdmin } = useAuth();
+  const { user, loading } = useAuth();
   const [verifying, setVerifying] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [localIsAdmin, setLocalIsAdmin] = useState<boolean | null>(null);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const navigate = useNavigate();
   const { toast } = useToast();
   
-  // Directly verify admin status to handle edge cases
+  // Directly verify admin status
   useEffect(() => {
     const verifyAdminAccess = async () => {
       if (loading) return;
@@ -28,12 +28,8 @@ const Admin: React.FC = () => {
       try {
         console.log("Admin page - Verifying admin access for:", user.email);
         
-        // Direct database check to avoid potential recursion issues
-        const { data, error } = await supabase
-          .from('user_roles')
-          .select('*')
-          .eq('user_id', user.id)
-          .eq('role', 'admin');
+        // Use the fixed is_admin function
+        const { data, error } = await supabase.rpc('is_admin');
         
         if (error) {
           console.error("Admin verification error:", error);
@@ -44,14 +40,14 @@ const Admin: React.FC = () => {
             description: "Er is een fout opgetreden bij het verifiëren van uw beheerdersrechten.",
             variant: "destructive",
           });
+          setIsAdmin(false);
         } else {
           setError(null);
-          const hasAdminRole = Array.isArray(data) && data.length > 0;
-          console.log("Admin page - Direct check result:", hasAdminRole, data);
-          setLocalIsAdmin(hasAdminRole);
+          console.log("Admin page - is_admin result:", data);
+          setIsAdmin(data);
           
           // If user does not have admin role, redirect to dashboard
-          if (!hasAdminRole) {
+          if (!data) {
             toast({
               title: "Toegang geweigerd",
               description: "U heeft geen toegang tot het admin dashboard.",
@@ -63,6 +59,7 @@ const Admin: React.FC = () => {
       } catch (err) {
         console.error("Exception during admin verification:", err);
         setError("Er is een onbekende fout opgetreden.");
+        setIsAdmin(false);
       } finally {
         setVerifying(false);
       }
@@ -104,7 +101,7 @@ const Admin: React.FC = () => {
   }
 
   // Only render the admin dashboard if the user has admin privileges
-  return (localIsAdmin || isAdmin) ? <AdminDashboard /> : <Navigate to="/dashboard" replace />;
+  return isAdmin ? <AdminDashboard /> : <Navigate to="/dashboard" replace />;
 };
 
 export default Admin;

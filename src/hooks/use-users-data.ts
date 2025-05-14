@@ -14,34 +14,11 @@ export function useUsersData() {
     try {
       setLoading(true);
       
-      // Get current user ID first - properly await the Promise
-      const { data: authData, error: authError } = await supabase.auth.getUser();
-      const currentUserId = authData?.user?.id;
+      // Check admin status first using the fixed is_admin function
+      const { data: isAdmin, error: adminError } = await supabase.rpc('is_admin');
       
-      if (authError) {
-        console.error("Error getting current user:", authError);
-      }
-      
-      if (!currentUserId) {
-        console.error("No authenticated user found");
-        toast({
-          title: "Toegang geweigerd",
-          description: "U bent niet ingelogd.",
-          variant: "destructive",
-        });
-        setLoading(false);
-        return;
-      }
-      
-      // Direct database query instead of using is_admin function
-      const { data: isAdminData, error: isAdminError } = await supabase
-        .from('user_roles')
-        .select('*')
-        .eq('user_id', currentUserId)
-        .eq('role', 'admin');
-      
-      if (isAdminError || !isAdminData || isAdminData.length === 0) {
-        console.error("Error checking admin permissions:", isAdminError);
+      if (adminError || !isAdmin) {
+        console.error("Error checking admin permissions:", adminError);
         toast({
           title: "Toegang geweigerd",
           description: "U heeft geen admin rechten om gebruikersgegevens te bekijken.",
