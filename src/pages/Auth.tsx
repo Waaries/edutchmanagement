@@ -1,16 +1,15 @@
 
 import { useState, useEffect } from 'react';
-import { Navigate, useLocation, useSearchParams, Link, useNavigate } from 'react-router-dom';
+import { Navigate, useLocation, useSearchParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { usePasswordReset } from '@/hooks/use-password-reset';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import LoginForm from '@/components/auth/LoginForm';
 import RegisterForm from '@/components/auth/RegisterForm';
+import SignInCard from '@/components/ui/sign-in-card-2';
 import SuccessDialog from '@/components/auth/SuccessDialog';
-import { AlertCircle, ArrowLeft } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { AlertCircle } from 'lucide-react';
 
 const Auth = () => {
   const {
@@ -88,67 +87,9 @@ const Auth = () => {
     setSuccess(message);
     setShowDialog(true);
   };
-
-  return (
-    <div className="bg-gradient-to-br from-blue-50 via-indigo-50/30 to-purple-50 min-h-screen flex flex-col justify-center items-center py-12 px-4">
-      <Card className="max-w-md w-full mx-auto shadow-xl border border-blue-100/50 rounded-3xl overflow-hidden bg-white/90 backdrop-blur-sm">
-        <div className="p-8 pb-4">
-          <div className="flex justify-between items-center mb-6">
-            <Link to="/" className="flex items-center text-slate-600 hover:text-primary transition-colors duration-300">
-              <Button variant="outline" size="sm" className="rounded-full border-slate-200 hover:border-primary">
-                <ArrowLeft size={16} />
-                <span className="ml-1">Terug</span>
-              </Button>
-            </Link>
-          </div>
-
-          <div className="text-center mb-8">
-            <div className="flex justify-center mb-6">
-              <img src="/lovable-uploads/3794fc88-3e28-4692-b1f9-83f893bf0ada.png" alt="e-Dutch Logo" className="h-20 w-auto animate-fade-in" />
-            </div>
-            <h1 className="text-2xl font-bold text-slate-800 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-500">Welkom bij eDutch Management</h1>
-            <p className="text-slate-500 mt-2 text-sm">Log in of maak een account aan</p>
-          </div>
-
-          {error && (
-            <div className="p-3 mb-4 bg-red-50 text-red-600 rounded-xl flex items-start">
-              <AlertCircle className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" />
-              <span>{error}</span>
-            </div>
-          )}
-        </div>
-
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 p-1 mx-px py-1 rounded-xl bg-blue-50/70 mb-4">
-            <TabsTrigger 
-              value="login" 
-              className="rounded-lg data-[state=active]:bg-white data-[state=active]:text-blue-700 data-[state=active]:shadow-sm py-3"
-            >
-              Inloggen
-            </TabsTrigger>
-            <TabsTrigger 
-              value="register" 
-              className="rounded-lg data-[state=active]:bg-white data-[state=active]:text-blue-700 data-[state=active]:shadow-sm py-3"
-            >
-              Registreren
-            </TabsTrigger>
-          </TabsList>
-          
-          <CardContent className="px-8 pb-8">
-            <TabsContent value="login">
-              <LoginForm />
-            </TabsContent>
-            
-            <TabsContent value="register">
-              <RegisterForm onSuccess={handleRegistrationSuccess} />
-            </TabsContent>
-          </CardContent>
-        </Tabs>
-      </Card>
-
-      <SuccessDialog open={showDialog} onOpenChange={setShowDialog} message={success || ''} />
-    </div>
-  );
+  
+  // Use the new SignInCard component
+  return <SignInCard />;
 };
 
 export default Auth;
