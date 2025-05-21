@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -72,10 +71,9 @@ const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
       }
     });
     
-    // Fix this line - pass name as options.data instead of directly as metadata
-    const { error } = await signUp(email, password, { 
-      first_name: name, 
-      last_name: "" 
+    const { error } = await signUp(email, password, {
+      first_name: name,
+      last_name: ""
     });
     
     if (error) {

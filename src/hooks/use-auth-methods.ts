@@ -1,4 +1,3 @@
-
 import { AuthError } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -27,7 +26,7 @@ export function useAuthMethods() {
     }
   };
 
-  const signUp = async (email: string, password: string, firstName?: string, lastName?: string) => {
+  const signUp = async (email: string, password: string, metadata?: Record<string, string>) => {
     try {
       // Clean up auth state first to prevent conflicts
       Object.keys(localStorage).forEach((key) => {
@@ -40,10 +39,7 @@ export function useAuthMethods() {
         email,
         password,
         options: {
-          data: {
-            first_name: firstName,
-            last_name: lastName,
-          },
+          data: metadata,
           emailRedirectTo: `${window.location.origin}/auth`,
         },
       });
