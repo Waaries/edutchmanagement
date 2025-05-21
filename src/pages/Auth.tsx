@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import LoginForm from '@/components/auth/LoginForm';
 import RegisterForm from '@/components/auth/RegisterForm';
 import SuccessDialog from '@/components/auth/SuccessDialog';
-import { Shield, HomeIcon, AlertCircle } from 'lucide-react';
+import { Shield, HomeIcon, AlertCircle, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
@@ -89,13 +89,14 @@ const Auth = () => {
     <div className="bg-gradient-to-b from-white to-slate-100 min-h-screen flex flex-col justify-center items-center py-12 px-4">
       <Card className="max-w-md w-full mx-auto shadow-xl border-0 rounded-2xl overflow-hidden">
         <div className="p-6 pb-0">
-          <Link to="/" className="inline-block mb-6">
+          <Link to="/" className="inline-flex items-center mb-6 text-slate-500 hover:text-primary transition-colors duration-300">
             <Button 
-              variant="ghost" 
-              className="flex items-center gap-2 text-slate-500 hover:text-primary text-sm"
+              variant="outline" 
+              size="sm"
+              className="flex items-center gap-2 text-slate-600 hover:text-primary border-slate-200 hover:border-primary"
             >
-              <HomeIcon size={16} />
-              <span>{translate("auth.backToHome")}</span>
+              <ArrowLeft size={16} />
+              <span>Terug naar home</span>
             </Button>
           </Link>
 
