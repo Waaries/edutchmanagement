@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -5,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
-import { AlertCircle, ShieldCheck } from 'lucide-react';
+import { AlertCircle, ShieldCheck, Eye, EyeOff } from 'lucide-react';
 import { SocialAuthButtons } from './SocialAuthButtons';
 import { z } from 'zod';
 
@@ -21,6 +22,8 @@ const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -91,9 +94,9 @@ const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
   };
 
   return (
-    <form onSubmit={handleRegister} className="space-y-4">
+    <form onSubmit={handleRegister} className="space-y-5">
       <div className="space-y-2">
-        <Label htmlFor="name" className="text-slate-700">Naam</Label>
+        <Label htmlFor="name" className="text-slate-700 font-medium">Naam</Label>
         <Input 
           id="name"
           type="text" 
@@ -101,12 +104,12 @@ const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
           onChange={(e) => setName(e.target.value)}
           placeholder="Uw volledige naam"
           required
-          className="bg-blue-50/50 border-slate-200 focus-visible:ring-blue-400"
+          className="bg-blue-50/30 border-slate-200 focus-visible:ring-blue-400 rounded-xl h-12"
         />
       </div>
       
       <div className="space-y-2">
-        <Label htmlFor="reg-email" className="text-slate-700">E-mail</Label>
+        <Label htmlFor="reg-email" className="text-slate-700 font-medium">E-mail</Label>
         <Input 
           id="reg-email"
           type="email" 
@@ -114,34 +117,52 @@ const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="uw@email.nl"
           required
-          className="bg-blue-50/50 border-slate-200 focus-visible:ring-blue-400"
+          className="bg-blue-50/30 border-slate-200 focus-visible:ring-blue-400 rounded-xl h-12"
         />
       </div>
       
       <div className="space-y-2">
-        <Label htmlFor="reg-password" className="text-slate-700">Wachtwoord</Label>
-        <Input 
-          id="reg-password"
-          type="password" 
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="••••••••••"
-          required
-          className="bg-blue-50/50 border-slate-200 focus-visible:ring-blue-400"
-        />
+        <Label htmlFor="reg-password" className="text-slate-700 font-medium">Wachtwoord</Label>
+        <div className="relative">
+          <Input 
+            id="reg-password"
+            type={showPassword ? "text" : "password"}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="••••••••••"
+            required
+            className="bg-blue-50/30 border-slate-200 focus-visible:ring-blue-400 rounded-xl h-12 pr-10"
+          />
+          <button 
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+          >
+            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+          </button>
+        </div>
       </div>
       
       <div className="space-y-2">
-        <Label htmlFor="confirm-password" className="text-slate-700">Bevestig wachtwoord</Label>
-        <Input 
-          id="confirm-password"
-          type="password" 
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          placeholder="••••••••••"
-          required
-          className="bg-blue-50/50 border-slate-200 focus-visible:ring-blue-400"
-        />
+        <Label htmlFor="confirm-password" className="text-slate-700 font-medium">Bevestig wachtwoord</Label>
+        <div className="relative">
+          <Input 
+            id="confirm-password"
+            type={showConfirmPassword ? "text" : "password"}
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            placeholder="••••••••••"
+            required
+            className="bg-blue-50/30 border-slate-200 focus-visible:ring-blue-400 rounded-xl h-12 pr-10"
+          />
+          <button 
+            type="button"
+            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+          >
+            {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+          </button>
+        </div>
       </div>
       
       <div className="flex items-center space-x-2 my-4">
@@ -149,6 +170,7 @@ const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
           id="terms" 
           checked={termsAccepted} 
           onCheckedChange={(checked) => setTermsAccepted(checked === true)}
+          className="bg-blue-50 border-slate-300 text-blue-600"
         />
         <label
           htmlFor="terms"
@@ -159,21 +181,21 @@ const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
       </div>
       
       {error && (
-        <div className="p-3 bg-red-50 text-red-600 rounded-md flex items-start">
+        <div className="p-4 bg-red-50 text-red-600 rounded-xl flex items-start">
           <AlertCircle className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" />
           <span>{error}</span>
         </div>
       )}
 
-      <div className="p-3 bg-blue-50 text-blue-700 rounded-md flex items-start text-sm">
+      <div className="p-4 bg-blue-50 text-blue-700 rounded-xl flex items-start text-sm">
         <ShieldCheck className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" />
         <span>Beveiligde registratie. Uw gegevens worden versleuteld opgeslagen.</span>
       </div>
       
-      <div className="flex justify-center pt-2">
+      <div className="flex justify-center pt-3">
         <Button 
           type="submit" 
-          className="bg-[#F97316] hover:bg-[#F97316]/90 px-10 shadow-md shadow-orange-300/30"
+          className="bg-[#F97316] hover:bg-[#F97316]/90 px-10 py-6 shadow-lg shadow-orange-300/30 rounded-xl w-full"
           disabled={submitting}
         >
           {submitting 
