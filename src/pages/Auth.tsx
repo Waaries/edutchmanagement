@@ -88,7 +88,7 @@ const Auth = () => {
     setShowDialog(true);
   };
   
-  // Use the new SignInCard component
+  // Use the SignInCard component
   return <SignInCard />;
 };
 
