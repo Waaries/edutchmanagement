@@ -100,6 +100,13 @@ const Auth = () => {
           </Link>
 
           <div className="text-center mb-6">
+            <div className="flex justify-center mb-4">
+              <img 
+                src="/lovable-uploads/3794fc88-3e28-4692-b1f9-83f893bf0ada.png" 
+                alt="e-Dutch Logo" 
+                className="h-20 w-auto"
+              />
+            </div>
             <h1 className="text-2xl font-bold text-slate-800">Welkom bij eDutch Management</h1>
             <p className="text-slate-500 mt-2 text-sm">Log in of maak een account aan</p>
           </div>
