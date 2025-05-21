@@ -3,18 +3,39 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { CheckCircle2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 interface SuccessDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
   message: string;
+  onClose?: () => void;
 }
 
-const SuccessDialog = ({ open, onOpenChange, message }: SuccessDialogProps) => {
+const SuccessDialog = ({ open: externalOpen, onOpenChange, message, onClose }: SuccessDialogProps) => {
   const { translate } = useLanguage();
+  const [internalOpen, setInternalOpen] = useState(true);
+  
+  // Determine if the dialog is controlled externally or internally
+  const isControlled = externalOpen !== undefined;
+  const isOpen = isControlled ? externalOpen : internalOpen;
+  
+  const handleOpenChange = (value: boolean) => {
+    if (!value) {
+      if (onClose) {
+        onClose();
+      }
+      
+      if (onOpenChange) {
+        onOpenChange(false);
+      } else {
+        setInternalOpen(false);
+      }
+    }
+  };
   
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="flex items-center">
@@ -26,7 +47,7 @@ const SuccessDialog = ({ open, onOpenChange, message }: SuccessDialogProps) => {
           </DialogDescription>
         </DialogHeader>
         <Button 
-          onClick={() => onOpenChange(false)}
+          onClick={() => handleOpenChange(false)}
           className="w-full bg-[#F97316] hover:bg-[#F97316]/90"
         >
           {translate("auth.register.successButton")}

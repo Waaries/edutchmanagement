@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Navigate, useLocation, useSearchParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -82,11 +81,14 @@ const Auth = () => {
   // Render success dialog if needed
   if (showDialog && success) {
     return <SuccessDialog 
-      message={success} 
-      onClose={() => {
-        setShowDialog(false);
-        setSuccess(null);
-      }} 
+      open={showDialog}
+      onOpenChange={(open) => {
+        if (!open) {
+          setShowDialog(false);
+          setSuccess(null);
+        }
+      }}
+      message={success}
     />;
   }
   
