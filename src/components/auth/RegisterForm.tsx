@@ -5,8 +5,10 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { AlertCircle, CheckCircle2, Info } from 'lucide-react';
+import { Checkbox } from '@/components/ui/checkbox';
+import { AlertCircle, ShieldCheck } from 'lucide-react';
 import { SocialAuthButtons } from './SocialAuthButtons';
+import { z } from 'zod';
 
 interface RegisterFormProps {
   onSuccess: (message: string) => void;
@@ -15,31 +17,53 @@ interface RegisterFormProps {
 const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
   const { signUp } = useAuth();
   const { translate, language } = useLanguage();
+  
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [termsAccepted, setTermsAccepted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
-  // Password validation
-  const hasMinLength = password.length >= 8;
-  const hasUppercase = /[A-Z]/.test(password);
-  const hasLowercase = /[a-z]/.test(password);
-  const hasNumber = /[0-9]/.test(password);
-  const hasSpecialChar = /[^A-Za-z0-9]/.test(password);
-  
-  const isPasswordValid = 
-    hasMinLength && 
-    hasUppercase && 
-    hasLowercase && 
-    hasNumber && 
-    hasSpecialChar;
+
+  // Password validation schema
+  const passwordSchema = z.string()
+    .min(8, "Wachtwoord moet minimaal 8 tekens bevatten")
+    .regex(/[A-Z]/, "Wachtwoord moet minimaal 1 hoofdletter bevatten")
+    .regex(/[0-9]/, "Wachtwoord moet minimaal 1 cijfer bevatten");
+
+  const validatePassword = () => {
+    try {
+      passwordSchema.parse(password);
+      return true;
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        setError(error.errors[0].message);
+      }
+      return false;
+    }
+  };
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitting(true);
     setError(null);
+    
+    // Form validation
+    if (!termsAccepted) {
+      setError("U moet akkoord gaan met de voorwaarden om een account aan te maken.");
+      return;
+    }
+    
+    if (password !== confirmPassword) {
+      setError("Wachtwoorden komen niet overeen.");
+      return;
+    }
+    
+    if (!validatePassword()) {
+      return;
+    }
+    
+    setSubmitting(true);
     
     // Clean up auth state first to prevent conflicts
     Object.keys(localStorage).forEach((key) => {
@@ -48,49 +72,17 @@ const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
       }
     });
     
-    // Validate password before submission
-    if (!isPasswordValid) {
-      setError(language === 'nl' 
-        ? "Zorg ervoor dat uw wachtwoord aan alle vereisten voldoet" 
-        : "Please ensure your password meets all the requirements");
-      setSubmitting(false);
-      return;
-    }
-    
-    // Check if email is valid
-    if (!/\S+@\S+\.\S+/.test(email)) {
-      setError(language === 'nl'
-        ? "Voer een geldig e-mailadres in"
-        : "Please enter a valid email address");
-      setSubmitting(false);
-      return;
-    }
-    
-    const { error } = await signUp(email, password, firstName, lastName);
+    const { error } = await signUp(email, password, { name });
     
     if (error) {
-      // Provide more user-friendly Dutch error messages
-      let errorMessage = error.message;
-      
-      if (error.message.includes('User already registered')) {
-        errorMessage = language === 'nl'
-          ? "Dit e-mailadres is al geregistreerd. Probeer in te loggen of gebruik een ander e-mailadres."
-          : "This email is already registered. Try logging in or use a different email address.";
-      } else if (error.message.includes('Invalid email')) {
-        errorMessage = language === 'nl'
-          ? "Ongeldig e-mailadres. Controleer het e-mailadres en probeer het opnieuw."
-          : "Invalid email address. Please check and try again.";
-      } else if (error.message.includes('Password should be')) {
-        errorMessage = language === 'nl'
-          ? "Wachtwoord voldoet niet aan de veiligheidseisen. Probeer een ander wachtwoord."
-          : "Password doesn't meet security requirements. Please try a different password.";
-      }
-      
-      setError(errorMessage);
+      console.error("Registration error:", error.message);
+      setError(error.message);
     } else {
-      onSuccess(language === 'nl'
-        ? "Registratie succesvol! Controleer uw e-mail om uw account te bevestigen."
-        : "Registration successful! Please check your email to confirm your account.");
+      onSuccess(
+        language === 'nl' 
+          ? "Uw account is succesvol aangemaakt! Bekijk uw e-mail om uw account te verifiëren."
+          : "Your account has been created successfully! Please check your email to verify your account."
+      );
     }
     
     setSubmitting(false);
@@ -98,74 +90,70 @@ const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
 
   return (
     <form onSubmit={handleRegister} className="space-y-4">
-      <div className="grid grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="firstName">{translate("auth.register.firstName")}</Label>
-          <Input 
-            id="firstName"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            placeholder={translate("auth.register.firstNamePlaceholder")}
-          />
-        </div>
-        
-        <div className="space-y-2">
-          <Label htmlFor="lastName">{translate("auth.register.lastName")}</Label>
-          <Input 
-            id="lastName"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            placeholder={translate("auth.register.lastNamePlaceholder")}
-          />
-        </div>
+      <div className="space-y-2">
+        <Label htmlFor="name" className="text-slate-700">Naam</Label>
+        <Input 
+          id="name"
+          type="text" 
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Uw volledige naam"
+          required
+          className="bg-blue-50/50 border-slate-200 focus-visible:ring-blue-400"
+        />
       </div>
       
       <div className="space-y-2">
-        <Label htmlFor="registerEmail">{translate("auth.register.email")}</Label>
+        <Label htmlFor="reg-email" className="text-slate-700">E-mail</Label>
         <Input 
-          id="registerEmail"
+          id="reg-email"
           type="email" 
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder={translate("auth.register.emailPlaceholder")}
+          placeholder="uw@email.nl"
           required
+          className="bg-blue-50/50 border-slate-200 focus-visible:ring-blue-400"
         />
       </div>
       
       <div className="space-y-2">
-        <Label htmlFor="registerPassword">{translate("auth.register.password")}</Label>
+        <Label htmlFor="reg-password" className="text-slate-700">Wachtwoord</Label>
         <Input 
-          id="registerPassword"
+          id="reg-password"
           type="password" 
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder={translate("auth.register.passwordPlaceholder")}
+          placeholder="••••••••••"
           required
+          className="bg-blue-50/50 border-slate-200 focus-visible:ring-blue-400"
         />
-        
-        <div className="text-xs space-y-1 mt-2 bg-gray-50 p-3 rounded-md">
-          <p className="font-medium text-brand-mediumgray mb-1">{translate("auth.register.passwordRequirements")}</p>
-          <div className="flex items-start gap-2">
-            {hasMinLength ? <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5" /> : <Info className="h-4 w-4 text-amber-500 mt-0.5" />}
-            <p className={`${hasMinLength ? 'text-green-700' : 'text-brand-mediumgray'}`}>{translate("auth.register.minLength")}</p>
-          </div>
-          <div className="flex items-start gap-2">
-            {hasUppercase ? <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5" /> : <Info className="h-4 w-4 text-amber-500 mt-0.5" />}
-            <p className={`${hasUppercase ? 'text-green-700' : 'text-brand-mediumgray'}`}>{translate("auth.register.uppercase")}</p>
-          </div>
-          <div className="flex items-start gap-2">
-            {hasLowercase ? <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5" /> : <Info className="h-4 w-4 text-amber-500 mt-0.5" />}
-            <p className={`${hasLowercase ? 'text-green-700' : 'text-brand-mediumgray'}`}>{translate("auth.register.lowercase")}</p>
-          </div>
-          <div className="flex items-start gap-2">
-            {hasNumber ? <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5" /> : <Info className="h-4 w-4 text-amber-500 mt-0.5" />}
-            <p className={`${hasNumber ? 'text-green-700' : 'text-brand-mediumgray'}`}>{translate("auth.register.number")}</p>
-          </div>
-          <div className="flex items-start gap-2">
-            {hasSpecialChar ? <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5" /> : <Info className="h-4 w-4 text-amber-500 mt-0.5" />}
-            <p className={`${hasSpecialChar ? 'text-green-700' : 'text-brand-mediumgray'}`}>{translate("auth.register.special")}</p>
-          </div>
-        </div>
+      </div>
+      
+      <div className="space-y-2">
+        <Label htmlFor="confirm-password" className="text-slate-700">Bevestig wachtwoord</Label>
+        <Input 
+          id="confirm-password"
+          type="password" 
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          placeholder="••••••••••"
+          required
+          className="bg-blue-50/50 border-slate-200 focus-visible:ring-blue-400"
+        />
+      </div>
+      
+      <div className="flex items-center space-x-2 my-4">
+        <Checkbox 
+          id="terms" 
+          checked={termsAccepted} 
+          onCheckedChange={(checked) => setTermsAccepted(checked === true)}
+        />
+        <label
+          htmlFor="terms"
+          className="text-sm text-slate-600 leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
+          Ik ga akkoord met de algemene voorwaarden en het privacybeleid
+        </label>
       </div>
       
       {error && (
@@ -174,11 +162,16 @@ const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
           <span>{error}</span>
         </div>
       )}
+
+      <div className="p-3 bg-blue-50 text-blue-700 rounded-md flex items-start text-sm">
+        <ShieldCheck className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" />
+        <span>Beveiligde registratie. Uw gegevens worden versleuteld opgeslagen.</span>
+      </div>
       
-      <div className="flex flex-col items-center space-y-3">
+      <div className="flex justify-center pt-2">
         <Button 
           type="submit" 
-          className="bg-[#F97316] hover:bg-[#F97316]/90 w-auto px-12"
+          className="bg-[#F97316] hover:bg-[#F97316]/90 px-10 shadow-md shadow-orange-300/30"
           disabled={submitting}
         >
           {submitting 

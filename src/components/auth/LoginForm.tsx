@@ -146,10 +146,10 @@ const LoginForm = () => {
         <span>Beveiligde verbinding. Wij slaan uw wachtwoord versleuteld op.</span>
       </div>
       
-      <div className="flex flex-col items-center space-y-3">
+      <div className="flex justify-center pt-2">
         <Button 
           type="submit" 
-          className="bg-[#F97316] hover:bg-[#F97316]/90 w-auto px-12"
+          className="bg-[#F97316] hover:bg-[#F97316]/90 px-10 shadow-md shadow-orange-300/30"
           disabled={submitting}
         >
           {submitting ? "Inloggen..." : "Inloggen"}

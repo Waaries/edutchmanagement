@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import LoginForm from '@/components/auth/LoginForm';
 import RegisterForm from '@/components/auth/RegisterForm';
 import SuccessDialog from '@/components/auth/SuccessDialog';
-import { Shield, AlertCircle, ArrowLeft } from 'lucide-react';
+import { AlertCircle, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
@@ -89,15 +89,19 @@ const Auth = () => {
     setShowDialog(true);
   };
   
-  return <div className="bg-gradient-to-b from-white to-slate-100 min-h-screen flex flex-col justify-center items-center py-12 px-4">
-      <Card className="max-w-md w-full mx-auto shadow-xl border-0 rounded-2xl overflow-hidden">
+  return (
+    <div className="bg-gradient-to-b from-white via-blue-50/30 to-slate-100 min-h-screen flex flex-col justify-center items-center py-12 px-4">
+      <Card className="max-w-md w-full mx-auto shadow-xl border-0 rounded-2xl overflow-hidden bg-white/90 backdrop-blur-sm">
         <div className="p-6 pb-0">
-          <Link to="/" className="inline-flex items-center mb-6 text-slate-500 hover:text-primary transition-colors duration-300">
-            <Button variant="ghost" size="sm" className="flex items-center gap-2 text-slate-600 hover:text-primary">
-              <ArrowLeft size={16} />
-              <span>Terug naar home</span>
-            </Button>
-          </Link>
+          <div className="flex justify-between items-center mb-6">
+            <Link to="/" className="flex items-center text-slate-600 hover:text-primary transition-colors duration-300">
+              <Button variant="outline" size="sm" className="rounded-full border-slate-200 hover:border-primary">
+                <ArrowLeft size={16} />
+                <span className="ml-1">Terug</span>
+              </Button>
+            </Link>
+            <span className="text-xs text-slate-500">Veilige verbinding</span>
+          </div>
 
           <div className="text-center mb-6">
             <div className="flex justify-center mb-4">
@@ -114,12 +118,16 @@ const Auth = () => {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 px-6">
-            <TabsTrigger value="login" className="rounded-md data-[state=active]:bg-blue-50 data-[state=active]:text-blue-700 data-[state=active]:shadow-none">Inloggen</TabsTrigger>
-            <TabsTrigger value="register" className="rounded-md data-[state=active]:bg-blue-50 data-[state=active]:text-blue-700 data-[state=active]:shadow-none">Registreren</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 p-1 mx-6 bg-slate-100 rounded-xl">
+            <TabsTrigger value="login" className="rounded-lg data-[state=active]:bg-white data-[state=active]:text-blue-700 data-[state=active]:shadow-sm">
+              Inloggen
+            </TabsTrigger>
+            <TabsTrigger value="register" className="rounded-lg data-[state=active]:bg-white data-[state=active]:text-blue-700 data-[state=active]:shadow-sm">
+              Registreren
+            </TabsTrigger>
           </TabsList>
           
-          <CardContent className="pt-4">
+          <CardContent className="pt-6">
             <TabsContent value="login">
               <LoginForm />
             </TabsContent>
@@ -132,6 +140,8 @@ const Auth = () => {
       </Card>
 
       <SuccessDialog open={showDialog} onOpenChange={setShowDialog} message={success || ''} />
-    </div>;
+    </div>
+  );
 };
+
 export default Auth;
