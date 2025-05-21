@@ -72,7 +72,11 @@ const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
       }
     });
     
-    const { error } = await signUp(email, password, { name });
+    // Fix this line - pass name as options.data instead of directly as metadata
+    const { error } = await signUp(email, password, { 
+      first_name: name, 
+      last_name: "" 
+    });
     
     if (error) {
       console.error("Registration error:", error.message);
