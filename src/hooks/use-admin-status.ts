@@ -4,6 +4,11 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { UserData } from "@/types/user";
 
+// Define types for our custom RPC functions that aren't in the generated types
+type AdminRoleFunctionParams = {
+  user_id_param: string;
+};
+
 export function useAdminStatus(onStatusChange: () => void) {
   const [isProcessing, setIsProcessing] = useState(false);
   const { toast } = useToast();
@@ -19,7 +24,7 @@ export function useAdminStatus(onStatusChange: () => void) {
         // Remove admin role using RPC function to avoid RLS recursion
         console.log("Removing admin role from:", user.id);
         const { error } = await supabase
-          .rpc('remove_admin_role', { user_id_param: user.id } as any);
+          .rpc<void>('remove_admin_role', { user_id_param: user.id } as AdminRoleFunctionParams);
 
         if (error) {
           console.error("Error removing admin role:", error);
@@ -34,7 +39,7 @@ export function useAdminStatus(onStatusChange: () => void) {
         // Add admin role using RPC function to avoid RLS recursion
         console.log("Adding admin role to:", user.id);
         const { error } = await supabase
-          .rpc('add_admin_role', { user_id_param: user.id } as any);
+          .rpc<void>('add_admin_role', { user_id_param: user.id } as AdminRoleFunctionParams);
 
         if (error) {
           console.error("Error adding admin role:", error);
