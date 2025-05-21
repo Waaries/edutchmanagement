@@ -8,7 +8,7 @@ export function useAdminStatus(onStatusChange: () => void) {
   const [isProcessing, setIsProcessing] = useState(false);
   const { toast } = useToast();
 
-  // Toggle admin status
+  // Toggle admin status using stored procedures instead of direct RLS-affected operations
   const toggleAdminStatus = async (user: UserData) => {
     try {
       setIsProcessing(true);
@@ -16,13 +16,10 @@ export function useAdminStatus(onStatusChange: () => void) {
       console.log("Toggling admin status for:", user.email, "Current status:", user.is_admin);
       
       if (user.is_admin) {
-        // Remove admin role
+        // Remove admin role using RPC function to avoid RLS recursion
         console.log("Removing admin role from:", user.id);
         const { error } = await supabase
-          .from("user_roles")
-          .delete()
-          .eq("user_id", user.id)
-          .eq("role", "admin");
+          .rpc('remove_admin_role', { user_id_param: user.id });
 
         if (error) {
           console.error("Error removing admin role:", error);
@@ -34,11 +31,10 @@ export function useAdminStatus(onStatusChange: () => void) {
           description: "De gebruiker is geen administrator meer.",
         });
       } else {
-        // Add admin role - Fix the issue with inserting admin role
+        // Add admin role using RPC function to avoid RLS recursion
         console.log("Adding admin role to:", user.id);
         const { error } = await supabase
-          .from("user_roles")
-          .insert([{ user_id: user.id, role: "admin" }]); // Fix: Use array for insert
+          .rpc('add_admin_role', { user_id_param: user.id });
 
         if (error) {
           console.error("Error adding admin role:", error);
