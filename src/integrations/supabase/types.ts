@@ -62,6 +62,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      add_admin_role: {
+        Args: { user_id_param: string }
+        Returns: undefined
+      }
       get_users: {
         Args: Record<PropertyKey, never>
         Returns: {
@@ -86,6 +90,10 @@ export type Database = {
       is_admin_user: {
         Args: { user_id_param: string }
         Returns: boolean
+      }
+      remove_admin_role: {
+        Args: { user_id_param: string }
+        Returns: undefined
       }
     }
     Enums: {

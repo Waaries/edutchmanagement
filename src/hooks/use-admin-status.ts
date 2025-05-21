@@ -24,7 +24,7 @@ export function useAdminStatus(onStatusChange: () => void) {
         // Remove admin role using RPC function to avoid RLS recursion
         console.log("Removing admin role from:", user.id);
         const { error } = await supabase
-          .rpc<any, void>('remove_admin_role', { user_id_param: user.id } as AdminRoleFunctionParams);
+          .rpc('remove_admin_role', { user_id_param: user.id });
 
         if (error) {
           console.error("Error removing admin role:", error);
@@ -39,7 +39,7 @@ export function useAdminStatus(onStatusChange: () => void) {
         // Add admin role using RPC function to avoid RLS recursion
         console.log("Adding admin role to:", user.id);
         const { error } = await supabase
-          .rpc<any, void>('add_admin_role', { user_id_param: user.id } as AdminRoleFunctionParams);
+          .rpc('add_admin_role', { user_id_param: user.id });
 
         if (error) {
           console.error("Error adding admin role:", error);
