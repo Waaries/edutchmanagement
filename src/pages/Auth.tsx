@@ -10,6 +10,7 @@ import RegisterForm from '@/components/auth/RegisterForm';
 import SuccessDialog from '@/components/auth/SuccessDialog';
 import { Shield, HomeIcon, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 
 const Auth = () => {
   const { user, loading, isAdmin } = useAuth();
@@ -65,7 +66,7 @@ const Auth = () => {
   // Show loading indicator when checking authentication
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-white to-slate-100">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto"></div>
           <p className="mt-4">Bezig met laden...</p>
@@ -85,54 +86,60 @@ const Auth = () => {
   };
 
   return (
-    <div className="bg-brand-silver min-h-screen pt-32 pb-12 px-4">
-      <div className="max-w-md mx-auto glass-card rounded-xl p-8">
-        <div className="flex justify-between items-center mb-6">
-          <Link to="/">
+    <div className="bg-gradient-to-b from-white to-slate-100 min-h-screen flex flex-col justify-center items-center py-12 px-4">
+      <Card className="max-w-md w-full mx-auto shadow-xl border-0 rounded-2xl overflow-hidden">
+        <div className="p-6 pb-0">
+          <Link to="/" className="inline-block mb-6">
             <Button 
               variant="ghost" 
-              className="flex items-center gap-2 text-brand-mediumgray hover:text-primary"
+              className="flex items-center gap-2 text-slate-500 hover:text-primary text-sm"
             >
-              <HomeIcon size={18} />
+              <HomeIcon size={16} />
               <span>{translate("auth.backToHome")}</span>
             </Button>
           </Link>
-        </div>
 
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold">{translate("auth.welcome")}</h1>
-          <p className="text-brand-mediumgray mt-2">{translate("auth.welcomeDesc")}</p>
-        </div>
-
-        <div className="flex justify-center items-center mb-6">
-          <div className="bg-blue-50 p-2 rounded-full">
-            <Shield className="h-6 w-6 text-blue-600" />
+          <div className="text-center mb-6">
+            <h1 className="text-2xl font-bold text-slate-800">Welkom bij eDutch Management</h1>
+            <p className="text-slate-500 mt-2 text-sm">Log in of maak een account aan om verder te gaan</p>
           </div>
-          <span className="ml-2 text-sm text-blue-700">{translate("auth.secureAuth")}</span>
-        </div>
 
-        {error && (
-          <div className="p-3 mb-4 bg-red-50 text-red-600 rounded-md flex items-start">
-            <AlertCircle className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" />
-            <span>{error}</span>
+          <div className="flex justify-center items-center mb-6">
+            <div className="bg-blue-50 p-2 rounded-full">
+              <Shield className="h-6 w-6 text-blue-600" />
+            </div>
+            <span className="ml-2 text-sm text-blue-700">Beveiligde authenticatie</span>
           </div>
-        )}
+
+          {error && (
+            <div className="p-3 mb-4 bg-red-50 text-red-600 rounded-md flex items-start">
+              <AlertCircle className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" />
+              <span>{error}</span>
+            </div>
+          )}
+        </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 mb-8">
-            <TabsTrigger value="login">{translate("auth.login.title")}</TabsTrigger>
-            <TabsTrigger value="register">{translate("auth.register.title")}</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 px-6">
+            <TabsTrigger value="login" className="rounded-md data-[state=active]:bg-blue-50 data-[state=active]:text-blue-700 data-[state=active]:shadow-none">Inloggen</TabsTrigger>
+            <TabsTrigger value="register" className="rounded-md data-[state=active]:bg-blue-50 data-[state=active]:text-blue-700 data-[state=active]:shadow-none">Registreren</TabsTrigger>
           </TabsList>
           
-          <TabsContent value="login">
-            <LoginForm />
-          </TabsContent>
-          
-          <TabsContent value="register">
-            <RegisterForm onSuccess={handleRegistrationSuccess} />
-          </TabsContent>
+          <CardContent className="pt-4">
+            <TabsContent value="login">
+              <LoginForm />
+            </TabsContent>
+            
+            <TabsContent value="register">
+              <RegisterForm onSuccess={handleRegistrationSuccess} />
+            </TabsContent>
+          </CardContent>
         </Tabs>
-      </div>
+        
+        <div className="text-center text-xs text-slate-400 pb-4">
+          BEVEILIGDE AUTHENTICATIE
+        </div>
+      </Card>
 
       <SuccessDialog 
         open={showDialog} 

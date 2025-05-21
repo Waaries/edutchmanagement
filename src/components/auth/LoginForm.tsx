@@ -98,27 +98,28 @@ const LoginForm = () => {
   return (
     <form onSubmit={handleLogin} className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="email">{translate("auth.login.email")}</Label>
+        <Label htmlFor="email" className="text-slate-700">E-mail</Label>
         <Input 
           id="email"
           type="email" 
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder={translate("auth.login.emailPlaceholder")}
+          placeholder="uw@email.nl"
           required
           autoComplete="email"
+          className="bg-blue-50/50 border-slate-200 focus-visible:ring-blue-400"
         />
       </div>
       
       <div className="space-y-2">
         <div className="flex justify-between items-center">
-          <Label htmlFor="password">{translate("auth.login.password")}</Label>
+          <Label htmlFor="password" className="text-slate-700">Wachtwoord</Label>
           <button 
             onClick={handlePasswordReset}
-            className="text-xs text-primary hover:underline"
+            className="text-xs text-blue-600 hover:text-blue-800 hover:underline"
             disabled={submitting || resetRequested}
           >
-            {resetRequested ? translate("auth.login.checkEmail") : translate("auth.login.forgotPassword")}
+            {resetRequested ? "Controleer uw e-mail" : "Wachtwoord vergeten?"}
           </button>
         </div>
         <Input 
@@ -126,9 +127,10 @@ const LoginForm = () => {
           type="password" 
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder={translate("auth.login.passwordPlaceholder")}
+          placeholder="••••••••••"
           required
           autoComplete="current-password"
+          className="bg-blue-50/50 border-slate-200 focus-visible:ring-blue-400"
         />
       </div>
       
@@ -141,7 +143,7 @@ const LoginForm = () => {
       
       <div className="p-3 bg-blue-50 text-blue-700 rounded-md flex items-start text-sm">
         <LockKeyhole className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" />
-        <span>{translate("auth.login.secure")}</span>
+        <span>Uw verbinding is beveiligd. Wij slaan uw wachtwoord nooit op in platte tekst.</span>
       </div>
       
       <Button 
@@ -149,9 +151,7 @@ const LoginForm = () => {
         className="w-full bg-[#F97316] hover:bg-[#F97316]/90"
         disabled={submitting}
       >
-        {submitting 
-          ? (language === 'nl' ? "Inloggen..." : translate("auth.login.loggingIn")) 
-          : (language === 'nl' ? "Inloggen" : translate("auth.login.button"))}
+        {submitting ? "Inloggen..." : "Inloggen"}
       </Button>
 
       <SocialAuthButtons context="login" />

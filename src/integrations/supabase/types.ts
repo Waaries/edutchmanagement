@@ -91,6 +91,19 @@ export type Database = {
         Args: { user_id_param: string }
         Returns: boolean
       }
+      pg_get_coldef: {
+        Args: {
+          in_schema: string
+          in_table: string
+          in_column: string
+          oldway?: boolean
+        }
+        Returns: string
+      }
+      pg_get_tabledef: {
+        Args: { in_schema: string; in_table: string; _verbose: boolean }
+        Returns: string
+      }
       remove_admin_role: {
         Args: { user_id_param: string }
         Returns: undefined
