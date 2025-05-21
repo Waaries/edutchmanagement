@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Navigate, useLocation, useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -11,7 +10,6 @@ import SuccessDialog from '@/components/auth/SuccessDialog';
 import { AlertCircle, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-
 const Auth = () => {
   const {
     user,
@@ -83,14 +81,11 @@ const Auth = () => {
   if (user) {
     return <Navigate to={isAdmin ? "/admin" : "/dashboard"} />;
   }
-  
   const handleRegistrationSuccess = (message: string) => {
     setSuccess(message);
     setShowDialog(true);
   };
-  
-  return (
-    <div className="bg-gradient-to-b from-white via-blue-50/30 to-slate-100 min-h-screen flex flex-col justify-center items-center py-12 px-4">
+  return <div className="bg-gradient-to-b from-white via-blue-50/30 to-slate-100 min-h-screen flex flex-col justify-center items-center py-12 px-4">
       <Card className="max-w-md w-full mx-auto shadow-xl border-0 rounded-2xl overflow-hidden bg-white/90 backdrop-blur-sm">
         <div className="p-6 pb-0">
           <div className="flex justify-between items-center mb-6">
@@ -100,7 +95,7 @@ const Auth = () => {
                 <span className="ml-1">Terug</span>
               </Button>
             </Link>
-            <span className="text-xs text-slate-500">Veilige verbinding</span>
+            
           </div>
 
           <div className="text-center mb-6">
@@ -118,11 +113,11 @@ const Auth = () => {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 p-1 mx-6 bg-slate-100 rounded-xl">
-            <TabsTrigger value="login" className="rounded-lg data-[state=active]:bg-white data-[state=active]:text-blue-700 data-[state=active]:shadow-sm">
+          <TabsList className="grid w-full grid-cols-2 p-1 px-0 my-0 mx-px py-0 rounded-none bg-slate-100">
+            <TabsTrigger value="login" className="rounded-lg data-[state=active]:bg-white data-[state=active]:text-blue-700 data-[state=active]:shadow-sm mx-[41px]">
               Inloggen
             </TabsTrigger>
-            <TabsTrigger value="register" className="rounded-lg data-[state=active]:bg-white data-[state=active]:text-blue-700 data-[state=active]:shadow-sm">
+            <TabsTrigger value="register" className="rounded-lg data-[state=active]:bg-white data-[state=active]:text-blue-700 data-[state=active]:shadow-sm text-base mx-[41px]">
               Registreren
             </TabsTrigger>
           </TabsList>
@@ -140,8 +135,6 @@ const Auth = () => {
       </Card>
 
       <SuccessDialog open={showDialog} onOpenChange={setShowDialog} message={success || ''} />
-    </div>
-  );
+    </div>;
 };
-
 export default Auth;
