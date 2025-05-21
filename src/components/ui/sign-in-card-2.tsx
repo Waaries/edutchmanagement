@@ -22,6 +22,7 @@ function Input({ className, type, ...props }: React.ComponentProps<"input">) {
   )
 }
 
+// Renamed from Component to SignInCard to match what's imported in Auth.tsx
 const SignInCard = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");

@@ -4,12 +4,8 @@ import { Navigate, useLocation, useSearchParams, useNavigate } from 'react-route
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { usePasswordReset } from '@/hooks/use-password-reset';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import LoginForm from '@/components/auth/LoginForm';
-import RegisterForm from '@/components/auth/RegisterForm';
 import SignInCard from '@/components/ui/sign-in-card-2';
 import SuccessDialog from '@/components/auth/SuccessDialog';
-import { AlertCircle } from 'lucide-react';
 
 const Auth = () => {
   const {
@@ -83,10 +79,16 @@ const Auth = () => {
     return <Navigate to={isAdmin ? "/admin" : "/dashboard"} />;
   }
 
-  const handleRegistrationSuccess = (message: string) => {
-    setSuccess(message);
-    setShowDialog(true);
-  };
+  // Render success dialog if needed
+  if (showDialog && success) {
+    return <SuccessDialog 
+      message={success} 
+      onClose={() => {
+        setShowDialog(false);
+        setSuccess(null);
+      }} 
+    />;
+  }
   
   // Use the SignInCard component
   return <SignInCard />;
