@@ -101,14 +101,7 @@ const Auth = () => {
 
           <div className="text-center mb-6">
             <h1 className="text-2xl font-bold text-slate-800">Welkom bij eDutch Management</h1>
-            <p className="text-slate-500 mt-2 text-sm">Log in of maak een account aan om verder te gaan</p>
-          </div>
-
-          <div className="flex justify-center items-center mb-6">
-            <div className="bg-blue-50 p-2 rounded-full">
-              <Shield className="h-6 w-6 text-blue-600" />
-            </div>
-            <span className="ml-2 text-sm text-blue-700">Beveiligde authenticatie</span>
+            <p className="text-slate-500 mt-2 text-sm">Log in of maak een account aan</p>
           </div>
 
           {error && (
@@ -136,8 +129,9 @@ const Auth = () => {
           </CardContent>
         </Tabs>
         
-        <div className="text-center text-xs text-slate-400 pb-4">
-          BEVEILIGDE AUTHENTICATIE
+        <div className="flex justify-center items-center py-3 text-xs text-slate-400 bg-slate-50 border-t border-slate-100">
+          <Shield className="h-3 w-3 mr-1 text-slate-400" />
+          <span>BEVEILIGDE AUTHENTICATIE</span>
         </div>
       </Card>
 

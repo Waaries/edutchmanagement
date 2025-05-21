@@ -143,7 +143,7 @@ const LoginForm = () => {
       
       <div className="p-3 bg-blue-50 text-blue-700 rounded-md flex items-start text-sm">
         <LockKeyhole className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" />
-        <span>Uw verbinding is beveiligd. Wij slaan uw wachtwoord nooit op in platte tekst.</span>
+        <span>Beveiligde verbinding. Wij slaan uw wachtwoord versleuteld op.</span>
       </div>
       
       <Button 
