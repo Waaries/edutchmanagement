@@ -175,15 +175,17 @@ const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
         </div>
       )}
       
-      <Button 
-        type="submit" 
-        className="w-full bg-[#F97316] hover:bg-[#F97316]/90"
-        disabled={submitting}
-      >
-        {submitting 
-          ? (language === 'nl' ? "Account aanmaken..." : translate("auth.register.creating")) 
-          : (language === 'nl' ? "Account aanmaken" : translate("auth.register.button"))}
-      </Button>
+      <div className="flex flex-col items-center space-y-3">
+        <Button 
+          type="submit" 
+          className="bg-[#F97316] hover:bg-[#F97316]/90 w-auto px-12"
+          disabled={submitting}
+        >
+          {submitting 
+            ? (language === 'nl' ? "Account aanmaken..." : translate("auth.register.creating")) 
+            : (language === 'nl' ? "Account aanmaken" : translate("auth.register.button"))}
+        </Button>
+      </div>
 
       <SocialAuthButtons context="register" />
     </form>

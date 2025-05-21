@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Navigate, useLocation, useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -10,6 +11,7 @@ import SuccessDialog from '@/components/auth/SuccessDialog';
 import { Shield, AlertCircle, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+
 const Auth = () => {
   const {
     user,
@@ -81,15 +83,17 @@ const Auth = () => {
   if (user) {
     return <Navigate to={isAdmin ? "/admin" : "/dashboard"} />;
   }
+  
   const handleRegistrationSuccess = (message: string) => {
     setSuccess(message);
     setShowDialog(true);
   };
+  
   return <div className="bg-gradient-to-b from-white to-slate-100 min-h-screen flex flex-col justify-center items-center py-12 px-4">
       <Card className="max-w-md w-full mx-auto shadow-xl border-0 rounded-2xl overflow-hidden">
         <div className="p-6 pb-0">
           <Link to="/" className="inline-flex items-center mb-6 text-slate-500 hover:text-primary transition-colors duration-300">
-            <Button variant="outline" size="sm" className="flex items-center gap-2 text-slate-600 hover:text-primary border-slate-200 hover:border-primary">
+            <Button variant="ghost" size="sm" className="flex items-center gap-2 text-slate-600 hover:text-primary">
               <ArrowLeft size={16} />
               <span>Terug naar home</span>
             </Button>
@@ -125,8 +129,6 @@ const Auth = () => {
             </TabsContent>
           </CardContent>
         </Tabs>
-        
-        
       </Card>
 
       <SuccessDialog open={showDialog} onOpenChange={setShowDialog} message={success || ''} />

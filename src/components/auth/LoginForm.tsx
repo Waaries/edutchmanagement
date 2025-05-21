@@ -146,13 +146,15 @@ const LoginForm = () => {
         <span>Beveiligde verbinding. Wij slaan uw wachtwoord versleuteld op.</span>
       </div>
       
-      <Button 
-        type="submit" 
-        className="w-full bg-[#F97316] hover:bg-[#F97316]/90"
-        disabled={submitting}
-      >
-        {submitting ? "Inloggen..." : "Inloggen"}
-      </Button>
+      <div className="flex flex-col items-center space-y-3">
+        <Button 
+          type="submit" 
+          className="bg-[#F97316] hover:bg-[#F97316]/90 w-auto px-12"
+          disabled={submitting}
+        >
+          {submitting ? "Inloggen..." : "Inloggen"}
+        </Button>
+      </div>
 
       <SocialAuthButtons context="login" />
     </form>
