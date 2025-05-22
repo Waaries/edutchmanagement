@@ -10,9 +10,9 @@ const CardGlowEffect: React.FC = () => {
         className="absolute -inset-[1px] rounded-2xl opacity-0 group-hover:opacity-70 transition-opacity duration-700"
         animate={{
           boxShadow: [
-            "0 0 10px 2px rgba(147, 51, 234, 0.1)",
-            "0 0 15px 5px rgba(147, 51, 234, 0.15)",
-            "0 0 10px 2px rgba(147, 51, 234, 0.1)"
+            "0 0 10px 2px rgba(30, 174, 219, 0.1)",
+            "0 0 15px 5px rgba(30, 174, 219, 0.15)",
+            "0 0 10px 2px rgba(30, 174, 219, 0.1)"
           ],
           opacity: [0.2, 0.4, 0.2]
         }}
@@ -28,7 +28,7 @@ const CardGlowEffect: React.FC = () => {
       <div className="absolute -inset-[1px] rounded-2xl overflow-hidden">
         {/* Top light beam */}
         <motion.div 
-          className="absolute top-0 left-0 h-[3px] w-[50%] bg-gradient-to-r from-transparent via-purple-300 to-transparent opacity-70"
+          className="absolute top-0 left-0 h-[3px] w-[50%] bg-gradient-to-r from-transparent via-blue-300 to-transparent opacity-70"
           initial={{ filter: "blur(2px)" }}
           animate={{ 
             left: ["-50%", "100%"],
@@ -57,7 +57,7 @@ const CardGlowEffect: React.FC = () => {
         
         {/* Right light beam */}
         <motion.div 
-          className="absolute top-0 right-0 h-[50%] w-[3px] bg-gradient-to-b from-transparent via-purple-300 to-transparent opacity-70"
+          className="absolute top-0 right-0 h-[50%] w-[3px] bg-gradient-to-b from-transparent via-blue-300 to-transparent opacity-70"
           initial={{ filter: "blur(2px)" }}
           animate={{ 
             top: ["-50%", "100%"],
@@ -89,7 +89,7 @@ const CardGlowEffect: React.FC = () => {
         
         {/* Bottom light beam */}
         <motion.div 
-          className="absolute bottom-0 right-0 h-[3px] w-[50%] bg-gradient-to-r from-transparent via-purple-300 to-transparent opacity-70"
+          className="absolute bottom-0 right-0 h-[3px] w-[50%] bg-gradient-to-r from-transparent via-blue-300 to-transparent opacity-70"
           initial={{ filter: "blur(2px)" }}
           animate={{ 
             right: ["-50%", "100%"],
@@ -121,7 +121,7 @@ const CardGlowEffect: React.FC = () => {
         
         {/* Left light beam */}
         <motion.div 
-          className="absolute bottom-0 left-0 h-[50%] w-[3px] bg-gradient-to-b from-transparent via-purple-300 to-transparent opacity-70"
+          className="absolute bottom-0 left-0 h-[50%] w-[3px] bg-gradient-to-b from-transparent via-blue-300 to-transparent opacity-70"
           initial={{ filter: "blur(2px)" }}
           animate={{ 
             bottom: ["-50%", "100%"],
@@ -153,7 +153,7 @@ const CardGlowEffect: React.FC = () => {
         
         {/* Corner glow spots */}
         <motion.div 
-          className="absolute top-0 left-0 h-[5px] w-[5px] rounded-full bg-purple-300/60 blur-[1px]"
+          className="absolute top-0 left-0 h-[5px] w-[5px] rounded-full bg-blue-300/60 blur-[1px]"
           animate={{ 
             opacity: [0.2, 0.4, 0.2] 
           }}
@@ -164,7 +164,7 @@ const CardGlowEffect: React.FC = () => {
           }}
         />
         <motion.div 
-          className="absolute top-0 right-0 h-[8px] w-[8px] rounded-full bg-purple-300/80 blur-[2px]"
+          className="absolute top-0 right-0 h-[8px] w-[8px] rounded-full bg-blue-300/80 blur-[2px]"
           animate={{ 
             opacity: [0.2, 0.4, 0.2] 
           }}
@@ -176,7 +176,7 @@ const CardGlowEffect: React.FC = () => {
           }}
         />
         <motion.div 
-          className="absolute bottom-0 right-0 h-[8px] w-[8px] rounded-full bg-purple-300/80 blur-[2px]"
+          className="absolute bottom-0 right-0 h-[8px] w-[8px] rounded-full bg-blue-300/80 blur-[2px]"
           animate={{ 
             opacity: [0.2, 0.4, 0.2] 
           }}
@@ -188,7 +188,7 @@ const CardGlowEffect: React.FC = () => {
           }}
         />
         <motion.div 
-          className="absolute bottom-0 left-0 h-[5px] w-[5px] rounded-full bg-purple-300/60 blur-[1px]"
+          className="absolute bottom-0 left-0 h-[5px] w-[5px] rounded-full bg-blue-300/60 blur-[1px]"
           animate={{ 
             opacity: [0.2, 0.4, 0.2] 
           }}
@@ -202,7 +202,7 @@ const CardGlowEffect: React.FC = () => {
       </div>
 
       {/* Card border glow */}
-      <div className="absolute -inset-[0.5px] rounded-2xl bg-gradient-to-r from-purple-300/5 via-purple-200/10 to-purple-300/5 opacity-0 group-hover:opacity-70 transition-opacity duration-500" />
+      <div className="absolute -inset-[0.5px] rounded-2xl bg-gradient-to-r from-blue-300/5 via-blue-200/10 to-blue-300/5 opacity-0 group-hover:opacity-70 transition-opacity duration-500" />
     </>
   );
 };

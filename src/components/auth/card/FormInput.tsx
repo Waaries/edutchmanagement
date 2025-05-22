@@ -60,7 +60,7 @@ const FormInput: React.FC<FormInputProps> = ({
       whileHover={{ scale: 1.01 }}
       transition={{ type: "spring", stiffness: 400, damping: 25 }}
     >
-      <div className="absolute -inset-[0.5px] bg-gradient-to-r from-purple-300/10 via-purple-200/5 to-purple-300/10 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300" />
+      <div className="absolute -inset-[0.5px] bg-gradient-to-r from-blue-300/10 via-blue-200/5 to-blue-300/10 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300" />
       
       <div className="relative flex items-center overflow-hidden rounded-lg">
         <div className={`absolute left-3 w-4 h-4 transition-all duration-300 ${
@@ -76,7 +76,7 @@ const FormInput: React.FC<FormInputProps> = ({
           onChange={onChange}
           onFocus={onFocus}
           onBlur={onBlur}
-          className={`w-full bg-purple-900/50 border-transparent focus:border-purple-400/30 text-white placeholder:text-white/30 h-10 transition-all duration-300 pl-10 ${isPasswordType ? 'pr-10' : 'pr-3'} focus:bg-purple-800/50`}
+          className={`w-full bg-blue-900/50 border-transparent focus:border-blue-400/30 text-white placeholder:text-white/30 h-10 transition-all duration-300 pl-10 ${isPasswordType ? 'pr-10' : 'pr-3'} focus:bg-blue-800/50`}
         />
         
         {isPasswordType && (
@@ -96,7 +96,7 @@ const FormInput: React.FC<FormInputProps> = ({
         {isFocused && (
           <motion.div 
             layoutId="input-highlight"
-            className="absolute inset-0 bg-purple-800/50 -z-10"
+            className="absolute inset-0 bg-blue-800/50 -z-10"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
