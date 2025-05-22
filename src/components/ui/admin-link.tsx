@@ -44,9 +44,9 @@ export function AdminLink() {
   if (checking || !showAdmin) return null;
   
   return (
-    <Button variant="ghost" asChild className={cn("flex items-center gap-2 bg-amber-100 hover:bg-amber-200 border border-amber-300")}>
+    <Button variant="outline" asChild className={cn("flex items-center gap-2 border-primary text-primary hover:bg-primary/10")}>
       <Link to="/admin">
-        <Shield className="h-4 w-4 text-amber-600" />
+        <Shield className="h-4 w-4 text-primary" />
         <span>Admin Dashboard</span>
       </Link>
     </Button>

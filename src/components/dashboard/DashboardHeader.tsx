@@ -77,9 +77,9 @@ const DashboardHeader = ({ isAdmin }: DashboardHeaderProps) => {
           <Button 
             onClick={goToAdmin}
             variant="outline" 
-            className="bg-amber-100 hover:bg-amber-200 flex items-center gap-2"
+            className="flex items-center gap-2 border-primary text-primary hover:bg-primary/10"
           >
-            <Shield className="h-4 w-4 text-amber-600" />
+            <Shield className="h-4 w-4 text-primary" />
             <span>Ga naar Admin Dashboard</span>
           </Button>
         )}
