@@ -8,12 +8,12 @@ interface FooterLinkListProps {
 
 const FooterLinkList = ({ links }: FooterLinkListProps) => {
   return (
-    <ul className="space-y-1.5">
+    <ul className="space-y-1">
       {links.map((link, index) => (
         <li key={index}>
           <a 
             href={link.href} 
-            className="text-slate-300 text-sm hover:text-primary transition-colors duration-300"
+            className="text-slate-300 text-xs hover:text-primary transition-colors duration-300"
           >
             {link.text}
           </a>

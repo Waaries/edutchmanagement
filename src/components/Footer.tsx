@@ -29,27 +29,27 @@ const Footer = () => {
 
   return (
     <footer className="bg-slate-900 text-white">
-      <div className="container mx-auto container-padding py-12">
-        {/* Main Footer Content - Made more compact with improved grid layout */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-4">
-          {/* Logo and Description - Made more compact */}
-          <div className="md:col-span-5 space-y-3">
-            <div className="flex items-center mb-3">
-              <div className="h-16 w-16 md:h-20 md:w-20 flex items-center justify-center rounded-xl">
+      <div className="container max-w-5xl mx-auto container-padding py-8">
+        {/* Main Footer Content - More compact layout */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-4">
+          {/* Logo and Description - More compact */}
+          <div className="md:col-span-5 space-y-2">
+            <div className="flex items-center mb-2">
+              <div className="h-14 w-14 flex items-center justify-center rounded-lg">
                 <img 
                   src="/lovable-uploads/39d6c2c8-b4a1-4f97-86fb-dd3a6e9fcdbd.png" 
                   alt="eDutch Management Logo" 
-                  className="h-14 md:h-16 invert"
+                  className="h-12 invert"
                 />
               </div>
             </div>
-            <p className="text-white/80 text-sm leading-relaxed max-w-sm">
+            <p className="text-white/80 text-xs leading-relaxed max-w-xs">
               Wij bieden professionele bedrijfsadressen voor ondernemers en bedrijven die hun uitstraling willen verbeteren zonder de kosten van een fysiek kantoor.
             </p>
-            <SocialLinks className="pt-3" />
+            <SocialLinks className="pt-2" />
           </div>
           
-          {/* Services Column - Using 3-column layout for better spacing */}
+          {/* Services Column */}
           <div className="md:col-span-2">
             <FooterColumn title={translate("footer.services")}>
               <FooterLinkList links={serviceLinks} />
