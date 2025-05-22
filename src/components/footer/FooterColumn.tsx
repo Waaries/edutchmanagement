@@ -9,7 +9,7 @@ interface FooterColumnProps {
 const FooterColumn = ({ title, children }: FooterColumnProps) => {
   return (
     <div className="text-left w-full">
-      <h4 className="text-2xl font-medium mb-7 border-b border-white/10 pb-3">
+      <h4 className="text-xl font-medium mb-6 border-b border-white/10 pb-3">
         {title}
       </h4>
       {children}

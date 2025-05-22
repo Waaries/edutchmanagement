@@ -19,14 +19,14 @@ const FooterBottom = ({
 }: FooterBottomProps) => {
   return (
     <>
-      <Separator className="bg-white/10 my-12" />
+      <Separator className="bg-white/10 my-10" />
       
-      <div className="py-6 flex flex-col md:flex-row items-center justify-between gap-6">
-        <p className="text-white/70 text-xl">
+      <div className="py-5 flex flex-col md:flex-row items-center justify-between gap-6">
+        <p className="text-white/70 text-base">
           {copyright}
         </p>
         
-        <div className="flex items-center gap-10 text-xl">
+        <div className="flex items-center gap-8 text-base">
           <Link to="/terms" className="text-white/70 hover:text-white transition-colors">
             {terms}
           </Link>

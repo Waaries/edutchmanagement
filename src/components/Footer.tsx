@@ -28,29 +28,29 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-slate-900 text-white py-20">
+    <footer className="bg-slate-900 text-white py-16">
       <div className="container max-w-7xl mx-auto px-6 lg:px-8">
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-x-20 gap-y-16">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-x-16 gap-y-12">
           {/* Logo and Description */}
-          <div className="md:col-span-4 space-y-6">
-            <div className="mb-6">
-              <div className="h-36 w-36 flex items-center justify-center rounded-lg">
+          <div className="md:col-span-4 space-y-5">
+            <div className="mb-5">
+              <div className="h-28 w-28 flex items-center justify-center rounded-lg">
                 <img 
                   src="/lovable-uploads/39d6c2c8-b4a1-4f97-86fb-dd3a6e9fcdbd.png" 
                   alt="eDutch Management Logo" 
-                  className="h-32 invert"
+                  className="h-24 invert"
                 />
               </div>
             </div>
-            <p className="text-white/80 text-xl leading-relaxed max-w-sm">
+            <p className="text-white/80 text-base leading-relaxed max-w-sm">
               Wij bieden professionele bedrijfsadressen voor ondernemers en bedrijven die hun uitstraling willen verbeteren zonder de kosten van een fysiek kantoor.
             </p>
-            <SocialLinks className="pt-5" />
+            <SocialLinks className="pt-4" />
           </div>
           
           {/* Services Column */}
-          <div className="md:col-span-2 md:ml-8">
+          <div className="md:col-span-2 md:ml-6">
             <FooterColumn title={translate("footer.services")}>
               <FooterLinkList links={serviceLinks} />
             </FooterColumn>
