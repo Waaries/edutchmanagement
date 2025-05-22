@@ -7,15 +7,15 @@ interface SocialLinksProps {
 
 const SocialLinks = ({ className }: SocialLinksProps) => {
   return (
-    <div className={`flex space-x-6 ${className}`}>
+    <div className={`flex space-x-8 ${className}`}>
       {[
         { 
-          icon: <Facebook size={24} />, 
+          icon: <Facebook size={28} />, 
           label: "Facebook", 
           href: "#facebook" 
         },
         { 
-          icon: <Instagram size={24} />, 
+          icon: <Instagram size={28} />, 
           label: "Instagram", 
           href: "#instagram" 
         },
@@ -23,8 +23,8 @@ const SocialLinks = ({ className }: SocialLinksProps) => {
           icon: (
             <svg 
               xmlns="http://www.w3.org/2000/svg" 
-              width="24" 
-              height="24" 
+              width="28" 
+              height="28" 
               viewBox="0 0 24 24" 
               fill="none" 
               stroke="currentColor" 
@@ -44,7 +44,7 @@ const SocialLinks = ({ className }: SocialLinksProps) => {
         <a 
           key={index}
           href={social.href} 
-          className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-all duration-300"
+          className="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-all duration-300"
           aria-label={`Follow us on ${social.label}`}
         >
           {social.icon}
