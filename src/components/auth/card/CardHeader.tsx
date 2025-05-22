@@ -9,13 +9,14 @@ const CardHeader: React.FC = () => {
         initial={{ scale: 0.5, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ type: "spring", duration: 0.8 }}
-        className="mx-auto w-10 h-10 rounded-full border border-brand-blue/20 flex items-center justify-center relative overflow-hidden bg-brand-blue/10"
+        className="mx-auto w-14 h-14 rounded-full flex items-center justify-center relative overflow-hidden"
       >
-        {/* Logo placeholder */}
-        <span className="text-lg font-bold text-brand-blue">E</span>
-        
-        {/* Inner lighting effect */}
-        <div className="absolute inset-0 bg-gradient-to-br from-brand-blue/10 to-transparent opacity-50" />
+        {/* Logo image */}
+        <img 
+          src="/lovable-uploads/deaf856d-a351-405b-8032-bb4d4f682ff4.png" 
+          alt="eDutch Logo" 
+          className="w-10 h-10 object-contain"
+        />
       </motion.div>
 
       <motion.h1
