@@ -35,15 +35,15 @@ const Footer = () => {
           {/* Logo and Description */}
           <div className="md:col-span-4 space-y-3">
             <div className="flex items-center mb-3">
-              <div className="h-14 w-14 flex items-center justify-center rounded-lg">
+              <div className="h-20 w-20 flex items-center justify-center rounded-lg">
                 <img 
                   src="/lovable-uploads/39d6c2c8-b4a1-4f97-86fb-dd3a6e9fcdbd.png" 
                   alt="eDutch Management Logo" 
-                  className="h-12 invert"
+                  className="h-16 invert"
                 />
               </div>
             </div>
-            <p className="text-white/80 text-sm leading-relaxed max-w-xs">
+            <p className="text-white/80 text-base leading-relaxed max-w-xs">
               Wij bieden professionele bedrijfsadressen voor ondernemers en bedrijven die hun uitstraling willen verbeteren zonder de kosten van een fysiek kantoor.
             </p>
             <SocialLinks className="pt-2" />

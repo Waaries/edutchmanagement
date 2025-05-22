@@ -22,11 +22,11 @@ const FooterBottom = ({
       <Separator className="bg-white/10 mt-6" />
       
       <div className="py-4 flex flex-col md:flex-row items-center justify-between gap-3">
-        <p className="text-white/60 text-sm">
+        <p className="text-white/60 text-base">
           {copyright}
         </p>
         
-        <div className="flex items-center gap-4 text-sm">
+        <div className="flex items-center gap-4 text-base">
           <Link to="/terms" className="text-white/60 hover:text-white transition-colors">
             {terms}
           </Link>

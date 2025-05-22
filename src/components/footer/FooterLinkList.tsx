@@ -13,7 +13,7 @@ const FooterLinkList = ({ links }: FooterLinkListProps) => {
         <li key={index}>
           <a 
             href={link.href} 
-            className="text-slate-300 text-sm hover:text-primary transition-colors duration-300"
+            className="text-slate-300 text-base hover:text-primary transition-colors duration-300"
           >
             {link.text}
           </a>
