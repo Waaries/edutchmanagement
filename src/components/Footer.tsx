@@ -29,9 +29,9 @@ const Footer = () => {
 
   return (
     <footer className="bg-slate-900 text-white py-12">
-      <div className="container max-w-7xl mx-auto px-6 lg:px-8">
+      <div className="container max-w-7xl mx-auto px-4 lg:px-6">
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-x-10 gap-y-8">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-x-8 gap-y-8">
           {/* Logo and Description */}
           <div className="md:col-span-4 space-y-4">
             <div className="mb-4">
@@ -49,7 +49,7 @@ const Footer = () => {
             <SocialLinks className="pt-2" />
           </div>
           
-          <div className="md:col-span-3"></div>
+          <div className="md:col-span-2"></div>
           
           {/* Services Column */}
           <div className="md:col-span-2 md:ml-auto">
@@ -59,7 +59,7 @@ const Footer = () => {
           </div>
           
           {/* Links Column */}
-          <div className="md:col-span-1">
+          <div className="md:col-span-2">
             <FooterColumn title={translate("footer.links")}>
               <FooterLinkList links={navLinks} />
             </FooterColumn>
