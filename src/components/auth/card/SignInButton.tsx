@@ -19,12 +19,12 @@ const SignInButton: React.FC<SignInButtonProps> = ({ isLoading, onClick }) => {
       className="w-full relative group/button mt-5"
     >
       {/* Button glow effect */}
-      <div className="absolute inset-0 bg-blue-400/20 rounded-lg blur-lg opacity-0 group-hover/button:opacity-70 transition-opacity duration-300" />
+      <div className="absolute inset-0 bg-brand-blue/20 rounded-lg blur-lg opacity-0 group-hover/button:opacity-70 transition-opacity duration-300" />
       
       <div className="relative overflow-hidden bg-brand-blue text-white font-medium h-10 rounded-lg transition-all duration-300 flex items-center justify-center">
         {/* Button background animation */}
         <motion.div 
-          className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-blue-400/30 to-blue-500/0 -z-10"
+          className="absolute inset-0 bg-gradient-to-r from-brand-blue/0 via-white/30 to-brand-blue/0 -z-10"
           animate={{ 
             x: ['-100%', '100%'],
           }}

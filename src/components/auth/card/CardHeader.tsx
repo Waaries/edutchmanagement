@@ -9,20 +9,20 @@ const CardHeader: React.FC = () => {
         initial={{ scale: 0.5, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ type: "spring", duration: 0.8 }}
-        className="mx-auto w-10 h-10 rounded-full border border-white/10 flex items-center justify-center relative overflow-hidden"
+        className="mx-auto w-10 h-10 rounded-full border border-brand-blue/20 flex items-center justify-center relative overflow-hidden bg-brand-blue/10"
       >
         {/* Logo placeholder */}
-        <span className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-white/70">E</span>
+        <span className="text-lg font-bold text-brand-blue">E</span>
         
         {/* Inner lighting effect */}
-        <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-50" />
+        <div className="absolute inset-0 bg-gradient-to-br from-brand-blue/10 to-transparent opacity-50" />
       </motion.div>
 
       <motion.h1
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-white/80"
+        className="text-xl font-bold text-brand-darkgrey"
       >
         Welkom Terug
       </motion.h1>
@@ -31,7 +31,7 @@ const CardHeader: React.FC = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3 }}
-        className="text-white/60 text-xs"
+        className="text-brand-mediumgray text-xs"
       >
         Log in om door te gaan naar eDutch
       </motion.p>

@@ -5,8 +5,8 @@ import React from 'react';
 const AnimatedBackground: React.FC = () => {
   return (
     <>
-      {/* Background gradient effect - Updated with blue colors */}
-      <div className="absolute inset-0 bg-gradient-to-b from-blue-700 via-blue-800 to-blue-900" />
+      {/* Background gradient effect - Updated with white colors */}
+      <div className="absolute inset-0 bg-gradient-to-b from-white via-gray-50 to-gray-100" />
       
       {/* Subtle noise texture overlay */}
       <div className="absolute inset-0 opacity-[0.03] mix-blend-soft-light" 
@@ -17,9 +17,9 @@ const AnimatedBackground: React.FC = () => {
       />
 
       {/* Top radial glow */}
-      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[120vh] h-[60vh] rounded-b-[50%] bg-blue-500/20 blur-[80px]" />
+      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[120vh] h-[60vh] rounded-b-[50%] bg-brand-blue/5 blur-[80px]" />
       <motion.div 
-        className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[100vh] h-[60vh] rounded-b-full bg-blue-400/20 blur-[60px]"
+        className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[100vh] h-[60vh] rounded-b-full bg-brand-blue/5 blur-[60px]"
         animate={{ 
           opacity: [0.15, 0.3, 0.15],
           scale: [0.98, 1.02, 0.98]
@@ -31,7 +31,7 @@ const AnimatedBackground: React.FC = () => {
         }}
       />
       <motion.div 
-        className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-[90vh] h-[90vh] rounded-t-full bg-blue-600/20 blur-[60px]"
+        className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-[90vh] h-[90vh] rounded-t-full bg-brand-blue/5 blur-[60px]"
         animate={{ 
           opacity: [0.3, 0.5, 0.3],
           scale: [1, 1.1, 1]
@@ -45,8 +45,8 @@ const AnimatedBackground: React.FC = () => {
       />
 
       {/* Animated glow spots */}
-      <div className="absolute left-1/4 top-1/4 w-96 h-96 bg-blue-300/10 rounded-full blur-[100px] animate-pulse opacity-40" />
-      <div className="absolute right-1/4 bottom-1/4 w-96 h-96 bg-blue-400/10 rounded-full blur-[100px] animate-pulse delay-1000 opacity-40" />
+      <div className="absolute left-1/4 top-1/4 w-96 h-96 bg-brand-blue/5 rounded-full blur-[100px] animate-pulse opacity-40" />
+      <div className="absolute right-1/4 bottom-1/4 w-96 h-96 bg-brand-blue/5 rounded-full blur-[100px] animate-pulse delay-1000 opacity-40" />
     </>
   );
 };

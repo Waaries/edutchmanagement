@@ -17,13 +17,13 @@ const RememberMeCheckbox: React.FC<RememberMeCheckboxProps> = ({ checked, onChan
           type="checkbox"
           checked={checked}
           onChange={onChange}
-          className="appearance-none h-4 w-4 rounded border border-blue-300/20 bg-blue-900/30 checked:bg-blue-400 checked:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-300/30 transition-all duration-200"
+          className="appearance-none h-4 w-4 rounded border border-gray-300 bg-white checked:bg-brand-blue checked:border-brand-blue focus:outline-none focus:ring-1 focus:ring-brand-blue/30 transition-all duration-200"
         />
         {checked && (
           <motion.div 
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="absolute inset-0 flex items-center justify-center text-blue-900 pointer-events-none"
+            className="absolute inset-0 flex items-center justify-center text-white pointer-events-none"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="20 6 9 17 4 12"></polyline>
@@ -31,7 +31,7 @@ const RememberMeCheckbox: React.FC<RememberMeCheckboxProps> = ({ checked, onChan
           </motion.div>
         )}
       </div>
-      <label htmlFor="remember-me" className="text-xs text-white/60 hover:text-white/80 transition-colors duration-200">
+      <label htmlFor="remember-me" className="text-xs text-gray-600 hover:text-gray-800 transition-colors duration-200">
         Onthoud mij
       </label>
     </div>
