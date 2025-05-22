@@ -15,7 +15,7 @@ function Input({ className, type, ...props }: InputProps) {
       type={type}
       data-slot="input"
       className={cn(
-        "file:text-foreground placeholder:text-slate-400 selection:bg-primary selection:text-primary-foreground border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm text-slate-800",
+        "file:text-foreground placeholder:text-slate-400 selection:bg-primary selection:text-primary-foreground border-gray-200 flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm text-slate-800",
         "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
         "aria-invalid:ring-destructive/20 aria-invalid:border-destructive",
         className
@@ -62,7 +62,7 @@ const FormInput: React.FC<FormInputProps> = ({
     >
       <div className="absolute -inset-[0.5px] bg-gradient-to-r from-brand-blue/10 via-brand-blue/5 to-brand-blue/10 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300" />
       
-      <div className="relative flex items-center overflow-hidden rounded-lg">
+      <div className="relative flex items-center overflow-hidden rounded-lg border border-gray-200">
         <div className={`absolute left-3 w-4 h-4 transition-all duration-300 ${
           isFocused ? 'text-brand-blue' : 'text-gray-500'
         }`}>
@@ -76,7 +76,7 @@ const FormInput: React.FC<FormInputProps> = ({
           onChange={onChange}
           onFocus={onFocus}
           onBlur={onBlur}
-          className={`w-full bg-white border-gray-200 focus:border-brand-blue/30 text-slate-800 placeholder:text-gray-400 h-10 transition-all duration-300 pl-10 ${isPasswordType ? 'pr-10' : 'pr-3'} focus:bg-white`}
+          className={`w-full bg-white border-0 text-slate-800 placeholder:text-gray-400 h-10 transition-all duration-300 pl-10 ${isPasswordType ? 'pr-10' : 'pr-3'} focus:bg-white`}
         />
         
         {isPasswordType && (
