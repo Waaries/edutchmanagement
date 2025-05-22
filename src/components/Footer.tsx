@@ -29,27 +29,27 @@ const Footer = () => {
 
   return (
     <footer className="bg-slate-900 text-white">
-      <div className="container-full container-padding">
-        {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 py-12">
-          {/* Logo and Description */}
-          <div className="md:col-span-5 space-y-4">
-            <div className="flex items-center mb-4">
-              <div className="h-20 w-20 md:h-24 md:w-24 flex items-center justify-center rounded-xl">
+      <div className="container mx-auto container-padding py-12">
+        {/* Main Footer Content - Made more compact with improved grid layout */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-4">
+          {/* Logo and Description - Made more compact */}
+          <div className="md:col-span-5 space-y-3">
+            <div className="flex items-center mb-3">
+              <div className="h-16 w-16 md:h-20 md:w-20 flex items-center justify-center rounded-xl">
                 <img 
                   src="/lovable-uploads/39d6c2c8-b4a1-4f97-86fb-dd3a6e9fcdbd.png" 
                   alt="eDutch Management Logo" 
-                  className="h-16 md:h-20 invert"
+                  className="h-14 md:h-16 invert"
                 />
               </div>
             </div>
-            <p className="text-white/80 text-sm leading-relaxed max-w-md text-left">
+            <p className="text-white/80 text-sm leading-relaxed max-w-sm">
               Wij bieden professionele bedrijfsadressen voor ondernemers en bedrijven die hun uitstraling willen verbeteren zonder de kosten van een fysiek kantoor.
             </p>
-            <SocialLinks className="pt-4" />
+            <SocialLinks className="pt-3" />
           </div>
           
-          {/* Services Column */}
+          {/* Services Column - Using 3-column layout for better spacing */}
           <div className="md:col-span-2">
             <FooterColumn title={translate("footer.services")}>
               <FooterLinkList links={serviceLinks} />

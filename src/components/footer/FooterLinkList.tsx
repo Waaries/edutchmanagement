@@ -8,7 +8,7 @@ interface FooterLinkListProps {
 
 const FooterLinkList = ({ links }: FooterLinkListProps) => {
   return (
-    <ul className="space-y-2">
+    <ul className="space-y-1.5">
       {links.map((link, index) => (
         <li key={index}>
           <a 
