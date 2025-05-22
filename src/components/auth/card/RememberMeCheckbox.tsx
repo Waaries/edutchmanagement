@@ -17,13 +17,13 @@ const RememberMeCheckbox: React.FC<RememberMeCheckboxProps> = ({ checked, onChan
           type="checkbox"
           checked={checked}
           onChange={onChange}
-          className="appearance-none h-4 w-4 rounded border border-white/20 bg-white/5 checked:bg-white checked:border-white focus:outline-none focus:ring-1 focus:ring-white/30 transition-all duration-200"
+          className="appearance-none h-4 w-4 rounded border border-purple-300/20 bg-purple-900/30 checked:bg-purple-400 checked:border-purple-400 focus:outline-none focus:ring-1 focus:ring-purple-300/30 transition-all duration-200"
         />
         {checked && (
           <motion.div 
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="absolute inset-0 flex items-center justify-center text-black pointer-events-none"
+            className="absolute inset-0 flex items-center justify-center text-purple-900 pointer-events-none"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="20 6 9 17 4 12"></polyline>

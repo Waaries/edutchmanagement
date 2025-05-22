@@ -19,12 +19,12 @@ const SignInButton: React.FC<SignInButtonProps> = ({ isLoading, onClick }) => {
       className="w-full relative group/button mt-5"
     >
       {/* Button glow effect */}
-      <div className="absolute inset-0 bg-white/10 rounded-lg blur-lg opacity-0 group-hover/button:opacity-70 transition-opacity duration-300" />
+      <div className="absolute inset-0 bg-purple-400/20 rounded-lg blur-lg opacity-0 group-hover/button:opacity-70 transition-opacity duration-300" />
       
-      <div className="relative overflow-hidden bg-white text-black font-medium h-10 rounded-lg transition-all duration-300 flex items-center justify-center">
+      <div className="relative overflow-hidden bg-purple-500 text-white font-medium h-10 rounded-lg transition-all duration-300 flex items-center justify-center">
         {/* Button background animation */}
         <motion.div 
-          className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/30 to-white/0 -z-10"
+          className="absolute inset-0 bg-gradient-to-r from-purple-500/0 via-purple-400/30 to-purple-500/0 -z-10"
           animate={{ 
             x: ['-100%', '100%'],
           }}
@@ -49,7 +49,7 @@ const SignInButton: React.FC<SignInButtonProps> = ({ isLoading, onClick }) => {
               exit={{ opacity: 0 }}
               className="flex items-center justify-center"
             >
-              <div className="w-4 h-4 border-2 border-black/70 border-t-transparent rounded-full animate-spin" />
+              <div className="w-4 h-4 border-2 border-white/70 border-t-transparent rounded-full animate-spin" />
             </motion.div>
           ) : (
             <motion.span

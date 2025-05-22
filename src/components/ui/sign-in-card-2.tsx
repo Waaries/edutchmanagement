@@ -28,7 +28,7 @@ const SignInCard = () => {
   };
 
   return (
-    <div className="min-h-screen w-screen bg-black relative overflow-hidden flex items-center justify-center">
+    <div className="min-h-screen w-screen bg-purple-900 relative overflow-hidden flex items-center justify-center">
       {/* Background effects */}
       <AnimatedBackground />
 
@@ -51,7 +51,7 @@ const SignInCard = () => {
             <CardGlowEffect />
             
             {/* Glass card background */}
-            <div className="relative bg-black/40 backdrop-blur-xl rounded-2xl p-6 border border-white/[0.05] shadow-2xl overflow-hidden">
+            <div className="relative bg-purple-900/70 backdrop-blur-xl rounded-2xl p-6 border border-white/[0.05] shadow-2xl overflow-hidden">
               {/* Subtle card inner patterns */}
               <div className="absolute inset-0 opacity-[0.03]" 
                 style={{
