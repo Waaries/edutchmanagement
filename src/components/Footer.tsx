@@ -31,9 +31,9 @@ const Footer = () => {
     <footer className="bg-[#0d111c] text-white py-16 w-full">
       <div className="w-full max-w-none px-6 md:px-10 lg:px-20 xl:px-24">
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-          {/* Column 1: Logo, Description and Social Links - Takes up 2 columns on large screens */}
-          <div className="flex flex-col lg:col-span-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+          {/* Column 1: Logo, Description and Social Links */}
+          <div className="flex flex-col">
             <div className="mb-6">
               <div className="h-24 w-24 flex items-center justify-center rounded-lg">
                 <img 
@@ -49,15 +49,21 @@ const Footer = () => {
             <SocialLinks className="pt-2" />
           </div>
           
-          {/* Column 2: Services - Single column */}
-          <div className="flex justify-center lg:justify-end">
+          {/* Column 2: Services and Links - Combined */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-12">
+            {/* Services Column */}
             <FooterColumn title={translate("footer.services")}>
               <FooterLinkList links={serviceLinks} />
             </FooterColumn>
+            
+            {/* Links Column */}
+            <FooterColumn title={translate("footer.links")}>
+              <FooterLinkList links={navLinks} />
+            </FooterColumn>
           </div>
           
-          {/* Column 3: Contact Information - Single column */}
-          <div className="flex justify-center lg:justify-end">
+          {/* Column 3: Contact Information */}
+          <div className="flex flex-col">
             <FooterColumn title={translate("footer.contact")}>
               <ContactInfo />
             </FooterColumn>
