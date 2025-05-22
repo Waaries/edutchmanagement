@@ -26,7 +26,6 @@ const Auth = () => {
   // Use the password reset hook
   usePasswordReset();
 
-  // Check if coming back from OAuth redirect or password reset
   useEffect(() => {
     // Check URL params
     const reset = searchParams.get('reset');
@@ -51,7 +50,6 @@ const Auth = () => {
     }
   }, [location, searchParams]);
 
-  // If user is already logged in, redirect to appropriate page
   useEffect(() => {
     if (user && !loading) {
       console.log("User is logged in, redirecting to appropriate page:", isAdmin ? "/admin" : "/dashboard");
@@ -63,7 +61,6 @@ const Auth = () => {
     }
   }, [user, loading, isAdmin, navigate]);
 
-  // Show loading indicator when checking authentication
   if (loading) {
     return <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-white to-slate-100">
         <div className="text-center">
