@@ -28,25 +28,25 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-slate-900 text-white py-16">
+    <footer className="bg-slate-900 text-white py-12">
       <div className="container max-w-7xl mx-auto px-6 lg:px-8">
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-x-16 gap-y-12">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-x-10 gap-y-8">
           {/* Logo and Description */}
-          <div className="md:col-span-4 space-y-5">
-            <div className="mb-5">
-              <div className="h-28 w-28 flex items-center justify-center rounded-lg">
+          <div className="md:col-span-4 space-y-4">
+            <div className="mb-4">
+              <div className="h-24 w-24 flex items-center justify-center rounded-lg">
                 <img 
                   src="/lovable-uploads/39d6c2c8-b4a1-4f97-86fb-dd3a6e9fcdbd.png" 
                   alt="eDutch Management Logo" 
-                  className="h-24 invert"
+                  className="h-20 invert"
                 />
               </div>
             </div>
             <p className="text-white/80 text-base leading-relaxed max-w-sm">
               Wij bieden professionele bedrijfsadressen voor ondernemers en bedrijven die hun uitstraling willen verbeteren zonder de kosten van een fysiek kantoor.
             </p>
-            <SocialLinks className="pt-4" />
+            <SocialLinks className="pt-2" />
           </div>
           
           {/* Services Column */}
