@@ -33,7 +33,7 @@ const Footer = () => {
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-x-10 gap-y-8">
           {/* Logo and Description */}
-          <div className="md:col-span-4 space-y-4">
+          <div className="md:col-span-5 space-y-4">
             <div className="mb-4">
               <div className="h-24 w-24 flex items-center justify-center rounded-lg">
                 <img 
@@ -49,22 +49,24 @@ const Footer = () => {
             <SocialLinks className="pt-2" />
           </div>
           
+          <div className="md:col-span-2"></div>
+          
           {/* Services Column */}
-          <div className="md:col-span-2 md:ml-6">
+          <div className="md:col-span-2 md:ml-auto">
             <FooterColumn title={translate("footer.services")}>
               <FooterLinkList links={serviceLinks} />
             </FooterColumn>
           </div>
           
           {/* Links Column */}
-          <div className="md:col-span-2">
+          <div className="md:col-span-1">
             <FooterColumn title={translate("footer.links")}>
               <FooterLinkList links={navLinks} />
             </FooterColumn>
           </div>
           
           {/* Contact Information */}
-          <div className="md:col-span-4">
+          <div className="md:col-span-2 md:ml-auto">
             <FooterColumn title={translate("footer.contact")}>
               <ContactInfo />
             </FooterColumn>
