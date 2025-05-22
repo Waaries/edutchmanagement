@@ -101,7 +101,7 @@ const LoginForm: React.FC = () => {
         />
         
         <div className="text-xs relative group/link">
-          <Link to="/auth?reset=true" className="text-white/60 hover:text-white transition-colors duration-200">
+          <Link to="/auth?reset=true" className="text-slate-800 hover:text-brand-blue transition-colors duration-200">
             Wachtwoord vergeten?
           </Link>
         </div>
