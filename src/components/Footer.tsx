@@ -29,11 +29,11 @@ const Footer = () => {
 
   return (
     <footer className="bg-[#0d111c] text-white py-16 w-full">
-      <div className="w-full max-w-none px-6 md:px-10 lg:px-20 xl:px-24">
+      <div className="container mx-auto px-6 md:px-10 lg:px-20 xl:px-24">
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
           {/* Column 1: Logo, Description and Social Links */}
-          <div className="flex flex-col">
+          <div className="md:col-span-6 lg:col-span-5 flex flex-col">
             <div className="mb-6">
               <div className="h-24 w-24 flex items-center justify-center rounded-lg">
                 <img 
@@ -50,23 +50,27 @@ const Footer = () => {
           </div>
           
           {/* Column 2: Services and Links - Combined */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-12">
+          <div className="md:col-span-6 lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-12">
             {/* Services Column */}
-            <FooterColumn title={translate("footer.services")}>
-              <FooterLinkList links={serviceLinks} />
-            </FooterColumn>
+            <div className="sm:col-span-1 md:flex md:justify-center">
+              <FooterColumn title={translate("footer.services")}>
+                <FooterLinkList links={serviceLinks} />
+              </FooterColumn>
+            </div>
             
             {/* Links Column */}
-            <FooterColumn title={translate("footer.links")}>
-              <FooterLinkList links={navLinks} />
-            </FooterColumn>
-          </div>
+            <div className="sm:col-span-1 md:flex md:justify-center">
+              <FooterColumn title={translate("footer.links")}>
+                <FooterLinkList links={navLinks} />
+              </FooterColumn>
+            </div>
           
-          {/* Column 3: Contact Information */}
-          <div className="flex flex-col">
-            <FooterColumn title={translate("footer.contact")}>
-              <ContactInfo />
-            </FooterColumn>
+            {/* Column 3: Contact Information */}
+            <div className="sm:col-span-1 md:flex md:justify-end">
+              <FooterColumn title={translate("footer.contact")}>
+                <ContactInfo />
+              </FooterColumn>
+            </div>
           </div>
         </div>
         
