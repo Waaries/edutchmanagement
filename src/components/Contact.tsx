@@ -1,41 +1,33 @@
-
 import { useRef, useEffect } from "react";
 import ContactForm from "@/components/contact/ContactForm";
 import ContactInfo from "@/components/contact/ContactInfo";
 import { useLanguage } from "@/contexts/LanguageContext";
-
 const Contact = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const { translate } = useLanguage();
-  
+  const {
+    translate
+  } = useLanguage();
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("active");
-        }
-      },
-      { threshold: 0.1 }
-    );
-    
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("active");
+      }
+    }, {
+      threshold: 0.1
+    });
     if (sectionRef.current) {
       observer.observe(sectionRef.current);
     }
-    
     return () => {
       if (sectionRef.current) {
         observer.unobserve(sectionRef.current);
       }
     };
   }, []);
-
-  return (
-    <section id="contact" className="section-padding bg-white" ref={sectionRef}>
+  return <section id="contact" className="section-padding bg-white" ref={sectionRef}>
       <div className="container mx-auto container-padding reveal">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-block px-3 py-1 text-sm font-medium bg-primary/10 text-primary mb-4 rounded-2xl flex items-center justify-center mx-auto">
-            {translate("contact.title")}
-          </div>
+          
           <h2 className="mb-6">
             Klaar Om Uw <span className="text-blue-500">Bedrijfsadres</span> Te Upgraden?
           </h2>
@@ -49,8 +41,6 @@ const Contact = () => {
           <ContactInfo />
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default Contact;
