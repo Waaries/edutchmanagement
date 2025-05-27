@@ -12,7 +12,7 @@ const SocialLinks = ({ className }: SocialLinksProps) => {
         { 
           icon: <Facebook size={20} />, 
           label: "Facebook", 
-          href: "#facebook" 
+          href: "https://www.facebook.com/people/EDutch-Management/61576336456020/" 
         },
         { 
           icon: <Instagram size={20} />, 
