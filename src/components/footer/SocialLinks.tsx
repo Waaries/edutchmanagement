@@ -1,4 +1,3 @@
-
 import { Facebook, Instagram, Linkedin, Mail } from "lucide-react";
 
 interface SocialLinksProps {
@@ -12,7 +11,7 @@ const SocialLinks = ({ className }: SocialLinksProps) => {
         { 
           icon: <Facebook size={20} />, 
           label: "Facebook", 
-          href: "https://www.facebook.com/people/EDutch-Management/61576336456020/" 
+          href: "https://www.facebook.com/profile.php?id=61576336456020" 
         },
         { 
           icon: <Instagram size={20} />, 
