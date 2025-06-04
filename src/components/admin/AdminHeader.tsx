@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Shield, LayoutDashboard, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -19,6 +18,7 @@ const AdminHeader: React.FC<AdminHeaderProps> = ({ userEmail }) => {
 
   const handleLogout = async () => {
     await signOut();
+    // signOut handles the redirect automatically
   };
 
   return (

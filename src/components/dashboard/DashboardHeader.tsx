@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Shield, LogOut } from "lucide-react";
 import { LayoutDashboard } from "lucide-react";
@@ -52,10 +51,7 @@ const DashboardHeader = ({ isAdmin }: DashboardHeaderProps) => {
   const handleLogout = async () => {
     try {
       await signOut();
-      toast({
-        title: "Uitgelogd",
-        description: "U bent succesvol uitgelogd.",
-      });
+      // No need for additional logic here since signOut handles the redirect
     } catch (error) {
       console.error("Logout error:", error);
       toast({

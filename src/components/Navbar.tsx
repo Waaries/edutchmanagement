@@ -25,7 +25,7 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     await signOut();
-    // No need to set menu state or navigate here, signOut handles redirection
+    // No need to manage state or navigate here, signOut handles everything
   };
 
   // Menu items with their translated values

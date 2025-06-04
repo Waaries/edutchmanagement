@@ -1,4 +1,3 @@
-
 import { AuthError } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -123,10 +122,8 @@ export function useAuthMethods() {
         description: "U bent succesvol uitgelogd.",
       });
       
-      // Force a full page reload to ensure clean state
-      setTimeout(() => {
-        window.location.href = '/';
-      }, 500);
+      // Direct redirect to homepage without delay
+      window.location.href = '/';
     } catch (error) {
       console.error('Sign out error:', error);
       toast({
