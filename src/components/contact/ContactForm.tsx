@@ -18,7 +18,6 @@ const ContactForm = () => {
     name: "",
     email: "",
     phone: "",
-    service: "",
     message: ""
   });
   const [submitted, setSubmitted] = useState(false);
@@ -74,7 +73,7 @@ const ContactForm = () => {
   const filledRequiredFields = requiredFields.filter(field => formState[field as keyof typeof formState].trim() !== '').length;
   const totalFields = Object.keys(formState).filter(key => formState[key as keyof typeof formState].trim() !== '').length;
   
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormState(prev => ({ ...prev, [name]: value }));
     
@@ -135,7 +134,6 @@ const ContactForm = () => {
           name: "",
           email: "",
           phone: "",
-          service: "",
           message: ""
         });
       }, 5000);
@@ -239,52 +237,30 @@ const ContactForm = () => {
             </div>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <label htmlFor="phone" className="block text-sm font-medium">
-                Telefoonnummer
-              </label>
-              <Input
-                type="tel"
-                id="phone"
-                name="phone"
-                value={formState.phone}
-                onChange={handleChange}
-                className={`w-full px-4 py-3 rounded-2xl border transition-all ${
-                  errors.phone 
-                    ? 'border-red-500 focus:ring-red-500/20 focus:border-red-500' 
-                    : 'border-gray-300 focus:ring-primary/20 focus:border-primary'
-                }`}
-                placeholder="Uw telefoonnummer"
-                disabled={loading}
-              />
-              {errors.phone && (
-                <div className="flex items-center text-sm text-red-600">
-                  <AlertCircle className="h-4 w-4 mr-1" />
-                  <span>{errors.phone}</span>
-                </div>
-              )}
-            </div>
-            
-            <div className="space-y-2">
-              <label htmlFor="service" className="block text-sm font-medium">
-                Gewenst Pakket
-              </label>
-              <select
-                id="service"
-                name="service"
-                value={formState.service}
-                onChange={handleChange}
-                className="w-full px-4 py-3 rounded-2xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-white"
-                disabled={loading}
-              >
-                <option value="">Selecteer een pakket</option>
-                <option value="basic">Basis Bedrijfsadres</option>
-                <option value="premium">Premium Bedrijfsadres</option>
-                <option value="complete">Zakelijk Compleet</option>
-                <option value="custom">Aangepast Pakket</option>
-              </select>
-            </div>
+          <div className="space-y-2">
+            <label htmlFor="phone" className="block text-sm font-medium">
+              Telefoonnummer
+            </label>
+            <Input
+              type="tel"
+              id="phone"
+              name="phone"
+              value={formState.phone}
+              onChange={handleChange}
+              className={`w-full px-4 py-3 rounded-2xl border transition-all ${
+                errors.phone 
+                  ? 'border-red-500 focus:ring-red-500/20 focus:border-red-500' 
+                  : 'border-gray-300 focus:ring-primary/20 focus:border-primary'
+              }`}
+              placeholder="Uw telefoonnummer"
+              disabled={loading}
+            />
+            {errors.phone && (
+              <div className="flex items-center text-sm text-red-600">
+                <AlertCircle className="h-4 w-4 mr-1" />
+                <span>{errors.phone}</span>
+              </div>
+            )}
           </div>
           
           <div className="space-y-2">
