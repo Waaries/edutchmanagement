@@ -11,11 +11,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { ArrowLeft, Building2, Mail, Phone, User } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const AddressRequest = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { translate } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   const [formData, setFormData] = useState({
@@ -30,21 +32,22 @@ const AddressRequest = () => {
     special_requirements: ""
   });
 
+  // Use the same service data structure as in Services component
   const addressTypes = [
     { 
       value: "basic", 
-      label: "Basis Pakket - €29/maand", 
-      description: "Bedrijfsadres + postdoorverzendig" 
+      label: `${translate("services.basic.title")} - ${translate("services.basic.price")}/${translate("services.basic.period")}`,
+      description: translate("services.basic.description")
     },
     { 
       value: "premium", 
-      label: "Premium Pakket - €49/maand", 
-      description: "Basis + telefonservice + vergaderruimte" 
+      label: `${translate("services.premium.title")} - ${translate("services.premium.price")}/${translate("services.premium.period")}`,
+      description: translate("services.premium.description")
     },
     { 
       value: "complete", 
-      label: "Complete Pakket - €79/maand", 
-      description: "Premium + kantoorservice + secretariaatdiensten" 
+      label: `${translate("services.complete.title")} - ${translate("services.complete.price")}/${translate("services.complete.period")}`,
+      description: translate("services.complete.description")
     }
   ];
 
