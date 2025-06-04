@@ -60,14 +60,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    console.error('useAuth must be used within an AuthProvider - context is undefined');
-    // Return a fallback object instead of throwing to prevent crashes
+    // Return a safe fallback instead of throwing an error to prevent crashes
+    console.warn('useAuth must be used within an AuthProvider - returning fallback values');
     return {
       session: null,
       user: null,
       loading: false,
       isAdmin: false,
-      initialized: false,
+      initialized: true,
       signIn: async () => ({ error: new Error('Auth not initialized') as AuthError }),
       signUp: async () => ({ error: new Error('Auth not initialized') as AuthError }),
       signOut: async () => {},
