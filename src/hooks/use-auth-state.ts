@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react';
 import { Session, User } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
-import { createOrUpdateProfile } from '@/lib/profile-utils';
 
 export function useAuthState() {
   const [session, setSession] = useState<Session | null>(null);
@@ -49,20 +48,13 @@ export function useAuthState() {
       setSession(currentSession);
       setUser(currentSession.user);
       
-      // Handle profile creation in background without blocking
+      // Check admin status after setting user
       setTimeout(async () => {
         try {
-          const userMetadata = currentSession.user.user_metadata;
-          await createOrUpdateProfile(currentSession.user.id, {
-            first_name: userMetadata.first_name || userMetadata.name?.split(' ')[0] || '',
-            last_name: userMetadata.last_name || userMetadata.name?.split(' ').slice(1).join(' ') || ''
-          });
+          await checkAdminStatus(currentSession.user.id);
         } catch (error) {
-          console.log('Profile creation failed but continuing:', error);
+          console.log('Admin check failed but continuing:', error);
         }
-        
-        // Check admin status after profile is handled
-        await checkAdminStatus(currentSession.user.id);
       }, 100);
       
       setLoading(false);
@@ -86,13 +78,7 @@ export function useAuthState() {
         console.log('Initializing auth state...');
         setLoading(true);
         
-        // Clear any conflicting auth state
-        const keysToRemove = Object.keys(localStorage).filter(key => 
-          key.startsWith('supabase.auth.') && key.includes('previous-session')
-        );
-        keysToRemove.forEach(key => localStorage.removeItem(key));
-        
-        // Get initial session first
+        // Get initial session
         const { data: { session: currentSession }, error } = await supabase.auth.getSession();
         console.log('Initial session check:', !!currentSession, error ? 'Error: ' + error.message : 'OK');
         
@@ -115,7 +101,7 @@ export function useAuthState() {
         // Process initial session
         await handleAuthChange('INITIAL_SESSION', currentSession);
         
-        console.log('Auth initialization complete, setting initialized to true');
+        console.log('Auth initialization complete');
         setInitialized(true);
       } catch (error) {
         console.error('Error initializing auth:', error);
@@ -126,7 +112,7 @@ export function useAuthState() {
       }
     };
     
-    // Add a small delay to ensure the context is properly set up
+    // Small delay to ensure proper initialization
     const timer = setTimeout(initializeAuth, 50);
 
     return () => {
@@ -139,7 +125,13 @@ export function useAuthState() {
     };
   }, []);
 
-  console.log('Auth state hook values:', { session: !!session, user: !!user, loading, isAdmin, initialized });
+  console.log('Auth state hook values:', { 
+    session: !!session, 
+    user: !!user, 
+    loading, 
+    isAdmin, 
+    initialized 
+  });
 
   return { session, user, loading, isAdmin, initialized };
 }

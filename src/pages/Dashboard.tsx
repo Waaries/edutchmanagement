@@ -13,15 +13,37 @@ import ProfileTab from "@/components/dashboard/ProfileTab";
 import AppointmentsTab from "@/components/dashboard/AppointmentsTab";
 import SettingsTab from "@/components/dashboard/SettingsTab";
 import AddressRequestsTab from "@/components/dashboard/AddressRequestsTab";
-import { useToast } from "@/hooks/use-toast";
-import { ensureProfileExists } from "@/lib/profile-utils";
+import LoadingSpinner from "@/components/ui/loading-spinner";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 const Dashboard = () => {
-  const { user, loading, isAdmin, initialized } = useAuth();
   const [activeTab, setActiveTab] = useState("overview");
   const navigate = useNavigate();
-  const { toast } = useToast();
   const [isRedirecting, setIsRedirecting] = useState(false);
+
+  // Safely get auth context with error handling
+  let authContext;
+  try {
+    authContext = useAuth();
+  } catch (err) {
+    console.error('Auth context error in Dashboard:', err);
+    // Show error state and redirect to auth
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-white to-slate-100">
+        <div className="text-center">
+          <p className="text-red-600 mb-4">Authenticatiefout opgetreden</p>
+          <button 
+            onClick={() => window.location.href = '/auth'}
+            className="px-4 py-2 bg-primary text-white rounded hover:bg-primary/90"
+          >
+            Terug naar inloggen
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const { user, loading, isAdmin, initialized } = authContext;
 
   useEffect(() => {
     document.title = "Dashboard | eDutch Management";
@@ -48,22 +70,8 @@ const Dashboard = () => {
           navigate("/auth", { replace: true });
         }
       } else {
-        console.log("User is logged in, ensuring profile exists");
+        console.log("User is logged in on dashboard");
         setIsRedirecting(false);
-        
-        // Ensure profile exists
-        const initProfile = async () => {
-          try {
-            const profileCreated = await ensureProfileExists(user);
-            if (profileCreated) {
-              console.log("Profile ensured for user:", user.email);
-            }
-          } catch (error) {
-            console.error("Error ensuring profile:", error);
-          }
-        };
-        
-        initProfile();
       }
     }
   }, [user, loading, isAdmin, initialized, navigate, isRedirecting]);
@@ -73,10 +81,8 @@ const Dashboard = () => {
     console.log("Dashboard: Showing loading state");
     return (
       <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-white to-slate-100">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-4 text-gray-600">Bezig met laden...</p>
-        </div>
+        <LoadingSpinner size="lg" />
+        <p className="mt-4 text-gray-600">Bezig met laden...</p>
       </div>
     );
   }
@@ -90,56 +96,58 @@ const Dashboard = () => {
   console.log("Dashboard: Rendering dashboard for user:", user.email);
 
   return (
-    <div className="container mx-auto py-8 px-4 pt-32">
-      <DashboardHeader isAdmin={isAdmin} />
-      
-      <WelcomeCard user={user} isAdmin={isAdmin} />
+    <ErrorBoundary>
+      <div className="container mx-auto py-8 px-4 pt-32">
+        <DashboardHeader isAdmin={isAdmin} />
+        
+        <WelcomeCard user={user} isAdmin={isAdmin} />
 
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid grid-cols-5 mb-8">
-          <TabsTrigger value="overview" className="flex items-center gap-2">
-            <LayoutDashboard className="h-4 w-4" />
-            <span>Overzicht</span>
-          </TabsTrigger>
-          <TabsTrigger value="profile" className="flex items-center gap-2">
-            <User className="h-4 w-4" />
-            <span>Profiel</span>
-          </TabsTrigger>
-          <TabsTrigger value="requests" className="flex items-center gap-2">
-            <Building2 className="h-4 w-4" />
-            <span>Aanvragen</span>
-          </TabsTrigger>
-          <TabsTrigger value="appointments" className="flex items-center gap-2">
-            <Mail className="h-4 w-4" />
-            <span>Ontvangen post</span>
-          </TabsTrigger>
-          <TabsTrigger value="settings" className="flex items-center gap-2">
-            <Settings className="h-4 w-4" />
-            <span>Instellingen</span>
-          </TabsTrigger>
-        </TabsList>
-        
-        <TabsContent value="overview">
-          <OverviewTab setActiveTab={setActiveTab} />
-        </TabsContent>
-        
-        <TabsContent value="profile">
-          <ProfileTab user={user} />
-        </TabsContent>
-        
-        <TabsContent value="requests">
-          <AddressRequestsTab />
-        </TabsContent>
-        
-        <TabsContent value="appointments">
-          <AppointmentsTab />
-        </TabsContent>
-        
-        <TabsContent value="settings">
-          <SettingsTab />
-        </TabsContent>
-      </Tabs>
-    </div>
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
+          <TabsList className="grid grid-cols-5 mb-8">
+            <TabsTrigger value="overview" className="flex items-center gap-2">
+              <LayoutDashboard className="h-4 w-4" />
+              <span>Overzicht</span>
+            </TabsTrigger>
+            <TabsTrigger value="profile" className="flex items-center gap-2">
+              <User className="h-4 w-4" />
+              <span>Profiel</span>
+            </TabsTrigger>
+            <TabsTrigger value="requests" className="flex items-center gap-2">
+              <Building2 className="h-4 w-4" />
+              <span>Aanvragen</span>
+            </TabsTrigger>
+            <TabsTrigger value="appointments" className="flex items-center gap-2">
+              <Mail className="h-4 w-4" />
+              <span>Ontvangen post</span>
+            </TabsTrigger>
+            <TabsTrigger value="settings" className="flex items-center gap-2">
+              <Settings className="h-4 w-4" />
+              <span>Instellingen</span>
+            </TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="overview">
+            <OverviewTab setActiveTab={setActiveTab} />
+          </TabsContent>
+          
+          <TabsContent value="profile">
+            <ProfileTab user={user} />
+          </TabsContent>
+          
+          <TabsContent value="requests">
+            <AddressRequestsTab />
+          </TabsContent>
+          
+          <TabsContent value="appointments">
+            <AppointmentsTab />
+          </TabsContent>
+          
+          <TabsContent value="settings">
+            <SettingsTab />
+          </TabsContent>
+        </Tabs>
+      </div>
+    </ErrorBoundary>
   );
 };
 

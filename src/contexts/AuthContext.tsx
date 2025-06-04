@@ -38,6 +38,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     resetPassword
   };
 
+  // Don't render children until auth is initialized to prevent useAuth errors
+  if (!initialized) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-white to-slate-100">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-4">Bezig met laden...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <AuthContext.Provider value={value}>
       {children}
@@ -48,8 +60,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    console.error('useAuth must be used within an AuthProvider');
-    throw new Error('useAuth must be used within an AuthProvider');
+    console.error('useAuth must be used within an AuthProvider - context is undefined');
+    // Return a fallback object instead of throwing to prevent crashes
+    return {
+      session: null,
+      user: null,
+      loading: false,
+      isAdmin: false,
+      initialized: false,
+      signIn: async () => ({ error: new Error('Auth not initialized') as AuthError }),
+      signUp: async () => ({ error: new Error('Auth not initialized') as AuthError }),
+      signOut: async () => {},
+      signInWithGoogle: async () => ({ error: new Error('Auth not initialized') as AuthError }),
+      signInWithFacebook: async () => ({ error: new Error('Auth not initialized') as AuthError }),
+      resetPassword: async () => ({ error: new Error('Auth not initialized') as AuthError })
+    };
   }
   return context;
 }

@@ -7,6 +7,7 @@ import { usePasswordReset } from '@/hooks/use-password-reset';
 import SignInCard from '@/components/ui/sign-in-card-2';
 import SuccessDialog from '@/components/auth/SuccessDialog';
 import ErrorBoundary from '@/components/ErrorBoundary';
+import LoadingSpinner from '@/components/ui/loading-spinner';
 
 const Auth = () => {
   const location = useLocation();
@@ -24,12 +25,18 @@ const Auth = () => {
     authContext = useAuth();
   } catch (err) {
     console.error('Auth context error:', err);
-    // If auth context fails, show loading state
+    // If auth context fails, show loading state and retry
     return (
       <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-white to-slate-100">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-4">Bezig met laden...</p>
+          <LoadingSpinner size="lg" />
+          <p className="mt-4">Authenticatie wordt geladen...</p>
+          <button 
+            onClick={() => window.location.reload()}
+            className="mt-4 px-4 py-2 text-sm bg-primary text-white rounded hover:bg-primary/90"
+          >
+            Opnieuw proberen
+          </button>
         </div>
       </div>
     );
@@ -92,7 +99,7 @@ const Auth = () => {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-white to-slate-100">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto"></div>
+          <LoadingSpinner size="lg" />
           <p className="mt-4">Bezig met laden...</p>
         </div>
       </div>

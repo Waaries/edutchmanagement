@@ -1,3 +1,4 @@
+
 import { AuthError } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -7,12 +8,21 @@ export function useAuthMethods() {
 
   const cleanAuthState = () => {
     console.log('Cleaning auth state...');
+    // Remove all Supabase auth-related keys
     const keysToRemove = Object.keys(localStorage).filter(key => 
       key.startsWith('supabase.auth.') || key.includes('sb-')
     );
     keysToRemove.forEach(key => {
       console.log('Removing key:', key);
       localStorage.removeItem(key);
+    });
+    
+    // Also clear sessionStorage if used
+    const sessionKeys = Object.keys(sessionStorage || {}).filter(key => 
+      key.startsWith('supabase.auth.') || key.includes('sb-')
+    );
+    sessionKeys.forEach(key => {
+      sessionStorage.removeItem(key);
     });
   };
 
@@ -24,7 +34,6 @@ export function useAuthMethods() {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (!error) {
         console.log('Successful login for:', email);
-        // Don't force redirect here, let the auth state change handle it
       } else {
         console.error('Login error:', error.message);
       }
@@ -113,16 +122,20 @@ export function useAuthMethods() {
   const signOut = async () => {
     try {
       console.log('Starting sign out process...');
-      cleanAuthState();
       
-      await supabase.auth.signOut();
-      
+      // Show toast first
       toast({
         title: "Uitgelogd",
         description: "U bent succesvol uitgelogd.",
       });
       
-      // Direct redirect to homepage without delay
+      // Clean auth state
+      cleanAuthState();
+      
+      // Sign out from Supabase
+      await supabase.auth.signOut();
+      
+      // Force redirect to homepage
       window.location.href = '/';
     } catch (error) {
       console.error('Sign out error:', error);
@@ -131,6 +144,9 @@ export function useAuthMethods() {
         description: "Er was een probleem bij het uitloggen. Probeer het opnieuw.",
         variant: "destructive",
       });
+      
+      // Even if sign out fails, redirect to clean state
+      window.location.href = '/';
     }
   };
 
