@@ -71,12 +71,26 @@ export const setConsentCookies = (consentType: 'all' | 'essential') => {
   if (consentType === 'all') {
     // Enable analytics cookies if we have full consent
     setCookie('analyticsEnabled', 'true');
-    // You would initialize analytics services here
+    
+    // Initialize analytics if consent is granted
+    import('./analytics').then(({ initializeAnalytics, enableAnalytics }) => {
+      if (typeof window.gtag !== 'undefined') {
+        enableAnalytics();
+      } else {
+        initializeAnalytics();
+      }
+    });
+    
     console.log('Analytics tracking enabled');
   } else {
     // Remove analytics cookies if we only have essential consent
     eraseCookie('analyticsEnabled');
-    // You would disable analytics services here
+    
+    // Disable analytics if consent is withdrawn
+    import('./analytics').then(({ disableAnalytics }) => {
+      disableAnalytics();
+    });
+    
     console.log('Analytics tracking disabled');
   }
 };

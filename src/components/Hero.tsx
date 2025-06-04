@@ -1,8 +1,8 @@
-
 import { useState, useEffect, useRef } from "react";
 import { ChevronRight, ArrowRight, Building, MapPin, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { trackButtonClick } from "@/lib/analytics";
 import ImageLoader from "@/components/ui/image-loader";
 
 const Hero = () => {
@@ -27,6 +27,8 @@ const Hero = () => {
     const section = document.getElementById(sectionId);
     if (section) {
       section.scrollIntoView({ behavior: 'smooth' });
+      // Track navigation
+      trackButtonClick(`scroll_to_${sectionId}`, 'hero_section');
     }
   };
 

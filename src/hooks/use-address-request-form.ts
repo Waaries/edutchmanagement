@@ -4,6 +4,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAutoSave } from "@/hooks/use-auto-save";
+import { trackFormSubmission } from "@/lib/analytics";
 
 export interface AddressRequestFormData {
   company_name: string;
@@ -110,10 +111,15 @@ export const useAddressRequestForm = () => {
 
       if (error) {
         console.error("Supabase error:", error);
+        // Track failed form submission
+        trackFormSubmission('address_request', false);
         throw error;
       }
 
       console.log("Successfully created address request:", data);
+
+      // Track successful form submission
+      trackFormSubmission('address_request', true);
 
       // Clear auto-saved data after successful submission
       clearSavedData();
