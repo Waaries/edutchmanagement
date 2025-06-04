@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -159,6 +160,93 @@
   }
 }
 
+/* Enhanced Animation System */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animation Classes */
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+.animate-fade-in-left {
+  animation: fadeInLeft 0.8s ease-out forwards;
+}
+
+.animate-fade-in-right {
+  animation: fadeInRight 0.8s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.6s ease-out forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.8s ease-out forwards;
+}
+
+/* Animation Delays */
+.animation-delay-100 { animation-delay: 100ms; }
+.animation-delay-200 { animation-delay: 200ms; }
+.animation-delay-300 { animation-delay: 300ms; }
+.animation-delay-400 { animation-delay: 400ms; }
+.animation-delay-500 { animation-delay: 500ms; }
+.animation-delay-600 { animation-delay: 600ms; }
+.animation-delay-700 { animation-delay: 700ms; }
+.animation-delay-800 { animation-delay: 800ms; }
+
 /* Custom Animations */
 .reveal {
   opacity: 0;
@@ -171,13 +259,62 @@
   transform: translateY(0);
 }
 
+/* Enhanced Hover Effects */
 .hover-lift {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .hover-lift:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.1);
+  transform: translateY(-8px);
+  box-shadow: 0 25px 40px -15px rgba(0, 0, 0, 0.15);
+}
+
+.hover-scale {
+  transition: transform 0.3s ease;
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+.hover-glow {
+  transition: all 0.3s ease;
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+}
+
+/* Card Hover Effects */
+.card-hover {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.2);
+}
+
+/* Button Hover Effects */
+.btn-hover {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.btn-hover::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-hover:hover::before {
+  left: 100%;
 }
 
 /* New Gradient Styles - Blue/Grey Theme */
@@ -236,15 +373,17 @@
   width: 100%;
 }
 
-/* Unique design elements */
+/* Enhanced blob animations */
 .blob-shape {
   border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
   animation: blob-animation 8s ease-in-out infinite alternate;
+  transition: all 0.3s ease;
 }
 
 .blob-shape-alt {
   border-radius: 40% 60% 70% 30% / 40% 70% 30% 60%;
   animation: blob-animation-alt 8s ease-in-out infinite alternate;
+  transition: all 0.3s ease;
 }
 
 @keyframes blob-animation {
@@ -271,6 +410,7 @@
   }
 }
 
+/* Enhanced stacked card effect */
 .stacked-card {
   position: relative;
 }
@@ -281,6 +421,7 @@
   position: absolute;
   border-radius: inherit;
   z-index: -1;
+  transition: all 0.3s ease;
 }
 
 .stacked-card::before {
@@ -293,6 +434,16 @@
   background-color: rgba(3, 105, 161, 0.1);
   inset: -16px;
   transform: rotate(2deg);
+}
+
+.stacked-card:hover::before {
+  transform: rotate(-3deg) scale(1.02);
+  background-color: rgba(14, 165, 233, 0.15);
+}
+
+.stacked-card:hover::after {
+  transform: rotate(3deg) scale(1.02);
+  background-color: rgba(3, 105, 161, 0.15);
 }
 
 .marquee-container {
@@ -345,4 +496,36 @@
 .angled-bg::after {
   bottom: -3rem;
   transform: skewY(-3deg);
+}
+
+/* Parallax container */
+.parallax-container {
+  transform-style: preserve-3d;
+}
+
+.parallax-element {
+  will-change: transform;
+}
+
+/* Performance optimizations */
+.gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Smooth scroll for reduced motion users */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .hover-lift:hover {
+    transform: none;
+  }
+  
+  .parallax-element {
+    transform: none !important;
+  }
 }
