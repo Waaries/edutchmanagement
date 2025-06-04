@@ -54,20 +54,34 @@ export const useAddressRequestForm = () => {
     setIsSubmitting(true);
     
     try {
-      const { error } = await supabase
+      console.log("Submitting address request with data:", formData);
+      console.log("User authenticated:", !!user);
+      console.log("User ID:", user?.id || 'null');
+
+      const requestData = {
+        ...formData,
+        user_id: user?.id || null // Explicitly set to null for anonymous users
+      };
+
+      console.log("Final request data:", requestData);
+
+      const { data, error } = await supabase
         .from('address_requests')
-        .insert([{
-          ...formData,
-          user_id: user?.id || null // Allow null for anonymous requests
-        }]);
+        .insert([requestData])
+        .select(); // Add select to get the inserted data back
 
       if (error) {
+        console.error("Supabase error:", error);
         throw error;
       }
 
+      console.log("Successfully created address request:", data);
+
       toast({
         title: "Aanvraag verzonden",
-        description: "Uw aanvraag is succesvol verzonden. Wij nemen binnen 24 uur contact met u op.",
+        description: user 
+          ? "Uw aanvraag is succesvol verzonden. U kunt de status bekijken in uw dashboard."
+          : "Uw aanvraag is succesvol verzonden. Wij nemen binnen 24 uur contact met u op via de opgegeven contactgegevens.",
       });
 
       // Redirect based on whether user is logged in
