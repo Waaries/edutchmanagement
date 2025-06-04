@@ -4,6 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { useAutoSave } from "@/hooks/use-auto-save";
 
 export interface AddressRequestFormData {
   company_name: string;
@@ -33,6 +34,30 @@ export const useAddressRequestForm = () => {
     expected_mail_volume: "",
     additional_services: [],
     special_requirements: ""
+  });
+
+  // Initialize auto-save functionality
+  const { loadSavedData, clearSavedData } = useAutoSave({
+    data: formData,
+    key: "address_request_form",
+    delay: 2000
+  });
+
+  // Load saved data on component mount (if available)
+  useState(() => {
+    const savedData = loadSavedData();
+    if (savedData) {
+      setFormData(prev => ({
+        ...prev,
+        ...savedData,
+        email: user?.email || savedData.email || "" // Prefer user email if logged in
+      }));
+      
+      toast({
+        title: "Opgeslagen gegevens geladen",
+        description: "Uw eerder ingevulde gegevens zijn automatisch hersteld.",
+      });
+    }
   });
 
   const handleInputChange = (field: keyof AddressRequestFormData, value: string) => {
@@ -76,6 +101,9 @@ export const useAddressRequestForm = () => {
       }
 
       console.log("Successfully created address request:", data);
+
+      // Clear auto-saved data after successful submission
+      clearSavedData();
 
       toast({
         title: "Aanvraag verzonden",
