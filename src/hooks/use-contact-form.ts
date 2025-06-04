@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -45,7 +44,7 @@ export const useContactForm = () => {
     }
   };
 
-  const { errors, validateField, validateForm, clearError } = useFormValidation(validationRules);
+  const { errors, validateField, validateForm, clearError } = useFormValidation<ContactFormState>(validationRules);
   
   // Auto-save functionality
   const { loadSavedData, clearSavedData } = useAutoSave({
@@ -83,7 +82,7 @@ export const useContactForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!validateForm(formState as Record<string, string>)) {
+    if (!validateForm(formState)) {
       toast({
         title: "Formulier bevat fouten",
         description: "Controleer de aangegeven velden en probeer opnieuw.",

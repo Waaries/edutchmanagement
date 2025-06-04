@@ -17,7 +17,7 @@ interface ValidationErrors {
   [key: string]: string;
 }
 
-export const useFormValidation = (rules: ValidationRules) => {
+export const useFormValidation = <T extends Record<string, any>>(rules: ValidationRules) => {
   const [errors, setErrors] = useState<ValidationErrors>({});
 
   const validateField = useCallback((name: string, value: string): string | null => {
@@ -53,12 +53,13 @@ export const useFormValidation = (rules: ValidationRules) => {
     return null;
   }, [rules]);
 
-  const validateForm = useCallback((formData: Record<string, string>) => {
+  const validateForm = useCallback((formData: T) => {
     const newErrors: ValidationErrors = {};
     let isValid = true;
 
     Object.keys(rules).forEach(fieldName => {
-      const error = validateField(fieldName, formData[fieldName] || "");
+      const fieldValue = String(formData[fieldName as keyof T] || "");
+      const error = validateField(fieldName, fieldValue);
       if (error) {
         newErrors[fieldName] = error;
         isValid = false;
