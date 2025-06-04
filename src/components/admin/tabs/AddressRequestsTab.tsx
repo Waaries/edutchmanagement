@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Calendar, Clock, Building2, Mail, Phone, User, MessageSquare } from "lucide-react";
+import { Calendar, Clock, Building2, Mail, Phone, User, MessageSquare, UserX } from "lucide-react";
 
 interface AddressRequest {
   id: string;
@@ -24,6 +24,7 @@ interface AddressRequest {
   admin_notes: string;
   created_at: string;
   updated_at: string;
+  user_id: string | null; // Now nullable for anonymous requests
 }
 
 const AddressRequestsTab = () => {
@@ -136,9 +137,9 @@ const AddressRequestsTab = () => {
 
   const getPackageLabel = (type: string) => {
     const packages = {
-      basic: "Basis Pakket (€29/maand)",
-      premium: "Premium Pakket (€49/maand)", 
-      complete: "Complete Pakket (€79/maand)"
+      basic: "Basis Pakket (€59/maand)",
+      premium: "Premium Pakket (€89/maand)", 
+      complete: "Complete Pakket (€149/maand)"
     };
     return packages[type as keyof typeof packages] || type;
   };
@@ -176,6 +177,12 @@ const AddressRequestsTab = () => {
                     <CardTitle className="flex items-center gap-2">
                       <Building2 className="h-5 w-5" />
                       {request.company_name}
+                      {!request.user_id && (
+                        <Badge variant="outline" className="ml-2 text-xs">
+                          <UserX className="h-3 w-3 mr-1" />
+                          Anonieme aanvraag
+                        </Badge>
+                      )}
                     </CardTitle>
                     <CardDescription className="mt-1">
                       {getPackageLabel(request.preferred_address_type)} • {request.business_type}

@@ -51,16 +51,6 @@ export const useAddressRequestForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!user) {
-      toast({
-        title: "Inloggen vereist",
-        description: "U moet ingelogd zijn om een aanvraag in te dienen.",
-        variant: "destructive"
-      });
-      navigate("/auth");
-      return;
-    }
-
     setIsSubmitting(true);
     
     try {
@@ -68,7 +58,7 @@ export const useAddressRequestForm = () => {
         .from('address_requests')
         .insert([{
           ...formData,
-          user_id: user.id
+          user_id: user?.id || null // Allow null for anonymous requests
         }]);
 
       if (error) {
@@ -80,7 +70,12 @@ export const useAddressRequestForm = () => {
         description: "Uw aanvraag is succesvol verzonden. Wij nemen binnen 24 uur contact met u op.",
       });
 
-      navigate("/dashboard");
+      // Redirect based on whether user is logged in
+      if (user) {
+        navigate("/dashboard");
+      } else {
+        navigate("/"); // Redirect to homepage for anonymous users
+      }
     } catch (error) {
       console.error("Error submitting request:", error);
       toast({

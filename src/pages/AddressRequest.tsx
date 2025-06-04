@@ -2,8 +2,9 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Building2 } from "lucide-react";
+import { ArrowLeft, Building2, Info } from "lucide-react";
 import { useAddressRequestForm } from "@/hooks/use-address-request-form";
+import { useAuth } from "@/contexts/AuthContext";
 import CompanyInformationSection from "@/components/address-request/CompanyInformationSection";
 import ContactInformationSection from "@/components/address-request/ContactInformationSection";
 import AddressTypeSelection from "@/components/address-request/AddressTypeSelection";
@@ -13,6 +14,7 @@ import SpecialRequirementsSection from "@/components/address-request/SpecialRequ
 
 const AddressRequest = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const {
     formData,
     isSubmitting,
@@ -40,6 +42,16 @@ const AddressRequest = () => {
           <p className="text-lg text-gray-600">
             Vul onderstaand formulier in om uw bedrijfsadres aan te vragen
           </p>
+
+          {!user && (
+            <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg flex items-start gap-3">
+              <Info className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+              <div className="text-sm text-blue-800">
+                <p className="font-medium">Aanvraag zonder account</p>
+                <p>U kunt deze aanvraag indienen zonder een account aan te maken. Wij nemen contact met u op via de opgegeven contactgegevens.</p>
+              </div>
+            </div>
+          )}
         </div>
 
         <Card>
