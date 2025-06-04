@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -32,9 +31,21 @@ const AddressRequest = () => {
   });
 
   const addressTypes = [
-    { value: "basic", label: "Basis Pakket - €29/maand", description: "Bedrijfsadres + postdoorverzendig" },
-    { value: "premium", label: "Premium Pakket - €49/maand", description: "Basis + telefonservice + vergaderruimte" },
-    { value: "complete", label: "Complete Pakket - €79/maand", description: "Premium + kantoorservice + secretariaatdiensten" }
+    { 
+      value: "basic", 
+      label: "Basis Pakket - €29/maand", 
+      description: "Bedrijfsadres + postdoorverzendig" 
+    },
+    { 
+      value: "premium", 
+      label: "Premium Pakket - €49/maand", 
+      description: "Basis + telefonservice + vergaderruimte" 
+    },
+    { 
+      value: "complete", 
+      label: "Complete Pakket - €79/maand", 
+      description: "Premium + kantoorservice + secretariaatdiensten" 
+    }
   ];
 
   const businessTypes = [
