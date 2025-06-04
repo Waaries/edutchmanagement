@@ -34,6 +34,13 @@ const LoginForm: React.FC = () => {
       setError("Voer uw wachtwoord in");
       return;
     }
+
+    // Basic email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email.trim())) {
+      setError("Voer een geldig e-mailadres in");
+      return;
+    }
     
     setIsLoading(true);
     
@@ -49,15 +56,30 @@ const LoginForm: React.FC = () => {
       
       if (error) {
         console.error("Login error:", error.message);
-        // Translate common error messages to Dutch
+        // Translate all possible error messages to Dutch
         let errorMessage = error.message;
+        
         if (error.message.includes("Invalid login credentials")) {
           errorMessage = "Ongeldige inloggegevens. Controleer uw e-mailadres en wachtwoord.";
         } else if (error.message.includes("Email not confirmed")) {
           errorMessage = "E-mailadres nog niet bevestigd. Controleer uw inbox.";
         } else if (error.message.includes("Too many requests")) {
           errorMessage = "Te veel inlogpogingen. Probeer het later opnieuw.";
+        } else if (error.message.includes("missing email") || error.message.includes("missing phone")) {
+          errorMessage = "Voer uw e-mailadres en wachtwoord in";
+        } else if (error.message.includes("missing password")) {
+          errorMessage = "Voer uw wachtwoord in";
+        } else if (error.message.includes("invalid email")) {
+          errorMessage = "Voer een geldig e-mailadres in";
+        } else if (error.message.includes("signup disabled")) {
+          errorMessage = "Registratie is momenteel uitgeschakeld";
+        } else if (error.message.includes("user not found")) {
+          errorMessage = "Gebruiker niet gevonden. Controleer uw gegevens of registreer eerst.";
+        } else {
+          // Fallback for any other error
+          errorMessage = "Er is een fout opgetreden bij het inloggen. Probeer het opnieuw.";
         }
+        
         setError(errorMessage);
       } else {
         // Success - show toast and redirect
