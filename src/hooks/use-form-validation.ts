@@ -53,7 +53,7 @@ export const useFormValidation = (rules: ValidationRules) => {
     return null;
   }, [rules]);
 
-  const validateForm = useCallback((formData: { [key: string]: string }) => {
+  const validateForm = useCallback((formData: Record<string, string>) => {
     const newErrors: ValidationErrors = {};
     let isValid = true;
 
