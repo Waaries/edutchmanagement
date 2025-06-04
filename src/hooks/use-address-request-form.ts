@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
@@ -23,6 +23,7 @@ export const useAddressRequestForm = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [hasLoadedSavedData, setHasLoadedSavedData] = useState(false);
   
   const [formData, setFormData] = useState<AddressRequestFormData>({
     company_name: "",
@@ -44,21 +45,31 @@ export const useAddressRequestForm = () => {
   });
 
   // Load saved data on component mount (if available)
-  useState(() => {
-    const savedData = loadSavedData();
-    if (savedData) {
-      setFormData(prev => ({
-        ...prev,
-        ...savedData,
-        email: user?.email || savedData.email || "" // Prefer user email if logged in
-      }));
-      
-      toast({
-        title: "Opgeslagen gegevens geladen",
-        description: "Uw eerder ingevulde gegevens zijn automatisch hersteld.",
-      });
+  useEffect(() => {
+    if (!hasLoadedSavedData) {
+      const savedData = loadSavedData();
+      if (savedData && Object.keys(savedData).length > 0) {
+        // Check if saved data has meaningful content (not just empty strings)
+        const hasContent = Object.values(savedData).some(value => 
+          Array.isArray(value) ? value.length > 0 : (typeof value === 'string' && value.trim() !== '')
+        );
+        
+        if (hasContent) {
+          setFormData(prev => ({
+            ...prev,
+            ...savedData,
+            email: user?.email || savedData.email || "" // Prefer user email if logged in
+          }));
+          
+          toast({
+            title: "Opgeslagen gegevens geladen",
+            description: "Uw eerder ingevulde gegevens zijn automatisch hersteld.",
+          });
+        }
+      }
+      setHasLoadedSavedData(true);
     }
-  });
+  }, [user?.email, hasLoadedSavedData, loadSavedData, toast]);
 
   const handleInputChange = (field: keyof AddressRequestFormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -106,7 +117,7 @@ export const useAddressRequestForm = () => {
       clearSavedData();
 
       toast({
-        title: "Aanvraag verzonden",
+        title: "Aanvraag succesvol verzonden",
         description: user 
           ? "Uw aanvraag is succesvol verzonden. U kunt de status bekijken in uw dashboard."
           : "Uw aanvraag is succesvol verzonden. Wij nemen binnen 24 uur contact met u op via de opgegeven contactgegevens.",
