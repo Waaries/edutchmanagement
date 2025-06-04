@@ -31,6 +31,14 @@ const CookieConsent = () => {
     }
   }, []);
 
+  const handleAnalyticsChange = (checked: boolean | "indeterminate") => {
+    setAnalyticsConsent(checked === true);
+  };
+
+  const handleMarketingChange = (checked: boolean | "indeterminate") => {
+    setMarketingConsent(checked === true);
+  };
+
   const handleAcceptAll = () => {
     setConsentCookies('all');
     setOpen(false);
@@ -112,7 +120,7 @@ const CookieConsent = () => {
                 <Checkbox 
                   id="analytics" 
                   checked={analyticsConsent}
-                  onCheckedChange={setAnalyticsConsent}
+                  onCheckedChange={handleAnalyticsChange}
                   className="h-5 w-5 rounded border-slate-300 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600" 
                 />
               </div>
@@ -135,7 +143,7 @@ const CookieConsent = () => {
                 <Checkbox 
                   id="marketing" 
                   checked={marketingConsent}
-                  onCheckedChange={setMarketingConsent}
+                  onCheckedChange={handleMarketingChange}
                   className="h-5 w-5 rounded border-slate-300 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600" 
                 />
               </div>
