@@ -14,9 +14,12 @@ import { getCookie, setConsentCookies } from "@/lib/cookie-utils";
 import { useToast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Cookie, Shield, BarChart3, Target } from "lucide-react";
 
 const CookieConsent = () => {
   const [open, setOpen] = useState(false);
+  const [analyticsConsent, setAnalyticsConsent] = useState(true);
+  const [marketingConsent, setMarketingConsent] = useState(true);
   const { toast } = useToast();
   const { translate } = useLanguage();
 
@@ -46,71 +49,135 @@ const CookieConsent = () => {
     });
   };
 
+  const handleAcceptSelected = () => {
+    const consentType = (analyticsConsent || marketingConsent) ? 'all' : 'essential';
+    setConsentCookies(consentType);
+    setOpen(false);
+    toast({
+      title: translate("cookieConsent.toastTitle"),
+      description: translate("cookieConsent.toastAllDesc")
+    });
+  };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="sm:max-w-md max-w-[90%] w-full rounded-xl border-none p-6 shadow-lg">
-        <DialogHeader className="text-left pb-2">
-          <DialogTitle className="font-['Poppins',sans-serif] text-xl font-semibold">
-            {translate("cookieConsent.title")}
-          </DialogTitle>
-          <DialogDescription className="text-sm text-gray-600 pt-1">
+      <DialogContent className="sm:max-w-lg max-w-[95%] w-full rounded-2xl border-none p-0 shadow-2xl overflow-hidden">
+        {/* Header with gradient background */}
+        <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-6 text-white">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-2 bg-white/20 rounded-full">
+              <Cookie className="h-6 w-6" />
+            </div>
+            <DialogTitle className="font-['Space_Grotesk',sans-serif] text-xl font-semibold">
+              {translate("cookieConsent.title")}
+            </DialogTitle>
+          </div>
+          <DialogDescription className="text-blue-100 text-sm leading-relaxed">
             {translate("cookieConsent.description")}
           </DialogDescription>
-        </DialogHeader>
+        </div>
         
-        <div className="space-y-4 py-3 text-left">
-          <div className="flex items-start space-x-3 border-l-4 border-orange-500 pl-3 py-1">
-            <div className="w-full">
-              <h4 className="font-semibold text-sm">{translate("cookieConsent.essential.title")}</h4>
-              <p className="text-xs text-gray-500">
+        {/* Content */}
+        <div className="px-6 py-6 space-y-4">
+          {/* Essential Cookies */}
+          <div className="flex items-start gap-4 p-4 bg-green-50 rounded-xl border border-green-200">
+            <div className="p-2 bg-green-100 rounded-full shrink-0 mt-1">
+              <Shield className="h-5 w-5 text-green-600" />
+            </div>
+            <div className="flex-1">
+              <div className="flex items-center justify-between mb-1">
+                <h4 className="font-semibold text-green-900 text-sm">
+                  {translate("cookieConsent.essential.title")}
+                </h4>
+                <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-medium">
+                  Verplicht
+                </span>
+              </div>
+              <p className="text-xs text-green-700 leading-relaxed">
                 {translate("cookieConsent.essential.description")}
               </p>
             </div>
           </div>
 
-          <div className="flex items-center justify-between border-l-4 border-transparent pl-3 py-1">
-            <div className="flex-1 pr-4">
-              <h4 className="font-semibold text-sm">{translate("cookieConsent.analytics.title")}</h4>
-              <p className="text-xs text-gray-500">
+          {/* Analytics Cookies */}
+          <div className="flex items-start gap-4 p-4 bg-slate-50 rounded-xl border border-slate-200 hover:bg-slate-100 transition-colors">
+            <div className="p-2 bg-slate-100 rounded-full shrink-0 mt-1">
+              <BarChart3 className="h-5 w-5 text-slate-600" />
+            </div>
+            <div className="flex-1">
+              <div className="flex items-center justify-between mb-1">
+                <h4 className="font-semibold text-slate-900 text-sm">
+                  {translate("cookieConsent.analytics.title")}
+                </h4>
+                <Checkbox 
+                  id="analytics" 
+                  checked={analyticsConsent}
+                  onCheckedChange={setAnalyticsConsent}
+                  className="h-5 w-5 rounded border-slate-300 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600" 
+                />
+              </div>
+              <p className="text-xs text-slate-600 leading-relaxed">
                 {translate("cookieConsent.analytics.description")}
               </p>
             </div>
-            <Checkbox id="analytics" className="h-5 w-5 rounded-sm border-gray-300" />
           </div>
           
-          <div className="flex items-center justify-between border-l-4 border-transparent pl-3 py-1">
-            <div className="flex-1 pr-4">
-              <h4 className="font-semibold text-sm">{translate("cookieConsent.marketing.title")}</h4>
-              <p className="text-xs text-gray-500">
+          {/* Marketing Cookies */}
+          <div className="flex items-start gap-4 p-4 bg-slate-50 rounded-xl border border-slate-200 hover:bg-slate-100 transition-colors">
+            <div className="p-2 bg-slate-100 rounded-full shrink-0 mt-1">
+              <Target className="h-5 w-5 text-slate-600" />
+            </div>
+            <div className="flex-1">
+              <div className="flex items-center justify-between mb-1">
+                <h4 className="font-semibold text-slate-900 text-sm">
+                  {translate("cookieConsent.marketing.title")}
+                </h4>
+                <Checkbox 
+                  id="marketing" 
+                  checked={marketingConsent}
+                  onCheckedChange={setMarketingConsent}
+                  className="h-5 w-5 rounded border-slate-300 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600" 
+                />
+              </div>
+              <p className="text-xs text-slate-600 leading-relaxed">
                 {translate("cookieConsent.marketing.description")}
               </p>
             </div>
-            <Checkbox id="marketing" className="h-5 w-5 rounded-sm border-gray-300" />
           </div>
         </div>
 
-        <div className="text-left text-xs text-gray-500 mt-2">
-          {translate("cookieConsent.viewPolicy")} 
-          <Link to="/cookie-policy" className="text-blue-600 hover:underline ml-1">
-            {translate("footer.cookies")}
-          </Link>
-        </div>
+        {/* Footer */}
+        <div className="px-6 pb-6">
+          <div className="text-center text-xs text-slate-500 mb-4">
+            {translate("cookieConsent.viewPolicy")} 
+            <Link to="/cookie-policy" className="text-blue-600 hover:text-blue-700 underline ml-1 font-medium">
+              {translate("footer.cookies")}
+            </Link>
+          </div>
 
-        <DialogFooter className="flex-col sm:flex-row justify-between gap-2 pt-4">
-          <Button
-            variant="outline"
-            onClick={handleAcceptEssential}
-            className="w-full sm:w-auto px-6 py-2 h-auto text-sm rounded-full border border-gray-300 hover:bg-gray-50"
-          >
-            {translate("cookieConsent.acceptEssential")}
-          </Button>
-          <Button
-            className="w-full sm:w-auto px-6 py-2 h-auto text-sm rounded-full bg-orange-500 hover:bg-orange-600"
-            onClick={handleAcceptAll}
-          >
-            {translate("cookieConsent.acceptAll")}
-          </Button>
-        </DialogFooter>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Button
+              variant="outline"
+              onClick={handleAcceptEssential}
+              className="flex-1 h-11 text-sm font-medium rounded-xl border-slate-300 hover:bg-slate-50 transition-colors"
+            >
+              {translate("cookieConsent.acceptEssential")}
+            </Button>
+            <Button
+              variant="outline"
+              onClick={handleAcceptSelected}
+              className="flex-1 h-11 text-sm font-medium rounded-xl border-blue-300 text-blue-700 hover:bg-blue-50 transition-colors"
+            >
+              Geselecteerde accepteren
+            </Button>
+            <Button
+              onClick={handleAcceptAll}
+              className="flex-1 h-11 text-sm font-medium rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-lg transition-all"
+            >
+              {translate("cookieConsent.acceptAll")}
+            </Button>
+          </div>
+        </div>
       </DialogContent>
     </Dialog>
   );
