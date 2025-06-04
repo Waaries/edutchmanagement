@@ -2,7 +2,7 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Building2, Info, CheckCircle } from "lucide-react";
+import { ArrowLeft, Building2, CheckCircle } from "lucide-react";
 import { useAddressRequestForm } from "@/hooks/use-address-request-form";
 import { useAuth } from "@/contexts/AuthContext";
 import CompanyInformationSection from "@/components/address-request/CompanyInformationSection";
@@ -43,15 +43,7 @@ const AddressRequest = () => {
             Vul onderstaand formulier in om uw bedrijfsadres aan te vragen
           </p>
 
-          {!user ? (
-            <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg flex items-start gap-3">
-              <Info className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
-              <div className="text-sm text-blue-800">
-                <p className="font-medium">Aanvraag zonder account</p>
-                <p>U kunt deze aanvraag indienen zonder een account aan te maken. Wij nemen contact met u op via de opgegeven contactgegevens.</p>
-              </div>
-            </div>
-          ) : (
+          {user && (
             <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg flex items-start gap-3">
               <CheckCircle className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
               <div className="text-sm text-green-800">
