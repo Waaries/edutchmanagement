@@ -2,17 +2,17 @@
 export const addressTypes = [
   { 
     value: "basic", 
-    label: "Basis Pakket - €29/maand", 
+    label: "Basis Pakket - €59/maand", 
     description: "Bedrijfsadres + postdoorverzendig" 
   },
   { 
     value: "premium", 
-    label: "Premium Pakket - €49/maand", 
+    label: "Premium Pakket - €89/maand", 
     description: "Basis + telefonservice + vergaderruimte" 
   },
   { 
     value: "complete", 
-    label: "Complete Pakket - €79/maand", 
+    label: "Complete Pakket - €149/maand", 
     description: "Premium + kantoorservice + secretariaatdiensten" 
   }
 ];
