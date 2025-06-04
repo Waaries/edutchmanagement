@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
@@ -65,11 +64,14 @@ export const useAddressRequestForm = () => {
             title: "Opgeslagen gegevens geladen",
             description: "Uw eerder ingevulde gegevens zijn automatisch hersteld.",
           });
+          
+          // Clear the saved data immediately after loading to prevent it from loading again
+          clearSavedData();
         }
       }
       setHasLoadedSavedData(true);
     }
-  }, [user?.email, hasLoadedSavedData, loadSavedData, toast]);
+  }, [user?.email, hasLoadedSavedData, toast]); // Removed loadSavedData and clearSavedData from dependencies
 
   const handleInputChange = (field: keyof AddressRequestFormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
