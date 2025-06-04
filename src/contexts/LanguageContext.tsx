@@ -265,8 +265,7 @@ const translations = {
       description: "Wij gebruiken cookies om uw ervaring op onze website te verbeteren. Deze cookies helpen ons te begrijpen hoe bezoekers onze site gebruiken.",
       essential: {
         title: "Essentiële cookies",
-        description: "Deze cookies zijn noodzakelijk voor het functioneren van de website. Ze kunnen niet worden uitgeschakeld.",
-        required: "Verplicht"
+        description: "Deze cookies zijn noodzakelijk voor het functioneren van de website. Ze kunnen niet worden uitgeschakeld."
       },
       analytics: {
         title: "Analytische cookies",
@@ -278,7 +277,6 @@ const translations = {
       },
       viewPolicy: "Bekijk ons cookiebeleid voor meer informatie.",
       acceptEssential: "Alleen essentiële cookies",
-      acceptSelected: "Geselecteerde accepteren",
       acceptAll: "Alle cookies accepteren",
       toastTitle: "Cookies geaccepteerd",
       toastAllDesc: "Al uw cookievoorkeuren zijn opgeslagen.",
@@ -484,8 +482,7 @@ const translations = {
       description: "We use cookies to improve your experience on our website. These cookies help us understand how visitors use our site.",
       essential: {
         title: "Essential cookies",
-        description: "These cookies are necessary for the functioning of the website. They cannot be disabled.",
-        required: "Required"
+        description: "These cookies are necessary for the functioning of the website. They cannot be disabled."
       },
       analytics: {
         title: "Analytical cookies",
@@ -497,7 +494,6 @@ const translations = {
       },
       viewPolicy: "View our cookie policy for more information.",
       acceptEssential: "Essential cookies only",
-      acceptSelected: "Accept selected",
       acceptAll: "Accept all cookies",
       toastTitle: "Cookies accepted",
       toastAllDesc: "All your cookie preferences have been saved.",
