@@ -7,19 +7,27 @@ export function useAuthMethods() {
   const { toast } = useToast();
 
   const cleanAuthState = () => {
+    console.log('Cleaning auth state...');
     const keysToRemove = Object.keys(localStorage).filter(key => 
       key.startsWith('supabase.auth.') || key.includes('sb-')
     );
-    keysToRemove.forEach(key => localStorage.removeItem(key));
+    keysToRemove.forEach(key => {
+      console.log('Removing key:', key);
+      localStorage.removeItem(key);
+    });
   };
 
   const signIn = async (email: string, password: string) => {
     try {
+      console.log('Starting sign in process for:', email);
       cleanAuthState();
       
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (!error) {
         console.log('Successful login for:', email);
+        // Don't force redirect here, let the auth state change handle it
+      } else {
+        console.error('Login error:', error.message);
       }
       return { error };
     } catch (err) {
@@ -30,6 +38,7 @@ export function useAuthMethods() {
 
   const signUp = async (email: string, password: string, metadata?: Record<string, string>) => {
     try {
+      console.log('Starting sign up process for:', email);
       cleanAuthState();
       
       const { error } = await supabase.auth.signUp({
@@ -40,6 +49,12 @@ export function useAuthMethods() {
           emailRedirectTo: `${window.location.origin}/auth`,
         },
       });
+      
+      if (!error) {
+        console.log('Successful signup for:', email);
+      } else {
+        console.error('Signup error:', error.message);
+      }
       return { error };
     } catch (err) {
       console.error('Registration error:', err);
@@ -49,6 +64,7 @@ export function useAuthMethods() {
 
   const signInWithGoogle = async () => {
     try {
+      console.log('Starting Google sign in...');
       cleanAuthState();
       
       const { error } = await supabase.auth.signInWithOAuth({
@@ -66,6 +82,7 @@ export function useAuthMethods() {
 
   const signInWithFacebook = async () => {
     try {
+      console.log('Starting Facebook sign in...');
       cleanAuthState();
       
       const { error } = await supabase.auth.signInWithOAuth({
@@ -83,6 +100,7 @@ export function useAuthMethods() {
 
   const resetPassword = async (email: string) => {
     try {
+      console.log('Starting password reset for:', email);
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/auth?reset=true`,
       });
@@ -95,6 +113,7 @@ export function useAuthMethods() {
 
   const signOut = async () => {
     try {
+      console.log('Starting sign out process...');
       cleanAuthState();
       
       await supabase.auth.signOut();
@@ -104,7 +123,10 @@ export function useAuthMethods() {
         description: "U bent succesvol uitgelogd.",
       });
       
-      window.location.href = '/';
+      // Force a full page reload to ensure clean state
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 500);
     } catch (error) {
       console.error('Sign out error:', error);
       toast({

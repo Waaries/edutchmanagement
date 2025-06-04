@@ -9,6 +9,7 @@ type AuthContextType = {
   user: User | null;
   loading: boolean;
   isAdmin: boolean;
+  initialized: boolean;
   signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>;
   signUp: (email: string, password: string, metadata?: Record<string, string>) => Promise<{ error: AuthError | null }>;
   signOut: () => Promise<void>;
@@ -20,7 +21,7 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const { session, user, loading, isAdmin } = useAuthState();
+  const { session, user, loading, isAdmin, initialized } = useAuthState();
   const { signIn, signUp, signOut, signInWithGoogle, signInWithFacebook, resetPassword } = useAuthMethods();
 
   return (
@@ -29,6 +30,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       user, 
       loading, 
       isAdmin,
+      initialized,
       signIn, 
       signUp, 
       signOut, 

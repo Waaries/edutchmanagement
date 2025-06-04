@@ -12,7 +12,8 @@ const Auth = () => {
   const {
     user,
     loading,
-    isAdmin
+    isAdmin,
+    initialized
   } = useAuth();
   const {
     translate
@@ -24,6 +25,7 @@ const Auth = () => {
   const [searchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState<string>('login');
   const [error, setError] = useState<string | null>(null);
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
   // Use the password reset hook
   usePasswordReset();
@@ -53,9 +55,16 @@ const Auth = () => {
   }, [location, searchParams]);
 
   useEffect(() => {
-    if (user && !loading) {
+    // Only check for redirects if auth is initialized
+    if (!initialized) {
+      console.log('Auth not yet initialized in Auth page');
+      return;
+    }
+
+    if (user && !loading && !isRedirecting) {
       console.log("User is logged in, redirecting to appropriate page:", isAdmin ? "/admin" : "/dashboard");
       
+      setIsRedirecting(true);
       // Use setTimeout to ensure state is properly set
       setTimeout(() => {
         if (isAdmin) {
@@ -65,9 +74,10 @@ const Auth = () => {
         }
       }, 100);
     }
-  }, [user, loading, isAdmin, navigate]);
+  }, [user, loading, isAdmin, initialized, navigate, isRedirecting]);
 
-  if (loading) {
+  // Show loading while auth is initializing
+  if (!initialized || loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-white to-slate-100">
         <div className="text-center">
