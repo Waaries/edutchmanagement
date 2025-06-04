@@ -83,7 +83,7 @@ export const useContactForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!validateForm(formState)) {
+    if (!validateForm(formState as Record<string, string>)) {
       toast({
         title: "Formulier bevat fouten",
         description: "Controleer de aangegeven velden en probeer opnieuw.",
