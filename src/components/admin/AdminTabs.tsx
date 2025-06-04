@@ -12,6 +12,10 @@ import AddressRequestsTab from "./tabs/AddressRequestsTab";
 const AdminTabs = () => {
   const [activeTab, setActiveTab] = useState("overview");
 
+  const handleTabChange = (tabValue: string) => {
+    setActiveTab(tabValue);
+  };
+
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
       <TabsList className="grid w-full grid-cols-6">
@@ -42,7 +46,7 @@ const AdminTabs = () => {
       </TabsList>
 
       <TabsContent value="overview" className="mt-6">
-        <OverviewTab />
+        <OverviewTab onTabChange={handleTabChange} />
       </TabsContent>
 
       <TabsContent value="users" className="mt-6">

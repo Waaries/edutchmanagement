@@ -11,7 +11,6 @@ import AdminSecurityCheck from "./AdminSecurityCheck";
 const AdminDashboard = () => {
   const { user, isAdmin } = useAuth();
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState("overview");
   const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
@@ -42,7 +41,7 @@ const AdminDashboard = () => {
       <div className="container mx-auto py-8 px-4">
         <AdminHeader userEmail={user.email || ''} />
         <WelcomeCard userEmail={user.email || ''} />
-        <AdminTabs activeTab={activeTab} setActiveTab={setActiveTab} />
+        <AdminTabs />
       </div>
     </AdminSecurityCheck>
   );
