@@ -3,11 +3,13 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Check } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useNavigate } from "react-router-dom";
 
 const Services = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [hasAnimated, setHasAnimated] = useState(false);
   const { translate } = useLanguage();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -47,7 +49,8 @@ const Services = () => {
       period: translate("services.basic.period"),
       description: translate("services.basic.description"),
       features: translate("services.basic.features") as unknown as string[],
-      mostPopular: false
+      mostPopular: false,
+      planType: "basic"
     },
     {
       title: translate("services.premium.title"),
@@ -56,7 +59,8 @@ const Services = () => {
       description: translate("services.premium.description"),
       features: translate("services.premium.features") as unknown as string[],
       mostPopular: true,
-      mostPopularText: translate("services.premium.mostPopular")
+      mostPopularText: translate("services.premium.mostPopular"),
+      planType: "premium"
     },
     {
       title: translate("services.complete.title"),
@@ -64,9 +68,15 @@ const Services = () => {
       period: translate("services.complete.period"),
       description: translate("services.complete.description"),
       features: translate("services.complete.features") as unknown as string[],
-      mostPopular: false
+      mostPopular: false,
+      planType: "complete"
     }
   ];
+
+  const handleSelectPlan = (planType: string) => {
+    // Navigate to the address request page with the selected plan as a query parameter
+    navigate(`/aanvragen?plan=${planType}`);
+  };
 
   return (
     <section id="diensten" className="section-padding angled-bg" ref={sectionRef}>
@@ -122,6 +132,7 @@ const Services = () => {
                 <Button 
                   className={`w-full mt-auto transition-all duration-300 group/btn ${service.mostPopular ? 'hover:scale-105' : 'variant-outline hover:scale-105'}`} 
                   variant={service.mostPopular ? "default" : "outline"}
+                  onClick={() => handleSelectPlan(service.planType)}
                 >
                   <span>{translate("services.selectPlan")}</span>
                   <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform duration-300" />
@@ -135,7 +146,7 @@ const Services = () => {
           <p className="text-slate-600 mb-4">
             {translate("services.customNeeds")}
           </p>
-          <Button variant="outline" className="hover-lift">
+          <Button variant="outline" className="hover-lift" onClick={() => navigate("/aanvragen")}>
             {translate("services.customBtn")}
           </Button>
         </div>
