@@ -10,7 +10,7 @@ export function useAuthState() {
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
 
-  const checkAdminStatus = async () => {
+  const checkAdminStatus = async (userId: string) => {
     try {
       const { data, error } = await supabase.rpc('is_admin');
       
@@ -20,7 +20,7 @@ export function useAuthState() {
         return false;
       }
       
-      console.log('Admin check result:', data);
+      console.log('Admin check result for user:', userId, 'is admin:', data);
       setIsAdmin(data);
       return data;
     } catch (err) {
@@ -31,8 +31,10 @@ export function useAuthState() {
   };
 
   const handleUserSession = async (currentSession: Session | null) => {
+    console.log('handleUserSession called with session:', !!currentSession);
+    
     if (currentSession?.user) {
-      console.log('Processing session for user:', currentSession.user.email);
+      console.log('Setting user session for:', currentSession.user.email);
       setSession(currentSession);
       setUser(currentSession.user);
       
@@ -48,11 +50,10 @@ export function useAuthState() {
       }
       
       // Check admin status after profile is handled
-      setTimeout(async () => {
-        await checkAdminStatus();
-        setLoading(false);
-      }, 100);
+      await checkAdminStatus(currentSession.user.id);
+      setLoading(false);
     } else {
+      console.log('No session, clearing user state');
       setSession(null);
       setUser(null);
       setIsAdmin(false);
@@ -62,9 +63,11 @@ export function useAuthState() {
 
   useEffect(() => {
     let mounted = true;
+    let authSubscription: any = null;
     
     const initializeAuth = async () => {
       try {
+        console.log('Initializing auth state...');
         setLoading(true);
         
         // Clean up any old auth state
@@ -73,7 +76,37 @@ export function useAuthState() {
         );
         keysToRemove.forEach(key => localStorage.removeItem(key));
         
+        // Set up auth state listener FIRST
+        const { data: authData } = supabase.auth.onAuthStateChange(
+          async (event, currentSession) => {
+            console.log('Auth state changed:', event, currentSession?.user?.email);
+            
+            if (!mounted) {
+              console.log('Component unmounted, ignoring auth state change');
+              return;
+            }
+            
+            if (event === 'SIGNED_OUT') {
+              console.log('User signed out, clearing state');
+              setSession(null);
+              setUser(null);
+              setIsAdmin(false);
+              setLoading(false);
+            } else if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+              console.log('User signed in or token refreshed');
+              await handleUserSession(currentSession);
+            } else if (event === 'INITIAL_SESSION') {
+              console.log('Initial session detected');
+              await handleUserSession(currentSession);
+            }
+          }
+        );
+        
+        authSubscription = authData.subscription;
+        
+        // Get initial session
         const { data: { session: currentSession } } = await supabase.auth.getSession();
+        console.log('Initial session check:', !!currentSession);
         
         if (!mounted) return;
         
@@ -86,28 +119,14 @@ export function useAuthState() {
       }
     };
     
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, currentSession) => {
-        console.log('Auth state changed:', event, currentSession?.user?.email);
-        
-        if (!mounted) return;
-        
-        if (event === 'SIGNED_OUT') {
-          setSession(null);
-          setUser(null);
-          setIsAdmin(false);
-          setLoading(false);
-        } else {
-          await handleUserSession(currentSession);
-        }
-      }
-    );
-    
     initializeAuth();
 
     return () => {
+      console.log('Cleaning up auth state hook');
       mounted = false;
-      subscription.unsubscribe();
+      if (authSubscription) {
+        authSubscription.unsubscribe();
+      }
     };
   }, []);
 

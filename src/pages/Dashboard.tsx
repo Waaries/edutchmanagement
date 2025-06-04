@@ -21,6 +21,7 @@ const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [redirecting, setRedirecting] = useState(false);
 
   useEffect(() => {
     // Update the document title
@@ -29,32 +30,43 @@ const Dashboard = () => {
     console.log('Dashboard page - Auth state:', { 
       user: !!user, 
       loading,
-      isAdmin 
+      isAdmin,
+      userEmail: user?.email 
     });
 
-    // Force redirect to auth page if not logged in after loading completes
-    if (!loading && !user) {
-      console.log("User is not logged in, redirecting to auth page");
-      navigate("/auth");
-    }
-    
-    // Zorg ervoor dat het gebruikersprofiel bestaat
-    const initProfile = async () => {
-      if (user) {
-        const profileCreated = await ensureProfileExists(user);
-        if (profileCreated) {
-          console.log("Profile ensured for user:", user.email);
-        } else {
-          console.warn("Could not ensure profile for user:", user.email);
+    // Handle authentication flow
+    if (!loading) {
+      if (!user) {
+        console.log("User is not logged in, redirecting to auth page");
+        if (!redirecting) {
+          setRedirecting(true);
+          navigate("/auth", { replace: true });
         }
+      } else {
+        console.log("User is logged in, ensuring profile exists");
+        setRedirecting(false);
+        // Zorg ervoor dat het gebruikersprofiel bestaat
+        const initProfile = async () => {
+          try {
+            const profileCreated = await ensureProfileExists(user);
+            if (profileCreated) {
+              console.log("Profile ensured for user:", user.email);
+            } else {
+              console.warn("Could not ensure profile for user:", user.email);
+            }
+          } catch (error) {
+            console.error("Error ensuring profile:", error);
+          }
+        };
+        
+        initProfile();
       }
-    };
-    
-    initProfile();
-  }, [user, loading, isAdmin, navigate]);
+    }
+  }, [user, loading, isAdmin, navigate, redirecting]);
 
   // Show a loading indicator while checking authentication
   if (loading) {
+    console.log("Dashboard: Showing loading state");
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
@@ -67,8 +79,11 @@ const Dashboard = () => {
 
   // If not logged in, redirect to login
   if (!user) {
-    return <Navigate to="/auth" />;
+    console.log("Dashboard: No user, redirecting to auth");
+    return <Navigate to="/auth" replace />;
   }
+
+  console.log("Dashboard: Rendering dashboard for user:", user.email);
 
   return (
     <div className="container mx-auto py-8 px-4 pt-32">
