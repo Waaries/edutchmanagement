@@ -13,13 +13,13 @@ import {
 import { getCookie, setConsentCookies } from "@/lib/cookie-utils";
 import { useToast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Switch } from "@/components/ui/switch";
 import { Cookie, Shield, BarChart3, Target } from "lucide-react";
 
 const CookieConsent = () => {
   const [open, setOpen] = useState(false);
-  const [analyticsConsent, setAnalyticsConsent] = useState(true);
-  const [marketingConsent, setMarketingConsent] = useState(true);
+  const [analyticsConsent, setAnalyticsConsent] = useState(false);
+  const [marketingConsent, setMarketingConsent] = useState(false);
   const { toast } = useToast();
   const { translate } = useLanguage();
 
@@ -30,14 +30,6 @@ const CookieConsent = () => {
       setOpen(true);
     }
   }, []);
-
-  const handleAnalyticsChange = (checked: boolean | "indeterminate") => {
-    setAnalyticsConsent(checked === true);
-  };
-
-  const handleMarketingChange = (checked: boolean | "indeterminate") => {
-    setMarketingConsent(checked === true);
-  };
 
   const handleAcceptAll = () => {
     setConsentCookies('all');
@@ -88,68 +80,75 @@ const CookieConsent = () => {
         {/* Content */}
         <div className="px-6 py-6 space-y-4">
           {/* Essential Cookies */}
-          <div className="flex items-start gap-4 p-4 bg-green-50 rounded-xl border border-green-200">
-            <div className="p-2 bg-green-100 rounded-full shrink-0 mt-1">
-              <Shield className="h-5 w-5 text-green-600" />
-            </div>
-            <div className="flex-1">
-              <div className="flex items-center justify-between mb-1">
-                <h4 className="font-semibold text-green-900 text-sm">
-                  {translate("cookieConsent.essential.title")}
-                </h4>
-                <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-medium">
-                  Verplicht
-                </span>
+          <div className="flex items-center justify-between p-4 bg-green-50 rounded-xl border border-green-200">
+            <div className="flex items-center gap-4">
+              <div className="p-2 bg-green-100 rounded-full shrink-0">
+                <Shield className="h-5 w-5 text-green-600" />
               </div>
-              <p className="text-xs text-green-700 leading-relaxed">
-                {translate("cookieConsent.essential.description")}
-              </p>
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-1">
+                  <h4 className="font-semibold text-green-900 text-sm">
+                    {translate("cookieConsent.essential.title")}
+                  </h4>
+                  <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-medium">
+                    {translate("cookieConsent.essential.required")}
+                  </span>
+                </div>
+                <p className="text-xs text-green-700 leading-relaxed">
+                  {translate("cookieConsent.essential.description")}
+                </p>
+              </div>
+            </div>
+            <div className="ml-4">
+              <Switch checked={true} disabled className="data-[state=checked]:bg-green-600" />
             </div>
           </div>
 
           {/* Analytics Cookies */}
-          <div className="flex items-start gap-4 p-4 bg-slate-50 rounded-xl border border-slate-200 hover:bg-slate-100 transition-colors">
-            <div className="p-2 bg-slate-100 rounded-full shrink-0 mt-1">
-              <BarChart3 className="h-5 w-5 text-slate-600" />
-            </div>
-            <div className="flex-1">
-              <div className="flex items-center justify-between mb-1">
-                <h4 className="font-semibold text-slate-900 text-sm">
+          <div className="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-200 hover:bg-slate-100 transition-colors">
+            <div className="flex items-center gap-4">
+              <div className="p-2 bg-slate-100 rounded-full shrink-0">
+                <BarChart3 className="h-5 w-5 text-slate-600" />
+              </div>
+              <div className="flex-1">
+                <h4 className="font-semibold text-slate-900 text-sm mb-1">
                   {translate("cookieConsent.analytics.title")}
                 </h4>
-                <Checkbox 
-                  id="analytics" 
-                  checked={analyticsConsent}
-                  onCheckedChange={handleAnalyticsChange}
-                  className="h-5 w-5 rounded border-slate-300 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600" 
-                />
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  {translate("cookieConsent.analytics.description")}
+                </p>
               </div>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                {translate("cookieConsent.analytics.description")}
-              </p>
+            </div>
+            <div className="ml-4">
+              <Switch 
+                checked={analyticsConsent}
+                onCheckedChange={setAnalyticsConsent}
+                className="data-[state=checked]:bg-blue-600" 
+              />
             </div>
           </div>
           
           {/* Marketing Cookies */}
-          <div className="flex items-start gap-4 p-4 bg-slate-50 rounded-xl border border-slate-200 hover:bg-slate-100 transition-colors">
-            <div className="p-2 bg-slate-100 rounded-full shrink-0 mt-1">
-              <Target className="h-5 w-5 text-slate-600" />
-            </div>
-            <div className="flex-1">
-              <div className="flex items-center justify-between mb-1">
-                <h4 className="font-semibold text-slate-900 text-sm">
+          <div className="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-200 hover:bg-slate-100 transition-colors">
+            <div className="flex items-center gap-4">
+              <div className="p-2 bg-slate-100 rounded-full shrink-0">
+                <Target className="h-5 w-5 text-slate-600" />
+              </div>
+              <div className="flex-1">
+                <h4 className="font-semibold text-slate-900 text-sm mb-1">
                   {translate("cookieConsent.marketing.title")}
                 </h4>
-                <Checkbox 
-                  id="marketing" 
-                  checked={marketingConsent}
-                  onCheckedChange={handleMarketingChange}
-                  className="h-5 w-5 rounded border-slate-300 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600" 
-                />
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  {translate("cookieConsent.marketing.description")}
+                </p>
               </div>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                {translate("cookieConsent.marketing.description")}
-              </p>
+            </div>
+            <div className="ml-4">
+              <Switch 
+                checked={marketingConsent}
+                onCheckedChange={setMarketingConsent}
+                className="data-[state=checked]:bg-blue-600" 
+              />
             </div>
           </div>
         </div>
@@ -176,7 +175,7 @@ const CookieConsent = () => {
               onClick={handleAcceptSelected}
               className="flex-1 h-11 text-sm font-medium rounded-xl border-blue-300 text-blue-700 hover:bg-blue-50 transition-colors"
             >
-              Geselecteerde accepteren
+              {translate("cookieConsent.acceptSelected")}
             </Button>
             <Button
               onClick={handleAcceptAll}
