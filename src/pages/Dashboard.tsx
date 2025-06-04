@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate, useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { User, LayoutDashboard, Mail, Settings } from "lucide-react";
+import { User, LayoutDashboard, Mail, Settings, Building2 } from "lucide-react";
 
 // Import components
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
@@ -12,6 +12,7 @@ import OverviewTab from "@/components/dashboard/OverviewTab";
 import ProfileTab from "@/components/dashboard/ProfileTab";
 import AppointmentsTab from "@/components/dashboard/AppointmentsTab";
 import SettingsTab from "@/components/dashboard/SettingsTab";
+import AddressRequestsTab from "@/components/dashboard/AddressRequestsTab";
 import { useToast } from "@/hooks/use-toast";
 import { ensureProfileExists } from "@/lib/profile-utils";
 
@@ -76,7 +77,7 @@ const Dashboard = () => {
       <WelcomeCard user={user} isAdmin={isAdmin} />
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid grid-cols-4 mb-8">
+        <TabsList className="grid grid-cols-5 mb-8">
           <TabsTrigger value="overview" className="flex items-center gap-2">
             <LayoutDashboard className="h-4 w-4" />
             <span>Overzicht</span>
@@ -84,6 +85,10 @@ const Dashboard = () => {
           <TabsTrigger value="profile" className="flex items-center gap-2">
             <User className="h-4 w-4" />
             <span>Profiel</span>
+          </TabsTrigger>
+          <TabsTrigger value="requests" className="flex items-center gap-2">
+            <Building2 className="h-4 w-4" />
+            <span>Aanvragen</span>
           </TabsTrigger>
           <TabsTrigger value="appointments" className="flex items-center gap-2">
             <Mail className="h-4 w-4" />
@@ -101,6 +106,10 @@ const Dashboard = () => {
         
         <TabsContent value="profile">
           <ProfileTab user={user} />
+        </TabsContent>
+        
+        <TabsContent value="requests">
+          <AddressRequestsTab />
         </TabsContent>
         
         <TabsContent value="appointments">

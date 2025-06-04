@@ -1,62 +1,68 @@
 
-import React from "react";
+import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Shield, Users, Database, Settings, FileText } from "lucide-react";
-import OverviewTab from "@/components/admin/tabs/OverviewTab";
-import UsersTab from "@/components/admin/tabs/UsersTab";
-import DataTab from "@/components/admin/tabs/DataTab";
-import SettingsTab from "@/components/admin/tabs/SettingsTab";
-import LogsTab from "@/components/admin/tabs/LogsTab";
+import { Users, BarChart3, Settings, Database, FileText, Building2 } from "lucide-react";
+import OverviewTab from "./tabs/OverviewTab";
+import UsersTab from "./tabs/UsersTab";
+import DataTab from "./tabs/DataTab";
+import LogsTab from "./tabs/LogsTab";
+import SettingsTab from "./tabs/SettingsTab";
+import AddressRequestsTab from "./tabs/AddressRequestsTab";
 
-interface AdminTabsProps {
-  activeTab: string;
-  setActiveTab: (value: string) => void;
-}
+const AdminTabs = () => {
+  const [activeTab, setActiveTab] = useState("overview");
 
-const AdminTabs: React.FC<AdminTabsProps> = ({ activeTab, setActiveTab }) => {
   return (
-    <Tabs value={activeTab} onValueChange={setActiveTab}>
-      <TabsList className="grid grid-cols-5 mb-8">
+    <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+      <TabsList className="grid w-full grid-cols-6">
         <TabsTrigger value="overview" className="flex items-center gap-2">
-          <Shield className="h-4 w-4" />
-          <span>Overzicht</span>
+          <BarChart3 className="h-4 w-4" />
+          <span className="hidden sm:inline">Overzicht</span>
         </TabsTrigger>
         <TabsTrigger value="users" className="flex items-center gap-2">
           <Users className="h-4 w-4" />
-          <span>Gebruikers</span>
+          <span className="hidden sm:inline">Gebruikers</span>
+        </TabsTrigger>
+        <TabsTrigger value="requests" className="flex items-center gap-2">
+          <Building2 className="h-4 w-4" />
+          <span className="hidden sm:inline">Aanvragen</span>
         </TabsTrigger>
         <TabsTrigger value="data" className="flex items-center gap-2">
           <Database className="h-4 w-4" />
-          <span>Gegevens</span>
-        </TabsTrigger>
-        <TabsTrigger value="settings" className="flex items-center gap-2">
-          <Settings className="h-4 w-4" />
-          <span>Instellingen</span>
+          <span className="hidden sm:inline">Data</span>
         </TabsTrigger>
         <TabsTrigger value="logs" className="flex items-center gap-2">
           <FileText className="h-4 w-4" />
-          <span>Logboek</span>
+          <span className="hidden sm:inline">Logs</span>
+        </TabsTrigger>
+        <TabsTrigger value="settings" className="flex items-center gap-2">
+          <Settings className="h-4 w-4" />
+          <span className="hidden sm:inline">Instellingen</span>
         </TabsTrigger>
       </TabsList>
-      
-      <TabsContent value="overview">
-        <OverviewTab onTabChange={setActiveTab} />
+
+      <TabsContent value="overview" className="mt-6">
+        <OverviewTab />
       </TabsContent>
-      
-      <TabsContent value="users">
+
+      <TabsContent value="users" className="mt-6">
         <UsersTab />
       </TabsContent>
-      
-      <TabsContent value="data">
+
+      <TabsContent value="requests" className="mt-6">
+        <AddressRequestsTab />
+      </TabsContent>
+
+      <TabsContent value="data" className="mt-6">
         <DataTab />
       </TabsContent>
-      
-      <TabsContent value="settings">
-        <SettingsTab />
-      </TabsContent>
-      
-      <TabsContent value="logs">
+
+      <TabsContent value="logs" className="mt-6">
         <LogsTab />
+      </TabsContent>
+
+      <TabsContent value="settings" className="mt-6">
+        <SettingsTab />
       </TabsContent>
     </Tabs>
   );
