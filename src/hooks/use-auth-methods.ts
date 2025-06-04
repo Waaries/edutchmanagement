@@ -1,3 +1,4 @@
+
 import { AuthError } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -5,18 +6,19 @@ import { useToast } from '@/hooks/use-toast';
 export function useAuthMethods() {
   const { toast } = useToast();
 
+  const cleanAuthState = () => {
+    const keysToRemove = Object.keys(localStorage).filter(key => 
+      key.startsWith('supabase.auth.') || key.includes('sb-')
+    );
+    keysToRemove.forEach(key => localStorage.removeItem(key));
+  };
+
   const signIn = async (email: string, password: string) => {
     try {
-      // Clean up local storage to prevent auth conflicts
-      Object.keys(localStorage).forEach((key) => {
-        if (key.startsWith('supabase.auth.') || key.includes('sb-')) {
-          localStorage.removeItem(key);
-        }
-      });
+      cleanAuthState();
       
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (!error) {
-        // Successful login
         console.log('Successful login for:', email);
       }
       return { error };
@@ -28,12 +30,7 @@ export function useAuthMethods() {
 
   const signUp = async (email: string, password: string, metadata?: Record<string, string>) => {
     try {
-      // Clean up auth state first to prevent conflicts
-      Object.keys(localStorage).forEach((key) => {
-        if (key.startsWith('supabase.auth.') || key.includes('sb-')) {
-          localStorage.removeItem(key);
-        }
-      });
+      cleanAuthState();
       
       const { error } = await supabase.auth.signUp({
         email,
@@ -52,12 +49,7 @@ export function useAuthMethods() {
 
   const signInWithGoogle = async () => {
     try {
-      // Clean up auth state first to prevent conflicts
-      Object.keys(localStorage).forEach((key) => {
-        if (key.startsWith('supabase.auth.') || key.includes('sb-')) {
-          localStorage.removeItem(key);
-        }
-      });
+      cleanAuthState();
       
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
@@ -74,12 +66,7 @@ export function useAuthMethods() {
 
   const signInWithFacebook = async () => {
     try {
-      // Clean up auth state first to prevent conflicts
-      Object.keys(localStorage).forEach((key) => {
-        if (key.startsWith('supabase.auth.') || key.includes('sb-')) {
-          localStorage.removeItem(key);
-        }
-      });
+      cleanAuthState();
       
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'facebook',
@@ -108,28 +95,21 @@ export function useAuthMethods() {
 
   const signOut = async () => {
     try {
-      // Clean up auth state first
-      Object.keys(localStorage).forEach((key) => {
-        if (key.startsWith('supabase.auth.') || key.includes('sb-')) {
-          localStorage.removeItem(key);
-        }
-      });
+      cleanAuthState();
       
-      // Attempt sign out
       await supabase.auth.signOut();
       
       toast({
-        title: "Signed Out",
-        description: "You have been successfully signed out.",
+        title: "Uitgelogd",
+        description: "U bent succesvol uitgelogd.",
       });
       
-      // Redirect to home page instead of auth page
       window.location.href = '/';
     } catch (error) {
       console.error('Sign out error:', error);
       toast({
-        title: "Sign Out Failed",
-        description: "There was a problem signing you out. Please try again.",
+        title: "Uitloggen Mislukt",
+        description: "Er was een probleem bij het uitloggen. Probeer het opnieuw.",
         variant: "destructive",
       });
     }

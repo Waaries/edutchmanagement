@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Navigate, useLocation, useSearchParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -5,6 +6,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { usePasswordReset } from '@/hooks/use-password-reset';
 import SignInCard from '@/components/ui/sign-in-card-2';
 import SuccessDialog from '@/components/auth/SuccessDialog';
+import ErrorBoundary from '@/components/ErrorBoundary';
 
 const Auth = () => {
   const {
@@ -53,44 +55,58 @@ const Auth = () => {
   useEffect(() => {
     if (user && !loading) {
       console.log("User is logged in, redirecting to appropriate page:", isAdmin ? "/admin" : "/dashboard");
-      if (isAdmin) {
-        navigate('/admin');
-      } else {
-        navigate('/dashboard');
-      }
+      
+      // Use setTimeout to ensure state is properly set
+      setTimeout(() => {
+        if (isAdmin) {
+          navigate('/admin', { replace: true });
+        } else {
+          navigate('/dashboard', { replace: true });
+        }
+      }, 100);
     }
   }, [user, loading, isAdmin, navigate]);
 
   if (loading) {
-    return <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-white to-slate-100">
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-white to-slate-100">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto"></div>
           <p className="mt-4">Bezig met laden...</p>
         </div>
-      </div>;
+      </div>
+    );
   }
 
   // If user is already logged in, don't render the auth page
   if (user) {
-    return <Navigate to={isAdmin ? "/admin" : "/dashboard"} />;
+    return <Navigate to={isAdmin ? "/admin" : "/dashboard"} replace />;
   }
 
   // Render success dialog if needed
   if (showDialog && success) {
-    return <SuccessDialog 
-      open={showDialog}
-      onOpenChange={(open) => {
-        if (!open) {
-          setShowDialog(false);
-          setSuccess(null);
-        }
-      }}
-      message={success}
-    />;
+    return (
+      <ErrorBoundary>
+        <SuccessDialog 
+          open={showDialog}
+          onOpenChange={(open) => {
+            if (!open) {
+              setShowDialog(false);
+              setSuccess(null);
+            }
+          }}
+          message={success}
+        />
+      </ErrorBoundary>
+    );
   }
   
-  // Use the SignInCard component
-  return <SignInCard />;
+  // Use the SignInCard component wrapped in ErrorBoundary
+  return (
+    <ErrorBoundary>
+      <SignInCard />
+    </ErrorBoundary>
+  );
 };
 
 export default Auth;
