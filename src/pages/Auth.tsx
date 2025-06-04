@@ -9,23 +9,34 @@ import SuccessDialog from '@/components/auth/SuccessDialog';
 import ErrorBoundary from '@/components/ErrorBoundary';
 
 const Auth = () => {
-  const {
-    user,
-    loading,
-    isAdmin,
-    initialized
-  } = useAuth();
-  const {
-    translate
-  } = useLanguage();
-  const [success, setSuccess] = useState<string | null>(null);
-  const [showDialog, setShowDialog] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState<string>('login');
   const [error, setError] = useState<string | null>(null);
   const [isRedirecting, setIsRedirecting] = useState(false);
+  const [success, setSuccess] = useState<string | null>(null);
+  const [showDialog, setShowDialog] = useState(false);
+  
+  // Safely get auth context with error handling
+  let authContext;
+  try {
+    authContext = useAuth();
+  } catch (err) {
+    console.error('Auth context error:', err);
+    // If auth context fails, show loading state
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-white to-slate-100">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-4">Bezig met laden...</p>
+        </div>
+      </div>
+    );
+  }
+
+  const { user, loading, isAdmin, initialized } = authContext;
+  const { translate } = useLanguage();
 
   // Use the password reset hook
   usePasswordReset();

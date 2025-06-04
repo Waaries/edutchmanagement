@@ -13,6 +13,7 @@ export function useAuthState() {
 
   const checkAdminStatus = async (userId: string) => {
     try {
+      console.log('Checking admin status for user:', userId);
       const { data, error } = await supabase.rpc('is_admin');
       
       if (error) {
@@ -114,6 +115,7 @@ export function useAuthState() {
         // Process initial session
         await handleAuthChange('INITIAL_SESSION', currentSession);
         
+        console.log('Auth initialization complete, setting initialized to true');
         setInitialized(true);
       } catch (error) {
         console.error('Error initializing auth:', error);
@@ -124,16 +126,20 @@ export function useAuthState() {
       }
     };
     
-    initializeAuth();
+    // Add a small delay to ensure the context is properly set up
+    const timer = setTimeout(initializeAuth, 50);
 
     return () => {
       console.log('Cleaning up auth state hook');
+      clearTimeout(timer);
       mounted = false;
       if (authSubscription) {
         authSubscription.unsubscribe();
       }
     };
   }, []);
+
+  console.log('Auth state hook values:', { session: !!session, user: !!user, loading, isAdmin, initialized });
 
   return { session, user, loading, isAdmin, initialized };
 }

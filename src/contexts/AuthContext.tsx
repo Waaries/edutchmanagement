@@ -24,20 +24,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const { session, user, loading, isAdmin, initialized } = useAuthState();
   const { signIn, signUp, signOut, signInWithGoogle, signInWithFacebook, resetPassword } = useAuthMethods();
 
+  const value = { 
+    session, 
+    user, 
+    loading, 
+    isAdmin,
+    initialized,
+    signIn, 
+    signUp, 
+    signOut, 
+    signInWithGoogle, 
+    signInWithFacebook,
+    resetPassword
+  };
+
   return (
-    <AuthContext.Provider value={{ 
-      session, 
-      user, 
-      loading, 
-      isAdmin,
-      initialized,
-      signIn, 
-      signUp, 
-      signOut, 
-      signInWithGoogle, 
-      signInWithFacebook,
-      resetPassword
-    }}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );
@@ -46,6 +48,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
+    console.error('useAuth must be used within an AuthProvider');
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
