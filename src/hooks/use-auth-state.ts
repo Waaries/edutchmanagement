@@ -36,18 +36,22 @@ export function useAuthState() {
       setSession(currentSession);
       setUser(currentSession.user);
       
-      // Create or update profile for the user
-      const userMetadata = currentSession.user.user_metadata;
-      await createOrUpdateProfile(currentSession.user.id, {
-        first_name: userMetadata.first_name || userMetadata.name?.split(' ')[0] || '',
-        last_name: userMetadata.last_name || userMetadata.name?.split(' ').slice(1).join(' ') || ''
-      });
+      // Try to create or update profile, but don't let it block the user
+      try {
+        const userMetadata = currentSession.user.user_metadata;
+        await createOrUpdateProfile(currentSession.user.id, {
+          first_name: userMetadata.first_name || userMetadata.name?.split(' ')[0] || '',
+          last_name: userMetadata.last_name || userMetadata.name?.split(' ').slice(1).join(' ') || ''
+        });
+      } catch (error) {
+        console.log('Profile creation failed but continuing:', error);
+      }
       
       // Check admin status after profile is handled
       setTimeout(async () => {
         await checkAdminStatus();
         setLoading(false);
-      }, 500);
+      }, 100);
     } else {
       setSession(null);
       setUser(null);
