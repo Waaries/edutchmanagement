@@ -22,8 +22,20 @@ const LoginForm: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setIsLoading(true);
     setError("");
+    
+    // Validate input before attempting login
+    if (!email.trim()) {
+      setError("Voer uw e-mailadres in");
+      return;
+    }
+    
+    if (!password.trim()) {
+      setError("Voer uw wachtwoord in");
+      return;
+    }
+    
+    setIsLoading(true);
     
     try {
       // Clean up auth state to prevent conflicts
@@ -37,7 +49,16 @@ const LoginForm: React.FC = () => {
       
       if (error) {
         console.error("Login error:", error.message);
-        setError(error.message);
+        // Translate common error messages to Dutch
+        let errorMessage = error.message;
+        if (error.message.includes("Invalid login credentials")) {
+          errorMessage = "Ongeldige inloggegevens. Controleer uw e-mailadres en wachtwoord.";
+        } else if (error.message.includes("Email not confirmed")) {
+          errorMessage = "E-mailadres nog niet bevestigd. Controleer uw inbox.";
+        } else if (error.message.includes("Too many requests")) {
+          errorMessage = "Te veel inlogpogingen. Probeer het later opnieuw.";
+        }
+        setError(errorMessage);
       } else {
         // Success - show toast and redirect
         toast({
@@ -86,10 +107,15 @@ const LoginForm: React.FC = () => {
         />
       </div>
 
-      {/* Display error if there is one */}
+      {/* Display error if there is one - with better styling */}
       {error && (
-        <div className="px-4 py-3 bg-red-500/10 border border-red-500/30 rounded-lg text-xs text-white/90">
-          {error}
+        <div className="px-4 py-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700 shadow-sm">
+          <div className="flex items-start">
+            <svg className="w-4 h-4 mt-0.5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+            </svg>
+            {error}
+          </div>
         </div>
       )}
 
