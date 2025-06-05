@@ -1,5 +1,6 @@
 
 import { useState } from "react";
+import { useTheme } from "next-themes";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -8,8 +9,8 @@ import { useToast } from "@/hooks/use-toast";
 
 const SettingsTab = () => {
   const { toast } = useToast();
+  const { theme, setTheme } = useTheme();
   const [emailNotifications, setEmailNotifications] = useState(true);
-  const [darkMode, setDarkMode] = useState(false);
   const [language, setLanguage] = useState('nl');
   const [saving, setSaving] = useState(false);
   
@@ -24,6 +25,10 @@ const SettingsTab = () => {
         description: "Uw voorkeursinstellingen zijn succesvol bijgewerkt.",
       });
     }, 1000);
+  };
+
+  const handleThemeToggle = (checked: boolean) => {
+    setTheme(checked ? "dark" : "light");
   };
   
   return (
@@ -91,8 +96,8 @@ const SettingsTab = () => {
             </div>
             <Switch
               id="dark-mode"
-              checked={darkMode}
-              onCheckedChange={setDarkMode}
+              checked={theme === "dark"}
+              onCheckedChange={handleThemeToggle}
             />
           </div>
           
@@ -102,7 +107,7 @@ const SettingsTab = () => {
               id="language"
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
-              className="w-full p-2 border rounded-md"
+              className="w-full p-2 border rounded-md bg-background text-foreground"
             >
               <option value="nl">Nederlands</option>
               <option value="en">Engels</option>
