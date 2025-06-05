@@ -2,14 +2,10 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Building2 } from "lucide-react";
 import { useEnhancedAdminAddressRequests } from "@/hooks/use-enhanced-admin-address-requests";
-import { useRealtimeNotifications } from "@/hooks/use-realtime-notifications";
-import { useAuth } from "@/contexts/AuthContext";
 import RequestCard from "../address-requests/RequestCard";
 import SearchAndFilters from "../address-requests/SearchAndFilters";
-import NotificationBell from "../address-requests/NotificationBell";
 
 const EnhancedAddressRequestsTab = () => {
-  const { isAdmin } = useAuth();
   const {
     requests,
     allRequests,
@@ -21,12 +17,6 @@ const EnhancedAddressRequestsTab = () => {
     deleteRequest
   } = useEnhancedAdminAddressRequests();
 
-  const {
-    notifications,
-    clearNotification,
-    clearAllNotifications
-  } = useRealtimeNotifications(isAdmin || false);
-
   if (loading) {
     return (
       <div className="flex items-center justify-center py-8">
@@ -37,16 +27,9 @@ const EnhancedAddressRequestsTab = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold">Bedrijfsadres Aanvragen</h2>
-          <p className="text-gray-600">Beheer en behandel aanvragen voor bedrijfsadressen</p>
-        </div>
-        <NotificationBell
-          notifications={notifications}
-          onClearNotification={clearNotification}
-          onClearAll={clearAllNotifications}
-        />
+      <div>
+        <h2 className="text-2xl font-bold">Bedrijfsadres Aanvragen</h2>
+        <p className="text-gray-600">Beheer en behandel aanvragen voor bedrijfsadressen</p>
       </div>
 
       <SearchAndFilters
