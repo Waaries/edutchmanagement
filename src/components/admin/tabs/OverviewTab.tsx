@@ -28,15 +28,15 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ onTabChange }) => {
       {/* Stats Dashboard */}
       <AdminStatsDashboard />
       
-      {/* Notifications Section */}
-      {notifications.length > 0 && (
-        <Card>
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle className="flex items-center gap-2">
-                <Bell className="h-5 w-5" />
-                Notificaties ({notifications.length})
-              </CardTitle>
+      {/* Notifications Section - Always visible */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <CardTitle className="flex items-center gap-2">
+              <Bell className="h-5 w-5" />
+              Notificaties ({notifications.length})
+            </CardTitle>
+            {notifications.length > 0 && (
               <Button
                 variant="ghost"
                 size="sm"
@@ -45,10 +45,12 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ onTabChange }) => {
               >
                 Wis alles
               </Button>
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            {notifications.map((requestId) => (
+            )}
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-2">
+          {notifications.length > 0 ? (
+            notifications.map((requestId) => (
               <div
                 key={requestId}
                 className="flex items-center justify-between p-3 bg-blue-50 rounded-md"
@@ -64,10 +66,14 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ onTabChange }) => {
                   <X className="h-3 w-3" />
                 </Button>
               </div>
-            ))}
-          </CardContent>
-        </Card>
-      )}
+            ))
+          ) : (
+            <div className="text-center py-4 text-gray-500">
+              <p className="text-sm">Geen nieuwe notificaties</p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
       
       {/* Chart visualization */}
       <UsageChart data={chartData} loading={loading} />
