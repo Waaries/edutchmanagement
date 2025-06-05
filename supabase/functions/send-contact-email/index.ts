@@ -78,7 +78,6 @@ serve(async (req) => {
           <p><strong>Naam:</strong> ${name}</p>
           <p><strong>E-mail:</strong> ${email}</p>
           <p><strong>Telefoon:</strong> ${phone || "Niet opgegeven"}</p>
-          <p><strong>Gewenst Pakket:</strong> ${service || "Niet opgegeven"}</p>
           <h3>Bericht:</h3>
           <p>${message}</p>
         `,
@@ -101,7 +100,6 @@ serve(async (req) => {
           <p><strong>Naam:</strong> ${name}</p>
           <p><strong>E-mail:</strong> ${email}</p>
           <p><strong>Telefoon:</strong> ${phone || "Niet opgegeven"}</p>
-          <p><strong>Gewenst Pakket:</strong> ${service || "Niet opgegeven"}</p>
           <p><strong>Bericht:</strong></p>
           <p>${message}</p>
           <hr>
