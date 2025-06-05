@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
@@ -99,7 +100,7 @@ export const useAddressRequestForm = () => {
 
       const requestData = {
         ...formData,
-        user_id: user?.id || null // Explicitly set to null for anonymous users
+        user_id: user?.id || null
       };
 
       console.log("Final request data:", requestData);
@@ -107,16 +108,37 @@ export const useAddressRequestForm = () => {
       const { data, error } = await supabase
         .from('address_requests')
         .insert([requestData])
-        .select(); // Add select to get the inserted data back
+        .select();
 
       if (error) {
         console.error("Supabase error:", error);
-        // Track failed form submission
         trackFormSubmission('address_request', false);
         throw error;
       }
 
       console.log("Successfully created address request:", data);
+
+      // Send notification email to admin
+      try {
+        console.log("Sending notification email to admin...");
+        const notificationResponse = await supabase.functions.invoke('send-address-request-notification', {
+          body: requestData
+        });
+
+        if (notificationResponse.error) {
+          console.error("Error sending notification email:", notificationResponse.error);
+          // Don't fail the entire process if email fails, just log it
+          toast({
+            title: "Aanvraag verzonden",
+            description: "Uw aanvraag is succesvol verzonden, maar er was een probleem met de e-mailnotificatie.",
+          });
+        } else {
+          console.log("Notification email sent successfully");
+        }
+      } catch (emailError) {
+        console.error("Failed to send notification email:", emailError);
+        // Don't fail the entire process if email fails
+      }
 
       // Track successful form submission
       trackFormSubmission('address_request', true);
@@ -135,7 +157,7 @@ export const useAddressRequestForm = () => {
       if (user) {
         navigate("/dashboard");
       } else {
-        navigate("/"); // Redirect to homepage for anonymous users
+        navigate("/");
       }
     } catch (error) {
       console.error("Error submitting request:", error);

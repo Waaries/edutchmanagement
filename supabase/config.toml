@@ -35,3 +35,7 @@ enabled = false
 [[functions]]
 name = "send-contact-email"
 verify_jwt = false
+
+[[functions]]
+name = "send-address-request-notification"
+verify_jwt = false
