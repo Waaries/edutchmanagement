@@ -6,10 +6,17 @@ import UsersTab from "./tabs/UsersTab";
 import DataTab from "./tabs/DataTab";
 import SettingsTab from "./tabs/SettingsTab";
 import LogsTab from "./tabs/LogsTab";
+import { useState } from "react";
 
 const AdminTabs = () => {
+  const [activeTab, setActiveTab] = useState("overview");
+
+  const handleTabChange = (tabValue: string) => {
+    setActiveTab(tabValue);
+  };
+
   return (
-    <Tabs defaultValue="overview" className="w-full">
+    <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
       <TabsList className="grid w-full grid-cols-6">
         <TabsTrigger value="overview">Overzicht</TabsTrigger>
         <TabsTrigger value="requests">Aanvragen</TabsTrigger>
@@ -20,7 +27,7 @@ const AdminTabs = () => {
       </TabsList>
       
       <TabsContent value="overview" className="mt-6">
-        <OverviewTab />
+        <OverviewTab onTabChange={handleTabChange} />
       </TabsContent>
       
       <TabsContent value="requests" className="mt-6">
