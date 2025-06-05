@@ -2,6 +2,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import OverviewTab from "./tabs/OverviewTab";
 import EnhancedAddressRequestsTab from "./tabs/EnhancedAddressRequestsTab";
+import ContactMessagesTab from "./tabs/ContactMessagesTab";
 import UsersTab from "./tabs/UsersTab";
 import DataTab from "./tabs/DataTab";
 import SettingsTab from "./tabs/SettingsTab";
@@ -17,9 +18,10 @@ const AdminTabs = () => {
 
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-      <TabsList className="grid w-full grid-cols-6">
+      <TabsList className="grid w-full grid-cols-7">
         <TabsTrigger value="overview">Overzicht</TabsTrigger>
         <TabsTrigger value="requests">Aanvragen</TabsTrigger>
+        <TabsTrigger value="messages">Berichten</TabsTrigger>
         <TabsTrigger value="users">Gebruikers</TabsTrigger>
         <TabsTrigger value="data">Data</TabsTrigger>
         <TabsTrigger value="settings">Instellingen</TabsTrigger>
@@ -32,6 +34,10 @@ const AdminTabs = () => {
       
       <TabsContent value="requests" className="mt-6">
         <EnhancedAddressRequestsTab />
+      </TabsContent>
+      
+      <TabsContent value="messages" className="mt-6">
+        <ContactMessagesTab />
       </TabsContent>
       
       <TabsContent value="users" className="mt-6">

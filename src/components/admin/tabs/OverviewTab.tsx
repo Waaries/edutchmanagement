@@ -7,7 +7,7 @@ import { useAdminStats } from "@/hooks/use-admin-stats";
 import { useRealtimeNotifications } from "@/hooks/use-realtime-notifications";
 import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Bell, X } from "lucide-react";
+import { Bell, X, Building2, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface OverviewTabProps {
@@ -19,7 +19,10 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ onTabChange }) => {
   const { isAdmin } = useAuth();
   const {
     notifications,
+    addressRequestNotifications,
+    contactNotifications,
     clearNotification,
+    clearContactNotification,
     clearAllNotifications
   } = useRealtimeNotifications(isAdmin || false);
   
@@ -50,23 +53,51 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ onTabChange }) => {
         </CardHeader>
         <CardContent className="space-y-2">
           {notifications.length > 0 ? (
-            notifications.map((requestId) => (
-              <div
-                key={requestId}
-                className="flex items-center justify-between p-3 bg-blue-50 rounded-md"
-              >
-                <span className="text-sm">
-                  Nieuwe aanvraag ontvangen
-                </span>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => clearNotification(requestId)}
+            <>
+              {/* Address Request Notifications */}
+              {addressRequestNotifications.map((requestId) => (
+                <div
+                  key={`address-${requestId}`}
+                  className="flex items-center justify-between p-3 bg-blue-50 rounded-md"
                 >
-                  <X className="h-3 w-3" />
-                </Button>
-              </div>
-            ))
+                  <div className="flex items-center gap-2">
+                    <Building2 className="h-4 w-4 text-blue-600" />
+                    <span className="text-sm">
+                      Nieuwe bedrijfsadres aanvraag ontvangen
+                    </span>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => clearNotification(requestId)}
+                  >
+                    <X className="h-3 w-3" />
+                  </Button>
+                </div>
+              ))}
+              
+              {/* Contact Message Notifications */}
+              {contactNotifications.map((messageId) => (
+                <div
+                  key={`contact-${messageId}`}
+                  className="flex items-center justify-between p-3 bg-green-50 rounded-md"
+                >
+                  <div className="flex items-center gap-2">
+                    <Mail className="h-4 w-4 text-green-600" />
+                    <span className="text-sm">
+                      Nieuw contact bericht ontvangen
+                    </span>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => clearContactNotification(messageId)}
+                  >
+                    <X className="h-3 w-3" />
+                  </Button>
+                </div>
+              ))}
+            </>
           ) : (
             <div className="text-center py-4 text-gray-500">
               <p className="text-sm">Geen nieuwe notificaties</p>

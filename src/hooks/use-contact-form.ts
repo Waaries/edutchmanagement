@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -96,19 +97,44 @@ export const useContactForm = () => {
     try {
       console.log("Submitting form data:", formState);
       
+      // Store the message in the database
+      const { error: dbError } = await supabase
+        .from('contact_messages')
+        .insert([{
+          name: formState.name,
+          email: formState.email,
+          phone: formState.phone || null,
+          message: formState.message,
+          status: 'unread'
+        }]);
+
+      if (dbError) {
+        console.error("Database error:", dbError);
+        throw new Error("Fout bij opslaan bericht in database");
+      }
+
+      console.log("Message stored in database successfully");
+      
+      // Also send email notification
       const { data, error: functionError } = await supabase.functions.invoke('send-contact-email', {
         body: formState
       });
       
-      console.log("Form submission response:", data);
+      console.log("Email function response:", data);
       
       if (functionError) {
-        console.error("Supabase function error:", functionError);
-        throw new Error(functionError.message || "Fout bij verzenden bericht");
-      }
-      
-      if (!data?.success) {
-        throw new Error((data?.message || data?.error || "Fout bij verzenden bericht"));
+        console.error("Email function error:", functionError);
+        // Don't throw here - message is already stored in DB
+        toast({
+          title: "Bericht opgeslagen",
+          description: "Uw bericht is opgeslagen, maar de e-mailnotificatie kon niet worden verzonden.",
+        });
+      } else if (!data?.success) {
+        console.error("Email function failed:", data);
+        toast({
+          title: "Bericht opgeslagen",
+          description: "Uw bericht is opgeslagen, maar de e-mailnotificatie kon niet worden verzonden.",
+        });
       }
       
       // Clear auto-saved data on successful submission
