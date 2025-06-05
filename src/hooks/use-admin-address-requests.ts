@@ -112,10 +112,38 @@ export const useAdminAddressRequests = () => {
     }
   };
 
+  const deleteRequest = async (requestId: string) => {
+    try {
+      const { error } = await supabase
+        .from('address_requests')
+        .delete()
+        .eq('id', requestId);
+
+      if (error) {
+        throw error;
+      }
+
+      setRequests(prev => prev.filter(req => req.id !== requestId));
+
+      toast({
+        title: "Aanvraag verwijderd",
+        description: "De aanvraag is succesvol verwijderd.",
+      });
+    } catch (error) {
+      console.error("Error deleting request:", error);
+      toast({
+        title: "Fout bij verwijderen",
+        description: "Er is een fout opgetreden bij het verwijderen van de aanvraag.",
+        variant: "destructive"
+      });
+    }
+  };
+
   return {
     requests,
     loading,
     updateRequestStatus,
-    updateAdminNotes
+    updateAdminNotes,
+    deleteRequest
   };
 };

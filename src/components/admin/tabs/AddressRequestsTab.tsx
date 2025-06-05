@@ -5,7 +5,7 @@ import { useAdminAddressRequests } from "@/hooks/use-admin-address-requests";
 import RequestCard from "../address-requests/RequestCard";
 
 const AddressRequestsTab = () => {
-  const { requests, loading, updateRequestStatus, updateAdminNotes } = useAdminAddressRequests();
+  const { requests, loading, updateRequestStatus, updateAdminNotes, deleteRequest } = useAdminAddressRequests();
 
   if (loading) {
     return (
@@ -38,6 +38,7 @@ const AddressRequestsTab = () => {
               request={request}
               onStatusChange={updateRequestStatus}
               onUpdateNotes={updateAdminNotes}
+              onDeleteRequest={deleteRequest}
             />
           ))}
         </div>

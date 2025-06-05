@@ -9,11 +9,16 @@ interface RequestCardProps {
   request: AddressRequest;
   onStatusChange: (requestId: string, newStatus: string) => Promise<void>;
   onUpdateNotes: (requestId: string, notes: string) => Promise<void>;
+  onDeleteRequest: (requestId: string) => Promise<void>;
 }
 
-const RequestCard = ({ request, onStatusChange, onUpdateNotes }: RequestCardProps) => {
+const RequestCard = ({ request, onStatusChange, onUpdateNotes, onDeleteRequest }: RequestCardProps) => {
   const handleStatusChange = (value: string) => {
     onStatusChange(request.id, value);
+  };
+
+  const handleDeleteRequest = () => {
+    onDeleteRequest(request.id);
   };
 
   return (
@@ -26,6 +31,7 @@ const RequestCard = ({ request, onStatusChange, onUpdateNotes }: RequestCardProp
           businessType={request.business_type}
           status={request.status}
           onStatusChange={handleStatusChange}
+          onDeleteRequest={handleDeleteRequest}
         />
       </CardHeader>
       
