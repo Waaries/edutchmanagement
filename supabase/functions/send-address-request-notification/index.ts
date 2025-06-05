@@ -74,8 +74,8 @@ serve(async (req) => {
     };
     const addressTypeLabel = addressTypeLabels[requestData.preferred_address_type as keyof typeof addressTypeLabels] || requestData.preferred_address_type;
     
-    // Create plain text version
-    const textContent = `
+    // Create plain text version for admin
+    const adminTextContent = `
 Nieuwe Bedrijfsadres Aanvraag
 
 Bedrijfsinformatie:
@@ -99,8 +99,8 @@ Gebruiker ID: ${requestData.user_id || "Anonieme aanvraag"}
 Deze aanvraag is automatisch gegenereerd via het online aanvraagformulier.
     `.trim();
 
-    // Create HTML content with better structure
-    const htmlContent = `<!DOCTYPE html>
+    // Create HTML content for admin
+    const adminHtmlContent = `<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -159,12 +159,49 @@ ${requestData.special_requirements ? `<h3>Bijzondere wensen</h3>
         from: `${senderName} <${smtpUsername}>`,
         to: adminEmail,
         subject: `Nieuwe bedrijfsadres aanvraag van ${requestData.company_name}`,
-        html: htmlContent,
-        text: textContent,
+        html: adminHtmlContent,
+        text: adminTextContent,
         replyTo: requestData.email
       });
       
       console.log("Address request notification email sent successfully");
+      
+      // Send confirmation email to sender
+      await client.send({
+        from: `${senderName} <${smtpUsername}>`,
+        to: requestData.email,
+        subject: "Bevestiging van uw bedrijfsadres aanvraag",
+        html: `
+          <h2>Bedankt voor uw aanvraag!</h2>
+          <p>Beste ${requestData.contact_person},</p>
+          <p>Wij hebben uw aanvraag voor een bedrijfsadres in goede orde ontvangen en zullen deze zo spoedig mogelijk behandelen.</p>
+          <p>Hieronder vindt u een overzicht van uw aanvraag:</p>
+          <hr>
+          <h3>Bedrijfsinformatie</h3>
+          <p><strong>Bedrijfsnaam:</strong> ${requestData.company_name}</p>
+          <p><strong>Contactpersoon:</strong> ${requestData.contact_person}</p>
+          <p><strong>Type bedrijf:</strong> ${requestData.business_type}</p>
+          
+          <h3>Contactgegevens</h3>
+          <p><strong>E-mail:</strong> ${requestData.email}</p>
+          <p><strong>Telefoon:</strong> ${requestData.phone || "Niet opgegeven"}</p>
+          
+          <h3>Aanvraag Details</h3>
+          <p><strong>Gewenst adrespakket:</strong> ${addressTypeLabel}</p>
+          <p><strong>Verwacht postvolume:</strong> ${requestData.expected_mail_volume}</p>
+          <p><strong>Extra diensten:</strong> ${servicesText}</p>
+          
+          ${requestData.special_requirements ? `<h3>Bijzondere wensen</h3><p>${requestData.special_requirements}</p>` : ''}
+          
+          <hr>
+          <p>Wij nemen binnen 24 uur contact met u op om de volgende stappen te bespreken.</p>
+          <p>Heeft u nog vragen? Neem dan gerust contact met ons op via ${smtpUsername} of bezoek onze website.</p>
+          <p>Met vriendelijke groet,</p>
+          <p>${senderName}</p>
+        `
+      });
+      
+      console.log("Confirmation email sent successfully");
       
     } catch (emailError) {
       console.error("Error sending address request notification email:", emailError);
