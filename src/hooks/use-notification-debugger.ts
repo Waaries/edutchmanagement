@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { REALTIME_SUBSCRIBE_STATES } from '@supabase/supabase-js';
 import type { DebugMode } from "@/components/debug/types";
 
 export const useNotificationDebugger = () => {
@@ -69,8 +70,8 @@ export const useNotificationDebugger = () => {
           console.log('[DEBUG] Test channel status:', status);
           setChannelStatus(status);
           
-          // Use direct string comparison
-          if (status === 'SUBSCRIBED') {
+          // Use the correct enum comparison
+          if (status === REALTIME_SUBSCRIBE_STATES.SUBSCRIBED) {
             toast({
               title: 'Realtime Connection',
               description: 'Successfully connected to Supabase realtime'
@@ -79,7 +80,7 @@ export const useNotificationDebugger = () => {
             toast({
               title: 'Realtime Status',
               description: `Current status: ${status}`,
-              variant: status === 'SUBSCRIBED' ? 'default' : 'destructive'
+              variant: status === REALTIME_SUBSCRIBE_STATES.SUBSCRIBED ? 'default' : 'destructive'
             });
           }
           

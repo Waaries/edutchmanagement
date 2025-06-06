@@ -1,12 +1,18 @@
 
+import { REALTIME_SUBSCRIBE_STATES } from '@supabase/supabase-js';
+
 export const getStatusColor = (status: string) => {
-  if (status === 'SUBSCRIBED') {
+  if (status === REALTIME_SUBSCRIBE_STATES.SUBSCRIBED) {
     return 'text-green-500';
   }
   
-  const errorStates = ['TIMED_OUT', 'CLOSED', 'CHANNEL_ERROR'];
+  const errorStates = [
+    REALTIME_SUBSCRIBE_STATES.TIMED_OUT, 
+    REALTIME_SUBSCRIBE_STATES.CLOSED, 
+    REALTIME_SUBSCRIBE_STATES.CHANNEL_ERROR
+  ];
   
-  if (errorStates.includes(status)) {
+  if (errorStates.includes(status as any)) {
     return 'text-red-500';
   }
   
