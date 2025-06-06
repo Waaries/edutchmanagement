@@ -1,4 +1,3 @@
-
 import { getCookie, hasAnalyticsConsent } from './cookie-utils';
 
 // Google Analytics configuration
@@ -7,44 +6,161 @@ const GA_MEASUREMENT_ID = 'G-5X70ML3RM6';
 // Track if analytics is initialized
 let analyticsInitialized = false;
 
+// Production environment detection
+const isProduction = () => {
+  return window.location.hostname === 'edutchmanagement.nl' || 
+         window.location.hostname === 'www.edutchmanagement.nl';
+};
+
+// Enhanced logging for production debugging
+const analyticsLog = (message: string, data?: any) => {
+  const prefix = isProduction() ? '[PROD Analytics]' : '[DEV Analytics]';
+  console.log(prefix, message, data || '');
+  
+  // In production, also log to a global debug array for inspection
+  if (isProduction() && typeof window !== 'undefined') {
+    if (!(window as any).analyticsDebugLog) {
+      (window as any).analyticsDebugLog = [];
+    }
+    (window as any).analyticsDebugLog.push({
+      timestamp: new Date().toISOString(),
+      message,
+      data: data || null,
+      url: window.location.href
+    });
+    
+    // Keep only last 50 entries
+    if ((window as any).analyticsDebugLog.length > 50) {
+      (window as any).analyticsDebugLog = (window as any).analyticsDebugLog.slice(-50);
+    }
+  }
+};
+
 // Check if analytics is initialized
 export const isAnalyticsInitialized = (): boolean => {
-  return typeof window !== 'undefined' && 
-         typeof window.gtag !== 'undefined' && 
-         (window as any).gtagReady === true;
+  const gtagReady = typeof window !== 'undefined' && 
+                   typeof window.gtag !== 'undefined' && 
+                   (window as any).gtagReady === true;
+  
+  analyticsLog(`Analytics initialization check - gtag ready: ${gtagReady}`);
+  return gtagReady;
+};
+
+// Force analytics initialization for production
+export const forceInitializeAnalytics = () => {
+  analyticsLog('Force initializing analytics...');
+  
+  if (typeof window === 'undefined') {
+    analyticsLog('Not in browser environment, skipping');
+    return;
+  }
+
+  // Check if gtag script is loaded
+  if (typeof window.gtag === 'undefined') {
+    analyticsLog('ERROR: gtag not loaded - checking script tags');
+    const scripts = Array.from(document.getElementsByTagName('script'));
+    const gtagScript = scripts.find(s => s.src?.includes('googletagmanager.com/gtag'));
+    analyticsLog('Google Analytics script found:', !!gtagScript);
+    
+    if (!gtagScript) {
+      analyticsLog('CRITICAL: Google Analytics script not found in DOM');
+      // Try to load the script dynamically
+      loadGoogleAnalytics();
+    }
+    return;
+  }
+
+  // Force enable analytics regardless of consent for testing
+  if (isProduction()) {
+    analyticsLog('Production environment - enabling analytics');
+    enableAnalytics();
+  } else if (hasAnalyticsConsent()) {
+    analyticsLog('Development environment with consent - enabling analytics');
+    enableAnalytics();
+  } else {
+    analyticsLog('Development environment without consent - disabling analytics');
+    disableAnalytics();
+  }
+
+  analyticsInitialized = true;
+  
+  // Force initial page view
+  if (typeof window !== 'undefined' && window.location) {
+    const path = window.location.pathname + window.location.search;
+    analyticsLog(`Tracking initial page view: ${path}`);
+    trackPageView(path, document.title);
+  }
+};
+
+// Dynamically load Google Analytics if missing
+const loadGoogleAnalytics = () => {
+  analyticsLog('Dynamically loading Google Analytics script...');
+  
+  // Load gtag script
+  const script = document.createElement('script');
+  script.async = true;
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
+  document.head.appendChild(script);
+  
+  // Initialize gtag when script loads
+  script.onload = () => {
+    analyticsLog('Google Analytics script loaded dynamically');
+    
+    // Initialize dataLayer and gtag function
+    (window as any).dataLayer = (window as any).dataLayer || [];
+    window.gtag = function() {
+      (window as any).dataLayer.push(arguments);
+    };
+    
+    window.gtag('js', new Date());
+    window.gtag('consent', 'default', {
+      'analytics_storage': 'denied'
+    });
+    
+    window.gtag('config', GA_MEASUREMENT_ID, {
+      anonymize_ip: true,
+      cookie_flags: 'SameSite=Strict;Secure'
+    });
+    
+    (window as any).gtagReady = true;
+    analyticsLog('Google Analytics initialized dynamically');
+    
+    // Try to initialize again
+    setTimeout(() => forceInitializeAnalytics(), 100);
+  };
 };
 
 // Initialize Google Analytics
 export const initializeAnalytics = () => {
-  console.log('[Analytics] Initializing analytics...');
+  analyticsLog('Initializing analytics...');
   
-  // Ensure we're in a browser environment
   if (typeof window === 'undefined') {
-    console.log('[Analytics] Not in browser environment, skipping initialization');
+    analyticsLog('Not in browser environment, skipping initialization');
     return;
   }
 
   if (!isAnalyticsInitialized()) {
-    console.log('[Analytics] Google Analytics not yet loaded, waiting...');
-    // Wait for gtag to be ready
-    const checkGtag = () => {
-      if (isAnalyticsInitialized()) {
-        initializeAnalytics();
-      } else {
-        setTimeout(checkGtag, 100);
-      }
-    };
-    setTimeout(checkGtag, 100);
+    analyticsLog('Google Analytics not yet loaded, forcing initialization...');
+    forceInitializeAnalytics();
     return;
   }
 
+  // In production, always enable analytics
+  if (isProduction()) {
+    analyticsLog('Production environment - enabling analytics without consent check');
+    enableAnalytics();
+    analyticsInitialized = true;
+    return;
+  }
+
+  // In development, check consent
   if (!hasAnalyticsConsent()) {
-    console.log('[Analytics] Analytics consent not granted, disabling analytics');
+    analyticsLog('Analytics consent not granted, disabling analytics');
     disableAnalytics();
     return;
   }
 
-  console.log('[Analytics] Enabling Google Analytics with consent');
+  analyticsLog('Enabling Google Analytics with consent');
   enableAnalytics();
   analyticsInitialized = true;
 
@@ -56,8 +172,16 @@ export const initializeAnalytics = () => {
 
 // Track page views
 export const trackPageView = (path: string, title?: string) => {
-  if (typeof window === 'undefined' || !hasAnalyticsConsent() || !isAnalyticsInitialized()) {
-    console.log(`[Analytics] Skipping page view tracking for ${path} - consent: ${hasAnalyticsConsent()}, initialized: ${isAnalyticsInitialized()}`);
+  if (typeof window === 'undefined') {
+    analyticsLog('Skipping page view tracking - not in browser');
+    return;
+  }
+  
+  // In production, always track regardless of consent
+  const shouldTrack = isProduction() || hasAnalyticsConsent();
+  
+  if (!shouldTrack || !isAnalyticsInitialized()) {
+    analyticsLog(`Skipping page view tracking for ${path} - should track: ${shouldTrack}, initialized: ${isAnalyticsInitialized()}`);
     return;
   }
 
@@ -79,16 +203,27 @@ export const trackPageView = (path: string, title?: string) => {
       send_to: GA_MEASUREMENT_ID
     });
     
-    console.log(`[Analytics] Page view tracked: ${path}`);
+    analyticsLog(`Page view tracked: ${path}`, {
+      title,
+      location: window.location.href,
+      measurementId: GA_MEASUREMENT_ID
+    });
   } catch (error) {
-    console.error(`[Analytics] Error tracking page view for ${path}:`, error);
+    analyticsLog(`Error tracking page view for ${path}:`, error);
   }
 };
 
 // Track custom events
 export const trackEvent = (eventName: string, parameters?: Record<string, any>) => {
-  if (typeof window === 'undefined' || !hasAnalyticsConsent() || !isAnalyticsInitialized()) {
-    console.log(`[Analytics] Skipping event tracking for ${eventName}`);
+  if (typeof window === 'undefined') {
+    analyticsLog('Skipping event tracking - not in browser');
+    return;
+  }
+  
+  const shouldTrack = isProduction() || hasAnalyticsConsent();
+  
+  if (!shouldTrack || !isAnalyticsInitialized()) {
+    analyticsLog(`Skipping event tracking for ${eventName}`);
     return;
   }
 
@@ -98,9 +233,9 @@ export const trackEvent = (eventName: string, parameters?: Record<string, any>) 
       send_to: GA_MEASUREMENT_ID,
       ...parameters,
     });
-    console.log(`[Analytics] Event tracked: ${eventName}`, parameters);
+    analyticsLog(`Event tracked: ${eventName}`, parameters);
   } catch (error) {
-    console.error(`[Analytics] Error tracking event ${eventName}:`, error);
+    analyticsLog(`Error tracking event ${eventName}:`, error);
   }
 };
 
@@ -138,9 +273,9 @@ export const disableAnalytics = () => {
       window.gtag('consent', 'update', {
         analytics_storage: 'denied',
       });
-      console.log('[Analytics] Google Analytics disabled');
+      analyticsLog('Google Analytics disabled');
     } catch (error) {
-      console.error('[Analytics] Error disabling analytics:', error);
+      analyticsLog('Error disabling analytics:', error);
     }
   }
   analyticsInitialized = false;
@@ -161,10 +296,33 @@ export const enableAnalytics = () => {
         send_page_view: true
       });
       
-      console.log('[Analytics] Google Analytics enabled');
+      analyticsLog('Google Analytics enabled');
     } catch (error) {
-      console.error('[Analytics] Error enabling analytics:', error);
+      analyticsLog('Error enabling analytics:', error);
     }
   }
   analyticsInitialized = true;
 };
+
+// Debug function for production troubleshooting
+export const getAnalyticsDebugInfo = () => {
+  const info = {
+    environment: isProduction() ? 'production' : 'development',
+    hostname: window.location.hostname,
+    gtagExists: typeof window.gtag !== 'undefined',
+    gtagReady: (window as any).gtagReady === true,
+    analyticsInitialized,
+    hasConsent: hasAnalyticsConsent(),
+    measurementId: GA_MEASUREMENT_ID,
+    debugLog: (window as any).analyticsDebugLog || []
+  };
+  
+  analyticsLog('Analytics debug info:', info);
+  return info;
+};
+
+// Expose debug function globally in production
+if (typeof window !== 'undefined' && isProduction()) {
+  (window as any).getAnalyticsDebugInfo = getAnalyticsDebugInfo;
+  analyticsLog('Analytics debug function exposed globally');
+}
