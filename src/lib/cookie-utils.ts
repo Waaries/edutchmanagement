@@ -74,10 +74,17 @@ export const setConsentCookies = (consentType: 'all' | 'essential') => {
     
     // Initialize analytics if consent is granted
     import('./analytics').then(({ initializeAnalytics, enableAnalytics }) => {
-      if (typeof window.gtag !== 'undefined') {
-        enableAnalytics();
-      } else {
-        initializeAnalytics();
+      // Ensure we're in browser environment
+      if (typeof window !== 'undefined') {
+        if (typeof window.gtag !== 'undefined') {
+          enableAnalytics();
+          // Force page view tracking after enabling
+          setTimeout(() => {
+            initializeAnalytics();
+          }, 500);
+        } else {
+          initializeAnalytics();
+        }
       }
     });
     
@@ -88,7 +95,9 @@ export const setConsentCookies = (consentType: 'all' | 'essential') => {
     
     // Disable analytics if consent is withdrawn
     import('./analytics').then(({ disableAnalytics }) => {
-      disableAnalytics();
+      if (typeof window !== 'undefined') {
+        disableAnalytics();
+      }
     });
     
     console.log('Analytics tracking disabled');

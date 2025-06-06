@@ -20,6 +20,9 @@ export const useAnalytics = () => {
   useEffect(() => {
     console.log('[Analytics Hook] Initializing analytics hook');
     
+    // Only initialize in browser environment
+    if (typeof window === 'undefined') return;
+    
     // Check if Google Analytics is ready
     const checkAndInit = () => {
       if (isAnalyticsInitialized()) {
@@ -32,25 +35,38 @@ export const useAnalytics = () => {
       }
     };
     
-    checkAndInit();
+    // Wait a bit for the script to load
+    setTimeout(checkAndInit, 500);
 
     return () => {
       console.log('[Analytics Hook] Cleaning up analytics hook');
     };
   }, []);
 
-  // Track page views on route changes
+  // Track page views on route changes with a delay to ensure DOM is ready
   useEffect(() => {
-    if (hasAnalyticsConsent() && initialized && isAnalyticsInitialized()) {
-      console.log(`[Analytics Hook] Tracking page view: ${location.pathname}`);
-      trackPageView(location.pathname + location.search, document.title);
-    } else {
-      console.log(`[Analytics Hook] Skipping page view - consent: ${hasAnalyticsConsent()}, initialized: ${initialized}, gtag ready: ${isAnalyticsInitialized()}`);
-    }
+    if (typeof window === 'undefined') return;
+    
+    // Add delay to ensure page is fully loaded
+    const trackPageViewDelayed = () => {
+      if (hasAnalyticsConsent() && initialized && isAnalyticsInitialized()) {
+        console.log(`[Analytics Hook] Tracking page view: ${location.pathname}`);
+        trackPageView(location.pathname + location.search, document.title);
+      } else {
+        console.log(`[Analytics Hook] Skipping page view - consent: ${hasAnalyticsConsent()}, initialized: ${initialized}, gtag ready: ${isAnalyticsInitialized()}`);
+      }
+    };
+
+    // Wait for DOM to be ready
+    const timer = setTimeout(trackPageViewDelayed, 1000);
+    
+    return () => clearTimeout(timer);
   }, [location, initialized]);
 
   // Enhanced tracking functions with logging
   const enhancedTrackEvent = (eventName: string, parameters?: Record<string, any>) => {
+    if (typeof window === 'undefined') return;
+    
     if (hasAnalyticsConsent() && isAnalyticsInitialized()) {
       console.log(`[Analytics Hook] Tracking event: ${eventName}`, parameters);
       trackEvent(eventName, parameters);
@@ -60,6 +76,8 @@ export const useAnalytics = () => {
   };
 
   const enhancedTrackFormSubmission = (formName: string, success: boolean = true) => {
+    if (typeof window === 'undefined') return;
+    
     if (hasAnalyticsConsent() && isAnalyticsInitialized()) {
       console.log(`[Analytics Hook] Tracking form submission: ${formName}, success: ${success}`);
       trackFormSubmission(formName, success);
@@ -69,6 +87,8 @@ export const useAnalytics = () => {
   };
 
   const enhancedTrackButtonClick = (buttonName: string, location?: string) => {
+    if (typeof window === 'undefined') return;
+    
     if (hasAnalyticsConsent() && isAnalyticsInitialized()) {
       console.log(`[Analytics Hook] Tracking button click: ${buttonName}`);
       trackButtonClick(buttonName, location);
@@ -78,6 +98,8 @@ export const useAnalytics = () => {
   };
 
   const enhancedTrackNavigation = (destination: string, source?: string) => {
+    if (typeof window === 'undefined') return;
+    
     if (hasAnalyticsConsent() && isAnalyticsInitialized()) {
       console.log(`[Analytics Hook] Tracking navigation: ${source} → ${destination}`);
       trackNavigation(destination, source);
