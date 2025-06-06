@@ -2,51 +2,32 @@
 import { getCookie, hasAnalyticsConsent } from './cookie-utils';
 
 // Google Analytics configuration
-const GA_MEASUREMENT_ID = 'G-5X70ML3RM6'; // Updated with your actual GA4 Measurement ID
+const GA_MEASUREMENT_ID = 'G-5X70ML3RM6';
 
 // Track if analytics is initialized
 let analyticsInitialized = false;
 
 // Check if analytics is initialized
 export const isAnalyticsInitialized = (): boolean => {
-  return analyticsInitialized && typeof window.gtag !== 'undefined';
+  return typeof window.gtag !== 'undefined';
 };
 
-// Initialize Google Analytics
+// Initialize Google Analytics (now just checks if it's already loaded)
 export const initializeAnalytics = () => {
   if (!hasAnalyticsConsent()) {
-    console.log('[Analytics] Analytics consent not granted, skipping initialization');
+    console.log('[Analytics] Analytics consent not granted, disabling analytics');
+    if (isAnalyticsInitialized()) {
+      disableAnalytics();
+    }
     return;
   }
 
-  try {
-    // Load Google Analytics script
-    const script1 = document.createElement('script');
-    script1.async = true;
-    script1.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
-    document.head.appendChild(script1);
-
-    // Initialize gtag
-    window.dataLayer = window.dataLayer || [];
-    function gtag(...args: any[]) {
-      window.dataLayer.push(args);
-    }
-    
-    // Make gtag available globally
-    (window as any).gtag = gtag;
-    
-    gtag('js', new Date());
-    gtag('config', GA_MEASUREMENT_ID, {
-      anonymize_ip: true,
-      cookie_flags: 'SameSite=Strict;Secure',
-      cookie_domain: window.location.hostname,
-    });
-
+  if (isAnalyticsInitialized()) {
+    console.log('[Analytics] Google Analytics already loaded, enabling consent');
+    enableAnalytics();
     analyticsInitialized = true;
-    console.log('[Analytics] Google Analytics initialized successfully with ID:', GA_MEASUREMENT_ID);
-  } catch (error) {
-    console.error('[Analytics] Error initializing Google Analytics:', error);
-    analyticsInitialized = false;
+  } else {
+    console.log('[Analytics] Google Analytics not yet loaded');
   }
 };
 
@@ -137,8 +118,6 @@ export const enableAnalytics = () => {
     } catch (error) {
       console.error('[Analytics] Error enabling analytics:', error);
     }
-  } else {
-    // If gtag isn't loaded yet, initialize analytics
-    initializeAnalytics();
   }
+  analyticsInitialized = true;
 };
