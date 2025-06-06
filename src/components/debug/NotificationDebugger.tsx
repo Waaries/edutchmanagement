@@ -1,7 +1,9 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { REALTIME_SUBSCRIBE_STATES } from "@supabase/supabase-js";
 
 type DebugMode = 'none' | 'visible' | 'expanded';
 
@@ -70,8 +72,8 @@ const NotificationDebugger: React.FC = () => {
           console.log('[DEBUG] Test channel status:', status);
           setChannelStatus(status);
           
-          // Use string comparison since status is returned as a string
-          if (status === 'SUBSCRIBED') {
+          // Use enum comparison
+          if (status === REALTIME_SUBSCRIBE_STATES.SUBSCRIBED) {
             toast({
               title: 'Realtime Connection',
               description: 'Successfully connected to Supabase realtime'
@@ -80,7 +82,7 @@ const NotificationDebugger: React.FC = () => {
             toast({
               title: 'Realtime Status',
               description: `Current status: ${status}`,
-              variant: status === 'SUBSCRIBED' ? 'default' : 'destructive'
+              variant: status === REALTIME_SUBSCRIBE_STATES.SUBSCRIBED ? 'default' : 'destructive'
             });
           }
           
@@ -145,10 +147,10 @@ const NotificationDebugger: React.FC = () => {
           <div className="text-sm">
             <span>Realtime Status: </span>
             <span className={`font-medium ${
-              channelStatus === 'SUBSCRIBED' ? 'text-green-500' : 
-              channelStatus === 'TIMED_OUT' || 
-              channelStatus === 'CLOSED' || 
-              channelStatus === 'CHANNEL_ERROR' ? 'text-red-500' : 
+              channelStatus === REALTIME_SUBSCRIBE_STATES.SUBSCRIBED ? 'text-green-500' : 
+              channelStatus === REALTIME_SUBSCRIBE_STATES.TIMED_OUT || 
+              channelStatus === REALTIME_SUBSCRIBE_STATES.CLOSED || 
+              channelStatus === REALTIME_SUBSCRIBE_STATES.CHANNEL_ERROR ? 'text-red-500' : 
               'text-yellow-500'
             }`}>{channelStatus}</span>
           </div>
