@@ -4,60 +4,84 @@ import { getCookie, hasAnalyticsConsent } from './cookie-utils';
 // Google Analytics configuration
 const GA_MEASUREMENT_ID = 'G-XXXXXXXXXX'; // Replace with your actual GA4 Measurement ID
 
+// Track if analytics is initialized
+let analyticsInitialized = false;
+
+// Check if analytics is initialized
+export const isAnalyticsInitialized = (): boolean => {
+  return analyticsInitialized && typeof window.gtag !== 'undefined';
+};
+
 // Initialize Google Analytics
 export const initializeAnalytics = () => {
   if (!hasAnalyticsConsent()) {
-    console.log('Analytics consent not granted, skipping initialization');
+    console.log('[Analytics] Analytics consent not granted, skipping initialization');
     return;
   }
 
-  // Load Google Analytics script
-  const script1 = document.createElement('script');
-  script1.async = true;
-  script1.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
-  document.head.appendChild(script1);
+  try {
+    // Load Google Analytics script
+    const script1 = document.createElement('script');
+    script1.async = true;
+    script1.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
+    document.head.appendChild(script1);
 
-  // Initialize gtag
-  window.dataLayer = window.dataLayer || [];
-  function gtag(...args: any[]) {
-    window.dataLayer.push(args);
+    // Initialize gtag
+    window.dataLayer = window.dataLayer || [];
+    function gtag(...args: any[]) {
+      window.dataLayer.push(args);
+    }
+    
+    // Make gtag available globally
+    (window as any).gtag = gtag;
+    
+    gtag('js', new Date());
+    gtag('config', GA_MEASUREMENT_ID, {
+      anonymize_ip: true,
+      cookie_flags: 'SameSite=Strict;Secure',
+      cookie_domain: window.location.hostname,
+    });
+
+    analyticsInitialized = true;
+    console.log('[Analytics] Google Analytics initialized successfully');
+  } catch (error) {
+    console.error('[Analytics] Error initializing Google Analytics:', error);
+    analyticsInitialized = false;
   }
-  
-  // Make gtag available globally
-  (window as any).gtag = gtag;
-  
-  gtag('js', new Date());
-  gtag('config', GA_MEASUREMENT_ID, {
-    anonymize_ip: true,
-    cookie_flags: 'SameSite=Strict;Secure',
-    cookie_domain: window.location.hostname,
-  });
-
-  console.log('Google Analytics initialized');
 };
 
 // Track page views
 export const trackPageView = (path: string, title?: string) => {
-  if (!hasAnalyticsConsent() || typeof window.gtag === 'undefined') {
+  if (!hasAnalyticsConsent() || !isAnalyticsInitialized()) {
+    console.log(`[Analytics] Skipping page view tracking for ${path}`);
     return;
   }
 
-  window.gtag('config', GA_MEASUREMENT_ID, {
-    page_path: path,
-    page_title: title,
-  });
+  try {
+    window.gtag('config', GA_MEASUREMENT_ID, {
+      page_path: path,
+      page_title: title,
+    });
+    console.log(`[Analytics] Page view tracked: ${path}`);
+  } catch (error) {
+    console.error(`[Analytics] Error tracking page view for ${path}:`, error);
+  }
 };
 
 // Track custom events
 export const trackEvent = (eventName: string, parameters?: Record<string, any>) => {
-  if (!hasAnalyticsConsent() || typeof window.gtag === 'undefined') {
+  if (!hasAnalyticsConsent() || !isAnalyticsInitialized()) {
     return;
   }
 
-  window.gtag('event', eventName, {
-    event_category: 'engagement',
-    ...parameters,
-  });
+  try {
+    window.gtag('event', eventName, {
+      event_category: 'engagement',
+      ...parameters,
+    });
+  } catch (error) {
+    console.error(`[Analytics] Error tracking event ${eventName}:`, error);
+  }
 };
 
 // Track form submissions
@@ -89,23 +113,32 @@ export const trackNavigation = (destination: string, source?: string) => {
 
 // Disable analytics (for consent withdrawal)
 export const disableAnalytics = () => {
-  if (typeof window.gtag !== 'undefined') {
-    window.gtag('consent', 'update', {
-      analytics_storage: 'denied',
-    });
+  if (isAnalyticsInitialized()) {
+    try {
+      window.gtag('consent', 'update', {
+        analytics_storage: 'denied',
+      });
+      console.log('[Analytics] Google Analytics disabled');
+    } catch (error) {
+      console.error('[Analytics] Error disabling analytics:', error);
+    }
   }
-  console.log('Google Analytics disabled');
+  analyticsInitialized = false;
 };
 
 // Enable analytics (for consent granting)
 export const enableAnalytics = () => {
-  if (typeof window.gtag !== 'undefined') {
-    window.gtag('consent', 'update', {
-      analytics_storage: 'granted',
-    });
+  if (isAnalyticsInitialized()) {
+    try {
+      window.gtag('consent', 'update', {
+        analytics_storage: 'granted',
+      });
+      console.log('[Analytics] Google Analytics enabled');
+    } catch (error) {
+      console.error('[Analytics] Error enabling analytics:', error);
+    }
   } else {
     // If gtag isn't loaded yet, initialize analytics
     initializeAnalytics();
   }
-  console.log('Google Analytics enabled');
 };

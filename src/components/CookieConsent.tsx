@@ -14,23 +14,35 @@ import { getCookie, setConsentCookies } from "@/lib/cookie-utils";
 import { useToast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useAnalytics } from "@/hooks/use-analytics";
 
 const CookieConsent = () => {
   const [open, setOpen] = useState(false);
+  const [analyticsChecked, setAnalyticsChecked] = useState(false);
+  const [marketingChecked, setMarketingChecked] = useState(false);
   const { toast } = useToast();
   const { translate } = useLanguage();
+  const { trackEvent } = useAnalytics();
 
   useEffect(() => {
     // Check if user has already consented
     const hasConsented = getCookie("cookieConsent");
     if (!hasConsented) {
       setOpen(true);
+    } else {
+      // If user has already consented to all, check the checkboxes
+      if (hasConsented === 'all') {
+        setAnalyticsChecked(true);
+        setMarketingChecked(true);
+      }
     }
   }, []);
 
   const handleAcceptAll = () => {
     setConsentCookies('all');
     setOpen(false);
+    // Track this consent event if analytics is permitted
+    trackEvent('cookie_consent', { consent_type: 'all' });
     toast({
       title: translate("cookieConsent.toastTitle"),
       description: translate("cookieConsent.toastAllDesc")
@@ -43,6 +55,26 @@ const CookieConsent = () => {
     toast({
       title: translate("cookieConsent.toastTitle"),
       description: translate("cookieConsent.toastEssentialDesc")
+    });
+  };
+
+  const handleAcceptSelected = () => {
+    // If analytics is checked, we consider it as 'all' for now
+    // In a more advanced implementation, we could have different levels of consent
+    if (analyticsChecked || marketingChecked) {
+      setConsentCookies('all');
+      trackEvent('cookie_consent', { 
+        consent_type: 'selected',
+        analytics: analyticsChecked,
+        marketing: marketingChecked 
+      });
+    } else {
+      setConsentCookies('essential');
+    }
+    setOpen(false);
+    toast({
+      title: translate("cookieConsent.toastTitle"),
+      description: translate("cookieConsent.toastCustomDesc") || "Your cookie preferences have been saved."
     });
   };
 
@@ -75,7 +107,12 @@ const CookieConsent = () => {
                 {translate("cookieConsent.analytics.description")}
               </p>
             </div>
-            <Checkbox id="analytics" className="h-5 w-5 rounded-sm border-gray-300" />
+            <Checkbox 
+              id="analytics" 
+              checked={analyticsChecked}
+              onCheckedChange={(checked) => setAnalyticsChecked(checked === true)}
+              className="h-5 w-5 rounded-sm border-gray-300" 
+            />
           </div>
           
           <div className="flex items-center justify-between border-l-4 border-transparent pl-3 py-1">
@@ -85,7 +122,12 @@ const CookieConsent = () => {
                 {translate("cookieConsent.marketing.description")}
               </p>
             </div>
-            <Checkbox id="marketing" className="h-5 w-5 rounded-sm border-gray-300" />
+            <Checkbox 
+              id="marketing"
+              checked={marketingChecked}
+              onCheckedChange={(checked) => setMarketingChecked(checked === true)} 
+              className="h-5 w-5 rounded-sm border-gray-300" 
+            />
           </div>
         </div>
 
@@ -104,6 +146,14 @@ const CookieConsent = () => {
           >
             {translate("cookieConsent.acceptEssential")}
           </Button>
+          {(analyticsChecked || marketingChecked) && (
+            <Button
+              className="w-full sm:w-auto px-6 py-2 h-auto text-sm rounded-full bg-blue-500 hover:bg-blue-600"
+              onClick={handleAcceptSelected}
+            >
+              {translate("cookieConsent.acceptSelected") || "Accept Selected"}
+            </Button>
+          )}
           <Button
             className="w-full sm:w-auto px-6 py-2 h-auto text-sm rounded-full bg-orange-500 hover:bg-orange-600"
             onClick={handleAcceptAll}

@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useFormValidation } from "@/hooks/use-form-validation";
 import { useAutoSave } from "@/hooks/use-auto-save";
+import { useAnalytics } from "@/hooks/use-analytics";
 
 export interface ContactFormState {
   name: string;
@@ -23,6 +24,7 @@ export const useContactForm = () => {
   const [loading, setLoading] = useState(false);
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const { toast } = useToast();
+  const { trackFormSubmission } = useAnalytics();
 
   // Form validation rules
   const validationRules = {
@@ -89,16 +91,17 @@ export const useContactForm = () => {
         description: "Controleer de aangegeven velden en probeer opnieuw.",
         variant: "destructive",
       });
+      trackFormSubmission('contact_form', false);
       return;
     }
     
     setLoading(true);
     
     try {
-      console.log("Submitting form data:", formState);
+      console.log("[ContactForm] Submitting form data:", formState);
       
       // Store the message in the database
-      const { error: dbError } = await supabase
+      const { data, error: dbError } = await supabase
         .from('contact_messages')
         .insert([{
           name: formState.name,
@@ -106,35 +109,38 @@ export const useContactForm = () => {
           phone: formState.phone || null,
           message: formState.message,
           status: 'unread'
-        }]);
+        }])
+        .select();
 
       if (dbError) {
-        console.error("Database error:", dbError);
+        console.error("[ContactForm] Database error:", dbError);
         throw new Error("Fout bij opslaan bericht in database");
       }
 
-      console.log("Message stored in database successfully");
+      console.log("[ContactForm] Message stored in database successfully:", data);
       
       // Also send email notification
-      const { data, error: functionError } = await supabase.functions.invoke('send-contact-email', {
+      const { data: emailData, error: functionError } = await supabase.functions.invoke('send-contact-email', {
         body: formState
       });
       
-      console.log("Email function response:", data);
+      console.log("[ContactForm] Email function response:", emailData);
       
       if (functionError) {
-        console.error("Email function error:", functionError);
+        console.error("[ContactForm] Email function error:", functionError);
         // Don't throw here - message is already stored in DB
         toast({
           title: "Bericht opgeslagen",
           description: "Uw bericht is opgeslagen, maar de e-mailnotificatie kon niet worden verzonden.",
         });
-      } else if (!data?.success) {
-        console.error("Email function failed:", data);
+        trackFormSubmission('contact_form', true);
+      } else if (!emailData?.success) {
+        console.error("[ContactForm] Email function failed:", emailData);
         toast({
           title: "Bericht opgeslagen",
           description: "Uw bericht is opgeslagen, maar de e-mailnotificatie kon niet worden verzonden.",
         });
+        trackFormSubmission('contact_form', true);
       }
       
       // Clear auto-saved data on successful submission
@@ -145,6 +151,9 @@ export const useContactForm = () => {
         title: "Bericht verzonden",
         description: "Bedankt voor uw bericht. We nemen zo snel mogelijk contact met u op.",
       });
+      
+      // Track successful form submission
+      trackFormSubmission('contact_form', true);
       
       // Reset form after 5 seconds
       setTimeout(() => {
@@ -157,13 +166,16 @@ export const useContactForm = () => {
         });
       }, 5000);
     } catch (err: any) {
-      console.error("Error submitting form:", err);
+      console.error("[ContactForm] Error submitting form:", err);
       const errorMessage = err instanceof Error ? err.message : "Er is een onbekende fout opgetreden";
       toast({
         title: "Fout bij verzenden",
         description: `Er is een fout opgetreden bij het verzenden van uw bericht: ${errorMessage}`,
         variant: "destructive",
       });
+      
+      // Track failed form submission
+      trackFormSubmission('contact_form', false);
     } finally {
       setLoading(false);
     }
