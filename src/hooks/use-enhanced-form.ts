@@ -41,13 +41,12 @@ export const useEnhancedForm = <T extends Record<string, any>>(
   const validateField = useCallback((name: keyof T, value: string) => {
     if (!validationSchema) return undefined;
     
-    const errors = validationSchema({ 
-      ...Object.keys(fields).reduce((acc, key) => ({
-        ...acc,
-        [key]: key === name ? value : fields[key].value
-      }), {} as T)
-    });
+    const currentValues = Object.keys(fields).reduce((acc, key) => ({
+      ...acc,
+      [key]: key === name ? value : fields[key as keyof T].value
+    }), {} as T);
     
+    const errors = validationSchema(currentValues);
     return errors[name];
   }, [fields, validationSchema]);
 
@@ -56,7 +55,7 @@ export const useEnhancedForm = <T extends Record<string, any>>(
     
     const values = Object.keys(fields).reduce((acc, key) => ({
       ...acc,
-      [key]: fields[key].value
+      [key]: fields[key as keyof T].value
     }), {} as T);
     
     return validationSchema(values);
@@ -100,9 +99,9 @@ export const useEnhancedForm = <T extends Record<string, any>>(
         Object.keys(prev).reduce((acc, key) => ({
           ...acc,
           [key]: {
-            ...prev[key],
+            ...prev[key as keyof T],
             touched: true,
-            error: errors[key as keyof T] || prev[key].error
+            error: errors[key as keyof T] || prev[key as keyof T].error
           }
         }), {} as Record<keyof T, FormField>)
       );
@@ -113,7 +112,7 @@ export const useEnhancedForm = <T extends Record<string, any>>(
     try {
       const values = Object.keys(fields).reduce((acc, key) => ({
         ...acc,
-        [key]: fields[key].value
+        [key]: fields[key as keyof T].value
       }), {} as T);
 
       await onSubmit(values);
@@ -150,17 +149,17 @@ export const useEnhancedForm = <T extends Record<string, any>>(
 
   const values = Object.keys(fields).reduce((acc, key) => ({
     ...acc,
-    [key]: fields[key].value
+    [key]: fields[key as keyof T].value
   }), {} as T);
 
   const errors = Object.keys(fields).reduce((acc, key) => ({
     ...acc,
-    [key]: fields[key].error
+    [key]: fields[key as keyof T].error
   }), {} as Partial<Record<keyof T, string>>);
 
   const touched = Object.keys(fields).reduce((acc, key) => ({
     ...acc,
-    [key]: fields[key].touched
+    [key]: fields[key as keyof T].touched
   }), {} as Record<keyof T, boolean>);
 
   const isValid = Object.keys(errors).every(key => !errors[key as keyof T]);

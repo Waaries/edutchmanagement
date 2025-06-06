@@ -12,7 +12,8 @@ import NotificationDebugger from "@/components/debug/NotificationDebugger";
 import ProductionAnalyticsDebugger from "@/components/ProductionAnalyticsDebugger";
 import SectionErrorBoundary from "@/components/ui/section-error-boundary";
 import { useAuth } from "@/contexts/AuthContext";
-import { useAccessibility, useResponsive, useViewportHeight } from "@/hooks/use-accessibility";
+import { useAccessibility } from "@/hooks/use-accessibility";
+import { useResponsive, useViewportHeight } from "@/hooks/use-responsive";
 
 const Index = () => {
   const mounted = useRef(false);
