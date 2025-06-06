@@ -3,6 +3,7 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { RealtimeChannel } from '@supabase/supabase-js';
 
 type DebugMode = 'none' | 'visible' | 'expanded';
 
@@ -71,6 +72,7 @@ const NotificationDebugger: React.FC = () => {
           console.log('[DEBUG] Test channel status:', status);
           setChannelStatus(status);
           
+          // Fix: Compare status as string instead of direct comparison with enum values
           if (status === 'SUBSCRIBED') {
             toast({
               title: 'Realtime Connection',
@@ -80,6 +82,7 @@ const NotificationDebugger: React.FC = () => {
             toast({
               title: 'Realtime Status',
               description: `Current status: ${status}`,
+              // Fix: Use string comparison for the variant condition
               variant: status === 'SUBSCRIBED' ? 'default' : 'destructive'
             });
           }
