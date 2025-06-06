@@ -1,148 +1,27 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
-
-type DebugMode = 'none' | 'visible' | 'expanded';
+import { useNotificationDebugger } from "@/hooks/use-notification-debugger";
+import DebugToggleButton from "./DebugToggleButton";
+import DebugControls from "./DebugControls";
+import { getStatusColor } from "./utils";
 
 const NotificationDebugger: React.FC = () => {
-  const { toast } = useToast();
-  const [debugMode, setDebugMode] = React.useState<DebugMode>('none');
-  const [channelStatus, setChannelStatus] = React.useState<string>('Unknown');
+  const {
+    debugMode,
+    channelStatus,
+    toggleDebugMode,
+    testContactNotification,
+    checkRealtimeStatus
+  } = useNotificationDebugger();
 
-  // Simple toggle for debug panel visibility
-  const toggleDebugMode = () => {
-    setDebugMode(current => {
-      switch(current) {
-        case 'none': return 'visible';
-        case 'visible': return 'expanded';
-        case 'expanded': return 'none';
-        default: return 'none';
-      }
-    });
-  };
-
-  // Test sending a contact message directly from the Supabase client
-  const testContactNotification = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('contact_messages')
-        .insert([{
-          name: 'Test User',
-          email: 'test@example.com',
-          message: 'This is a test message from the debug panel',
-          status: 'unread'
-        }])
-        .select();
-
-      if (error) {
-        console.error('[DEBUG] Error inserting test contact message:', error);
-        toast({
-          title: 'Error',
-          description: `Failed to send test notification: ${error.message}`,
-          variant: 'destructive'
-        });
-      } else {
-        console.log('[DEBUG] Successfully sent test contact message:', data);
-        toast({
-          title: 'Debug Success',
-          description: 'Test contact message created successfully'
-        });
-      }
-    } catch (err: any) {
-      console.error('[DEBUG] Exception when testing notification:', err);
-      toast({
-        title: 'Error',
-        description: `Exception: ${err.message}`,
-        variant: 'destructive'
-      });
-    }
-  };
-
-  // Check if real-time is working by checking the status of the admin-notifications channel
-  const checkRealtimeStatus = async () => {
-    try {
-      // Create a temporary channel to check if Supabase can establish a connection
-      const testChannel = supabase.channel('test-connection');
-      
-      testChannel
-        .subscribe((status) => {
-          console.log('[DEBUG] Test channel status:', status);
-          setChannelStatus(status);
-          
-          // Use direct string comparison
-          if (status === 'SUBSCRIBED') {
-            toast({
-              title: 'Realtime Connection',
-              description: 'Successfully connected to Supabase realtime'
-            });
-          } else {
-            toast({
-              title: 'Realtime Status',
-              description: `Current status: ${status}`,
-              variant: status === 'SUBSCRIBED' ? 'default' : 'destructive'
-            });
-          }
-          
-          // Remove the test channel after checking
-          setTimeout(() => {
-            supabase.removeChannel(testChannel);
-          }, 2000);
-        });
-    } catch (err: any) {
-      console.error('[DEBUG] Error checking realtime status:', err);
-      setChannelStatus('ERROR');
-      toast({
-        title: 'Realtime Error',
-        description: err.message,
-        variant: 'destructive'
-      });
-    }
-  };
-
-  // Helper function to determine status color
-  const getStatusColor = (status: string) => {
-    if (status === 'SUBSCRIBED') {
-      return 'text-green-500';
-    }
-    
-    const errorStates = ['TIMED_OUT', 'CLOSED', 'CHANNEL_ERROR'];
-    
-    if (errorStates.includes(status)) {
-      return 'text-red-500';
-    }
-    
-    return 'text-yellow-500';
-  };
-
-  // Debug panel is only shown in development mode
-  if (process.env.NODE_ENV !== 'development' && debugMode === 'none') {
-    // Show only the toggle button in production
-    return (
-      <div className="fixed bottom-4 right-4 z-50">
-        <Button 
-          variant="outline" 
-          size="sm"
-          className="opacity-30 hover:opacity-100"
-          onClick={toggleDebugMode}
-        >
-          Debug
-        </Button>
-      </div>
-    );
-  }
-
+  // Show only toggle button if debug mode is 'none'
   if (debugMode === 'none') {
     return (
-      <div className="fixed bottom-4 right-4 z-50">
-        <Button 
-          variant="outline" 
-          size="sm"
-          onClick={toggleDebugMode}
-        >
-          Debug Notifications
-        </Button>
-      </div>
+      <DebugToggleButton 
+        debugMode={debugMode} 
+        onToggle={toggleDebugMode} 
+      />
     );
   }
 
@@ -156,40 +35,14 @@ const NotificationDebugger: React.FC = () => {
           </Button>
         </div>
         
-        <div className="space-y-2">
-          <div className="text-sm">
-            <span>Realtime Status: </span>
-            <span className={`font-medium ${getStatusColor(channelStatus)}`}>
-              {channelStatus}
-            </span>
-          </div>
-          
-          <Button
-            size="sm"
-            variant="outline"
-            className="w-full"
-            onClick={checkRealtimeStatus}
-          >
-            Check Realtime Status
-          </Button>
-          
-          {debugMode === 'expanded' && (
-            <>
-              <Button
-                size="sm"
-                variant="outline"
-                className="w-full"
-                onClick={testContactNotification}
-              >
-                Send Test Contact Message
-              </Button>
-              
-              <div className="text-xs mt-2 text-gray-500">
-                <p>Test messages will trigger notifications if correctly configured.</p>
-              </div>
-            </>
-          )}
-        </div>
+        <DebugControls
+          debugMode={debugMode}
+          channelStatus={channelStatus}
+          onToggleDebugMode={toggleDebugMode}
+          onCheckRealtimeStatus={checkRealtimeStatus}
+          onTestContactNotification={testContactNotification}
+          getStatusColor={getStatusColor}
+        />
       </div>
     </div>
   );
