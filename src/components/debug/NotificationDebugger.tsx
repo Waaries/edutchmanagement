@@ -3,7 +3,7 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { RealtimeChannel } from '@supabase/supabase-js';
+import { RealtimeChannel, REALTIME_SUBSCRIBE_STATES } from '@supabase/supabase-js';
 
 type DebugMode = 'none' | 'visible' | 'expanded';
 
@@ -72,8 +72,8 @@ const NotificationDebugger: React.FC = () => {
           console.log('[DEBUG] Test channel status:', status);
           setChannelStatus(status);
           
-          // Fix: Compare status as string instead of direct comparison with enum values
-          if (status === 'SUBSCRIBED') {
+          // Fix: Use the correct REALTIME_SUBSCRIBE_STATES enum for comparison
+          if (status === REALTIME_SUBSCRIBE_STATES.SUBSCRIBED) {
             toast({
               title: 'Realtime Connection',
               description: 'Successfully connected to Supabase realtime'
@@ -82,8 +82,8 @@ const NotificationDebugger: React.FC = () => {
             toast({
               title: 'Realtime Status',
               description: `Current status: ${status}`,
-              // Fix: Use string comparison for the variant condition
-              variant: status === 'SUBSCRIBED' ? 'default' : 'destructive'
+              // Fix: Use the enum for the variant condition
+              variant: status === REALTIME_SUBSCRIBE_STATES.SUBSCRIBED ? 'default' : 'destructive'
             });
           }
           
@@ -148,8 +148,10 @@ const NotificationDebugger: React.FC = () => {
           <div className="text-sm">
             <span>Realtime Status: </span>
             <span className={`font-medium ${
-              channelStatus === 'SUBSCRIBED' ? 'text-green-500' : 
-              channelStatus === 'TIMED_OUT' || channelStatus === 'CLOSED' || channelStatus === 'ERROR' ? 'text-red-500' : 
+              channelStatus === REALTIME_SUBSCRIBE_STATES.SUBSCRIBED ? 'text-green-500' : 
+              channelStatus === REALTIME_SUBSCRIBE_STATES.TIMED_OUT || 
+              channelStatus === REALTIME_SUBSCRIBE_STATES.CLOSED || 
+              channelStatus === REALTIME_SUBSCRIBE_STATES.CHANNEL_ERROR ? 'text-red-500' : 
               'text-yellow-500'
             }`}>{channelStatus}</span>
           </div>
