@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -113,7 +114,8 @@ const NotificationDebugger: React.FC = () => {
       REALTIME_SUBSCRIBE_STATES.CHANNEL_ERROR
     ];
     
-    if (errorStates.includes(status as any)) {
+    // Convert enum values to strings for comparison
+    if (errorStates.some(state => state === status)) {
       return 'text-red-500';
     }
     
