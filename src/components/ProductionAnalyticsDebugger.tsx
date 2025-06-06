@@ -21,29 +21,41 @@ const ProductionAnalyticsDebugger: React.FC = () => {
   }, []);
 
   const refreshDebugInfo = () => {
-    const info = getDebugInfo();
-    setDebugInfo(info);
-    console.log('Analytics Debug Info:', info);
+    try {
+      const info = getDebugInfo();
+      setDebugInfo(info);
+      console.log('Analytics Debug Info:', info);
+    } catch (error) {
+      console.error('Error getting debug info:', error);
+    }
   };
 
   const testAnalytics = () => {
-    // Test event tracking
-    if ((window as any).gtag) {
-      (window as any).gtag('event', 'debug_test', {
-        event_category: 'debug',
-        event_label: 'manual_test',
-        value: 1
-      });
-      console.log('Test analytics event sent');
-    } else {
-      console.error('gtag function not available');
+    try {
+      // Test event tracking
+      if ((window as any).gtag) {
+        (window as any).gtag('event', 'debug_test', {
+          event_category: 'debug',
+          event_label: 'manual_test',
+          value: 1
+        });
+        console.log('Test analytics event sent');
+      } else {
+        console.error('gtag function not available');
+      }
+    } catch (error) {
+      console.error('Error sending test event:', error);
     }
   };
 
   const copyDebugInfo = () => {
     if (debugInfo) {
-      navigator.clipboard.writeText(JSON.stringify(debugInfo, null, 2));
-      console.log('Debug info copied to clipboard');
+      try {
+        navigator.clipboard.writeText(JSON.stringify(debugInfo, null, 2));
+        console.log('Debug info copied to clipboard');
+      } catch (error) {
+        console.error('Error copying to clipboard:', error);
+      }
     }
   };
 
@@ -106,7 +118,6 @@ const ProductionAnalyticsDebugger: React.FC = () => {
                   <div><strong>Hostname:</strong> {debugInfo.hostname}</div>
                   <div><strong>gtag exists:</strong> {debugInfo.gtagExists ? '✅' : '❌'}</div>
                   <div><strong>gtag ready:</strong> {debugInfo.gtagReady ? '✅' : '❌'}</div>
-                  <div><strong>Initialized:</strong> {debugInfo.analyticsInitialized ? '✅' : '❌'}</div>
                   <div><strong>Has consent:</strong> {debugInfo.hasConsent ? '✅' : '❌'}</div>
                   <div><strong>Measurement ID:</strong> {debugInfo.measurementId}</div>
                   {debugInfo.debugLog && debugInfo.debugLog.length > 0 && (

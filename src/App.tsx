@@ -16,7 +16,12 @@ import CookiePolicy from "./pages/CookiePolicy";
 import CookieConsent from "@/components/CookieConsent";
 
 function AppContent() {
-  useAnalytics();
+  // Initialize analytics hook with error handling
+  try {
+    useAnalytics();
+  } catch (error) {
+    console.error('Analytics initialization error:', error);
+  }
 
   return (
     <>

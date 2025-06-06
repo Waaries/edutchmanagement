@@ -6,18 +6,32 @@ import { isGtagReady } from './analytics-script-loader';
 
 // Debug function for production troubleshooting
 export const getAnalyticsDebugInfo = () => {
-  const info = {
-    environment: isProduction() ? 'production' : 'development',
-    hostname: window.location.hostname,
-    gtagExists: typeof window.gtag !== 'undefined',
-    gtagReady: isGtagReady(),
-    hasConsent: hasAnalyticsConsent(),
-    measurementId: GA_MEASUREMENT_ID,
-    debugLog: (window as any).analyticsDebugLog || []
-  };
-  
-  analyticsLog('Analytics debug info:', info);
-  return info;
+  try {
+    const info = {
+      environment: isProduction() ? 'production' : 'development',
+      hostname: typeof window !== 'undefined' ? window.location.hostname : 'unknown',
+      gtagExists: typeof window !== 'undefined' && typeof window.gtag !== 'undefined',
+      gtagReady: isGtagReady(),
+      hasConsent: hasAnalyticsConsent(),
+      measurementId: GA_MEASUREMENT_ID,
+      debugLog: typeof window !== 'undefined' ? (window as any).analyticsDebugLog || [] : []
+    };
+    
+    analyticsLog('Analytics debug info:', info);
+    return info;
+  } catch (error) {
+    analyticsLog('Error getting analytics debug info:', error);
+    return {
+      environment: 'unknown',
+      hostname: 'unknown',
+      gtagExists: false,
+      gtagReady: false,
+      hasConsent: false,
+      measurementId: GA_MEASUREMENT_ID,
+      debugLog: [],
+      error: error instanceof Error ? error.message : 'Unknown error'
+    };
+  }
 };
 
 // Expose debug function globally in production
