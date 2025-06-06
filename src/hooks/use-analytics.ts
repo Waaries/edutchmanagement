@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { 
   initializeAnalytics, 
@@ -17,6 +17,8 @@ import { hasAnalyticsConsent } from '@/lib/cookie-utils';
 export const useAnalytics = () => {
   const location = useLocation();
   const [initialized, setInitialized] = useState(false);
+  const initializationAttempted = useRef(false);
+  const timeoutRef = useRef<NodeJS.Timeout>();
 
   // Production environment detection
   const isProduction = () => {
@@ -24,9 +26,16 @@ export const useAnalytics = () => {
            window.location.hostname === 'www.edutchmanagement.nl';
   };
 
-  // Initialize analytics on mount
+  // Initialize analytics on mount - only once
   useEffect(() => {
-    console.log('[Analytics Hook] Initializing analytics hook');
+    // Prevent multiple initialization attempts
+    if (initializationAttempted.current) {
+      console.log('[Analytics Hook] Already attempted initialization, skipping');
+      return;
+    }
+    
+    initializationAttempted.current = true;
+    console.log('[Analytics Hook] Initializing analytics hook (first time)');
     
     // Only initialize in browser environment
     if (typeof window === 'undefined') return;
@@ -42,7 +51,7 @@ export const useAnalytics = () => {
           setInitialized(true);
         } else {
           console.log('[Analytics Hook] Waiting for Google Analytics in production...');
-          setTimeout(initAttempt, 200);
+          timeoutRef.current = setTimeout(initAttempt, 200);
         }
       };
       
@@ -57,17 +66,20 @@ export const useAnalytics = () => {
           setInitialized(true);
         } else {
           console.log('[Analytics Hook] Google Analytics not ready yet, retrying...');
-          setTimeout(checkAndInit, 100);
+          timeoutRef.current = setTimeout(checkAndInit, 100);
         }
       };
       
-      setTimeout(checkAndInit, 500);
+      timeoutRef.current = setTimeout(checkAndInit, 500);
     }
 
     return () => {
       console.log('[Analytics Hook] Cleaning up analytics hook');
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
     };
-  }, []);
+  }, []); // Empty dependency array - only run once
 
   // Track page views on route changes
   useEffect(() => {

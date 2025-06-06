@@ -1,5 +1,5 @@
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Features from "@/components/Features";
@@ -22,25 +22,26 @@ const Index = () => {
   const { isMobile } = useResponsive();
   useViewportHeight(); // Initialize viewport height handling
 
+  // Memoize scroll handler to prevent unnecessary re-creation
+  const handleScroll = useCallback(() => {
+    const reveals = document.querySelectorAll('.reveal');
+    reveals.forEach(element => {
+      const windowHeight = window.innerHeight;
+      const revealTop = element.getBoundingClientRect().top;
+      const revealPoint = isMobile ? 100 : 150; // Adjust for mobile
+      
+      if(revealTop < windowHeight - revealPoint) {
+        element.classList.add('active');
+      }
+    });
+  }, [isMobile]);
+
   useEffect(() => {
     // Update the document title
     document.title = "eDutch Management | Professionele Bedrijfsadressen";
     
     // Announce page load for screen readers
     announce("Welkom bij eDutch Management. Hoofdpagina geladen.");
-
-    const handleScroll = () => {
-      const reveals = document.querySelectorAll('.reveal');
-      reveals.forEach(element => {
-        const windowHeight = window.innerHeight;
-        const revealTop = element.getBoundingClientRect().top;
-        const revealPoint = isMobile ? 100 : 150; // Adjust for mobile
-        
-        if(revealTop < windowHeight - revealPoint) {
-          element.classList.add('active');
-        }
-      });
-    };
 
     // Use passive listeners for better performance
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -65,7 +66,7 @@ const Index = () => {
     }
     
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [announce, isMobile]);
+  }, [announce, handleScroll]);
 
   return (
     <div className="min-h-screen w-full relative overflow-hidden">
