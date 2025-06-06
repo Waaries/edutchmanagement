@@ -2,7 +2,7 @@
 import { getCookie, hasAnalyticsConsent } from './cookie-utils';
 
 // Google Analytics configuration
-const GA_MEASUREMENT_ID = 'G-XXXXXXXXXX'; // Replace with your actual GA4 Measurement ID
+const GA_MEASUREMENT_ID = 'G-5X70ML3RM6'; // Updated with your actual GA4 Measurement ID
 
 // Track if analytics is initialized
 let analyticsInitialized = false;
@@ -43,7 +43,7 @@ export const initializeAnalytics = () => {
     });
 
     analyticsInitialized = true;
-    console.log('[Analytics] Google Analytics initialized successfully');
+    console.log('[Analytics] Google Analytics initialized successfully with ID:', GA_MEASUREMENT_ID);
   } catch (error) {
     console.error('[Analytics] Error initializing Google Analytics:', error);
     analyticsInitialized = false;
