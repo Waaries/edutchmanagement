@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -102,6 +101,25 @@ const NotificationDebugger: React.FC = () => {
     }
   };
 
+  // Helper function to determine status color
+  const getStatusColor = (status: string) => {
+    if (status === REALTIME_SUBSCRIBE_STATES.SUBSCRIBED) {
+      return 'text-green-500';
+    }
+    
+    const errorStates = [
+      REALTIME_SUBSCRIBE_STATES.TIMED_OUT,
+      REALTIME_SUBSCRIBE_STATES.CLOSED,
+      REALTIME_SUBSCRIBE_STATES.CHANNEL_ERROR
+    ];
+    
+    if (errorStates.includes(status as any)) {
+      return 'text-red-500';
+    }
+    
+    return 'text-yellow-500';
+  };
+
   // Debug panel is only shown in development mode
   if (process.env.NODE_ENV !== 'development' && debugMode === 'none') {
     // Show only the toggle button in production
@@ -146,13 +164,9 @@ const NotificationDebugger: React.FC = () => {
         <div className="space-y-2">
           <div className="text-sm">
             <span>Realtime Status: </span>
-            <span className={`font-medium ${
-              channelStatus === REALTIME_SUBSCRIBE_STATES.SUBSCRIBED ? 'text-green-500' : 
-              channelStatus === REALTIME_SUBSCRIBE_STATES.TIMED_OUT || 
-              channelStatus === REALTIME_SUBSCRIBE_STATES.CLOSED || 
-              channelStatus === REALTIME_SUBSCRIBE_STATES.CHANNEL_ERROR ? 'text-red-500' : 
-              'text-yellow-500'
-            }`}>{channelStatus}</span>
+            <span className={`font-medium ${getStatusColor(channelStatus)}`}>
+              {channelStatus}
+            </span>
           </div>
           
           <Button
