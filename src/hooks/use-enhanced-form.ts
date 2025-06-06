@@ -99,10 +99,11 @@ export const useEnhancedForm = <T extends Record<string, any>>(
         const newFields = { ...prev };
         Object.keys(prev).forEach(key => {
           const fieldKey = key as keyof T;
+          const errorValue = errors[fieldKey as keyof typeof errors];
           newFields[fieldKey] = {
             ...prev[fieldKey],
             touched: true,
-            error: errors[fieldKey] || prev[fieldKey].error
+            error: errorValue || prev[fieldKey].error
           };
         });
         return newFields;
