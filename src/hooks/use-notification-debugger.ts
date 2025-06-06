@@ -70,17 +70,23 @@ export const useNotificationDebugger = () => {
           console.log('[DEBUG] Test channel status:', status);
           setChannelStatus(status);
           
-          // Use the correct enum comparison
+          // Handle different status values correctly
           if (status === REALTIME_SUBSCRIBE_STATES.SUBSCRIBED) {
             toast({
               title: 'Realtime Connection',
               description: 'Successfully connected to Supabase realtime'
             });
           } else {
+            const isErrorState = [
+              REALTIME_SUBSCRIBE_STATES.TIMED_OUT,
+              REALTIME_SUBSCRIBE_STATES.CLOSED,
+              REALTIME_SUBSCRIBE_STATES.CHANNEL_ERROR
+            ].includes(status);
+            
             toast({
               title: 'Realtime Status',
               description: `Current status: ${status}`,
-              variant: status === REALTIME_SUBSCRIBE_STATES.SUBSCRIBED ? 'default' : 'destructive'
+              variant: isErrorState ? 'destructive' : 'default'
             });
           }
           
