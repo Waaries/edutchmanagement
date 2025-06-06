@@ -17,8 +17,8 @@ const EnhancedLoading: React.FC<EnhancedLoadingProps> = ({
   fullScreen = false 
 }) => {
   const containerClasses = fullScreen 
-    ? "fixed inset-0 bg-white/80 backdrop-blur-sm z-50 flex items-center justify-center"
-    : "flex items-center justify-center p-4";
+    ? "fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center"
+    : "flex items-center justify-center p-8";
 
   return (
     <div 
@@ -27,11 +27,15 @@ const EnhancedLoading: React.FC<EnhancedLoadingProps> = ({
       aria-live="polite"
       aria-label={message}
     >
-      <div className="text-center">
-        <LoadingSpinner size={size} />
-        <p className="mt-2 text-sm text-gray-600 font-medium">
-          {message}
-        </p>
+      <div className="text-center space-y-4">
+        <div className="flex justify-center">
+          <LoadingSpinner size={size} />
+        </div>
+        {message && (
+          <p className="text-sm text-muted-foreground font-medium max-w-sm">
+            {message}
+          </p>
+        )}
       </div>
     </div>
   );

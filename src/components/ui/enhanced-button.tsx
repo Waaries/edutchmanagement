@@ -28,8 +28,8 @@ const EnhancedButton: React.FC<EnhancedButtonProps> = ({
       size={size}
       disabled={disabled || loading}
       className={cn(
-        "transition-all duration-200",
-        loading && "cursor-not-allowed",
+        "relative overflow-hidden",
+        loading && "cursor-not-allowed opacity-90",
         className
       )}
       aria-busy={loading}
@@ -37,12 +37,17 @@ const EnhancedButton: React.FC<EnhancedButtonProps> = ({
       {...props}
     >
       {loading && (
-        <Loader2 
-          className="mr-2 h-4 w-4 animate-spin" 
-          aria-hidden="true"
-        />
+        <div className="absolute inset-0 bg-current opacity-10 animate-pulse" />
       )}
-      {loading && loadingText ? loadingText : children}
+      <div className={cn("flex items-center gap-2", loading && "opacity-80")}>
+        {loading && (
+          <Loader2 
+            className="h-4 w-4 animate-spin" 
+            aria-hidden="true"
+          />
+        )}
+        <span>{loading && loadingText ? loadingText : children}</span>
+      </div>
     </Button>
   );
 };

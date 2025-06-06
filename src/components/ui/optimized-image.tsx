@@ -44,13 +44,13 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
   }, [currentSrc, fallbackSrc, onError]);
 
   return (
-    <div className={cn("relative overflow-hidden", className)}>
+    <div className={cn("relative overflow-hidden bg-muted", className)}>
       {isLoading && (
         <div 
-          className="absolute inset-0 bg-gray-100 animate-pulse flex items-center justify-center"
+          className="absolute inset-0 bg-muted animate-pulse flex items-center justify-center"
           aria-hidden="true"
         >
-          <div className="w-8 h-8 bg-gray-200 rounded animate-pulse" />
+          <div className="w-8 h-8 bg-muted-foreground/20 rounded-full animate-pulse" />
         </div>
       )}
       
@@ -61,9 +61,8 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
         height={height}
         loading={priority ? "eager" : "lazy"}
         className={cn(
-          "transition-opacity duration-300",
+          "w-full h-full object-cover transition-opacity duration-300",
           isLoading ? "opacity-0" : "opacity-100",
-          hasError ? "filter grayscale" : "",
           className
         )}
         onLoad={handleLoad}
@@ -71,9 +70,12 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
         role="img"
       />
       
-      {hasError && (
-        <div className="absolute inset-0 bg-gray-100 flex items-center justify-center text-gray-500 text-sm">
-          Afbeelding niet beschikbaar
+      {hasError && currentSrc === fallbackSrc && (
+        <div className="absolute inset-0 bg-muted flex items-center justify-center text-muted-foreground text-sm p-4 text-center">
+          <div>
+            <div className="w-12 h-12 bg-muted-foreground/20 rounded-full mx-auto mb-2" />
+            Afbeelding niet beschikbaar
+          </div>
         </div>
       )}
     </div>
