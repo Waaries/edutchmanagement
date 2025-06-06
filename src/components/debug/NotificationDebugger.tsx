@@ -72,8 +72,8 @@ const NotificationDebugger: React.FC = () => {
           console.log('[DEBUG] Test channel status:', status);
           setChannelStatus(status);
           
-          // Use enum comparison
-          if (status === REALTIME_SUBSCRIBE_STATES.SUBSCRIBED) {
+          // Use direct string comparison
+          if (status === 'SUBSCRIBED') {
             toast({
               title: 'Realtime Connection',
               description: 'Successfully connected to Supabase realtime'
@@ -82,7 +82,7 @@ const NotificationDebugger: React.FC = () => {
             toast({
               title: 'Realtime Status',
               description: `Current status: ${status}`,
-              variant: status === REALTIME_SUBSCRIBE_STATES.SUBSCRIBED ? 'default' : 'destructive'
+              variant: status === 'SUBSCRIBED' ? 'default' : 'destructive'
             });
           }
           
@@ -104,18 +104,13 @@ const NotificationDebugger: React.FC = () => {
 
   // Helper function to determine status color
   const getStatusColor = (status: string) => {
-    if (status === REALTIME_SUBSCRIBE_STATES.SUBSCRIBED) {
+    if (status === 'SUBSCRIBED') {
       return 'text-green-500';
     }
     
-    const errorStates = [
-      REALTIME_SUBSCRIBE_STATES.TIMED_OUT,
-      REALTIME_SUBSCRIBE_STATES.CLOSED,
-      REALTIME_SUBSCRIBE_STATES.CHANNEL_ERROR
-    ];
+    const errorStates = ['TIMED_OUT', 'CLOSED', 'CHANNEL_ERROR'];
     
-    // Convert enum values to strings for comparison
-    if (errorStates.some(state => state === status)) {
+    if (errorStates.includes(status)) {
       return 'text-red-500';
     }
     
