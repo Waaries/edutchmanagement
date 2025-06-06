@@ -1,9 +1,7 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { REALTIME_SUBSCRIBE_STATES } from "@supabase/supabase-js";
 
 type DebugMode = 'none' | 'visible' | 'expanded';
 
