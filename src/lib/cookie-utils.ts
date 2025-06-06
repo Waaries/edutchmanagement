@@ -1,4 +1,3 @@
-
 // Cookie management utilities
 
 export const setCookie = (name: string, value: string, days: number = 365) => {
@@ -73,18 +72,14 @@ export const setConsentCookies = (consentType: 'all' | 'essential') => {
     setCookie('analyticsEnabled', 'true');
     
     // Initialize analytics if consent is granted
-    import('./analytics').then(({ initializeAnalytics, enableAnalytics }) => {
+    import('./analytics').then(({ enableAnalytics, initializeAnalytics }) => {
       // Ensure we're in browser environment
       if (typeof window !== 'undefined') {
-        if (typeof window.gtag !== 'undefined') {
+        // Re-initialize analytics with consent
+        setTimeout(async () => {
+          await initializeAnalytics();
           enableAnalytics();
-          // Force page view tracking after enabling
-          setTimeout(() => {
-            initializeAnalytics();
-          }, 500);
-        } else {
-          initializeAnalytics();
-        }
+        }, 100);
       }
     });
     

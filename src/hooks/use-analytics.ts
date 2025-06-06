@@ -13,16 +13,12 @@ import {
   getAnalyticsDebugInfo
 } from '@/lib/analytics';
 import { hasAnalyticsConsent } from '@/lib/cookie-utils';
+import { isProduction } from '@/lib/analytics-config';
+import { shouldTrackAnalytics } from '@/lib/analytics-consent';
 
 export const useAnalytics = () => {
   const location = useLocation();
   const [initialized, setInitialized] = useState(false);
-
-  // Production environment detection
-  const isProduction = () => {
-    return window.location.hostname === 'edutchmanagement.nl' || 
-           window.location.hostname === 'www.edutchmanagement.nl';
-  };
 
   // Initialize analytics on mount
   useEffect(() => {
@@ -31,38 +27,23 @@ export const useAnalytics = () => {
     // Only initialize in browser environment
     if (typeof window === 'undefined') return;
     
-    // For production, use more aggressive initialization
-    if (isProduction()) {
-      console.log('[Analytics Hook] Production environment detected - forcing initialization');
-      
-      const initAttempt = () => {
-        if (isAnalyticsInitialized()) {
-          console.log('[Analytics Hook] Google Analytics ready in production');
-          forceInitializeAnalytics();
-          setInitialized(true);
+    const initAnalytics = async () => {
+      try {
+        if (isProduction()) {
+          console.log('[Analytics Hook] Production environment detected');
+          await forceInitializeAnalytics();
         } else {
-          console.log('[Analytics Hook] Waiting for Google Analytics in production...');
-          setTimeout(initAttempt, 200);
+          console.log('[Analytics Hook] Development environment');
+          await initializeAnalytics();
         }
-      };
-      
-      // Start immediately and retry
-      initAttempt();
-    } else {
-      // Development environment - use original logic
-      const checkAndInit = () => {
-        if (isAnalyticsInitialized()) {
-          console.log('[Analytics Hook] Google Analytics is ready, initializing...');
-          initializeAnalytics();
-          setInitialized(true);
-        } else {
-          console.log('[Analytics Hook] Google Analytics not ready yet, retrying...');
-          setTimeout(checkAndInit, 100);
-        }
-      };
-      
-      setTimeout(checkAndInit, 500);
-    }
+        setInitialized(true);
+      } catch (error) {
+        console.error('[Analytics Hook] Failed to initialize analytics:', error);
+      }
+    };
+
+    // Start initialization with a small delay to ensure DOM is ready
+    setTimeout(initAnalytics, 100);
 
     return () => {
       console.log('[Analytics Hook] Cleaning up analytics hook');
@@ -71,80 +52,68 @@ export const useAnalytics = () => {
 
   // Track page views on route changes
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === 'undefined' || !initialized) return;
     
     const trackPageViewDelayed = () => {
-      const shouldTrack = isProduction() || hasAnalyticsConsent();
-      
-      if (shouldTrack && initialized && isAnalyticsInitialized()) {
+      if (shouldTrackAnalytics() && isAnalyticsInitialized()) {
         console.log(`[Analytics Hook] Tracking page view: ${location.pathname}`);
         trackPageView(location.pathname + location.search, document.title);
       } else {
-        console.log(`[Analytics Hook] Skipping page view - production: ${isProduction()}, consent: ${hasAnalyticsConsent()}, initialized: ${initialized}, gtag ready: ${isAnalyticsInitialized()}`);
+        console.log(`[Analytics Hook] Skipping page view - should track: ${shouldTrackAnalytics()}, initialized: ${isAnalyticsInitialized()}`);
       }
     };
 
-    // Shorter delay for production
-    const delay = isProduction() ? 500 : 1000;
-    const timer = setTimeout(trackPageViewDelayed, delay);
+    // Delay page view tracking to ensure analytics is ready
+    const timer = setTimeout(trackPageViewDelayed, 500);
     
     return () => clearTimeout(timer);
   }, [location, initialized]);
 
-  // Enhanced tracking functions with production-aware logging
+  // Enhanced tracking functions
   const enhancedTrackEvent = (eventName: string, parameters?: Record<string, any>) => {
     if (typeof window === 'undefined') return;
     
-    const shouldTrack = isProduction() || hasAnalyticsConsent();
-    
-    if (shouldTrack && isAnalyticsInitialized()) {
+    if (shouldTrackAnalytics() && isAnalyticsInitialized()) {
       console.log(`[Analytics Hook] Tracking event: ${eventName}`, parameters);
       trackEvent(eventName, parameters);
     } else {
-      console.log(`[Analytics Hook] Skipped tracking event: ${eventName} - production: ${isProduction()}, consent: ${hasAnalyticsConsent()}, gtag ready: ${isAnalyticsInitialized()}`);
+      console.log(`[Analytics Hook] Skipped tracking event: ${eventName}`);
     }
   };
 
   const enhancedTrackFormSubmission = (formName: string, success: boolean = true) => {
     if (typeof window === 'undefined') return;
     
-    const shouldTrack = isProduction() || hasAnalyticsConsent();
-    
-    if (shouldTrack && isAnalyticsInitialized()) {
+    if (shouldTrackAnalytics() && isAnalyticsInitialized()) {
       console.log(`[Analytics Hook] Tracking form submission: ${formName}, success: ${success}`);
       trackFormSubmission(formName, success);
     } else {
-      console.log(`[Analytics Hook] Skipped tracking form: ${formName} - no consent or not initialized`);
+      console.log(`[Analytics Hook] Skipped tracking form: ${formName}`);
     }
   };
 
   const enhancedTrackButtonClick = (buttonName: string, location?: string) => {
     if (typeof window === 'undefined') return;
     
-    const shouldTrack = isProduction() || hasAnalyticsConsent();
-    
-    if (shouldTrack && isAnalyticsInitialized()) {
+    if (shouldTrackAnalytics() && isAnalyticsInitialized()) {
       console.log(`[Analytics Hook] Tracking button click: ${buttonName}`);
       trackButtonClick(buttonName, location);
     } else {
-      console.log(`[Analytics Hook] Skipped tracking button: ${buttonName} - no consent or not initialized`);
+      console.log(`[Analytics Hook] Skipped tracking button: ${buttonName}`);
     }
   };
 
   const enhancedTrackNavigation = (destination: string, source?: string) => {
     if (typeof window === 'undefined') return;
     
-    const shouldTrack = isProduction() || hasAnalyticsConsent();
-    
-    if (shouldTrack && isAnalyticsInitialized()) {
+    if (shouldTrackAnalytics() && isAnalyticsInitialized()) {
       console.log(`[Analytics Hook] Tracking navigation: ${source} → ${destination}`);
       trackNavigation(destination, source);
     } else {
-      console.log(`[Analytics Hook] Skipped tracking navigation - no consent or not initialized`);
+      console.log(`[Analytics Hook] Skipped tracking navigation`);
     }
   };
 
-  // Expose debug function for production troubleshooting
   const getDebugInfo = () => {
     if (typeof getAnalyticsDebugInfo === 'function') {
       return getAnalyticsDebugInfo();
