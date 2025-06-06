@@ -9,32 +9,42 @@ let analyticsInitialized = false;
 
 // Check if analytics is initialized
 export const isAnalyticsInitialized = (): boolean => {
-  return typeof window.gtag !== 'undefined';
+  return typeof window.gtag !== 'undefined' && (window as any).gtagReady === true;
 };
 
-// Initialize Google Analytics (now just checks if it's already loaded)
+// Initialize Google Analytics
 export const initializeAnalytics = () => {
-  if (!hasAnalyticsConsent()) {
-    console.log('[Analytics] Analytics consent not granted, disabling analytics');
-    if (isAnalyticsInitialized()) {
-      disableAnalytics();
-    }
+  console.log('[Analytics] Initializing analytics...');
+  
+  if (!isAnalyticsInitialized()) {
+    console.log('[Analytics] Google Analytics not yet loaded, waiting...');
+    // Wait for gtag to be ready
+    const checkGtag = () => {
+      if (isAnalyticsInitialized()) {
+        initializeAnalytics();
+      } else {
+        setTimeout(checkGtag, 100);
+      }
+    };
+    setTimeout(checkGtag, 100);
     return;
   }
 
-  if (isAnalyticsInitialized()) {
-    console.log('[Analytics] Google Analytics already loaded, enabling consent');
-    enableAnalytics();
-    analyticsInitialized = true;
-  } else {
-    console.log('[Analytics] Google Analytics not yet loaded');
+  if (!hasAnalyticsConsent()) {
+    console.log('[Analytics] Analytics consent not granted, disabling analytics');
+    disableAnalytics();
+    return;
   }
+
+  console.log('[Analytics] Enabling Google Analytics with consent');
+  enableAnalytics();
+  analyticsInitialized = true;
 };
 
 // Track page views
 export const trackPageView = (path: string, title?: string) => {
   if (!hasAnalyticsConsent() || !isAnalyticsInitialized()) {
-    console.log(`[Analytics] Skipping page view tracking for ${path}`);
+    console.log(`[Analytics] Skipping page view tracking for ${path} - consent: ${hasAnalyticsConsent()}, initialized: ${isAnalyticsInitialized()}`);
     return;
   }
 
@@ -52,6 +62,7 @@ export const trackPageView = (path: string, title?: string) => {
 // Track custom events
 export const trackEvent = (eventName: string, parameters?: Record<string, any>) => {
   if (!hasAnalyticsConsent() || !isAnalyticsInitialized()) {
+    console.log(`[Analytics] Skipping event tracking for ${eventName}`);
     return;
   }
 
@@ -60,6 +71,7 @@ export const trackEvent = (eventName: string, parameters?: Record<string, any>) 
       event_category: 'engagement',
       ...parameters,
     });
+    console.log(`[Analytics] Event tracked: ${eventName}`, parameters);
   } catch (error) {
     console.error(`[Analytics] Error tracking event ${eventName}:`, error);
   }
