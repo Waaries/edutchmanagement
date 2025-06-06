@@ -72,8 +72,8 @@ const NotificationDebugger: React.FC = () => {
           console.log('[DEBUG] Test channel status:', status);
           setChannelStatus(status);
           
-          // Fix: Use the correct REALTIME_SUBSCRIBE_STATES enum for comparison
-          if (status === REALTIME_SUBSCRIBE_STATES.SUBSCRIBED) {
+          // Fix: Use string comparison since status is returned as a string
+          if (status === 'SUBSCRIBED') {
             toast({
               title: 'Realtime Connection',
               description: 'Successfully connected to Supabase realtime'
@@ -82,8 +82,8 @@ const NotificationDebugger: React.FC = () => {
             toast({
               title: 'Realtime Status',
               description: `Current status: ${status}`,
-              // Fix: Use the enum for the variant condition
-              variant: status === REALTIME_SUBSCRIBE_STATES.SUBSCRIBED ? 'default' : 'destructive'
+              // Use string comparison for variant
+              variant: status === 'SUBSCRIBED' ? 'default' : 'destructive'
             });
           }
           
@@ -148,10 +148,10 @@ const NotificationDebugger: React.FC = () => {
           <div className="text-sm">
             <span>Realtime Status: </span>
             <span className={`font-medium ${
-              channelStatus === REALTIME_SUBSCRIBE_STATES.SUBSCRIBED ? 'text-green-500' : 
-              channelStatus === REALTIME_SUBSCRIBE_STATES.TIMED_OUT || 
-              channelStatus === REALTIME_SUBSCRIBE_STATES.CLOSED || 
-              channelStatus === REALTIME_SUBSCRIBE_STATES.CHANNEL_ERROR ? 'text-red-500' : 
+              channelStatus === 'SUBSCRIBED' ? 'text-green-500' : 
+              channelStatus === 'TIMED_OUT' || 
+              channelStatus === 'CLOSED' || 
+              channelStatus === 'CHANNEL_ERROR' ? 'text-red-500' : 
               'text-yellow-500'
             }`}>{channelStatus}</span>
           </div>
