@@ -95,16 +95,18 @@ export const useEnhancedForm = <T extends Record<string, any>>(
 
     if (hasErrors) {
       // Mark all fields as touched and set errors
-      setFields(prev => 
-        Object.keys(prev).reduce((acc, key) => ({
-          ...acc,
-          [key]: {
-            ...prev[key as keyof T],
+      setFields(prev => {
+        const newFields = { ...prev };
+        Object.keys(prev).forEach(key => {
+          const fieldKey = key as keyof T;
+          newFields[fieldKey] = {
+            ...prev[fieldKey],
             touched: true,
-            error: errors[key as keyof T] || prev[key as keyof T].error
-          }
-        }), {} as Record<keyof T, FormField>)
-      );
+            error: errors[fieldKey] || prev[fieldKey].error
+          };
+        });
+        return newFields;
+      });
       setIsSubmitting(false);
       return;
     }
