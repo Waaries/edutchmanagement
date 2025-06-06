@@ -92,7 +92,7 @@ const ImageLoader = ({
   return (
     <div 
       ref={containerRef}
-      className={cn("relative overflow-hidden bg-muted", className)}
+      className={cn("relative overflow-hidden", className)}
       style={{ aspectRatio }}
     >
       {!isLoaded && isIntersecting && (
@@ -110,29 +110,13 @@ const ImageLoader = ({
             onLoad={handleLoad}
             onError={handleError}
             className={cn(
-              "transition-opacity duration-300 w-full h-full object-cover",
-              isLoaded ? "opacity-100" : "opacity-0"
+              "transition-opacity duration-300",
+              isLoaded ? "opacity-100" : "opacity-0",
+              "w-full h-full object-cover"
             )}
             decoding="async"
           />
         </picture>
-      )}
-      
-      {hasError && (
-        <div className="absolute inset-0 bg-muted flex items-center justify-center text-muted-foreground text-sm p-4">
-          <div className="text-center">
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              className="h-8 w-8 mx-auto mb-2 text-muted-foreground/70"
-              fill="none" 
-              viewBox="0 0 24 24" 
-              stroke="currentColor"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            Afbeelding niet beschikbaar
-          </div>
-        </div>
       )}
     </div>
   );
