@@ -1,14 +1,75 @@
 
-// Cookie management utilities
+// Cookie management utilities with enhanced error handling and fallback support
+
+// Detect if we're in a preview/iframe environment
+const isInIframe = () => {
+  try {
+    return window.self !== window.top;
+  } catch (e) {
+    return true;
+  }
+};
+
+// Fallback storage for environments where cookies don't work
+const fallbackStorage = {
+  set: (key: string, value: string) => {
+    try {
+      localStorage.setItem(`cookie_fallback_${key}`, value);
+      console.log(`[Cookie Fallback] Set ${key}=${value} in localStorage`);
+    } catch (error) {
+      console.error(`[Cookie Fallback] Failed to set ${key}:`, error);
+    }
+  },
+  get: (key: string): string | null => {
+    try {
+      const value = localStorage.getItem(`cookie_fallback_${key}`);
+      console.log(`[Cookie Fallback] Get ${key}=${value} from localStorage`);
+      return value;
+    } catch (error) {
+      console.error(`[Cookie Fallback] Failed to get ${key}:`, error);
+      return null;
+    }
+  },
+  remove: (key: string) => {
+    try {
+      localStorage.removeItem(`cookie_fallback_${key}`);
+      console.log(`[Cookie Fallback] Removed ${key} from localStorage`);
+    } catch (error) {
+      console.error(`[Cookie Fallback] Failed to remove ${key}:`, error);
+    }
+  }
+};
 
 export const setCookie = (name: string, value: string, days: number = 365) => {
   const date = new Date();
   date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
   const expires = "; expires=" + date.toUTCString();
-  document.cookie = name + "=" + (value || "") + expires + "; path=/; SameSite=Strict";
   
-  // Debug logging
-  console.log(`[Cookie Debug] Set cookie: ${name}=${value}`);
+  // Use SameSite=Lax for better compatibility with preview environments
+  const cookieString = name + "=" + (value || "") + expires + "; path=/; SameSite=Lax";
+  
+  try {
+    document.cookie = cookieString;
+    
+    // Verify the cookie was actually set
+    const verification = getCookieDirectly(name);
+    if (verification === value) {
+      console.log(`[Cookie Debug] Successfully set cookie: ${name}=${value}`);
+    } else {
+      console.warn(`[Cookie Debug] Cookie verification failed for ${name}. Expected: ${value}, Got: ${verification}`);
+      
+      // Use fallback storage if cookie setting failed
+      if (isInIframe()) {
+        console.log(`[Cookie Debug] Iframe detected, using fallback storage for ${name}`);
+        fallbackStorage.set(name, value);
+      }
+    }
+  } catch (error) {
+    console.error(`[Cookie Debug] Error setting cookie ${name}:`, error);
+    
+    // Use fallback storage on error
+    fallbackStorage.set(name, value);
+  }
   
   // Trigger cookie change event for real-time updates
   window.dispatchEvent(new CustomEvent('cookieChange', { 
@@ -16,7 +77,8 @@ export const setCookie = (name: string, value: string, days: number = 365) => {
   }));
 };
 
-export const getCookie = (name: string): string | null => {
+// Direct cookie reading without fallback (for verification)
+const getCookieDirectly = (name: string): string | null => {
   const nameEQ = name + "=";
   const ca = document.cookie.split(';');
   for (let i = 0; i < ca.length; i++) {
@@ -27,10 +89,33 @@ export const getCookie = (name: string): string | null => {
   return null;
 };
 
-export const eraseCookie = (name: string) => {
-  document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT; SameSite=Strict;';
+export const getCookie = (name: string): string | null => {
+  // First try to get from actual cookies
+  const cookieValue = getCookieDirectly(name);
   
-  // Debug logging
+  if (cookieValue !== null) {
+    return cookieValue;
+  }
+  
+  // If cookie not found and we're in an iframe, try fallback storage
+  if (isInIframe()) {
+    const fallbackValue = fallbackStorage.get(name);
+    if (fallbackValue !== null) {
+      console.log(`[Cookie Debug] Using fallback value for ${name}: ${fallbackValue}`);
+      return fallbackValue;
+    }
+  }
+  
+  return null;
+};
+
+export const eraseCookie = (name: string) => {
+  // Remove from actual cookies
+  document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT; SameSite=Lax;';
+  
+  // Also remove from fallback storage
+  fallbackStorage.remove(name);
+  
   console.log(`[Cookie Debug] Erased cookie: ${name}`);
   
   // Trigger cookie change event
@@ -50,6 +135,24 @@ export const getAllCookies = (): Record<string, string> => {
     }
   });
   
+  // If we're in an iframe, also check fallback storage
+  if (isInIframe()) {
+    try {
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith('cookie_fallback_')) {
+          const cookieName = key.replace('cookie_fallback_', '');
+          const value = localStorage.getItem(key);
+          if (value && !cookies[cookieName]) {
+            cookies[cookieName] = value;
+          }
+        }
+      }
+    } catch (error) {
+      console.error('[Cookie Debug] Error reading fallback storage:', error);
+    }
+  }
+  
   return cookies;
 };
 
@@ -66,13 +169,13 @@ export const clearAllCookies = (exceptions: string[] = []) => {
 // Cookie consent helper functions with enhanced debugging
 export const getConsentStatus = (): 'all' | 'essential' | null => {
   const consent = getCookie('cookieConsent') as 'all' | 'essential' | null;
-  console.log(`[Cookie Debug] Consent status: ${consent}`);
+  console.log(`[Cookie Debug] Consent status: ${consent} (iframe: ${isInIframe()})`);
   return consent;
 };
 
 export const hasAnalyticsConsent = (): boolean => {
   const consent = getConsentStatus() === 'all';
-  console.log(`[Cookie Debug] Has analytics consent: ${consent}`);
+  console.log(`[Cookie Debug] Has analytics consent: ${consent} (iframe: ${isInIframe()})`);
   return consent;
 };
 
@@ -83,22 +186,50 @@ export const hasMarketingConsent = (): boolean => {
 // Enhanced cookie debugging function
 export const debugCookies = () => {
   const allCookies = getAllCookies();
+  const isIframe = isInIframe();
+  
+  console.log('[Cookie Debug] Environment info:', {
+    isIframe,
+    hostname: window.location.hostname,
+    protocol: window.location.protocol,
+    userAgent: navigator.userAgent.substring(0, 100)
+  });
+  
   console.log('[Cookie Debug] All cookies:', allCookies);
   console.log('[Cookie Debug] Consent status:', getConsentStatus());
   console.log('[Cookie Debug] Has analytics consent:', hasAnalyticsConsent());
   console.log('[Cookie Debug] Document.cookie raw:', document.cookie);
+  
+  // Check fallback storage
+  if (isIframe) {
+    const fallbackData: Record<string, string> = {};
+    try {
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith('cookie_fallback_')) {
+          fallbackData[key] = localStorage.getItem(key) || '';
+        }
+      }
+      console.log('[Cookie Debug] Fallback storage:', fallbackData);
+    } catch (error) {
+      console.log('[Cookie Debug] Cannot access fallback storage:', error);
+    }
+  }
+  
   return {
     allCookies,
     consentStatus: getConsentStatus(),
     hasAnalyticsConsent: hasAnalyticsConsent(),
-    rawCookies: document.cookie
+    rawCookies: document.cookie,
+    isIframe,
+    fallbackAvailable: isIframe,
+    timestamp: new Date().toISOString()
   };
 };
 
 // Expose debug function globally
 if (typeof window !== 'undefined') {
   (window as any).debugCookies = debugCookies;
-  // Add a helper to force clear all consent cookies for testing
   (window as any).clearConsentCookies = () => {
     console.log('[Cookie Debug] Clearing all consent cookies for testing');
     eraseCookie('cookieConsent');
@@ -106,9 +237,19 @@ if (typeof window !== 'undefined') {
     eraseCookie('cookieConsentTimestamp');
     console.log('[Cookie Debug] Consent cookies cleared. Refresh the page to see the dialog.');
   };
+  
+  // Add helper to test cookie setting
+  (window as any).testCookieSet = (name = 'test', value = 'test_value') => {
+    console.log(`[Cookie Debug] Testing cookie setting: ${name}=${value}`);
+    setCookie(name, value, 1);
+    const retrieved = getCookie(name);
+    console.log(`[Cookie Debug] Retrieved value: ${retrieved}`);
+    console.log(`[Cookie Debug] Test ${retrieved === value ? 'PASSED' : 'FAILED'}`);
+    return retrieved === value;
+  };
 }
 
-// Set cookies based on consent
+// Set cookies based on consent with enhanced error handling
 export const setConsentCookies = (consentType: 'all' | 'essential') => {
   console.log(`[Cookie Debug] Setting consent cookies: ${consentType}`);
   
@@ -130,6 +271,15 @@ export const setConsentCookies = (consentType: 'all' | 'essential') => {
         setTimeout(async () => {
           await initializeAnalytics();
           enableAnalytics();
+          
+          // Verify consent was properly set
+          setTimeout(() => {
+            const verifyConsent = getConsentStatus();
+            console.log(`[Cookie Debug] Consent verification after setting: ${verifyConsent}`);
+            if (verifyConsent !== consentType) {
+              console.error(`[Cookie Debug] Consent verification failed! Expected: ${consentType}, Got: ${verifyConsent}`);
+            }
+          }, 200);
         }, 100);
       }
     });
@@ -149,10 +299,12 @@ export const setConsentCookies = (consentType: 'all' | 'essential') => {
     console.log('[Cookie Debug] Analytics tracking disabled');
   }
   
-  // Force refresh of debug info after cookie changes
-  setTimeout(() => {
-    window.dispatchEvent(new CustomEvent('cookieChange', { 
-      detail: { name: 'cookieConsent', value: consentType, action: 'consent_updated' } 
-    }));
-  }, 50);
+  // Force refresh of debug info after cookie changes with multiple attempts
+  [50, 150, 300].forEach(delay => {
+    setTimeout(() => {
+      window.dispatchEvent(new CustomEvent('cookieChange', { 
+        detail: { name: 'cookieConsent', value: consentType, action: 'consent_updated' } 
+      }));
+    }, delay);
+  });
 };

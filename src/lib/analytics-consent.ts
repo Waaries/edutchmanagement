@@ -20,7 +20,7 @@ export const enableAnalytics = () => {
     // Configure Google Analytics
     window.gtag('config', GA_MEASUREMENT_ID, {
       anonymize_ip: true,
-      cookie_flags: 'SameSite=Strict;Secure',
+      cookie_flags: 'SameSite=Lax;Secure',
       send_page_view: false // We handle page views manually
     });
     
@@ -44,32 +44,30 @@ export const disableAnalytics = () => {
   }
 };
 
-// Enhanced tracking permission check with fallback logic
+// Enhanced tracking permission check with improved fallback logic
 export const shouldTrackAnalytics = (): boolean => {
-  // In production, check for explicit consent OR assume consent through website usage
-  if (isProduction()) {
+  try {
     const hasExplicitConsent = hasAnalyticsConsent();
-    console.log(`[Analytics Consent] Production - explicit consent: ${hasExplicitConsent}`);
     
-    // Fallback: if no explicit consent cookie exists, assume consent in production
-    if (hasExplicitConsent === null || hasExplicitConsent === undefined) {
-      console.log('[Analytics Consent] Production - no explicit consent found, assuming consent');
-      return true;
+    // In production, check for explicit consent
+    if (isProduction()) {
+      console.log(`[Analytics Consent] Production - explicit consent: ${hasExplicitConsent}`);
+      return hasExplicitConsent;
     }
     
+    // In development, require explicit consent
+    console.log(`[Analytics Consent] Development - consent required: ${hasExplicitConsent}`);
     return hasExplicitConsent;
+  } catch (error) {
+    console.error('[Analytics Consent] Error checking consent:', error);
+    return false;
   }
-  
-  // In development, require explicit consent
-  const devConsent = hasAnalyticsConsent();
-  console.log(`[Analytics Consent] Development - consent required: ${devConsent}`);
-  return devConsent;
 };
 
-// Real-time consent status with caching
+// Real-time consent status with improved caching
 let consentCache: boolean | null = null;
 let lastConsentCheck = 0;
-const CACHE_DURATION = 1000; // 1 second cache
+const CACHE_DURATION = 500; // Reduced cache duration for more responsive updates
 
 export const shouldTrackAnalyticsRealtime = (): boolean => {
   const now = Date.now();
@@ -80,7 +78,14 @@ export const shouldTrackAnalyticsRealtime = (): boolean => {
   }
   
   // Refresh cache
-  consentCache = shouldTrackAnalytics();
+  const newConsent = shouldTrackAnalytics();
+  
+  // Log cache updates for debugging
+  if (consentCache !== newConsent) {
+    console.log(`[Analytics Consent] Cache updated: ${consentCache} -> ${newConsent}`);
+  }
+  
+  consentCache = newConsent;
   lastConsentCheck = now;
   
   return consentCache;
@@ -88,8 +93,10 @@ export const shouldTrackAnalyticsRealtime = (): boolean => {
 
 // Clear consent cache when cookies change
 if (typeof window !== 'undefined') {
-  window.addEventListener('cookieChange', () => {
-    console.log('[Analytics Consent] Cookie change detected, clearing cache');
+  window.addEventListener('cookieChange', (event) => {
+    const detail = (event as CustomEvent).detail;
+    console.log(`[Analytics Consent] Cookie change detected: ${detail?.name}, clearing cache`);
     consentCache = null;
+    lastConsentCheck = 0;
   });
 }
