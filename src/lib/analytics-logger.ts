@@ -1,9 +1,22 @@
+
 import { isProduction } from './analytics-config';
 
 // Enhanced logging for production debugging
 export const analyticsLog = (message: string, data?: any) => {
   const prefix = isProduction() ? '[PROD Analytics]' : '[DEV Analytics]';
-  console.log(prefix, message, data || '');
+  
+  // Reduce console logging in production - only log important events
+  if (isProduction()) {
+    // Only log errors and critical events in production
+    if (message.toLowerCase().includes('error') || 
+        message.toLowerCase().includes('failed') || 
+        message.toLowerCase().includes('enabled') ||
+        message.toLowerCase().includes('disabled')) {
+      console.log(prefix, message, data || '');
+    }
+  } else {
+    console.log(prefix, message, data || '');
+  }
   
   // In production, also log to a global debug array for inspection
   if (isProduction() && typeof window !== 'undefined') {

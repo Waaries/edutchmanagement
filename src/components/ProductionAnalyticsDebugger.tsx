@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { useAnalytics } from "@/hooks/use-analytics";
+import DebugInfoDisplay from "@/components/analytics/DebugInfoDisplay";
+import DebugControls from "@/components/analytics/DebugControls";
 
 const ProductionAnalyticsDebugger: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -83,60 +85,14 @@ const ProductionAnalyticsDebugger: React.FC = () => {
             </Button>
           </div>
           
-          <div className="space-y-2">
-            <Button
-              size="sm"
-              variant="outline"
-              className="w-full"
-              onClick={refreshDebugInfo}
-            >
-              Get Debug Info
-            </Button>
-            
-            <Button
-              size="sm"
-              variant="outline"
-              className="w-full"
-              onClick={testAnalytics}
-            >
-              Test Analytics Event
-            </Button>
-            
-            {debugInfo && (
-              <>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="w-full"
-                  onClick={copyDebugInfo}
-                >
-                  Copy Debug Info
-                </Button>
-                
-                <div className="mt-3 text-xs bg-gray-50 p-2 rounded border max-h-40 overflow-y-auto">
-                  <div><strong>Environment:</strong> {debugInfo.environment}</div>
-                  <div><strong>Hostname:</strong> {debugInfo.hostname}</div>
-                  <div><strong>gtag exists:</strong> {debugInfo.gtagExists ? '✅' : '❌'}</div>
-                  <div><strong>gtag ready:</strong> {debugInfo.gtagReady ? '✅' : '❌'}</div>
-                  <div><strong>Has consent:</strong> {debugInfo.hasConsent ? '✅' : '❌'}</div>
-                  <div><strong>Measurement ID:</strong> {debugInfo.measurementId}</div>
-                  {debugInfo.debugLog && debugInfo.debugLog.length > 0 && (
-                    <div className="mt-2">
-                      <strong>Recent logs:</strong>
-                      <div className="max-h-20 overflow-y-auto text-xs">
-                        {debugInfo.debugLog.slice(-5).map((log: any, index: number) => (
-                          <div key={index} className="border-t pt-1 mt-1">
-                            <div className="text-gray-500">{new Date(log.timestamp).toLocaleTimeString()}</div>
-                            <div>{log.message}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </>
-            )}
-          </div>
+          <DebugControls
+            onRefreshDebugInfo={refreshDebugInfo}
+            onTestAnalytics={testAnalytics}
+            onCopyDebugInfo={copyDebugInfo}
+            hasDebugInfo={!!debugInfo}
+          />
+          
+          <DebugInfoDisplay debugInfo={debugInfo} />
           
           <div className="mt-3 text-xs text-gray-500">
             <p>Production Mode: {isProduction ? '✅' : '❌'}</p>
