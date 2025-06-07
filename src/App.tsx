@@ -14,6 +14,7 @@ import AddressRequest from "./pages/AddressRequest";
 import NotFound from "./pages/NotFound";
 import CookiePolicy from "./pages/CookiePolicy";
 import CookieConsent from "@/components/CookieConsent";
+import ProductionAnalyticsDebugger from "@/components/ProductionAnalyticsDebugger";
 
 function AppContent() {
   // Initialize analytics - single initialization point
@@ -23,6 +24,7 @@ function AppContent() {
     <>
       <Toaster />
       <CookieConsent />
+      <ProductionAnalyticsDebugger />
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/auth" element={<Auth />} />

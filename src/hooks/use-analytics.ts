@@ -14,7 +14,7 @@ import {
 } from '@/lib/analytics';
 import { hasAnalyticsConsent } from '@/lib/cookie-utils';
 import { isProduction } from '@/lib/analytics-config';
-import { shouldTrackAnalytics } from '@/lib/analytics-consent';
+import { shouldTrackAnalytics, shouldTrackAnalyticsRealtime } from '@/lib/analytics-consent';
 
 // Global flag to prevent multiple initializations
 let globalAnalyticsInitialized = false;
@@ -22,7 +22,27 @@ let globalAnalyticsInitialized = false;
 export const useAnalytics = () => {
   const location = useLocation();
   const [initialized, setInitialized] = useState(false);
+  const [consentStatus, setConsentStatus] = useState<boolean | null>(null);
   const initRef = useRef(false);
+
+  // Listen for cookie changes to update consent status
+  useEffect(() => {
+    const handleCookieChange = () => {
+      const newConsentStatus = hasAnalyticsConsent();
+      console.log('[Analytics Hook] Cookie change detected, consent status:', newConsentStatus);
+      setConsentStatus(newConsentStatus);
+    };
+
+    // Initial consent status
+    setConsentStatus(hasAnalyticsConsent());
+
+    // Listen for cookie changes
+    window.addEventListener('cookieChange', handleCookieChange);
+    
+    return () => {
+      window.removeEventListener('cookieChange', handleCookieChange);
+    };
+  }, []);
 
   // Initialize analytics only once globally
   useEffect(() => {
@@ -65,11 +85,14 @@ export const useAnalytics = () => {
     if (typeof window === 'undefined' || !initialized) return;
     
     const trackPageViewDelayed = () => {
-      if (shouldTrackAnalytics() && isAnalyticsInitialized()) {
+      const shouldTrack = shouldTrackAnalyticsRealtime();
+      const analyticsReady = isAnalyticsInitialized();
+      
+      if (shouldTrack && analyticsReady) {
         console.log(`[Analytics Hook] Tracking page view: ${location.pathname}`);
         trackPageView(location.pathname + location.search, document.title);
       } else {
-        console.log(`[Analytics Hook] Skipping page view - should track: ${shouldTrackAnalytics()}, initialized: ${isAnalyticsInitialized()}`);
+        console.log(`[Analytics Hook] Skipping page view - should track: ${shouldTrack}, initialized: ${analyticsReady}`);
       }
     };
 
@@ -77,13 +100,13 @@ export const useAnalytics = () => {
     const timer = setTimeout(trackPageViewDelayed, 500);
     
     return () => clearTimeout(timer);
-  }, [location, initialized]);
+  }, [location, initialized, consentStatus]);
 
-  // Enhanced tracking functions
+  // Enhanced tracking functions with real-time consent checking
   const enhancedTrackEvent = (eventName: string, parameters?: Record<string, any>) => {
     if (typeof window === 'undefined') return;
     
-    if (shouldTrackAnalytics() && isAnalyticsInitialized()) {
+    if (shouldTrackAnalyticsRealtime() && isAnalyticsInitialized()) {
       trackEvent(eventName, parameters);
     }
   };
@@ -91,7 +114,7 @@ export const useAnalytics = () => {
   const enhancedTrackFormSubmission = (formName: string, success: boolean = true) => {
     if (typeof window === 'undefined') return;
     
-    if (shouldTrackAnalytics() && isAnalyticsInitialized()) {
+    if (shouldTrackAnalyticsRealtime() && isAnalyticsInitialized()) {
       trackFormSubmission(formName, success);
     }
   };
@@ -99,7 +122,7 @@ export const useAnalytics = () => {
   const enhancedTrackButtonClick = (buttonName: string, location?: string) => {
     if (typeof window === 'undefined') return;
     
-    if (shouldTrackAnalytics() && isAnalyticsInitialized()) {
+    if (shouldTrackAnalyticsRealtime() && isAnalyticsInitialized()) {
       trackButtonClick(buttonName, location);
     }
   };
@@ -107,7 +130,7 @@ export const useAnalytics = () => {
   const enhancedTrackNavigation = (destination: string, source?: string) => {
     if (typeof window === 'undefined') return;
     
-    if (shouldTrackAnalytics() && isAnalyticsInitialized()) {
+    if (shouldTrackAnalyticsRealtime() && isAnalyticsInitialized()) {
       trackNavigation(destination, source);
     }
   };
@@ -126,6 +149,7 @@ export const useAnalytics = () => {
     trackNavigation: enhancedTrackNavigation,
     getDebugInfo,
     initialized,
+    consentStatus,
     isProduction: isProduction(),
   };
 };
