@@ -20,25 +20,49 @@ const CookieConsent = () => {
   const [open, setOpen] = useState(false);
   const [analyticsChecked, setAnalyticsChecked] = useState(false);
   const [marketingChecked, setMarketingChecked] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const { toast } = useToast();
   const { translate } = useLanguage();
   const { trackEvent } = useAnalytics();
 
   useEffect(() => {
-    // Check if user has already consented
-    const hasConsented = getCookie("cookieConsent");
-    if (!hasConsented) {
-      setOpen(true);
-    } else {
-      // If user has already consented to all, check the checkboxes
-      if (hasConsented === 'all') {
-        setAnalyticsChecked(true);
-        setMarketingChecked(true);
+    // Add a small delay to ensure everything is loaded
+    const checkConsent = () => {
+      console.log('[Cookie Consent] Checking for existing consent...');
+      const hasConsented = getCookie("cookieConsent");
+      console.log('[Cookie Consent] Existing consent:', hasConsented);
+      
+      if (!hasConsented) {
+        console.log('[Cookie Consent] No consent found, showing dialog');
+        setOpen(true);
+      } else {
+        console.log('[Cookie Consent] Consent already exists:', hasConsented);
+        // If user has already consented to all, check the checkboxes
+        if (hasConsented === 'all') {
+          setAnalyticsChecked(true);
+          setMarketingChecked(true);
+        }
       }
+      setIsLoaded(true);
+    };
+
+    // Small delay to ensure DOM is ready
+    const timer = setTimeout(checkConsent, 100);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Force show dialog for testing (can be removed later)
+  useEffect(() => {
+    // Check if we're in debug mode or testing
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('test-consent') === 'true') {
+      console.log('[Cookie Consent] Test mode activated, forcing dialog to show');
+      setOpen(true);
     }
   }, []);
 
   const handleAcceptAll = () => {
+    console.log('[Cookie Consent] User accepted all cookies');
     setConsentCookies('all');
     setOpen(false);
     // Track this consent event if analytics is permitted
@@ -50,6 +74,7 @@ const CookieConsent = () => {
   };
 
   const handleAcceptEssential = () => {
+    console.log('[Cookie Consent] User accepted essential cookies only');
     setConsentCookies('essential');
     setOpen(false);
     toast({
@@ -62,6 +87,7 @@ const CookieConsent = () => {
     // If analytics is checked, we consider it as 'all' for now
     // In a more advanced implementation, we could have different levels of consent
     if (analyticsChecked || marketingChecked) {
+      console.log('[Cookie Consent] User accepted selected cookies (all)');
       setConsentCookies('all');
       trackEvent('cookie_consent', { 
         consent_type: 'selected',
@@ -69,6 +95,7 @@ const CookieConsent = () => {
         marketing: marketingChecked 
       });
     } else {
+      console.log('[Cookie Consent] User accepted selected cookies (essential only)');
       setConsentCookies('essential');
     }
     setOpen(false);
@@ -77,6 +104,14 @@ const CookieConsent = () => {
       description: translate("cookieConsent.toastCustomDesc") || "Your cookie preferences have been saved."
     });
   };
+
+  // Don't render anything until we've checked for existing consent
+  if (!isLoaded) {
+    console.log('[Cookie Consent] Component not yet loaded');
+    return null;
+  }
+
+  console.log('[Cookie Consent] Rendering dialog with open state:', open);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

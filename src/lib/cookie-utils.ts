@@ -98,6 +98,14 @@ export const debugCookies = () => {
 // Expose debug function globally
 if (typeof window !== 'undefined') {
   (window as any).debugCookies = debugCookies;
+  // Add a helper to force clear all consent cookies for testing
+  (window as any).clearConsentCookies = () => {
+    console.log('[Cookie Debug] Clearing all consent cookies for testing');
+    eraseCookie('cookieConsent');
+    eraseCookie('analyticsEnabled');
+    eraseCookie('cookieConsentTimestamp');
+    console.log('[Cookie Debug] Consent cookies cleared. Refresh the page to see the dialog.');
+  };
 }
 
 // Set cookies based on consent
