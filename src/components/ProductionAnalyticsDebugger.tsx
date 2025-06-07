@@ -10,8 +10,8 @@ const ProductionAnalyticsDebugger: React.FC = () => {
   const [debugInfo, setDebugInfo] = useState<any>(null);
   const { getDebugInfo, isProduction } = useAnalytics();
 
-  // Only show in production or when explicitly enabled
-  const shouldShow = isProduction || localStorage.getItem('enableAnalyticsDebugger') === 'true';
+  // Hide debugger on live domain, only show in development or when explicitly enabled
+  const shouldShow = !isProduction || localStorage.getItem('enableAnalyticsDebugger') === 'true';
 
   useEffect(() => {
     // Enable with URL parameter or localStorage
