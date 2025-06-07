@@ -11,11 +11,20 @@ export const analyticsLog = (message: string, data?: any) => {
     if (message.toLowerCase().includes('error') || 
         message.toLowerCase().includes('failed') || 
         message.toLowerCase().includes('enabled') ||
-        message.toLowerCase().includes('disabled')) {
+        message.toLowerCase().includes('disabled') ||
+        message.toLowerCase().includes('initialization')) {
       console.log(prefix, message, data || '');
     }
   } else {
-    console.log(prefix, message, data || '');
+    // In development, only log important messages to reduce noise
+    if (message.toLowerCase().includes('error') || 
+        message.toLowerCase().includes('failed') || 
+        message.toLowerCase().includes('enabled') ||
+        message.toLowerCase().includes('disabled') ||
+        message.toLowerCase().includes('initialization') ||
+        message.toLowerCase().includes('tracking')) {
+      console.log(prefix, message, data || '');
+    }
   }
   
   // In production, also log to a global debug array for inspection

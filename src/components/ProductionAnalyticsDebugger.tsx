@@ -26,7 +26,6 @@ const ProductionAnalyticsDebugger: React.FC = () => {
     try {
       const info = getDebugInfo();
       setDebugInfo(info);
-      console.log('Analytics Debug Info:', info);
     } catch (error) {
       console.error('Error getting debug info:', error);
     }
@@ -72,14 +71,14 @@ const ProductionAnalyticsDebugger: React.FC = () => {
           variant="outline"
           size="sm"
           onClick={() => setIsVisible(true)}
-          className="opacity-50 hover:opacity-100 bg-blue-50 border-blue-200"
+          className="opacity-30 hover:opacity-100 bg-blue-50 border-blue-200"
         >
-          🔍 Analytics Debug
+          🔍 Analytics
         </Button>
       ) : (
         <div className="bg-white dark:bg-gray-900 p-4 rounded-lg shadow-lg border border-gray-300 dark:border-gray-700 w-80 max-h-96 overflow-y-auto">
           <div className="flex justify-between items-center mb-3">
-            <h3 className="font-semibold text-sm">Analytics Debugger</h3>
+            <h3 className="font-semibold text-sm">Analytics Debug</h3>
             <Button variant="ghost" size="sm" onClick={() => setIsVisible(false)}>
               ✕
             </Button>
@@ -95,8 +94,8 @@ const ProductionAnalyticsDebugger: React.FC = () => {
           <DebugInfoDisplay debugInfo={debugInfo} />
           
           <div className="mt-3 text-xs text-gray-500">
-            <p>Production Mode: {isProduction ? '✅' : '❌'}</p>
-            <p>Enable with: ?debug=analytics</p>
+            <p>Production: {isProduction ? '✅' : '❌'}</p>
+            <p>Enable: ?debug=analytics</p>
           </div>
         </div>
       )}

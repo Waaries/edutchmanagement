@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { 
   initializeAnalytics, 
@@ -16,12 +16,19 @@ import { hasAnalyticsConsent } from '@/lib/cookie-utils';
 import { isProduction } from '@/lib/analytics-config';
 import { shouldTrackAnalytics } from '@/lib/analytics-consent';
 
+// Global flag to prevent multiple initializations
+let globalAnalyticsInitialized = false;
+
 export const useAnalytics = () => {
   const location = useLocation();
   const [initialized, setInitialized] = useState(false);
+  const initRef = useRef(false);
 
-  // Initialize analytics on mount
+  // Initialize analytics only once globally
   useEffect(() => {
+    if (initRef.current || globalAnalyticsInitialized) return;
+    
+    initRef.current = true;
     console.log('[Analytics Hook] Initializing analytics hook');
     
     // Only initialize in browser environment
@@ -29,6 +36,8 @@ export const useAnalytics = () => {
     
     const initAnalytics = async () => {
       try {
+        globalAnalyticsInitialized = true;
+        
         if (isProduction()) {
           console.log('[Analytics Hook] Production environment detected');
           await forceInitializeAnalytics();
@@ -39,6 +48,7 @@ export const useAnalytics = () => {
         setInitialized(true);
       } catch (error) {
         console.error('[Analytics Hook] Failed to initialize analytics:', error);
+        globalAnalyticsInitialized = false;
       }
     };
 
@@ -74,10 +84,7 @@ export const useAnalytics = () => {
     if (typeof window === 'undefined') return;
     
     if (shouldTrackAnalytics() && isAnalyticsInitialized()) {
-      console.log(`[Analytics Hook] Tracking event: ${eventName}`, parameters);
       trackEvent(eventName, parameters);
-    } else {
-      console.log(`[Analytics Hook] Skipped tracking event: ${eventName}`);
     }
   };
 
@@ -85,10 +92,7 @@ export const useAnalytics = () => {
     if (typeof window === 'undefined') return;
     
     if (shouldTrackAnalytics() && isAnalyticsInitialized()) {
-      console.log(`[Analytics Hook] Tracking form submission: ${formName}, success: ${success}`);
       trackFormSubmission(formName, success);
-    } else {
-      console.log(`[Analytics Hook] Skipped tracking form: ${formName}`);
     }
   };
 
@@ -96,10 +100,7 @@ export const useAnalytics = () => {
     if (typeof window === 'undefined') return;
     
     if (shouldTrackAnalytics() && isAnalyticsInitialized()) {
-      console.log(`[Analytics Hook] Tracking button click: ${buttonName}`);
       trackButtonClick(buttonName, location);
-    } else {
-      console.log(`[Analytics Hook] Skipped tracking button: ${buttonName}`);
     }
   };
 
@@ -107,10 +108,7 @@ export const useAnalytics = () => {
     if (typeof window === 'undefined') return;
     
     if (shouldTrackAnalytics() && isAnalyticsInitialized()) {
-      console.log(`[Analytics Hook] Tracking navigation: ${source} → ${destination}`);
       trackNavigation(destination, source);
-    } else {
-      console.log(`[Analytics Hook] Skipped tracking navigation`);
     }
   };
 
