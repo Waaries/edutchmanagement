@@ -1,9 +1,19 @@
 
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
 import React from 'react';
 
-const SignUpLink: React.FC = () => {
+interface SignUpLinkProps {
+  onSwitchToRegister?: () => void;
+}
+
+const SignUpLink: React.FC<SignUpLinkProps> = ({ onSwitchToRegister }) => {
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (onSwitchToRegister) {
+      onSwitchToRegister();
+    }
+  };
+
   return (
     <motion.p 
       className="text-center text-xs text-slate-600 mt-4"
@@ -12,15 +22,15 @@ const SignUpLink: React.FC = () => {
       transition={{ delay: 0.5 }}
     >
       Nog geen account?{' '}
-      <Link 
-        to="/auth?register=true" 
+      <button 
+        onClick={handleClick}
         className="relative inline-block group/signup"
       >
         <span className="relative z-10 text-brand-blue group-hover/signup:text-brand-blue/70 transition-colors duration-300 font-medium">
           Registreer
         </span>
         <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-brand-blue group-hover/signup:w-full transition-all duration-300" />
-      </Link>
+      </button>
     </motion.p>
   );
 };

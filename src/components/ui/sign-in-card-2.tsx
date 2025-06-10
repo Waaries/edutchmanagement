@@ -1,19 +1,31 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AnimatedBackground from '../auth/card/AnimatedBackground';
 import CardGlowEffect from '../auth/card/CardGlowEffect';
 import CardHeader from '../auth/card/CardHeader';
 import LoginForm from '../auth/card/LoginForm';
+import RegisterForm from '../auth/RegisterForm';
 
 const SignInCard = () => {
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [activeTab, setActiveTab] = useState<string>('login');
 
   // For 3D card effect
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const rotateX = useTransform(mouseY, [-300, 300], [10, -10]);
   const rotateY = useTransform(mouseX, [-300, 300], [-10, 10]);
+
+  // Handle URL parameters to determine active tab
+  useEffect(() => {
+    const isRegister = searchParams.get('register') === 'true';
+    setActiveTab(isRegister ? 'register' : 'login');
+  }, [searchParams]);
 
   const handleMouseMove = (e: React.MouseEvent) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -25,6 +37,22 @@ const SignInCard = () => {
   const handleMouseLeave = () => {
     mouseX.set(0);
     mouseY.set(0);
+  };
+
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    // Update URL to reflect the current tab
+    if (value === 'register') {
+      navigate('/auth?register=true', { replace: true });
+    } else {
+      navigate('/auth', { replace: true });
+    }
+  };
+
+  const handleRegistrationSuccess = (message: string) => {
+    // Switch to login tab and show success message
+    setActiveTab('login');
+    navigate('/auth', { replace: true });
   };
 
   return (
@@ -63,8 +91,25 @@ const SignInCard = () => {
               {/* Logo and header */}
               <CardHeader />
 
-              {/* Login form */}
-              <LoginForm />
+              {/* Tabs for Login/Register */}
+              <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
+                <TabsList className="grid w-full grid-cols-2 mb-6 bg-gray-100/50">
+                  <TabsTrigger value="login" className="text-sm font-medium">
+                    Inloggen
+                  </TabsTrigger>
+                  <TabsTrigger value="register" className="text-sm font-medium">
+                    Registreren
+                  </TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="login" className="space-y-0">
+                  <LoginForm />
+                </TabsContent>
+
+                <TabsContent value="register" className="space-y-0">
+                  <RegisterForm onSuccess={handleRegistrationSuccess} />
+                </TabsContent>
+              </Tabs>
             </div>
           </div>
         </motion.div>

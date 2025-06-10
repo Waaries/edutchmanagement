@@ -1,16 +1,13 @@
 
 import { Mail, Lock } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import FormInput from './FormInput';
 import RememberMeCheckbox from './RememberMeCheckbox';
 import SignInButton from './SignInButton';
-import SignUpLink from './SignUpLink';
 
 const LoginForm: React.FC = () => {
-  const navigate = useNavigate();
   const { signIn } = useAuth();
   const { toast } = useToast();
   const [email, setEmail] = useState("");
@@ -82,14 +79,11 @@ const LoginForm: React.FC = () => {
         
         setError(errorMessage);
       } else {
-        // Success - show toast and redirect
+        // Success - show toast
         toast({
           title: "Ingelogd",
           description: "U bent succesvol ingelogd.",
         });
-        
-        // Redirect to dashboard
-        navigate('/dashboard');
       }
     } catch (err) {
       console.error("Unexpected error:", err);
@@ -149,9 +143,9 @@ const LoginForm: React.FC = () => {
         />
         
         <div className="text-xs relative group/link">
-          <Link to="/auth?reset=true" className="text-slate-800 hover:text-brand-blue transition-colors duration-200">
+          <button type="button" className="text-slate-800 hover:text-brand-blue transition-colors duration-200">
             Wachtwoord vergeten?
-          </Link>
+          </button>
         </div>
       </div>
 
@@ -160,9 +154,6 @@ const LoginForm: React.FC = () => {
         isLoading={isLoading} 
         onClick={(e) => {/* handled by form submit */}} 
       />
-
-      {/* Sign up link */}
-      <SignUpLink />
     </form>
   );
 };
