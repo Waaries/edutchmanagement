@@ -26,7 +26,9 @@ const SignInCard = () => {
     const isRegister = searchParams.get('register') === 'true';
     const newTab = isRegister ? 'register' : 'login';
     console.log('URL params changed, setting tab to:', newTab);
-    setActiveTab(newTab);
+    if (newTab !== activeTab) {
+      setActiveTab(newTab);
+    }
   }, [searchParams]);
 
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -42,7 +44,7 @@ const SignInCard = () => {
   };
 
   const handleTabChange = (value: string) => {
-    console.log('Tab change requested:', value);
+    console.log('Tab change requested from:', activeTab, 'to:', value);
     setActiveTab(value);
     // Update URL to reflect the current tab
     if (value === 'register') {
@@ -103,12 +105,14 @@ const SignInCard = () => {
                   <TabsTrigger 
                     value="login" 
                     className="text-sm font-medium rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all duration-200"
+                    onClick={() => handleTabChange('login')}
                   >
                     Inloggen
                   </TabsTrigger>
                   <TabsTrigger 
                     value="register" 
                     className="text-sm font-medium rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all duration-200"
+                    onClick={() => handleTabChange('register')}
                   >
                     Registreren
                   </TabsTrigger>
