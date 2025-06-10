@@ -26,13 +26,13 @@ const SignInCard = () => {
     return isRegister ? 'register' : 'login';
   };
 
-  const [activeTab, setActiveTab] = useState<string>(getInitialTab());
+  const [currentTab, setCurrentTab] = useState<string>(getInitialTab());
 
   // Update tab when URL changes
   useEffect(() => {
     const newTab = getInitialTab();
     console.log('URL params changed, setting tab to:', newTab);
-    setActiveTab(newTab);
+    setCurrentTab(newTab);
   }, [searchParams]);
 
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -48,12 +48,12 @@ const SignInCard = () => {
   };
 
   const handleTabChange = (value: string) => {
-    console.log('Tab change requested from:', activeTab, 'to:', value);
+    console.log('Tab change requested to:', value);
     
-    // Update local state immediately
-    setActiveTab(value);
+    // Update local state
+    setCurrentTab(value);
     
-    // Update URL without replace to ensure proper navigation
+    // Update URL
     if (value === 'register') {
       navigate('/auth?register=true');
     } else {
@@ -64,11 +64,11 @@ const SignInCard = () => {
   const handleRegistrationSuccess = (message: string) => {
     console.log('Registration successful:', message);
     // Switch to login tab and show success message
-    setActiveTab('login');
+    setCurrentTab('login');
     navigate('/auth');
   };
 
-  console.log('Current active tab:', activeTab);
+  console.log('Current tab state:', currentTab);
 
   return (
     <div className="min-h-screen w-screen bg-white relative overflow-hidden flex items-center justify-center">
@@ -107,7 +107,7 @@ const SignInCard = () => {
               <CardHeader />
 
               {/* Tabs for Login/Register */}
-              <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
+              <Tabs value={currentTab} onValueChange={handleTabChange} className="w-full">
                 <TabsList className="grid w-full grid-cols-2 mb-6 bg-gray-100/50 rounded-xl">
                   <TabsTrigger 
                     value="login" 
