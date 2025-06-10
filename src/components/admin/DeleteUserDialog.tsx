@@ -43,27 +43,19 @@ const DeleteUserDialog = ({ userToDelete, onClose, onSuccess }: DeleteUserDialog
         return;
       }
       
-      // Call Supabase function to delete user
-      const { error } = await supabase.auth.admin.deleteUser(
-        userToDelete.id
-      );
+      // Call edge function to delete user (we'll create this)
+      const { error } = await supabase.functions.invoke('delete-user', {
+        body: { userId: userToDelete.id }
+      });
       
       if (error) {
         console.error("Error deleting user:", error);
         toast({
           title: "Fout bij verwijderen gebruiker",
-          description: error.message,
+          description: error.message || "Er is een fout opgetreden bij het verwijderen van de gebruiker.",
           variant: "destructive",
         });
         return;
-      }
-      
-      // Remove user from user_roles table if they are an admin
-      if (userToDelete.is_admin) {
-        await supabase
-          .from("user_roles")
-          .delete()
-          .eq("user_id", userToDelete.id);
       }
       
       toast({
