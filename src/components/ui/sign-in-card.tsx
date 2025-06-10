@@ -13,7 +13,6 @@ const SignInCard = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [activeTab, setActiveTab] = useState<string>('login');
 
   // For 3D card effect
   const mouseX = useMotionValue(0);
@@ -21,10 +20,17 @@ const SignInCard = () => {
   const rotateX = useTransform(mouseY, [-300, 300], [10, -10]);
   const rotateY = useTransform(mouseX, [-300, 300], [-10, 10]);
 
-  // Handle URL parameters to determine active tab
-  useEffect(() => {
+  // Determine initial tab from URL
+  const getInitialTab = () => {
     const isRegister = searchParams.get('register') === 'true';
-    const newTab = isRegister ? 'register' : 'login';
+    return isRegister ? 'register' : 'login';
+  };
+
+  const [activeTab, setActiveTab] = useState<string>(getInitialTab());
+
+  // Update tab when URL changes
+  useEffect(() => {
+    const newTab = getInitialTab();
     console.log('URL params changed, setting tab to:', newTab);
     setActiveTab(newTab);
   }, [searchParams]);
@@ -43,12 +49,15 @@ const SignInCard = () => {
 
   const handleTabChange = (value: string) => {
     console.log('Tab change requested from:', activeTab, 'to:', value);
+    
+    // Update local state immediately
     setActiveTab(value);
-    // Update URL to reflect the current tab
+    
+    // Update URL without replace to ensure proper navigation
     if (value === 'register') {
-      navigate('/auth?register=true', { replace: true });
+      navigate('/auth?register=true');
     } else {
-      navigate('/auth', { replace: true });
+      navigate('/auth');
     }
   };
 
@@ -56,7 +65,7 @@ const SignInCard = () => {
     console.log('Registration successful:', message);
     // Switch to login tab and show success message
     setActiveTab('login');
-    navigate('/auth', { replace: true });
+    navigate('/auth');
   };
 
   console.log('Current active tab:', activeTab);
