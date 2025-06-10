@@ -50,14 +50,14 @@ const SignInCard = () => {
   const handleTabChange = (value: string) => {
     console.log('Tab change requested to:', value);
     
-    // Update local state
+    // Update local state immediately
     setCurrentTab(value);
     
-    // Update URL
+    // Update URL to reflect the change
     if (value === 'register') {
-      navigate('/auth?register=true');
+      navigate('/auth?register=true', { replace: true });
     } else {
-      navigate('/auth');
+      navigate('/auth', { replace: true });
     }
   };
 
@@ -65,7 +65,7 @@ const SignInCard = () => {
     console.log('Registration successful:', message);
     // Switch to login tab and show success message
     setCurrentTab('login');
-    navigate('/auth');
+    navigate('/auth', { replace: true });
   };
 
   console.log('Current tab state:', currentTab);

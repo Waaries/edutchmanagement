@@ -11,7 +11,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
-  const { signIn, resetPassword, isAdmin } = useAuth();
+  const { signIn, resetPassword } = useAuth();
   const { translate, language } = useLanguage();
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -72,25 +72,42 @@ const LoginForm = () => {
 
   const handlePasswordReset = async (e: React.MouseEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     
-    if (!email) {
-      setError("Voer uw e-mailadres in om uw wachtwoord te resetten");
+    console.log('Password reset clicked for email:', email);
+    
+    if (!email || !email.trim()) {
+      setError("Voer eerst uw e-mailadres in om uw wachtwoord te resetten");
+      return;
+    }
+    
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email.trim())) {
+      setError("Voer een geldig e-mailadres in");
       return;
     }
     
     setSubmitting(true);
-    const { error } = await resetPassword(email);
+    setError(null);
     
-    if (error) {
-      setError(error.message);
-    } else {
-      setResetRequested(true);
-      toast({
-        title: language === 'nl' ? "Wachtwoord Reset Aangevraagd" : "Password Reset Requested",
-        description: language === 'nl' 
-          ? "Als er een account bestaat met dit e-mailadres, ontvangt u binnenkort reset-instructies."
-          : "If an account exists with this email, you will receive reset instructions shortly.",
-      });
+    try {
+      const { error } = await resetPassword(email);
+      
+      if (error) {
+        console.error('Password reset error:', error);
+        setError(error.message);
+      } else {
+        setResetRequested(true);
+        toast({
+          title: "Wachtwoord Reset Verzonden",
+          description: "Als er een account bestaat met dit e-mailadres, ontvangt u binnenkort reset-instructies.",
+        });
+        setError(null);
+      }
+    } catch (err) {
+      console.error('Unexpected password reset error:', err);
+      setError("Er is een fout opgetreden bij het resetten van uw wachtwoord.");
     }
     
     setSubmitting(false);
@@ -116,8 +133,9 @@ const LoginForm = () => {
         <div className="flex justify-between items-center">
           <Label htmlFor="password" className="text-slate-700 font-medium">Wachtwoord</Label>
           <button 
+            type="button"
             onClick={handlePasswordReset}
-            className="text-xs text-blue-600 hover:text-blue-800 hover:underline font-medium"
+            className="text-xs text-blue-600 hover:text-blue-800 hover:underline font-medium transition-colors"
             disabled={submitting || resetRequested}
           >
             {resetRequested ? "Controleer uw e-mail" : "Wachtwoord vergeten?"}
