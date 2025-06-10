@@ -29,7 +29,7 @@ const SignInCard = () => {
     if (newTab !== activeTab) {
       setActiveTab(newTab);
     }
-  }, [searchParams]);
+  }, [searchParams, activeTab]);
 
   const handleMouseMove = (e: React.MouseEvent) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -105,14 +105,12 @@ const SignInCard = () => {
                   <TabsTrigger 
                     value="login" 
                     className="text-sm font-medium rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all duration-200"
-                    onClick={() => handleTabChange('login')}
                   >
                     Inloggen
                   </TabsTrigger>
                   <TabsTrigger 
                     value="register" 
                     className="text-sm font-medium rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all duration-200"
-                    onClick={() => handleTabChange('register')}
                   >
                     Registreren
                   </TabsTrigger>
