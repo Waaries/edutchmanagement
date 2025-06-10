@@ -1,10 +1,9 @@
-
 import { useState, useEffect } from 'react';
 import { Navigate, useLocation, useSearchParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { usePasswordReset } from '@/hooks/use-password-reset';
-import SignInCard from '@/components/ui/sign-in-card-2';
+import SignInCard from '@/components/ui/sign-in-card';
 import SuccessDialog from '@/components/auth/SuccessDialog';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import LoadingSpinner from '@/components/ui/loading-spinner';

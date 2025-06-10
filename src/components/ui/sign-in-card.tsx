@@ -24,7 +24,9 @@ const SignInCard = () => {
   // Handle URL parameters to determine active tab
   useEffect(() => {
     const isRegister = searchParams.get('register') === 'true';
-    setActiveTab(isRegister ? 'register' : 'login');
+    const newTab = isRegister ? 'register' : 'login';
+    console.log('URL params changed, setting tab to:', newTab);
+    setActiveTab(newTab);
   }, [searchParams]);
 
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -40,6 +42,7 @@ const SignInCard = () => {
   };
 
   const handleTabChange = (value: string) => {
+    console.log('Tab change requested:', value);
     setActiveTab(value);
     // Update URL to reflect the current tab
     if (value === 'register') {
@@ -50,10 +53,13 @@ const SignInCard = () => {
   };
 
   const handleRegistrationSuccess = (message: string) => {
+    console.log('Registration successful:', message);
     // Switch to login tab and show success message
     setActiveTab('login');
     navigate('/auth', { replace: true });
   };
+
+  console.log('Current active tab:', activeTab);
 
   return (
     <div className="min-h-screen w-screen bg-white relative overflow-hidden flex items-center justify-center">
@@ -93,20 +99,26 @@ const SignInCard = () => {
 
               {/* Tabs for Login/Register */}
               <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-                <TabsList className="grid w-full grid-cols-2 mb-6 bg-gray-100/50">
-                  <TabsTrigger value="login" className="text-sm font-medium">
+                <TabsList className="grid w-full grid-cols-2 mb-6 bg-gray-100/50 rounded-xl">
+                  <TabsTrigger 
+                    value="login" 
+                    className="text-sm font-medium rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all duration-200"
+                  >
                     Inloggen
                   </TabsTrigger>
-                  <TabsTrigger value="register" className="text-sm font-medium">
+                  <TabsTrigger 
+                    value="register" 
+                    className="text-sm font-medium rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all duration-200"
+                  >
                     Registreren
                   </TabsTrigger>
                 </TabsList>
 
-                <TabsContent value="login" className="space-y-0">
+                <TabsContent value="login" className="space-y-0 mt-0">
                   <LoginForm />
                 </TabsContent>
 
-                <TabsContent value="register" className="space-y-0">
+                <TabsContent value="register" className="space-y-0 mt-0">
                   <RegisterForm onSuccess={handleRegistrationSuccess} />
                 </TabsContent>
               </Tabs>
