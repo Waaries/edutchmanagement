@@ -1,9 +1,10 @@
+
 import { useState, useEffect } from 'react';
 import { Navigate, useLocation, useSearchParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { usePasswordReset } from '@/hooks/use-password-reset';
-import SignInCard from '@/components/ui/sign-in-card';
+import SimpleAuthPage from '@/components/auth/SimpleAuthPage';
 import SuccessDialog from '@/components/auth/SuccessDialog';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import LoadingSpinner from '@/components/ui/loading-spinner';
@@ -12,7 +13,6 @@ const Auth = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [activeTab, setActiveTab] = useState<string>('login');
   const [error, setError] = useState<string | null>(null);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
@@ -55,14 +55,8 @@ const Auth = () => {
       setShowDialog(true);
     }
 
-    // Check if 'register' is in the URL, show the register tab
-    if (location.search.includes('register')) {
-      setActiveTab('register');
-    }
-
-    // Set activeTab to login if there's an error in the URL hash
+    // Set error if there's an error in the URL hash
     if (location.hash && location.hash.includes('error')) {
-      setActiveTab('login');
       setError("Er is een fout opgetreden bij het inloggen. Probeer het opnieuw.");
       // Clear the hash to prevent showing the error again
       if (window.history && window.history.replaceState) {
@@ -128,10 +122,10 @@ const Auth = () => {
     );
   }
   
-  // Use the SignInCard component wrapped in ErrorBoundary
+  // Use the new SimpleAuthPage component
   return (
     <ErrorBoundary>
-      <SignInCard />
+      <SimpleAuthPage />
     </ErrorBoundary>
   );
 };
