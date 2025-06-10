@@ -9,7 +9,6 @@ import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import BackToTop from "@/components/BackToTop";
 import NotificationDebugger from "@/components/debug/NotificationDebugger";
-import ProductionAnalyticsDebugger from "@/components/ProductionAnalyticsDebugger";
 import { useAuth } from "@/contexts/AuthContext";
 
 const Index = () => {
@@ -65,7 +64,6 @@ const Index = () => {
       <Footer />
       <BackToTop />
       {isAdmin && <NotificationDebugger />}
-      <ProductionAnalyticsDebugger />
     </div>
   );
 };

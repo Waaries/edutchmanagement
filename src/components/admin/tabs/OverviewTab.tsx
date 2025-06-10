@@ -3,6 +3,7 @@ import React from "react";
 import AdminStatsDashboard from "@/components/admin/dashboard/AdminStatsDashboard";
 import UsageChart from "@/components/admin/dashboard/UsageChart";
 import AdminNavigationCards from "@/components/admin/dashboard/AdminNavigationCards";
+import ProductionAnalyticsDebugger from "@/components/ProductionAnalyticsDebugger";
 import { useAdminStats } from "@/hooks/use-admin-stats";
 import { useRealtimeNotifications } from "@/hooks/use-realtime-notifications";
 import { useAuth } from "@/contexts/AuthContext";
@@ -111,6 +112,9 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ onTabChange }) => {
       
       {/* Navigation cards */}
       <AdminNavigationCards onTabChange={onTabChange} />
+      
+      {/* Analytics Debugger - Only visible in admin dashboard */}
+      <ProductionAnalyticsDebugger />
     </div>
   );
 };
