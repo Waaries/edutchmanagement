@@ -26,10 +26,8 @@ const SignInCard = () => {
     const isRegister = searchParams.get('register') === 'true';
     const newTab = isRegister ? 'register' : 'login';
     console.log('URL params changed, setting tab to:', newTab);
-    if (newTab !== activeTab) {
-      setActiveTab(newTab);
-    }
-  }, [searchParams, activeTab]);
+    setActiveTab(newTab);
+  }, [searchParams]);
 
   const handleMouseMove = (e: React.MouseEvent) => {
     const rect = e.currentTarget.getBoundingClientRect();
