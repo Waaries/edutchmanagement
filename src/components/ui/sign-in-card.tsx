@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AnimatedBackground from '../auth/card/AnimatedBackground';
 import CardGlowEffect from '../auth/card/CardGlowEffect';
 import CardHeader from '../auth/card/CardHeader';
-import LoginForm from '../auth/card/LoginForm';
+import LoginForm from '../auth/LoginForm';
 import RegisterForm from '../auth/RegisterForm';
 
 const SignInCard = () => {
