@@ -3,11 +3,14 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft, Save } from "lucide-react";
+import { ArrowLeft, Save, Eye, Send } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import TemplateBasicInfoForm from "./TemplateBasicInfoForm";
 import TemplateFieldsList from "./TemplateFieldsList";
+import ContractPreview from "./ContractPreview";
+import ContractGenerationForm from "./ContractGenerationForm";
 
 interface ContractTemplateEditorProps {
   templateId: string | null;
@@ -41,6 +44,7 @@ const ContractTemplateEditor: React.FC<ContractTemplateEditorProps> = ({
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { user } = useAuth();
+  const [activeTab, setActiveTab] = useState("basic");
   
   const [template, setTemplate] = useState<ContractTemplate>({
     title: '',
@@ -172,7 +176,6 @@ const ContractTemplateEditor: React.FC<ContractTemplateEditorProps> = ({
         description: "Het contractsjabloon is succesvol opgeslagen.",
       });
       queryClient.invalidateQueries({ queryKey: ['contract-templates'] });
-      onBack();
     },
     onError: (error: any) => {
       toast({
@@ -206,39 +209,89 @@ const ContractTemplateEditor: React.FC<ContractTemplateEditorProps> = ({
     setFields(updatedFields);
   };
 
+  const handleGenerationComplete = () => {
+    setActiveTab("basic");
+    toast({
+      title: "Contract verzonden",
+      description: "Het contract is succesvol naar de klant verzonden.",
+    });
+  };
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-4">
+      <div className="flex items-center justify-between">
         <Button variant="ghost" onClick={onBack} className="flex items-center gap-2">
           <ArrowLeft className="h-4 w-4" />
           Terug naar sjablonen
         </Button>
+        
+        <div className="flex items-center gap-2">
+          <Button 
+            onClick={() => saveMutation.mutate()} 
+            disabled={saveMutation.isPending}
+            variant="outline"
+            className="flex items-center gap-2"
+          >
+            <Save className="h-4 w-4" />
+            {saveMutation.isPending ? 'Bezig met opslaan...' : 'Opslaan'}
+          </Button>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <TemplateBasicInfoForm 
-          template={template}
-          onTemplateChange={setTemplate}
-        />
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <TabsList className="grid w-full grid-cols-4">
+          <TabsTrigger value="basic">Basis Info</TabsTrigger>
+          <TabsTrigger value="fields">Velden</TabsTrigger>
+          <TabsTrigger value="preview">
+            <Eye className="h-4 w-4 mr-1" />
+            Preview
+          </TabsTrigger>
+          <TabsTrigger value="generate" disabled={!templateId}>
+            <Send className="h-4 w-4 mr-1" />
+            Genereren
+          </TabsTrigger>
+        </TabsList>
 
-        <TemplateFieldsList
-          fields={fields}
-          onAddField={addField}
-          onUpdateField={updateField}
-          onRemoveField={removeField}
-        />
-      </div>
+        <TabsContent value="basic" className="mt-6">
+          <TemplateBasicInfoForm 
+            template={template}
+            onTemplateChange={setTemplate}
+          />
+        </TabsContent>
 
-      <div className="flex justify-end">
-        <Button 
-          onClick={() => saveMutation.mutate()} 
-          disabled={saveMutation.isPending}
-          className="flex items-center gap-2"
-        >
-          <Save className="h-4 w-4" />
-          {saveMutation.isPending ? 'Bezig met opslaan...' : 'Sjabloon opslaan'}
-        </Button>
-      </div>
+        <TabsContent value="fields" className="mt-6">
+          <TemplateFieldsList
+            fields={fields}
+            onAddField={addField}
+            onUpdateField={updateField}
+            onRemoveField={removeField}
+          />
+        </TabsContent>
+
+        <TabsContent value="preview" className="mt-6">
+          <ContractPreview
+            template={template}
+            fields={fields}
+            sampleData={{
+              client_name: 'Voorbeeld BV',
+              client_email: 'contact@voorbeeld.nl',
+              start_date: '01-01-2025',
+              monthly_fee: '€150,00'
+            }}
+          />
+        </TabsContent>
+
+        <TabsContent value="generate" className="mt-6">
+          {templateId && (
+            <ContractGenerationForm
+              templateId={templateId}
+              templateTitle={template.title}
+              fields={fields}
+              onGenerated={handleGenerationComplete}
+            />
+          )}
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
