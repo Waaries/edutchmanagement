@@ -272,7 +272,7 @@ const ContractTemplateEditor: React.FC<ContractTemplateEditorProps> = ({
                 rows={8}
               />
               <p className="text-sm text-muted-foreground mt-1">
-                Gebruik dubbele accolades zoals {{"{{"}}field_name{{"}}"}} om variabele velden in te voegen.
+                Gebruik dubbele accolades zoals {`{{field_name}}`} om variabele velden in te voegen.
               </p>
             </div>
           </CardContent>
@@ -381,7 +381,9 @@ const ContractTemplateEditor: React.FC<ContractTemplateEditorProps> = ({
                           onChange={(e) => updateField(index, { 
                             field_options: e.target.value.split('\n').filter(option => option.trim()) 
                           })}
-                          placeholder="Optie 1&#10;Optie 2&#10;Optie 3"
+                          placeholder="Optie 1
+Optie 2
+Optie 3"
                           rows={3}
                         />
                       </div>
