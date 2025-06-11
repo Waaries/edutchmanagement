@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -29,7 +28,7 @@ const ContractTemplatesView: React.FC<ContractTemplatesViewProps> = ({
 }) => {
   const { toast } = useToast();
 
-  const { data: templates, loading, refetch } = useQuery({
+  const { data: templates, isLoading, refetch } = useQuery({
     queryKey: ['contract-templates'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -90,7 +89,7 @@ const ContractTemplatesView: React.FC<ContractTemplatesViewProps> = ({
     }
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {[...Array(6)].map((_, i) => (

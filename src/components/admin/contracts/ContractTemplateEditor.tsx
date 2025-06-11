@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -12,6 +11,7 @@ import { ArrowLeft, Plus, Trash2, Save } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface ContractTemplateEditorProps {
   templateId: string | null;
@@ -35,6 +35,7 @@ interface ContractTemplate {
   description: string;
   content: string;
   status: 'draft' | 'active' | 'inactive' | 'archived';
+  created_by?: string;
 }
 
 const ContractTemplateEditor: React.FC<ContractTemplateEditorProps> = ({ 
@@ -43,6 +44,7 @@ const ContractTemplateEditor: React.FC<ContractTemplateEditorProps> = ({
 }) => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const { user } = useAuth();
   
   const [template, setTemplate] = useState<ContractTemplate>({
     title: '',
@@ -102,13 +104,22 @@ const ContractTemplateEditor: React.FC<ContractTemplateEditorProps> = ({
 
   const saveMutation = useMutation({
     mutationFn: async () => {
+      if (!user?.id) {
+        throw new Error('User not authenticated');
+      }
+
       let templateData = template;
       
       if (templateId) {
         // Update existing template
         const { data, error } = await supabase
           .from('contract_templates')
-          .update(template)
+          .update({
+            title: template.title,
+            description: template.description,
+            content: template.content,
+            status: template.status
+          })
           .eq('id', templateId)
           .select()
           .single();
@@ -119,7 +130,13 @@ const ContractTemplateEditor: React.FC<ContractTemplateEditorProps> = ({
         // Create new template
         const { data, error } = await supabase
           .from('contract_templates')
-          .insert(template)
+          .insert({
+            title: template.title,
+            description: template.description,
+            content: template.content,
+            status: template.status,
+            created_by: user.id
+          })
           .select()
           .single();
         

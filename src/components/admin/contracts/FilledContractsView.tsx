@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -23,7 +22,7 @@ interface FilledContract {
 }
 
 const FilledContractsView = () => {
-  const { data: filledContracts, loading } = useQuery({
+  const { data: filledContracts, isLoading } = useQuery({
     queryKey: ['filled-contracts'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -57,7 +56,7 @@ const FilledContractsView = () => {
     }
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="space-y-4">
         {[...Array(5)].map((_, i) => (
