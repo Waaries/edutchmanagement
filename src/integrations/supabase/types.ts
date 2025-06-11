@@ -99,6 +99,133 @@ export type Database = {
         }
         Relationships: []
       }
+      contract_template_fields: {
+        Row: {
+          created_at: string
+          field_label: string
+          field_name: string
+          field_options: string[] | null
+          field_type: Database["public"]["Enums"]["field_type"]
+          id: string
+          is_required: boolean
+          placeholder: string | null
+          sort_order: number
+          template_id: string
+        }
+        Insert: {
+          created_at?: string
+          field_label: string
+          field_name: string
+          field_options?: string[] | null
+          field_type?: Database["public"]["Enums"]["field_type"]
+          id?: string
+          is_required?: boolean
+          placeholder?: string | null
+          sort_order?: number
+          template_id: string
+        }
+        Update: {
+          created_at?: string
+          field_label?: string
+          field_name?: string
+          field_options?: string[] | null
+          field_type?: Database["public"]["Enums"]["field_type"]
+          id?: string
+          is_required?: boolean
+          placeholder?: string | null
+          sort_order?: number
+          template_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contract_template_fields_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "contract_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      contract_templates: {
+        Row: {
+          content: string
+          created_at: string
+          created_by: string
+          description: string | null
+          id: string
+          status: Database["public"]["Enums"]["contract_status"]
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          created_by: string
+          description?: string | null
+          id?: string
+          status?: Database["public"]["Enums"]["contract_status"]
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          id?: string
+          status?: Database["public"]["Enums"]["contract_status"]
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      filled_contracts: {
+        Row: {
+          access_token: string
+          client_email: string
+          client_name: string | null
+          completed_at: string | null
+          created_at: string
+          filled_data: Json
+          id: string
+          status: string
+          template_id: string
+          updated_at: string
+        }
+        Insert: {
+          access_token: string
+          client_email: string
+          client_name?: string | null
+          completed_at?: string | null
+          created_at?: string
+          filled_data?: Json
+          id?: string
+          status?: string
+          template_id: string
+          updated_at?: string
+        }
+        Update: {
+          access_token?: string
+          client_email?: string
+          client_name?: string | null
+          completed_at?: string | null
+          created_at?: string
+          filled_data?: Json
+          id?: string
+          status?: string
+          template_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "filled_contracts_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "contract_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -200,6 +327,16 @@ export type Database = {
       }
     }
     Enums: {
+      contract_status: "draft" | "active" | "inactive" | "archived"
+      field_type:
+        | "text"
+        | "textarea"
+        | "number"
+        | "date"
+        | "email"
+        | "phone"
+        | "select"
+        | "checkbox"
       user_role: "user" | "admin"
     }
     CompositeTypes: {
@@ -316,6 +453,17 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      contract_status: ["draft", "active", "inactive", "archived"],
+      field_type: [
+        "text",
+        "textarea",
+        "number",
+        "date",
+        "email",
+        "phone",
+        "select",
+        "checkbox",
+      ],
       user_role: ["user", "admin"],
     },
   },

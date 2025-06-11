@@ -5,6 +5,7 @@ import EnhancedAddressRequestsTab from "./tabs/EnhancedAddressRequestsTab";
 import ContactMessagesTab from "./tabs/ContactMessagesTab";
 import UsersTab from "./tabs/UsersTab";
 import DataTab from "./tabs/DataTab";
+import ContractsTab from "./tabs/ContractsTab";
 import SettingsTab from "./tabs/SettingsTab";
 import LogsTab from "./tabs/LogsTab";
 import { useState } from "react";
@@ -24,7 +25,7 @@ const AdminTabs = () => {
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
       <div className="flex flex-col space-y-2">
-        <TabsList className="grid w-full grid-cols-7">
+        <TabsList className="grid w-full grid-cols-8">
           <TabsTrigger value="overview">Overzicht</TabsTrigger>
           <TabsTrigger value="requests" className="relative">
             Aanvragen
@@ -35,6 +36,7 @@ const AdminTabs = () => {
             )}
           </TabsTrigger>
           <TabsTrigger value="messages">Berichten</TabsTrigger>
+          <TabsTrigger value="contracts">Contracten</TabsTrigger>
           <TabsTrigger value="users">Gebruikers</TabsTrigger>
           <TabsTrigger value="data">Data</TabsTrigger>
           <TabsTrigger value="settings">Instellingen</TabsTrigger>
@@ -60,6 +62,10 @@ const AdminTabs = () => {
       
       <TabsContent value="messages" className="mt-6">
         <ContactMessagesTab />
+      </TabsContent>
+      
+      <TabsContent value="contracts" className="mt-6">
+        <ContractsTab />
       </TabsContent>
       
       <TabsContent value="users" className="mt-6">

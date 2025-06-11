@@ -8,7 +8,15 @@ interface AdminNavigationCardsProps {
 
 const AdminNavigationCards: React.FC<AdminNavigationCardsProps> = ({ onTabChange }) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <NavigationCard
+        title="Contracten"
+        description="Beheer contractsjablonen"
+        content="Maak en beheer contractsjablonen en bekijk ingevulde contracten."
+        buttonText="Bekijk contracten"
+        onButtonClick={() => onTabChange("contracts")}
+      />
+      
       <NavigationCard
         title="Gebruikers"
         description="Beheer gebruikersaccounts"
