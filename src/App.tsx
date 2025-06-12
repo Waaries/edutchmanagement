@@ -15,7 +15,6 @@ import AddressRequest from "./pages/AddressRequest";
 import NotFound from "./pages/NotFound";
 import CookiePolicy from "./pages/CookiePolicy";
 import CookieConsent from "@/components/CookieConsent";
-import ProductionAnalyticsDebugger from "@/components/ProductionAnalyticsDebugger";
 
 // Create a QueryClient instance
 const queryClient = new QueryClient({
@@ -35,7 +34,6 @@ function AppContent() {
     <>
       <Toaster />
       <CookieConsent />
-      <ProductionAnalyticsDebugger />
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/auth" element={<Auth />} />
