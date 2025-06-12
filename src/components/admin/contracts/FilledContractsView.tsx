@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,6 +10,7 @@ import { Eye, Download, Mail, Search, Filter, CheckCircle, Clock, FileText } fro
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import { formatDate, formatDateTime } from "@/lib/utils";
+import FilledContractViewer from "./FilledContractViewer";
 
 interface FilledContract {
   id: string;
@@ -24,6 +24,7 @@ interface FilledContract {
   access_token: string;
   contract_templates: {
     title: string;
+    content: string;
   };
 }
 
@@ -32,6 +33,8 @@ const FilledContractsView = () => {
   const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [selectedContract, setSelectedContract] = useState<FilledContract | null>(null);
+  const [viewerOpen, setViewerOpen] = useState(false);
 
   const { data: filledContracts, isLoading } = useQuery({
     queryKey: ['filled-contracts'],
@@ -40,7 +43,7 @@ const FilledContractsView = () => {
         .from('filled_contracts')
         .select(`
           *,
-          contract_templates!inner(title)
+          contract_templates!inner(title, content)
         `)
         .order('created_at', { ascending: false });
       
@@ -122,6 +125,17 @@ const FilledContractsView = () => {
 
   const generateContractLink = (accessToken: string) => {
     return `${window.location.origin}/contract/${accessToken}`;
+  };
+
+  const handleViewContract = (contract: FilledContract) => {
+    setSelectedContract(contract);
+    setViewerOpen(true);
+  };
+
+  const handleDownloadContract = (contract: FilledContract) => {
+    setSelectedContract(contract);
+    setViewerOpen(true);
+    // The download will be triggered from within the viewer
   };
 
   if (isLoading) {
@@ -271,11 +285,21 @@ const FilledContractsView = () => {
                 )}
                 
                 <div className="flex gap-2">
-                  <Button variant="outline" size="sm" className="flex items-center gap-1">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="flex items-center gap-1"
+                    onClick={() => handleViewContract(contract)}
+                  >
                     <Eye className="h-3 w-3" />
                     Bekijken
                   </Button>
-                  <Button variant="outline" size="sm" className="flex items-center gap-1">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="flex items-center gap-1"
+                    onClick={() => handleDownloadContract(contract)}
+                  >
                     <Download className="h-3 w-3" />
                     PDF downloaden
                   </Button>
@@ -314,6 +338,13 @@ const FilledContractsView = () => {
           </CardContent>
         </Card>
       )}
+
+      {/* Contract Viewer Modal */}
+      <FilledContractViewer
+        contract={selectedContract}
+        open={viewerOpen}
+        onOpenChange={setViewerOpen}
+      />
     </div>
   );
 };
