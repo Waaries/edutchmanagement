@@ -6,11 +6,22 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Eye, Download, Mail, Search, Filter, CheckCircle, Clock, FileText } from "lucide-react";
+import { Eye, Download, Mail, Search, Filter, CheckCircle, Clock, FileText, Trash2 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import { formatDate, formatDateTime } from "@/lib/utils";
 import FilledContractViewer from "./FilledContractViewer";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 interface FilledContract {
   id: string;
@@ -83,6 +94,31 @@ const FilledContractsView = () => {
     }
   });
 
+  const deleteContractMutation = useMutation({
+    mutationFn: async (contractId: string) => {
+      const { error } = await supabase
+        .from('filled_contracts')
+        .delete()
+        .eq('id', contractId);
+
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast({
+        title: "Contract verwijderd",
+        description: "Het contract is succesvol verwijderd.",
+      });
+      queryClient.invalidateQueries({ queryKey: ['filled-contracts'] });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Fout bij verwijderen",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  });
+
   const filteredContracts = filledContracts?.filter(contract => {
     const matchesSearch = !searchTerm || 
       contract.client_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -136,6 +172,10 @@ const FilledContractsView = () => {
     setSelectedContract(contract);
     setViewerOpen(true);
     // The download will be triggered from within the viewer
+  };
+
+  const handleDeleteContract = (contractId: string) => {
+    deleteContractMutation.mutate(contractId);
   };
 
   if (isLoading) {
@@ -318,6 +358,40 @@ const FilledContractsView = () => {
                     <Mail className="h-3 w-3" />
                     Deel link
                   </Button>
+                  
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="flex items-center gap-1 text-red-600 hover:text-red-700 hover:bg-red-50"
+                      >
+                        <Trash2 className="h-3 w-3" />
+                        Verwijderen
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Contract verwijderen</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          Weet je zeker dat je dit contract wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.
+                          <br />
+                          <strong>Contract:</strong> {contract.contract_templates.title}
+                          <br />
+                          <strong>Klant:</strong> {contract.client_name || contract.client_email}
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Annuleren</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() => handleDeleteContract(contract.id)}
+                          className="bg-red-600 hover:bg-red-700"
+                        >
+                          Verwijderen
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </div>
               </CardContent>
             </Card>
@@ -325,6 +399,7 @@ const FilledContractsView = () => {
         })}
       </div>
 
+      {/* No results found */}
       {filteredContracts?.length === 0 && filledContracts?.length > 0 && (
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">

@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -12,6 +11,17 @@ import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatDate } from "@/lib/utils";
 import ContractTemplateQuickStart from "./ContractTemplateQuickStart";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 interface ContractTemplate {
   id: string;
@@ -129,32 +139,42 @@ const ContractTemplatesView: React.FC<ContractTemplatesViewProps> = ({
     }
   });
 
-  const handleDelete = async (templateId: string, title: string) => {
-    if (!confirm(`Weet je zeker dat je het sjabloon "${title}" wilt verwijderen?`)) {
-      return;
-    }
+  const deleteTemplateMutation = useMutation({
+    mutationFn: async (templateId: string) => {
+      // First delete related fields
+      const { error: fieldsError } = await supabase
+        .from('contract_template_fields')
+        .delete()
+        .eq('template_id', templateId);
 
-    try {
-      const { error } = await supabase
+      if (fieldsError) throw fieldsError;
+
+      // Then delete the template
+      const { error: templateError } = await supabase
         .from('contract_templates')
         .delete()
         .eq('id', templateId);
 
-      if (error) throw error;
-
+      if (templateError) throw templateError;
+    },
+    onSuccess: () => {
       toast({
         title: "Sjabloon verwijderd",
-        description: `Het sjabloon "${title}" is succesvol verwijderd.`,
+        description: "Het sjabloon is succesvol verwijderd.",
       });
-
-      refetch();
-    } catch (error: any) {
+      queryClient.invalidateQueries({ queryKey: ['contract-templates'] });
+    },
+    onError: (error: any) => {
       toast({
         title: "Fout bij verwijderen",
         description: error.message,
         variant: "destructive",
       });
     }
+  });
+
+  const handleDelete = (templateId: string, title: string) => {
+    deleteTemplateMutation.mutate(templateId);
   };
 
   const filteredTemplates = templates?.filter(template => {
@@ -220,7 +240,6 @@ const ContractTemplatesView: React.FC<ContractTemplatesViewProps> = ({
 
   return (
     <div className="space-y-6">
-      {/* Quick Start Section - Show when there are few templates */}
       {templates.length < 3 && (
         <ContractTemplateQuickStart 
           onCreateNew={onCreateNew}
@@ -228,7 +247,6 @@ const ContractTemplatesView: React.FC<ContractTemplatesViewProps> = ({
         />
       )}
 
-      {/* Filters and Search */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -284,7 +302,6 @@ const ContractTemplatesView: React.FC<ContractTemplatesViewProps> = ({
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {/* Statistics */}
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div className="flex items-center gap-2">
                     <Users className="h-4 w-4 text-muted-foreground" />
@@ -317,14 +334,42 @@ const ContractTemplatesView: React.FC<ContractTemplatesViewProps> = ({
                     <Copy className="h-3 w-3" />
                   </Button>
                   
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleDelete(template.id, template.title)}
-                    className="text-red-600 hover:text-red-700"
-                  >
-                    <Trash2 className="h-3 w-3" />
-                  </Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                      >
+                        <Trash2 className="h-3 w-3" />
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Sjabloon verwijderen</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          Weet je zeker dat je het sjabloon "{template.title}" wilt verwijderen? 
+                          Deze actie kan niet ongedaan worden gemaakt en alle bijbehorende velden worden ook verwijderd.
+                          {template._count?.filled_contracts ? (
+                            <>
+                              <br /><br />
+                              <strong>Let op:</strong> Er zijn {template._count.filled_contracts} ingevulde contracten gekoppeld aan dit sjabloon. 
+                              Deze contracten blijven bestaan maar zijn niet meer gekoppeld aan een sjabloon.
+                            </>
+                          ) : null}
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Annuleren</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() => handleDelete(template.id, template.title)}
+                          className="bg-red-600 hover:bg-red-700"
+                        >
+                          Verwijderen
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </div>
               </div>
             </CardContent>
