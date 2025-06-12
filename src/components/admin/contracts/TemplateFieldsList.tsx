@@ -78,7 +78,9 @@ const TemplateFieldsList: React.FC<TemplateFieldsListProps> = ({
           {fields.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
               <p>Nog geen velden toegevoegd.</p>
-              <p className="text-sm">Voeg placeholders toe aan je template content (bijv. {{bedrijfsnaam}}) of klik op "Veld toevoegen".</p>
+              <p className="text-sm">
+                Voeg placeholders toe aan je template content (bijv. {`{{bedrijfsnaam}}`}) of klik op "Veld toevoegen".
+              </p>
             </div>
           ) : (
             fields.map((field, index) => (
