@@ -49,6 +49,45 @@ const ContractTemplateEditorContent: React.FC<ContractTemplateEditorContentProps
   onGenerationComplete,
   onSyncFields
 }) => {
+  // Create sample data based on extracted placeholders from template content
+  const createSampleData = () => {
+    const sampleData: Record<string, string> = {
+      // Default sample values
+      client_name: 'Voorbeeld BV',
+      client_email: 'contact@voorbeeld.nl',
+      start_date: '01-01-2025',
+      monthly_fee: '€150,00',
+      bedrijfsnaam: 'Voorbeeld BV',
+      email: 'contact@voorbeeld.nl',
+      datum: '01-01-2025',
+      bedrag: '€150,00'
+    };
+
+    // Add sample data for each field
+    fields.forEach(field => {
+      if (!sampleData[field.field_name]) {
+        switch (field.field_type) {
+          case 'email':
+            sampleData[field.field_name] = 'voorbeeld@email.nl';
+            break;
+          case 'date':
+            sampleData[field.field_name] = '01-01-2025';
+            break;
+          case 'number':
+            sampleData[field.field_name] = '1';
+            break;
+          case 'phone':
+            sampleData[field.field_name] = '+31 6 12345678';
+            break;
+          default:
+            sampleData[field.field_name] = field.placeholder || `Voorbeeld ${field.field_label}`;
+        }
+      }
+    });
+
+    return sampleData;
+  };
+
   return (
     <>
       <TabsContent value="basic" className="mt-6">
@@ -72,12 +111,7 @@ const ContractTemplateEditorContent: React.FC<ContractTemplateEditorContentProps
         <ContractPreview
           template={template}
           fields={fields}
-          sampleData={{
-            client_name: 'Voorbeeld BV',
-            client_email: 'contact@voorbeeld.nl',
-            start_date: '01-01-2025',
-            monthly_fee: '€150,00'
-          }}
+          sampleData={createSampleData()}
         />
       </TabsContent>
 
