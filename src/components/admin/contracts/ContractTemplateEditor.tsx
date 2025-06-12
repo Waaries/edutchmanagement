@@ -26,7 +26,8 @@ const ContractTemplateEditor: React.FC<ContractTemplateEditorProps> = ({
     addField,
     updateField,
     removeField,
-    saveMutation
+    saveMutation,
+    syncFieldsManually
   } = useContractTemplateEditor(templateId);
 
   const handleGenerationComplete = () => {
@@ -61,6 +62,7 @@ const ContractTemplateEditor: React.FC<ContractTemplateEditorProps> = ({
           onUpdateField={updateField}
           onRemoveField={removeField}
           onGenerationComplete={handleGenerationComplete}
+          onSyncFields={syncFieldsManually}
         />
       </Tabs>
     </div>

@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
+import { useTemplateFieldSync } from "./use-template-field-sync";
 
 interface TemplateField {
   id?: string;
@@ -85,6 +86,14 @@ export const useContractTemplateEditor = (templateId: string | null) => {
       setFields(existingFields);
     }
   }, [existingFields]);
+
+  // Use the template field sync hook
+  const { syncFieldsManually } = useTemplateFieldSync({
+    template,
+    fields,
+    setFields,
+    autoSync: true // Auto-sync when template content changes
+  });
 
   const saveMutation = useMutation({
     mutationFn: async () => {
@@ -200,6 +209,7 @@ export const useContractTemplateEditor = (templateId: string | null) => {
     addField,
     updateField,
     removeField,
-    saveMutation
+    saveMutation,
+    syncFieldsManually
   };
 };

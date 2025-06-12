@@ -35,6 +35,7 @@ interface ContractTemplateEditorContentProps {
   onUpdateField: (index: number, updates: Partial<TemplateField>) => void;
   onRemoveField: (index: number) => void;
   onGenerationComplete: () => void;
+  onSyncFields?: () => number;
 }
 
 const ContractTemplateEditorContent: React.FC<ContractTemplateEditorContentProps> = ({
@@ -45,7 +46,8 @@ const ContractTemplateEditorContent: React.FC<ContractTemplateEditorContentProps
   onAddField,
   onUpdateField,
   onRemoveField,
-  onGenerationComplete
+  onGenerationComplete,
+  onSyncFields
 }) => {
   return (
     <>
@@ -62,6 +64,7 @@ const ContractTemplateEditorContent: React.FC<ContractTemplateEditorContentProps
           onAddField={onAddField}
           onUpdateField={onUpdateField}
           onRemoveField={onRemoveField}
+          onSyncFields={onSyncFields}
         />
       </TabsContent>
 

@@ -2,7 +2,8 @@
 import React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { Plus, RefreshCw } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import TemplateFieldEditor from "./TemplateFieldEditor";
 
 interface TemplateField {
@@ -21,14 +22,28 @@ interface TemplateFieldsListProps {
   onAddField: () => void;
   onUpdateField: (index: number, updates: Partial<TemplateField>) => void;
   onRemoveField: (index: number) => void;
+  onSyncFields?: () => number;
 }
 
 const TemplateFieldsList: React.FC<TemplateFieldsListProps> = ({
   fields,
   onAddField,
   onUpdateField,
-  onRemoveField
+  onRemoveField,
+  onSyncFields
 }) => {
+  const { toast } = useToast();
+
+  const handleSyncFields = () => {
+    if (onSyncFields) {
+      const newFieldsCount = onSyncFields();
+      toast({
+        title: "Velden gesynchroniseerd",
+        description: `${newFieldsCount} placeholder(s) gevonden en toegevoegd als velden.`,
+      });
+    }
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -36,13 +51,26 @@ const TemplateFieldsList: React.FC<TemplateFieldsListProps> = ({
           <div>
             <CardTitle>Invulvelden</CardTitle>
             <CardDescription>
-              Definieer de velden die klanten moeten invullen
+              Definieer de velden die klanten moeten invullen. Velden worden automatisch gedetecteerd uit de template content.
             </CardDescription>
           </div>
-          <Button onClick={onAddField} size="sm" className="flex items-center gap-2">
-            <Plus className="h-3 w-3" />
-            Veld toevoegen
-          </Button>
+          <div className="flex gap-2">
+            {onSyncFields && (
+              <Button 
+                onClick={handleSyncFields} 
+                size="sm" 
+                variant="outline" 
+                className="flex items-center gap-2"
+              >
+                <RefreshCw className="h-3 w-3" />
+                Sync placeholders
+              </Button>
+            )}
+            <Button onClick={onAddField} size="sm" className="flex items-center gap-2">
+              <Plus className="h-3 w-3" />
+              Veld toevoegen
+            </Button>
+          </div>
         </div>
       </CardHeader>
       <CardContent>
@@ -50,7 +78,7 @@ const TemplateFieldsList: React.FC<TemplateFieldsListProps> = ({
           {fields.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
               <p>Nog geen velden toegevoegd.</p>
-              <p className="text-sm">Klik op "Veld toevoegen" om te beginnen.</p>
+              <p className="text-sm">Voeg placeholders toe aan je template content (bijv. {{bedrijfsnaam}}) of klik op "Veld toevoegen".</p>
             </div>
           ) : (
             fields.map((field, index) => (
