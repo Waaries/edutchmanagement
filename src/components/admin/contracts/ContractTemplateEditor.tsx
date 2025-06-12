@@ -6,6 +6,7 @@ import { useContractTemplateEditor } from "@/hooks/use-contract-template-editor"
 import ContractTemplateEditorHeader from "./ContractTemplateEditorHeader";
 import ContractTemplateEditorTabs from "./ContractTemplateEditorTabs";
 import ContractTemplateEditorContent from "./ContractTemplateEditorContent";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface ContractTemplateEditorProps {
   templateId: string | null;
@@ -17,6 +18,7 @@ const ContractTemplateEditor: React.FC<ContractTemplateEditorProps> = ({
   onBack 
 }) => {
   const { toast } = useToast();
+  const queryClient = useQueryClient();
   const [activeTab, setActiveTab] = useState("basic");
   
   const {
@@ -35,6 +37,21 @@ const ContractTemplateEditor: React.FC<ContractTemplateEditorProps> = ({
     toast({
       title: "Contract verzonden",
       description: "Het contract is succesvol naar de klant verzonden.",
+    });
+  };
+
+  const handleTemplateUpdated = () => {
+    // Refresh the template data after Dutch template is applied
+    queryClient.invalidateQueries({ queryKey: ['contract-template', templateId] });
+    queryClient.invalidateQueries({ queryKey: ['contract-template-fields', templateId] });
+    queryClient.invalidateQueries({ queryKey: ['contract-templates'] });
+    
+    // Switch to the basic tab to see the updated content
+    setActiveTab("basic");
+    
+    toast({
+      title: "Sjabloon bijgewerkt",
+      description: "Het sjabloon is succesvol bijgewerkt. De pagina wordt ververst om de wijzigingen te tonen.",
     });
   };
 
@@ -63,6 +80,7 @@ const ContractTemplateEditor: React.FC<ContractTemplateEditorProps> = ({
           onRemoveField={removeField}
           onGenerationComplete={handleGenerationComplete}
           onSyncFields={syncFieldsManually}
+          onTemplateUpdated={handleTemplateUpdated}
         />
       </Tabs>
     </div>

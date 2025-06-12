@@ -5,6 +5,7 @@ import TemplateBasicInfoForm from "./TemplateBasicInfoForm";
 import TemplateFieldsList from "./TemplateFieldsList";
 import ContractPreview from "./ContractPreview";
 import ContractGenerationForm from "./ContractGenerationForm";
+import DutchTemplateApplicator from "./DutchTemplateApplicator";
 
 interface TemplateField {
   id?: string;
@@ -36,6 +37,7 @@ interface ContractTemplateEditorContentProps {
   onRemoveField: (index: number) => void;
   onGenerationComplete: () => void;
   onSyncFields?: () => number;
+  onTemplateUpdated?: () => void;
 }
 
 const ContractTemplateEditorContent: React.FC<ContractTemplateEditorContentProps> = ({
@@ -47,7 +49,8 @@ const ContractTemplateEditorContent: React.FC<ContractTemplateEditorContentProps
   onUpdateField,
   onRemoveField,
   onGenerationComplete,
-  onSyncFields
+  onSyncFields,
+  onTemplateUpdated
 }) => {
   // Create sample data based on extracted placeholders from template content
   const createSampleData = () => {
@@ -113,6 +116,16 @@ const ContractTemplateEditorContent: React.FC<ContractTemplateEditorContentProps
           fields={fields}
           sampleData={createSampleData()}
         />
+      </TabsContent>
+
+      <TabsContent value="apply-dutch" className="mt-6">
+        {templateId && (
+          <DutchTemplateApplicator
+            templateId={templateId}
+            templateTitle={template.title}
+            onTemplateUpdated={onTemplateUpdated || (() => {})}
+          />
+        )}
       </TabsContent>
 
       <TabsContent value="generate" className="mt-6">
