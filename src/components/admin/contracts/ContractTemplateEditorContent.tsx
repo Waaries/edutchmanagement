@@ -1,9 +1,8 @@
-
 import React from "react";
 import { TabsContent } from "@/components/ui/tabs";
 import TemplateBasicInfoForm from "./TemplateBasicInfoForm";
 import TemplateFieldsList from "./TemplateFieldsList";
-import ContractPreview from "./ContractPreview";
+import EnhancedContractPreview from "./EnhancedContractPreview";
 import ContractGenerationForm from "./ContractGenerationForm";
 import DutchTemplateApplicator from "./DutchTemplateApplicator";
 
@@ -52,21 +51,37 @@ const ContractTemplateEditorContent: React.FC<ContractTemplateEditorContentProps
   onSyncFields,
   onTemplateUpdated
 }) => {
-  // Create sample data based on extracted placeholders from template content
-  const createSampleData = () => {
+  // Create enhanced sample data
+  const createEnhancedSampleData = () => {
     const sampleData: Record<string, string> = {
-      // Default sample values
+      // Dutch business sample data
+      bedrijfsnaam: 'Voorbeeld BV',
+      kvk_nummer: '12345678',
+      btw_nummer: 'NL123456789B01',
+      contactpersoon: 'J. de Vries',
+      email: 'contact@voorbeeldbv.nl',
+      telefoon: '+31 20 123 4567',
+      adres_type: 'Vestigingsadres',
+      bedrijfsadres: 'Voorbeeldstraat 123\n1234AB Amsterdam',
+      aanvullende_diensten: 'Postafhandeling en telefonische bereikbaarheid',
+      maandelijkse_vergoeding: '€150,00',
+      betalingstermijn: '30 dagen',
+      eerste_betaling_datum: '01-02-2025',
+      startdatum: '01-01-2025',
+      einddatum: '31-12-2025',
+      opzegtermijn: '1 maand',
+      bijzondere_bepalingen: 'Geen bijzondere bepalingen',
+      
+      // Legacy field mapping
       client_name: 'Voorbeeld BV',
-      client_email: 'contact@voorbeeld.nl',
+      client_email: 'contact@voorbeeldbv.nl',
       start_date: '01-01-2025',
       monthly_fee: '€150,00',
-      bedrijfsnaam: 'Voorbeeld BV',
-      email: 'contact@voorbeeld.nl',
       datum: '01-01-2025',
       bedrag: '€150,00'
     };
 
-    // Add sample data for each field
+    // Add sample data for custom fields
     fields.forEach(field => {
       if (!sampleData[field.field_name]) {
         switch (field.field_type) {
@@ -81,6 +96,12 @@ const ContractTemplateEditorContent: React.FC<ContractTemplateEditorContentProps
             break;
           case 'phone':
             sampleData[field.field_name] = '+31 6 12345678';
+            break;
+          case 'select':
+            sampleData[field.field_name] = field.field_options?.[0] || 'Optie 1';
+            break;
+          case 'checkbox':
+            sampleData[field.field_name] = 'Ja';
             break;
           default:
             sampleData[field.field_name] = field.placeholder || `Voorbeeld ${field.field_label}`;
@@ -111,10 +132,10 @@ const ContractTemplateEditorContent: React.FC<ContractTemplateEditorContentProps
       </TabsContent>
 
       <TabsContent value="preview" className="mt-6">
-        <ContractPreview
+        <EnhancedContractPreview
           template={template}
           fields={fields}
-          sampleData={createSampleData()}
+          sampleData={createEnhancedSampleData()}
         />
       </TabsContent>
 
