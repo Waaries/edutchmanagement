@@ -11,6 +11,7 @@ import { Edit, Eye, Trash2, Search, Filter, FileText, Users, Calendar, Copy } fr
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatDate } from "@/lib/utils";
+import ContractTemplateQuickStart from "./ContractTemplateQuickStart";
 
 interface ContractTemplate {
   id: string;
@@ -208,25 +209,25 @@ const ContractTemplatesView: React.FC<ContractTemplatesViewProps> = ({
 
   if (!templates || templates.length === 0) {
     return (
-      <Card>
-        <CardContent className="flex flex-col items-center justify-center py-12">
-          <div className="text-center">
-            <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-semibold mb-2">Geen contractsjablonen</h3>
-            <p className="text-muted-foreground mb-4">
-              Je hebt nog geen contractsjablonen aangemaakt.
-            </p>
-            <Button onClick={onCreateNew}>
-              Eerste sjabloon aanmaken
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="space-y-6">
+        <ContractTemplateQuickStart 
+          onCreateNew={onCreateNew}
+          onTemplateCreated={refetch}
+        />
+      </div>
     );
   }
 
   return (
     <div className="space-y-6">
+      {/* Quick Start Section - Show when there are few templates */}
+      {templates.length < 3 && (
+        <ContractTemplateQuickStart 
+          onCreateNew={onCreateNew}
+          onTemplateCreated={refetch}
+        />
+      )}
+
       {/* Filters and Search */}
       <Card>
         <CardHeader>
