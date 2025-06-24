@@ -1,3 +1,4 @@
+
 // Monitoring and error tracking utilities
 export interface ErrorReport {
   message: string;
@@ -127,7 +128,7 @@ class MonitoringService {
       try {
         const lcpObserver = new PerformanceObserver((list) => {
           const entries = list.getEntries();
-          const lastEntry = entries[entries.length - 1];
+          const lastEntry = entries[entries.length - 1] as any;
           if (lastEntry) {
             this.reportPerformance('lcp', lastEntry.startTime, {
               element: lastEntry.element?.tagName || 'unknown'
@@ -171,9 +172,9 @@ class MonitoringService {
       setTimeout(() => {
         const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
         if (navigation) {
-          this.reportPerformance('page_load_time', navigation.loadEventEnd - navigation.navigationStart);
-          this.reportPerformance('dom_content_loaded', navigation.domContentLoadedEventEnd - navigation.navigationStart);
-          this.reportPerformance('time_to_interactive', navigation.domInteractive - navigation.navigationStart);
+          this.reportPerformance('page_load_time', navigation.loadEventEnd - navigation.fetchStart);
+          this.reportPerformance('dom_content_loaded', navigation.domContentLoadedEventEnd - navigation.fetchStart);
+          this.reportPerformance('time_to_interactive', navigation.domInteractive - navigation.fetchStart);
         }
       }, 100);
     });

@@ -10,8 +10,15 @@ import DataTab from "./tabs/DataTab";
 import LogsTab from "./tabs/LogsTab";
 import SettingsTab from "./tabs/SettingsTab";
 import MonitoringTab from "./tabs/MonitoringTab";
+import { useState } from "react";
 
 const AdminTabs = () => {
+  const [activeTab, setActiveTab] = useState("overview");
+
+  const handleTabChange = (tabValue: string) => {
+    setActiveTab(tabValue);
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -19,7 +26,7 @@ const AdminTabs = () => {
         <CardDescription>Beheer uw systeem en bekijk statistieken</CardDescription>
       </CardHeader>
       <CardContent>
-        <Tabs defaultValue="overview" className="space-y-6">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="grid w-full grid-cols-4 lg:grid-cols-9">
             <TabsTrigger value="overview">Overzicht</TabsTrigger>
             <TabsTrigger value="users">Gebruikers</TabsTrigger>
@@ -33,7 +40,7 @@ const AdminTabs = () => {
           </TabsList>
           
           <TabsContent value="overview">
-            <OverviewTab />
+            <OverviewTab onTabChange={handleTabChange} />
           </TabsContent>
           
           <TabsContent value="users">
