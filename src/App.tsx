@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { AuthProvider } from "./contexts/AuthContext";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { useAnalytics } from "./hooks/use-analytics";
+import { useMonitoring } from "./hooks/use-monitoring";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
@@ -29,6 +30,9 @@ const queryClient = new QueryClient({
 function AppContent() {
   // Initialize analytics - single initialization point
   useAnalytics();
+  
+  // Initialize monitoring
+  useMonitoring();
 
   return (
     <>

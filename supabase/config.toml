@@ -39,3 +39,7 @@ verify_jwt = false
 [[functions]]
 name = "send-address-request-notification"
 verify_jwt = false
+
+[[functions]]
+name = "health-check"
+verify_jwt = false

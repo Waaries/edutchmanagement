@@ -10,10 +10,14 @@ import Footer from "@/components/Footer";
 import BackToTop from "@/components/BackToTop";
 import NotificationDebugger from "@/components/debug/NotificationDebugger";
 import { useAuth } from "@/contexts/AuthContext";
+import { usePageTracking } from "@/hooks/use-monitoring";
 
 const Index = () => {
   const mounted = useRef(false);
   const { isAdmin } = useAuth();
+  
+  // Track page visits and performance
+  usePageTracking('home');
 
   useEffect(() => {
     // Update the document title
