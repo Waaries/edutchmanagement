@@ -4,15 +4,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
 const ContactInfo = () => {
   return (
-    <div className="space-y-6 h-fit">
-      <Card className="h-fit">
+    <div className="h-full">
+      <Card className="h-full flex flex-col">
         <CardHeader className="pb-4">
           <CardTitle className="text-2xl">Contactinformatie</CardTitle>
           <CardDescription>
             U kunt ons ook rechtstreeks bereiken via onderstaande gegevens.
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
+        <CardContent className="space-y-6 flex-1">
           <div className="flex items-start space-x-4">
             <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
               <MapPin className="h-5 w-5 text-primary" />

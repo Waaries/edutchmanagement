@@ -44,7 +44,7 @@ const Contact = () => {
         
         <div className="space-y-12 max-w-6xl mx-auto">
           {/* Contact Form and Info - Two columns */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-fade-in animation-delay-400">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-fade-in animation-delay-400 lg:items-stretch">
             <ContactForm />
             <ContactInfo />
           </div>

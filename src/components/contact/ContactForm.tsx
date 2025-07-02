@@ -96,14 +96,14 @@ const ContactForm = () => {
   };
 
   return (
-    <Card className="h-fit">
+    <Card className="h-full flex flex-col">
       <CardHeader className="pb-4">
         <CardTitle className="text-2xl">Stuur ons een bericht</CardTitle>
         <CardDescription>
           Vul het formulier in en we nemen binnen 24 uur contact met u op.
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex-1">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
