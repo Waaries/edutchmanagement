@@ -2,6 +2,7 @@
 import { useRef, useEffect } from "react";
 import ContactForm from "@/components/contact/ContactForm";
 import ContactInfo from "@/components/contact/ContactInfo";
+import MapSection from "@/components/contact/MapSection";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const Contact = () => {
@@ -41,9 +42,17 @@ const Contact = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto animate-fade-in animation-delay-400">
-          <ContactForm />
-          <ContactInfo />
+        <div className="space-y-12 max-w-6xl mx-auto">
+          {/* Contact Form and Info - Two columns */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-fade-in animation-delay-400">
+            <ContactForm />
+            <ContactInfo />
+          </div>
+          
+          {/* Map Section - Full width */}
+          <div className="animate-fade-in animation-delay-600">
+            <MapSection />
+          </div>
         </div>
       </div>
     </section>
