@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Mail, Phone } from "lucide-react";
+import { Send, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useFormTracking } from "@/hooks/use-monitoring";
@@ -47,11 +47,23 @@ const ContactForm = () => {
     trackFormStart();
 
     try {
-      const { error } = await supabase.functions.invoke('send-contact-email', {
+      // Store in database first
+      const { error: dbError } = await supabase
+        .from('contact_messages')
+        .insert([{
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone || null,
+          message: formData.message,
+          status: 'unread'
+        }]);
+
+      if (dbError) throw dbError;
+
+      // Then try to send email
+      const { error: emailError } = await supabase.functions.invoke('send-contact-email', {
         body: formData
       });
-
-      if (error) throw error;
 
       trackFormSubmit(true);
       
@@ -84,129 +96,103 @@ const ContactForm = () => {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-      <Card>
-        <CardHeader>
-          <CardTitle>Stuur ons een bericht</CardTitle>
-          <CardDescription>
-            Vul het formulier in en we nemen zo snel mogelijk contact met u op.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="name">Naam *</Label>
-                <Input
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  required
-                  placeholder="Uw volledige naam"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="email">E-mail *</Label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  required
-                  placeholder="uw.email@example.com"
-                />
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="phone">Telefoon</Label>
-                <Input
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                  placeholder="+31 6 12345678"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="subject">Onderwerp</Label>
-                <Input
-                  id="subject"
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleInputChange}
-                  placeholder="Waar gaat uw vraag over?"
-                />
-              </div>
-            </div>
-            
+    <Card className="h-fit">
+      <CardHeader className="pb-4">
+        <CardTitle className="text-2xl">Stuur ons een bericht</CardTitle>
+        <CardDescription>
+          Vul het formulier in en we nemen binnen 24 uur contact met u op.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="message">Bericht *</Label>
-              <Textarea
-                id="message"
-                name="message"
-                value={formData.message}
+              <Label htmlFor="name">Naam *</Label>
+              <Input
+                id="name"
+                name="name"
+                value={formData.name}
                 onChange={handleInputChange}
                 required
-                rows={5}
-                placeholder="Beschrijf uw vraag of wens in detail..."
+                placeholder="Uw volledige naam"
+                className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
               />
             </div>
-            
-            <Button type="submit" className="w-full" disabled={isSubmitting}>
-              {isSubmitting ? "Verzenden..." : "Bericht Verzenden"}
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Contactinformatie</CardTitle>
-          <CardDescription>
-            U kunt ons ook rechtstreeks bereiken via onderstaande gegevens.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="flex items-start space-x-3">
-            <Mail className="h-5 w-5 text-primary mt-1" />
-            <div>
-              <p className="font-medium">E-mail</p>
-              <p className="text-muted-foreground">info@edutchmanagement.nl</p>
+            <div className="space-y-2">
+              <Label htmlFor="email">E-mail *</Label>
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                required
+                placeholder="uw.email@example.com"
+                className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
+              />
             </div>
           </div>
           
-          <div className="flex items-start space-x-3">
-            <Phone className="h-5 w-5 text-primary mt-1" />
-            <div>
-              <p className="font-medium">Telefoon</p>
-              <p className="text-muted-foreground">+31 (0) 20 123 4567</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="phone">Telefoon</Label>
+              <Input
+                id="phone"
+                name="phone"
+                type="tel"
+                value={formData.phone}
+                onChange={handleInputChange}
+                placeholder="+31 6 12345678"
+                className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="subject">Onderwerp</Label>
+              <Input
+                id="subject"
+                name="subject"
+                value={formData.subject}
+                onChange={handleInputChange}
+                placeholder="Waar gaat uw vraag over?"
+                className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
+              />
             </div>
           </div>
           
-          <div className="p-4 bg-muted rounded-lg">
-            <h4 className="font-medium mb-2">Openingstijden</h4>
-            <div className="space-y-1 text-sm text-muted-foreground">
-              <p>Maandag - Vrijdag: 09:00 - 17:00</p>
-              <p>Zaterdag: 10:00 - 14:00</p>
-              <p>Zondag: Gesloten</p>
-            </div>
+          <div className="space-y-2">
+            <Label htmlFor="message">Bericht *</Label>
+            <Textarea
+              id="message"
+              name="message"
+              value={formData.message}
+              onChange={handleInputChange}
+              required
+              rows={5}
+              placeholder="Beschrijf uw vraag of wens in detail..."
+              className="transition-all duration-200 focus:ring-2 focus:ring-primary/20 resize-none"
+            />
           </div>
           
-          <div className="p-4 bg-blue-50 rounded-lg">
-            <h4 className="font-medium mb-2 text-blue-900">Snelle respons</h4>
-            <p className="text-sm text-blue-700">
-              We streven ernaar om binnen 24 uur te reageren op uw bericht.
-              Voor urgente zaken kunt u ons bellen tijdens kantooruren.
-            </p>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+          <Button 
+            type="submit" 
+            className="w-full h-12 text-lg font-medium" 
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                Verzenden...
+              </>
+            ) : (
+              <>
+                <Send className="mr-2 h-5 w-5" />
+                Bericht Verzenden
+              </>
+            )}
+          </Button>
+        </form>
+      </CardContent>
+    </Card>
   );
 };
 

@@ -30,18 +30,18 @@ const Contact = () => {
   }, []);
 
   return (
-    <section id="contact" className="section-padding bg-white" ref={sectionRef}>
-      <div className="container mx-auto container-padding reveal">
+    <section id="contact" className="py-20 bg-gradient-to-b from-background to-muted/20" ref={sectionRef}>
+      <div className="container mx-auto px-4 reveal">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="mb-6 animate-fade-in">
-            Klaar Om Uw <span className="text-blue-500">Bedrijfsadres</span> Te Upgraden?
+          <h2 className="text-4xl font-bold mb-6 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent animate-fade-in">
+            Klaar Om Uw Bedrijfsadres Te Upgraden?
           </h2>
-          <p className="text-lg text-slate-600 animate-fade-in animation-delay-200">
-            {translate("contact.description")}
+          <p className="text-lg text-muted-foreground animate-fade-in animation-delay-200">
+            {translate("contact.description") || "Neem contact met ons op voor een persoonlijk advies over uw bedrijfsadres."}
           </p>
         </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 animate-fade-in animation-delay-400">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto animate-fade-in animation-delay-400">
           <ContactForm />
           <ContactInfo />
         </div>
