@@ -1,4 +1,5 @@
 
+import { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -8,6 +9,10 @@ import { LanguageProvider } from "./contexts/LanguageContext";
 import { useAnalytics } from "./hooks/use-analytics";
 import { useMonitoring } from "./hooks/use-monitoring";
 import ErrorBoundary from "./components/ErrorBoundary";
+import { AppLayout } from "./components/layout/AppLayout";
+import { enforceHTTPS, applySecurityHeaders } from "./lib/security";
+import { initializePerformanceMonitoring } from "./lib/performance";
+import { updateMetaTags, pageSEO } from "./lib/seo";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
@@ -28,24 +33,30 @@ const queryClient = new QueryClient({
 });
 
 function AppContent() {
-  // Initialize analytics - single initialization point
+  // Initialize analytics, monitoring, security, and performance
   useAnalytics();
-  
-  // Initialize monitoring
   useMonitoring();
+
+  // Initialize security and performance on mount
+  useEffect(() => {
+    enforceHTTPS();
+    applySecurityHeaders();
+    initializePerformanceMonitoring();
+    updateMetaTags(pageSEO.home);
+  }, []);
 
   return (
     <>
       <Toaster />
       <CookieConsent />
       <Routes>
-        <Route path="/" element={<Index />} />
-        <Route path="/auth" element={<Auth />} />
-        <Route path="/admin" element={<Admin />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/aanvragen" element={<AddressRequest />} />
-        <Route path="/cookie-policy" element={<CookiePolicy />} />
-        <Route path="*" element={<NotFound />} />
+        <Route path="/" element={<AppLayout showSidebar={false}><Index /></AppLayout>} />
+        <Route path="/auth" element={<AppLayout showSidebar={false}><Auth /></AppLayout>} />
+        <Route path="/admin" element={<AppLayout><Admin /></AppLayout>} />
+        <Route path="/dashboard" element={<AppLayout><Dashboard /></AppLayout>} />
+        <Route path="/aanvragen" element={<AppLayout><AddressRequest /></AppLayout>} />
+        <Route path="/cookie-policy" element={<AppLayout showSidebar={false}><CookiePolicy /></AppLayout>} />
+        <Route path="*" element={<AppLayout showSidebar={false}><NotFound /></AppLayout>} />
       </Routes>
     </>
   );
