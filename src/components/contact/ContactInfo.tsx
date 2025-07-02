@@ -4,8 +4,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
 const ContactInfo = () => {
   return (
-    <div className="space-y-6">
-      <Card>
+    <div className="space-y-6 h-fit">
+      <Card className="h-fit">
         <CardHeader className="pb-4">
           <CardTitle className="text-2xl">Contactinformatie</CardTitle>
           <CardDescription>
@@ -47,13 +47,9 @@ const ContactInfo = () => {
               <p className="text-sm text-muted-foreground/70">Antwoord binnen 24 uur</p>
             </div>
           </div>
-        </CardContent>
-      </Card>
 
-      <div className="grid grid-cols-1 gap-4">
-        <Card className="bg-muted/50">
-          <CardContent className="p-4">
-            <div className="flex items-center space-x-3">
+          <div className="pt-4 border-t border-border">
+            <div className="flex items-center space-x-3 mb-4">
               <Clock className="h-5 w-5 text-primary" />
               <div>
                 <h4 className="font-medium">Openingstijden</h4>
@@ -64,11 +60,9 @@ const ContactInfo = () => {
                 </div>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </div>
 
-        <Card className="bg-primary/5 border-primary/20">
-          <CardContent className="p-4">
+          <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
             <div className="flex items-center space-x-3">
               <MessageCircle className="h-5 w-5 text-primary" />
               <div>
@@ -78,11 +72,11 @@ const ContactInfo = () => {
                 </p>
               </div>
             </div>
-          </CardContent>
-        </Card>
-      </div>
+          </div>
+        </CardContent>
+      </Card>
 
-      <Card className="overflow-hidden">
+      <Card className="overflow-hidden h-fit">
         <CardContent className="p-0">
           <div className="h-64 relative">
             <iframe 
