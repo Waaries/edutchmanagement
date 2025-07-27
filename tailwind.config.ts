@@ -69,13 +69,13 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				brand: {
-					silver: '#f5f5f7',
-					charcoal: '#403E43',
-					darkgrey: '#221F26',
-					blue: '#1EAEDB',
-					skyblue: '#33C3F0',
-					mediumgray: '#8A898C',
-					lightgray: '#F6F6F7'
+					silver: 'hsl(240, 5%, 96%)',
+					charcoal: 'hsl(240, 4%, 26%)',
+					darkgrey: 'hsl(240, 8%, 15%)',
+					blue: 'hsl(195, 85%, 49%)',
+					skyblue: 'hsl(195, 80%, 59%)',
+					mediumgray: 'hsl(240, 2%, 54%)',
+					lightgray: 'hsl(240, 5%, 96%)'
 				}
 			},
 			borderRadius: {
