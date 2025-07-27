@@ -33,7 +33,7 @@ const Hero = () => {
   };
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-background" ref={heroRef}>
+    <section id="home" className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-slate-50" ref={heroRef}>
       {/* Background elements with parallax */}
       <div 
         className="absolute top-0 -right-40 w-96 h-96 bg-blue-500 opacity-5 blob-shape transition-transform duration-1000"

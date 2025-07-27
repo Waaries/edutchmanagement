@@ -95,14 +95,14 @@
   }
 
   body {
-    @apply bg-background text-foreground font-space antialiased;
+    @apply bg-slate-50 text-slate-800 font-['Space_Grotesk',sans-serif] antialiased;
     scroll-behavior: smooth;
     overflow-x: hidden;
     width: 100%;
   }
 
   h1, h2, h3, h4, h5, h5 {
-    @apply font-semibold tracking-tight font-space;
+    @apply font-semibold tracking-tight font-['Space_Grotesk',sans-serif];
   }
 
   h1 {
@@ -317,38 +317,37 @@
   left: 100%;
 }
 
-/* New Gradient Styles - Using Design System */
+/* New Gradient Styles - Blue/Grey Theme */
 .gradient-primary {
-  background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary) / 0.8));
+  @apply bg-gradient-to-r from-blue-600 to-blue-500;
 }
 
 .gradient-secondary {
-  background: linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--muted)));
+  @apply bg-gradient-to-r from-slate-400 to-slate-500;
 }
 
 .gradient-text {
-  @apply bg-clip-text text-transparent;
-  background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary) / 0.8));
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-500;
 }
 
 .hero-gradient {
-  background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--muted) / 0.3));
+  background: linear-gradient(135deg, #f8f9fa 0%, #e2e8f0 100%);
 }
 
 .blue-gray-gradient {
-  background: linear-gradient(135deg, hsl(var(--foreground) / 0.9), hsl(var(--foreground)));
+  background: linear-gradient(135deg, #334155 0%, #1e293b 100%);
 }
 
 .ocean-gradient {
-  background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--primary) / 0.8));
+  background: linear-gradient(90deg, #0ea5e9 0%, #0369a1 100%);
 }
 
 .sky-gradient {
-  background: linear-gradient(90deg, hsl(var(--primary) / 0.9), hsl(var(--primary)));
+  background: linear-gradient(90deg, #38bdf8 0%, #0284c7 100%);
 }
 
 .cool-slate-gradient {
-  background: linear-gradient(90deg, hsl(var(--muted-foreground)), hsl(var(--muted-foreground) / 0.8));
+  background: linear-gradient(90deg, #94a3b8 0%, #64748b 100%);
 }
 
 .card-shadow {
