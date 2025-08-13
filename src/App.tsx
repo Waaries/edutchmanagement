@@ -20,6 +20,7 @@ import Dashboard from "./pages/Dashboard";
 import AddressRequest from "./pages/AddressRequest";
 import NotFound from "./pages/NotFound";
 import CookiePolicy from "./pages/CookiePolicy";
+import PublicContract from "./pages/PublicContract";
 import CookieConsent from "@/components/CookieConsent";
 
 // Create a QueryClient instance
@@ -55,6 +56,7 @@ function AppContent() {
         <Route path="/admin" element={<AppLayout><Admin /></AppLayout>} />
         <Route path="/dashboard" element={<AppLayout><Dashboard /></AppLayout>} />
         <Route path="/aanvragen" element={<AppLayout><AddressRequest /></AppLayout>} />
+        <Route path="/contract/:accessToken" element={<AppLayout showSidebar={false}><PublicContract /></AppLayout>} />
         <Route path="/cookie-policy" element={<AppLayout showSidebar={false}><CookiePolicy /></AppLayout>} />
         <Route path="*" element={<AppLayout showSidebar={false}><NotFound /></AppLayout>} />
       </Routes>
