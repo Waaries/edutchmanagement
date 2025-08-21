@@ -18,11 +18,9 @@ interface FilledContract {
   filled_data: Record<string, any>;
   status: string;
   access_token: string;
-  contract_templates: {
-    title: string;
-    content: string;
-    description?: string;
-  };
+  template_title: string;
+  template_content: string;
+  template_description?: string;
 }
 
 interface TemplateField {
@@ -52,33 +50,24 @@ export default function PublicContract() {
 
   const fetchContract = async () => {
     try {
-      // Fetch contract with template
+      // Use secure function to get contract by token
       const { data: contractData, error: contractError } = await supabase
-        .from('filled_contracts')
-        .select(`
-          *,
-          contract_templates (
-            title,
-            content,
-            description
-          )
-        `)
-        .eq('access_token', accessToken)
-        .single();
+        .rpc('get_contract_by_token', { token_param: accessToken });
 
-      if (contractError) {
+      if (contractError || !contractData || contractData.length === 0) {
         setError('Contract not found or invalid access token');
         return;
       }
 
-      setContract(contractData as FilledContract);
-      setFormData((contractData.filled_data as Record<string, any>) || {});
+      const contract = contractData[0] as FilledContract;
+      setContract(contract);
+      setFormData((contract.filled_data as Record<string, any>) || {});
 
       // Fetch template fields
       const { data: fieldsData, error: fieldsError } = await supabase
         .from('contract_template_fields')
         .select('*')
-        .eq('template_id', contractData.template_id)
+        .eq('template_id', contract.template_id)
         .order('sort_order');
 
       if (!fieldsError && fieldsData) {
@@ -96,16 +85,14 @@ export default function PublicContract() {
     setSaving(true);
 
     try {
-      const { error } = await supabase
-        .from('filled_contracts')
-        .update({
-          filled_data: formData,
-          status: 'completed',
-          completed_at: new Date().toISOString()
-        })
-        .eq('access_token', accessToken);
+      const { data: success, error } = await supabase
+        .rpc('update_contract_by_token', {
+          token_param: accessToken,
+          filled_data_param: formData,
+          status_param: 'completed'
+        });
 
-      if (error) throw error;
+      if (error || !success) throw new Error('Update failed');
 
       toast({
         title: "Contract Submitted",
@@ -216,7 +203,7 @@ export default function PublicContract() {
   }
 
   const processedContent = replacePlaceholders(
-    contract.contract_templates.content,
+    contract.template_content,
     formData
   );
 
@@ -225,10 +212,10 @@ export default function PublicContract() {
       <div className="max-w-4xl mx-auto space-y-6">
         <Card>
           <CardHeader>
-            <CardTitle>{contract.contract_templates.title}</CardTitle>
-            {contract.contract_templates.description && (
+            <CardTitle>{contract.template_title}</CardTitle>
+            {contract.template_description && (
               <p className="text-muted-foreground">
-                {contract.contract_templates.description}
+                {contract.template_description}
               </p>
             )}
           </CardHeader>

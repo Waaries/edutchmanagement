@@ -7,7 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.3 (519615d)"
@@ -288,12 +288,30 @@ export type Database = {
         Args: { user_id_param: string }
         Returns: undefined
       }
+      get_contract_by_token: {
+        Args: { token_param: string }
+        Returns: {
+          access_token: string
+          client_email: string
+          client_name: string
+          completed_at: string
+          created_at: string
+          filled_data: Json
+          id: string
+          status: string
+          template_content: string
+          template_description: string
+          template_id: string
+          template_title: string
+          updated_at: string
+        }[]
+      }
       get_users: {
         Args: Record<PropertyKey, never>
         Returns: {
-          id: string
-          email: string
           created_at: string
+          email: string
+          id: string
           last_sign_in_at: string
           raw_app_meta_data: Json
         }[]
@@ -302,7 +320,7 @@ export type Database = {
         Args:
           | { requested_role: Database["public"]["Enums"]["user_role"] }
           | { role_name: string }
-          | { user_id: number; role_name: string }
+          | { role_name: string; user_id: number }
         Returns: boolean
       }
       is_admin: {
@@ -315,20 +333,28 @@ export type Database = {
       }
       pg_get_coldef: {
         Args: {
+          in_column: string
           in_schema: string
           in_table: string
-          in_column: string
           oldway?: boolean
         }
         Returns: string
       }
       pg_get_tabledef: {
-        Args: { in_schema: string; in_table: string; _verbose: boolean }
+        Args: { _verbose: boolean; in_schema: string; in_table: string }
         Returns: string
       }
       remove_admin_role: {
         Args: { user_id_param: string }
         Returns: undefined
+      }
+      update_contract_by_token: {
+        Args: {
+          filled_data_param: Json
+          status_param?: string
+          token_param: string
+        }
+        Returns: boolean
       }
     }
     Enums: {
