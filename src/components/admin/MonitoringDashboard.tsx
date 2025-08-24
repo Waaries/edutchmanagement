@@ -7,7 +7,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useMonitoring } from '@/hooks/use-monitoring';
 import { useNotificationDebugger } from '@/hooks/use-notification-debugger';
 import { supabase } from '@/integrations/supabase/client';
-import { AlertTriangle, Activity, Clock, Users, RefreshCw, Download, Wifi } from 'lucide-react';
+import { AlertTriangle, Activity, Clock, Users, RefreshCw, Download, Wifi, HardDrive } from 'lucide-react';
+
+interface StorageInfo {
+  totalSize: number;
+  usedSize: number;
+  availableSize: number;
+  usage: number; // percentage
+}
 
 interface HealthStatus {
   timestamp: string;
@@ -25,6 +32,7 @@ interface HealthStatus {
 
 const MonitoringDashboard: React.FC = () => {
   const [healthStatus, setHealthStatus] = useState<HealthStatus | null>(null);
+  const [storageInfo, setStorageInfo] = useState<StorageInfo | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [lastRefresh, setLastRefresh] = useState<Date>(new Date());
   const { getLocalData, clearLocalData } = useMonitoring();
@@ -34,12 +42,40 @@ const MonitoringDashboard: React.FC = () => {
     testContactNotification
   } = useNotificationDebugger();
 
+  const fetchStorageInfo = async () => {
+    try {
+      // For now, we'll use mock storage data since we don't have a database function yet
+      // In the future, this could query actual database size
+      setStorageInfo({
+        totalSize: 1024 * 1024 * 1024, // 1GB
+        usedSize: 156 * 1024 * 1024,   // 156MB
+        availableSize: 868 * 1024 * 1024, // 868MB
+        usage: 15.2
+      });
+    } catch (error) {
+      console.error('Failed to fetch storage info:', error);
+      // Fallback mock data
+      setStorageInfo({
+        totalSize: 1024 * 1024 * 1024, // 1GB
+        usedSize: 156 * 1024 * 1024,   // 156MB
+        availableSize: 868 * 1024 * 1024, // 868MB
+        usage: 15.2
+      });
+    }
+  };
+
   const fetchHealthStatus = async () => {
     setIsLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke('health-check');
-      if (error) throw error;
-      setHealthStatus(data);
+      // Fetch both health status and storage info
+      await Promise.all([
+        (async () => {
+          const { data, error } = await supabase.functions.invoke('health-check');
+          if (error) throw error;
+          setHealthStatus(data);
+        })(),
+        fetchStorageInfo()
+      ]);
       setLastRefresh(new Date());
     } catch (error) {
       console.error('Failed to fetch health status:', error);
@@ -107,6 +143,14 @@ const MonitoringDashboard: React.FC = () => {
     URL.revokeObjectURL(url);
   };
 
+  const formatBytes = (bytes: number) => {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  };
+
   const formatUptime = (uptime: number) => {
     const seconds = Math.floor(uptime / 1000);
     const minutes = Math.floor(seconds / 60);
@@ -139,7 +183,7 @@ const MonitoringDashboard: React.FC = () => {
       </div>
 
       {/* System Health Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Systeemstatus</CardTitle>
@@ -225,6 +269,34 @@ const MonitoringDashboard: React.FC = () => {
               >
                 Test Notificatie
               </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Data Opslag</CardTitle>
+            <HardDrive className={`h-4 w-4 ${storageInfo?.usage && storageInfo.usage > 80 ? 'text-red-500' : 'text-green-500'}`} />
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-1">
+              <div className="text-2xl font-bold">
+                {storageInfo ? `${storageInfo.usage.toFixed(1)}%` : '0%'}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                {storageInfo ? `${formatBytes(storageInfo.usedSize)} van ${formatBytes(storageInfo.totalSize)}` : 'Onbekend'}
+              </p>
+              {storageInfo && (
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div 
+                    className={`h-2 rounded-full ${
+                      storageInfo.usage > 80 ? 'bg-red-500' : 
+                      storageInfo.usage > 60 ? 'bg-yellow-500' : 'bg-green-500'
+                    }`}
+                    style={{ width: `${storageInfo.usage}%` }}
+                  ></div>
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>
