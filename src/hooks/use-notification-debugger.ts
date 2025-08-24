@@ -70,24 +70,12 @@ export const useNotificationDebugger = () => {
           console.log('[DEBUG] Test channel status:', status);
           setChannelStatus(status);
           
-          // Handle different status values correctly
+          // Only update UI state; avoid toasts to prevent persistent popups
           if (status === REALTIME_SUBSCRIBE_STATES.SUBSCRIBED) {
-            toast({
-              title: 'Realtime Connection',
-              description: 'Successfully connected to Supabase realtime'
-            });
+            // Successful connection; update state only
           } else {
-            const isErrorState = [
-              REALTIME_SUBSCRIBE_STATES.TIMED_OUT,
-              REALTIME_SUBSCRIBE_STATES.CLOSED,
-              REALTIME_SUBSCRIBE_STATES.CHANNEL_ERROR
-            ].includes(status);
-            
-            toast({
-              title: 'Realtime Status',
-              description: `Current status: ${status}`,
-              variant: isErrorState ? 'destructive' : 'default'
-            });
+            // Error or other states; log for debugging but do not toast
+            console.log('[DEBUG] Realtime status:', status);
           }
           
           // Remove the test channel after checking
