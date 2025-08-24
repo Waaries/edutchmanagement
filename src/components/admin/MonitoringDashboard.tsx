@@ -264,16 +264,17 @@ const MonitoringDashboard: React.FC = () => {
             <Activity className={`h-4 w-4 ${healthStatus?.status === 'healthy' ? 'text-green-500' : 'text-red-500'}`} />
           </CardHeader>
           <CardContent>
-            <div className="flex items-center gap-2">
+            <div className="text-xl font-bold">
+              Actief
+            </div>
+            <p className="text-sm text-muted-foreground">
+              {healthStatus?.system?.uptime ? `Uptime: ${formatUptime(healthStatus.system.uptime)}` : 'Systeemstatus'}
+            </p>
+            <div className="flex items-center gap-2 mt-2">
               <Badge className={`${getStatusColor(healthStatus?.status || 'unknown')} text-white`}>
                 {getStatusText(healthStatus?.status || 'unknown')}
               </Badge>
             </div>
-            {healthStatus?.system?.uptime && (
-              <p className="text-sm text-muted-foreground mt-1">
-                Uptime: {formatUptime(healthStatus.system.uptime)}
-              </p>
-            )}
           </CardContent>
         </Card>
 
@@ -283,16 +284,17 @@ const MonitoringDashboard: React.FC = () => {
             <Activity className={`h-4 w-4 ${healthStatus?.services.database.status === 'healthy' ? 'text-green-500' : 'text-red-500'}`} />
           </CardHeader>
           <CardContent>
-            <div className="flex items-center gap-2">
+            <div className="text-xl font-bold">
+              {healthStatus?.services.database.responseTime ? `${healthStatus.services.database.responseTime}ms` : '0ms'}
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Database responsietijd
+            </p>
+            <div className="flex items-center gap-2 mt-2">
               <Badge className={`${getStatusColor(healthStatus?.services.database.status || 'unknown')} text-white`}>
                 {getStatusText(healthStatus?.services.database.status || 'unknown')}
               </Badge>
             </div>
-            {healthStatus?.services.database.responseTime && (
-              <p className="text-sm text-muted-foreground mt-1">
-                {healthStatus.services.database.responseTime}ms
-              </p>
-            )}
           </CardContent>
         </Card>
 
@@ -303,10 +305,10 @@ const MonitoringDashboard: React.FC = () => {
           </CardHeader>
           <CardContent>
             <div className="text-xl font-bold">
-              {healthStatus?.services.auth.responseTime ? healthStatus.services.auth.responseTime : '0'}
+              {healthStatus?.services.auth.responseTime ? `${healthStatus.services.auth.responseTime}ms` : '0ms'}
             </div>
             <p className="text-sm text-muted-foreground">
-              {healthStatus?.services.auth.responseTime ? `${healthStatus.services.auth.responseTime}ms responsietijd` : 'Authenticatie service'}
+              Authenticatie responsietijd
             </p>
             <div className="flex items-center gap-2 mt-2">
               <Badge className={`${getStatusColor(healthStatus?.services.auth.status || 'unknown')} text-white`}>
@@ -322,14 +324,17 @@ const MonitoringDashboard: React.FC = () => {
             <Wifi className={`h-4 w-4 ${getSystemHealthIcon()}`} />
           </CardHeader>
           <CardContent>
-            <div className="flex items-center gap-2 mb-2">
-              <Badge className={`${getStatusColor(systemHealth)} text-white`}>
-                {getSystemHealthBadge()}
-              </Badge>
+            <div className="text-xl font-bold">
+              Systeem
             </div>
             <p className="text-sm text-muted-foreground">
               {getSystemHealthText()}
             </p>
+            <div className="flex items-center gap-2 mt-2">
+              <Badge className={`${getStatusColor(systemHealth)} text-white`}>
+                {getSystemHealthBadge()}
+              </Badge>
+            </div>
             {systemHealth !== 'healthy' && (
               <div className="mt-2">
                 <Button
