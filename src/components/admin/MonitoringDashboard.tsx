@@ -270,7 +270,7 @@ const MonitoringDashboard: React.FC = () => {
               </Badge>
             </div>
             {healthStatus?.system?.uptime && (
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-sm text-muted-foreground mt-1">
                 Uptime: {formatUptime(healthStatus.system.uptime)}
               </p>
             )}
