@@ -3,13 +3,14 @@ import React, { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Plus, FileText, Users, Settings } from "lucide-react";
+import { Plus, FileText, Users, Settings, Zap } from "lucide-react";
 import ContractTemplatesView from "../contracts/ContractTemplatesView";
 import ContractTemplateEditor from "../contracts/ContractTemplateEditor";
 import FilledContractsView from "../contracts/FilledContractsView";
+import ContractGenerator from "../contracts/ContractGenerator";
 
 const ContractsTab = () => {
-  const [activeView, setActiveView] = useState<'templates' | 'editor' | 'filled'>('templates');
+  const [activeView, setActiveView] = useState<'templates' | 'editor' | 'filled' | 'generator'>('templates');
   const [editingTemplate, setEditingTemplate] = useState<string | null>(null);
 
   const handleCreateNew = () => {
@@ -45,10 +46,14 @@ const ContractsTab = () => {
       </div>
 
       <Tabs value={activeView} onValueChange={(value) => setActiveView(value as any)}>
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="templates" className="flex items-center gap-2">
             <FileText className="h-4 w-4" />
             Sjablonen
+          </TabsTrigger>
+          <TabsTrigger value="generator" className="flex items-center gap-2">
+            <Zap className="h-4 w-4" />
+            Generator
           </TabsTrigger>
           <TabsTrigger value="filled" className="flex items-center gap-2">
             <Users className="h-4 w-4" />
@@ -65,6 +70,10 @@ const ContractsTab = () => {
             onEditTemplate={handleEditTemplate}
             onCreateNew={handleCreateNew}
           />
+        </TabsContent>
+
+        <TabsContent value="generator" className="mt-6">
+          <ContractGenerator />
         </TabsContent>
 
         <TabsContent value="filled" className="mt-6">
