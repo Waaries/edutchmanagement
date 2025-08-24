@@ -354,10 +354,10 @@ const MonitoringDashboard: React.FC = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-1">
-              <div className="text-2xl font-bold">
+              <div className="text-xl font-bold">
                 {storageInfo ? `${storageInfo.usage.toFixed(1)}%` : '0%'}
               </div>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-sm text-muted-foreground">
                 {storageInfo ? `${formatBytes(storageInfo.usedSize)} van ${formatBytes(storageInfo.totalSize)}` : 'Onbekend'}
               </p>
               {storageInfo && (
@@ -385,10 +385,10 @@ const MonitoringDashboard: React.FC = () => {
             )}
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-xl font-bold">
               {getLocalData('errors').length}
             </div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-sm text-muted-foreground">
               {getLocalData('errors').length === 0 ? 'Geen fouten' : 'Lokaal opgeslagen'}
             </p>
           </CardContent>
