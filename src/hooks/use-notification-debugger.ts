@@ -116,11 +116,23 @@ export const useNotificationDebugger = () => {
     }
   };
 
+  const resetRealtime = () => {
+    try {
+      const channels = supabase.getChannels ? supabase.getChannels() : [] as any[];
+      channels.forEach((ch: any) => supabase.removeChannel(ch));
+      setChannelStatus('Connecting');
+      checkRealtimeStatus();
+    } catch (err) {
+      console.error('[DEBUG] Error resetting realtime:', err);
+    }
+  };
+
   return {
     debugMode,
     channelStatus,
     toggleDebugMode,
     testContactNotification,
-    checkRealtimeStatus
+    checkRealtimeStatus,
+    resetRealtime
   };
 };

@@ -39,7 +39,8 @@ const MonitoringDashboard: React.FC = () => {
   const {
     channelStatus,
     checkRealtimeStatus,
-    testContactNotification
+    testContactNotification,
+    resetRealtime
   } = useNotificationDebugger();
 
   const fetchStorageInfo = async () => {
@@ -253,6 +254,14 @@ const MonitoringDashboard: React.FC = () => {
               </span>
             </div>
             <div className="space-y-1">
+              <Button
+                size="sm"
+                variant="outline" 
+                className="w-full text-xs"
+                onClick={resetRealtime}
+              >
+                Opnieuw verbinden
+              </Button>
               <Button
                 size="sm"
                 variant="outline" 
