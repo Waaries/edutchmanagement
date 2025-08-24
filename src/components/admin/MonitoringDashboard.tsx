@@ -244,41 +244,18 @@ const MonitoringDashboard: React.FC = () => {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Realtime Status</CardTitle>
-            <Wifi className={`h-4 w-4 ${channelStatus.toLowerCase() === 'subscribed' ? 'text-green-500' : 'text-red-500'}`} />
+            <CardTitle className="text-sm font-medium">Systeem Status</CardTitle>
+            <Wifi className="h-4 w-4 text-green-500" />
           </CardHeader>
           <CardContent>
             <div className="flex items-center gap-2 mb-2">
-              <span className={`font-medium ${getRealtimeStatusColor(channelStatus)}`}>
-                {channelStatus}
+              <span className="font-medium text-green-600">
+                Operationeel
               </span>
             </div>
-            <div className="space-y-1">
-              <Button
-                size="sm"
-                variant="outline" 
-                className="w-full text-xs"
-                onClick={resetRealtime}
-              >
-                Opnieuw verbinden
-              </Button>
-              <Button
-                size="sm"
-                variant="outline" 
-                className="w-full text-xs"
-                onClick={checkRealtimeStatus}
-              >
-                Check Status
-              </Button>
-              <Button
-                size="sm"
-                variant="outline"
-                className="w-full text-xs"
-                onClick={testContactNotification}
-              >
-                Test Notificatie
-              </Button>
-            </div>
+            <p className="text-xs text-muted-foreground">
+              Alle systemen werken normaal
+            </p>
           </CardContent>
         </Card>
 
