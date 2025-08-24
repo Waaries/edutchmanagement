@@ -28,11 +28,7 @@ const MOCK_ACTIVITY_DATA: ActivityData[] = [
   { month: 'Aug', posts: 9 },
 ];
 
-const MOCK_UPCOMING_POSTS = [
-  { id: 1, title: "Belastingbrief 2025", date: "2025-05-20T10:00:00", status: "confirmed" },
-  { id: 2, title: "UWV uitkering bevestiging", date: "2025-05-27T14:30:00", status: "confirmed" },
-  { id: 3, title: "Waterschapsbelasting", date: "2025-06-05T11:00:00", status: "pending" },
-];
+const MOCK_UPCOMING_POSTS = [];
 
 const OverviewTab = ({ setActiveTab }: OverviewTabProps) => {
   const { user } = useAuth();

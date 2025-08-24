@@ -19,49 +19,8 @@ interface MailItem {
   priority: "normal" | "high" | "low";
 }
 
-// Sample data - in a real app this would come from an API or database
-const SAMPLE_MAIL_ITEMS: MailItem[] = [
-  { 
-    id: 1, 
-    title: "Belastingbrief 2025", 
-    sender: "Belastingdienst", 
-    receivedDate: "2025-05-10T10:00:00", 
-    status: "read",
-    priority: "high"
-  },
-  { 
-    id: 2, 
-    title: "UWV uitkering bevestiging", 
-    sender: "UWV", 
-    receivedDate: "2025-05-12T14:30:00", 
-    status: "read",
-    priority: "normal"
-  },
-  { 
-    id: 3, 
-    title: "Waterschapsbelasting", 
-    sender: "Waterschap", 
-    receivedDate: "2025-05-14T11:00:00", 
-    status: "unread",
-    priority: "normal"
-  },
-  { 
-    id: 4, 
-    title: "Gemeente belasting 2025", 
-    sender: "Gemeente Amsterdam", 
-    receivedDate: "2025-05-15T09:15:00", 
-    status: "unread",
-    priority: "normal"
-  },
-  { 
-    id: 5, 
-    title: "Zorgverzekering wijziging", 
-    sender: "CZ Zorgverzekeringen", 
-    receivedDate: "2025-05-16T16:45:00", 
-    status: "unread",
-    priority: "high"
-  }
-];
+// No test data - will be populated from database in future implementation
+const SAMPLE_MAIL_ITEMS: MailItem[] = [];
 
 const AppointmentsTab = () => {
   const [mailItems, setMailItems] = useState<MailItem[]>([]);
