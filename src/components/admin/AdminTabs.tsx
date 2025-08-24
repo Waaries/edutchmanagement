@@ -10,6 +10,7 @@ import DataTab from "./tabs/DataTab";
 import LogsTab from "./tabs/LogsTab";
 import SettingsTab from "./tabs/SettingsTab";
 import MonitoringTab from "./tabs/MonitoringTab";
+import SecurityTab from "./tabs/SecurityTab";
 import { useState } from "react";
 
 const AdminTabs = () => {
@@ -27,9 +28,10 @@ const AdminTabs = () => {
       </CardHeader>
       <CardContent>
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 lg:grid-cols-9">
+          <TabsList className="grid w-full grid-cols-4 lg:grid-cols-10">
             <TabsTrigger value="overview">Overzicht</TabsTrigger>
             <TabsTrigger value="users">Gebruikers</TabsTrigger>
+            <TabsTrigger value="security">Beveiliging</TabsTrigger>
             <TabsTrigger value="requests">Aanvragen</TabsTrigger>
             <TabsTrigger value="messages">Berichten</TabsTrigger>
             <TabsTrigger value="contracts">Contracten</TabsTrigger>
@@ -45,6 +47,10 @@ const AdminTabs = () => {
           
           <TabsContent value="users">
             <UsersTab />
+          </TabsContent>
+          
+          <TabsContent value="security">
+            <SecurityTab />
           </TabsContent>
           
           <TabsContent value="requests">
