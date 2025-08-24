@@ -302,16 +302,17 @@ const MonitoringDashboard: React.FC = () => {
             <Users className={`h-4 w-4 ${healthStatus?.services.auth.status === 'healthy' ? 'text-green-500' : 'text-red-500'}`} />
           </CardHeader>
           <CardContent>
-            <div className="flex items-center gap-2">
+            <div className="text-xl font-bold">
+              {healthStatus?.services.auth.responseTime ? healthStatus.services.auth.responseTime : '0'}
+            </div>
+            <p className="text-sm text-muted-foreground">
+              {healthStatus?.services.auth.responseTime ? `${healthStatus.services.auth.responseTime}ms responsietijd` : 'Authenticatie service'}
+            </p>
+            <div className="flex items-center gap-2 mt-2">
               <Badge className={`${getStatusColor(healthStatus?.services.auth.status || 'unknown')} text-white`}>
                 {getStatusText(healthStatus?.services.auth.status || 'unknown')}
               </Badge>
             </div>
-            {healthStatus?.services.auth.responseTime && (
-              <p className="text-sm text-muted-foreground mt-1">
-                {healthStatus.services.auth.responseTime}ms
-              </p>
-            )}
           </CardContent>
         </Card>
 
