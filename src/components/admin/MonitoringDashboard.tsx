@@ -257,13 +257,13 @@ const MonitoringDashboard: React.FC = () => {
       </div>
 
       {/* System Health Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
-        <Card>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 items-stretch">
+        <Card className="flex flex-col h-full">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Systeemstatus</CardTitle>
             <Monitor className={`h-4 w-4 ${healthStatus?.status === 'healthy' ? 'text-green-500' : 'text-red-500'}`} />
           </CardHeader>
-          <CardContent>
+          <CardContent className="flex-1 flex flex-col justify-between">
             <div className="text-xl font-bold">
               Actief
             </div>
@@ -278,12 +278,12 @@ const MonitoringDashboard: React.FC = () => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="flex flex-col h-full">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Database</CardTitle>
             <Database className={`h-4 w-4 ${healthStatus?.services.database.status === 'healthy' ? 'text-green-500' : 'text-red-500'}`} />
           </CardHeader>
-          <CardContent>
+          <CardContent className="flex-1 flex flex-col justify-between">
             <div className="text-xl font-bold">
               {healthStatus?.services.database.responseTime ? `${healthStatus.services.database.responseTime}ms` : '0ms'}
             </div>
@@ -298,12 +298,12 @@ const MonitoringDashboard: React.FC = () => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="flex flex-col h-full">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Authenticatie</CardTitle>
             <Users className={`h-4 w-4 ${healthStatus?.services.auth.status === 'healthy' ? 'text-green-500' : 'text-red-500'}`} />
           </CardHeader>
-          <CardContent>
+          <CardContent className="flex-1 flex flex-col justify-between">
             <div className="text-xl font-bold">
               {healthStatus?.services.auth.responseTime ? `${healthStatus.services.auth.responseTime}ms` : '0ms'}
             </div>
@@ -318,12 +318,12 @@ const MonitoringDashboard: React.FC = () => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="flex flex-col h-full">
           <CardHeader className="flex flex-row items-center justify-between items-start space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Systeem Gezondheid</CardTitle>
             <Activity className={`h-4 w-4 flex-shrink-0 ${systemHealth === 'healthy' ? 'text-green-500' : systemHealth === 'warning' ? 'text-yellow-500' : systemHealth === 'error' ? 'text-red-500' : 'text-gray-500'}`} />
           </CardHeader>
-          <CardContent>
+          <CardContent className="flex-1 flex flex-col justify-between">
             <div className="text-xl font-bold">
               Systeem
             </div>
