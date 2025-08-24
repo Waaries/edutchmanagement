@@ -71,6 +71,25 @@ serve(async (req) => {
       };
     }
 
+    // Test storage service
+    const storageStart = performance.now();
+    try {
+      const { data: buckets, error: storageError } = await supabase.storage.listBuckets();
+      const storageTime = performance.now() - storageStart;
+      
+      healthCheck.services.storage = {
+        status: storageError ? 'error' : 'healthy',
+        responseTime: Math.round(storageTime),
+        error: storageError?.message
+      };
+    } catch (error) {
+      healthCheck.services.storage = {
+        status: 'error',
+        responseTime: performance.now() - storageStart,
+        error: error.message
+      };
+    }
+
     // Overall health status
     const hasErrors = Object.values(healthCheck.services).some(service => service.status === 'error');
     healthCheck.status = hasErrors ? 'degraded' : 'healthy';
