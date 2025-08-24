@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useMonitoring } from '@/hooks/use-monitoring';
 import { useNotificationDebugger } from '@/hooks/use-notification-debugger';
 import { supabase } from '@/integrations/supabase/client';
-import { AlertTriangle, Activity, Clock, Users, RefreshCw, Download, Wifi, HardDrive, CheckCircle } from 'lucide-react';
+import { AlertTriangle, Activity, Clock, Users, RefreshCw, Download, Wifi, HardDrive, CheckCircle, Database, Monitor } from 'lucide-react';
 
 interface StorageInfo {
   totalSize: number;
@@ -261,7 +261,7 @@ const MonitoringDashboard: React.FC = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Systeemstatus</CardTitle>
-            <Activity className={`h-4 w-4 ${healthStatus?.status === 'healthy' ? 'text-green-500' : 'text-red-500'}`} />
+            <Monitor className={`h-4 w-4 ${healthStatus?.status === 'healthy' ? 'text-green-500' : 'text-red-500'}`} />
           </CardHeader>
           <CardContent>
             <div className="text-xl font-bold">
@@ -281,7 +281,7 @@ const MonitoringDashboard: React.FC = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Database</CardTitle>
-            <Activity className={`h-4 w-4 ${healthStatus?.services.database.status === 'healthy' ? 'text-green-500' : 'text-red-500'}`} />
+            <Database className={`h-4 w-4 ${healthStatus?.services.database.status === 'healthy' ? 'text-green-500' : 'text-red-500'}`} />
           </CardHeader>
           <CardContent>
             <div className="text-xl font-bold">
@@ -319,9 +319,9 @@ const MonitoringDashboard: React.FC = () => {
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className="flex flex-row items-center justify-between items-start space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Systeem Gezondheid</CardTitle>
-            <Wifi className={`h-4 w-4 ${systemHealth === 'healthy' ? 'text-green-500' : systemHealth === 'warning' ? 'text-yellow-500' : systemHealth === 'error' ? 'text-red-500' : 'text-gray-500'}`} />
+            <Activity className={`h-4 w-4 flex-shrink-0 ${systemHealth === 'healthy' ? 'text-green-500' : systemHealth === 'warning' ? 'text-yellow-500' : systemHealth === 'error' ? 'text-red-500' : 'text-gray-500'}`} />
           </CardHeader>
           <CardContent>
             <div className="text-xl font-bold">
