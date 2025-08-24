@@ -234,6 +234,51 @@ export type Database = {
           },
         ]
       }
+      login_logs: {
+        Row: {
+          city: string | null
+          country: string | null
+          created_at: string
+          email: string | null
+          error_message: string | null
+          event_type: string
+          id: string
+          ip_address: unknown | null
+          session_id: string | null
+          success: boolean
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          email?: string | null
+          error_message?: string | null
+          event_type: string
+          id?: string
+          ip_address?: unknown | null
+          session_id?: string | null
+          success?: boolean
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          email?: string | null
+          error_message?: string | null
+          event_type?: string
+          id?: string
+          ip_address?: unknown | null
+          session_id?: string | null
+          success?: boolean
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -282,6 +327,48 @@ export type Database = {
         }
         Relationships: []
       }
+      user_sessions: {
+        Row: {
+          city: string | null
+          country: string | null
+          created_at: string
+          expires_at: string | null
+          id: string
+          ip_address: unknown | null
+          is_active: boolean
+          last_activity: string
+          session_token: string
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          ip_address?: unknown | null
+          is_active?: boolean
+          last_activity?: string
+          session_token: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          ip_address?: unknown | null
+          is_active?: boolean
+          last_activity?: string
+          session_token?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -289,6 +376,10 @@ export type Database = {
     Functions: {
       add_admin_role: {
         Args: { user_id_param: string }
+        Returns: undefined
+      }
+      cleanup_expired_sessions: {
+        Args: Record<PropertyKey, never>
         Returns: undefined
       }
       get_contract_by_token: {
@@ -333,6 +424,28 @@ export type Database = {
       is_admin_user: {
         Args: { user_id_param: string }
         Returns: boolean
+      }
+      log_auth_event: {
+        Args: {
+          p_email: string
+          p_error_message?: string
+          p_event_type: string
+          p_ip_address?: unknown
+          p_success?: boolean
+          p_user_agent?: string
+          p_user_id: string
+        }
+        Returns: undefined
+      }
+      manage_user_session: {
+        Args: {
+          p_action?: string
+          p_ip_address?: unknown
+          p_session_token: string
+          p_user_agent?: string
+          p_user_id: string
+        }
+        Returns: undefined
       }
       pg_get_coldef: {
         Args: {
