@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
-import { AlertCircle, LockKeyhole, Eye, EyeOff, ShieldCheck } from 'lucide-react';
+import { AlertCircle, LockKeyhole, Eye, EyeOff, ShieldCheck, ArrowLeft } from 'lucide-react';
 import { z } from 'zod';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -212,6 +212,19 @@ const SimpleAuthPage = () => {
         className="w-full max-w-sm relative z-10"
       >
         <div className="relative bg-white/90 backdrop-blur-xl rounded-2xl p-6 border border-gray-100 shadow-lg">
+          {/* Back to Home Button */}
+          <div className="absolute top-4 left-4">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate('/')}
+              className="text-slate-600 hover:text-slate-900 hover:bg-slate-100/50 p-2 h-auto"
+            >
+              <ArrowLeft className="h-4 w-4 mr-1" />
+              Terug
+            </Button>
+          </div>
+
           {/* Header */}
           <div className="text-center space-y-1 mb-6">
             <div className="mx-auto w-24 h-24 rounded-full flex items-center justify-center relative overflow-hidden">
