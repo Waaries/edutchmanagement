@@ -55,7 +55,7 @@ const ContactInfo = () => {
                 <h4 className="font-medium">Openingstijden</h4>
                 <div className="text-sm text-muted-foreground mt-1">
                   <p>Maandag - Vrijdag: 09:00 - 17:00</p>
-                  <p>Zaterdag: 10:00 - 14:00</p>
+                  <p>Zaterdag: Gesloten</p>
                   <p>Zondag: Gesloten</p>
                 </div>
               </div>
