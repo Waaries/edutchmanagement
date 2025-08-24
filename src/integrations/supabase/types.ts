@@ -191,6 +191,7 @@ export type Database = {
           client_name: string | null
           completed_at: string | null
           created_at: string
+          expires_at: string | null
           filled_data: Json
           id: string
           status: string
@@ -203,6 +204,7 @@ export type Database = {
           client_name?: string | null
           completed_at?: string | null
           created_at?: string
+          expires_at?: string | null
           filled_data?: Json
           id?: string
           status?: string
@@ -215,6 +217,7 @@ export type Database = {
           client_name?: string | null
           completed_at?: string | null
           created_at?: string
+          expires_at?: string | null
           filled_data?: Json
           id?: string
           status?: string
