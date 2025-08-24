@@ -4,7 +4,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Navigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import AdminHeader from "./AdminHeader";
-import WelcomeCard from "./WelcomeCard";
 import AdminTabs from "./AdminTabs";
 import AdminSecurityCheck from "./AdminSecurityCheck";
 
@@ -40,7 +39,6 @@ const AdminDashboard = () => {
     <AdminSecurityCheck user={user} isAdmin={isAdmin}>
       <div className="container mx-auto py-8 px-4">
         <AdminHeader userEmail={user.email || ''} />
-        <WelcomeCard userEmail={user.email || ''} />
         <AdminTabs />
       </div>
     </AdminSecurityCheck>

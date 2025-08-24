@@ -23,9 +23,12 @@ const AdminHeader: React.FC<AdminHeaderProps> = ({ userEmail }) => {
 
   return (
     <div className="flex items-center justify-between mb-6">
-      <div className="flex items-center gap-2">
-        <Shield className="h-8 w-8 text-primary" />
-        <h1 className="text-3xl font-bold">Administrator Dashboard</h1>
+      <div className="flex flex-col gap-1">
+        <div className="flex items-center gap-2">
+          <Shield className="h-8 w-8 text-primary" />
+          <h1 className="text-3xl font-bold">Administrator Dashboard</h1>
+        </div>
+        <p className="text-sm text-muted-foreground">Ingelogd als admin: {userEmail}</p>
       </div>
       <div className="flex items-center gap-2">
         <Button 
