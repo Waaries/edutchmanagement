@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { REALTIME_SUBSCRIBE_STATES } from '@supabase/supabase-js';
@@ -8,7 +8,64 @@ import type { DebugMode } from "@/components/debug/types";
 export const useNotificationDebugger = () => {
   const { toast } = useToast();
   const [debugMode, setDebugMode] = useState<DebugMode>('none');
-  const [channelStatus, setChannelStatus] = useState<string>('Unknown');
+  const [channelStatus, setChannelStatus] = useState<string>('Connecting');
+
+  // Check if real-time is working by checking the status of the admin-notifications channel
+  const checkRealtimeStatus = async () => {
+    try {
+      setChannelStatus('Connecting');
+      
+      // Create a more persistent channel to check Supabase realtime connection
+      const testChannel = supabase.channel('realtime-health-check', {
+        config: {
+          broadcast: { self: false },
+          presence: { key: 'health-check' }
+        }
+      });
+      
+      testChannel
+        .subscribe((status) => {
+          console.log('[DEBUG] Realtime channel status:', status);
+          setChannelStatus(status);
+          
+          if (status === REALTIME_SUBSCRIBE_STATES.SUBSCRIBED) {
+            console.log('[DEBUG] Realtime connection successful');
+          } else if (status === REALTIME_SUBSCRIBE_STATES.CHANNEL_ERROR) {
+            console.error('[DEBUG] Realtime channel error');
+            setChannelStatus('Error');
+          } else if (status === REALTIME_SUBSCRIBE_STATES.TIMED_OUT) {
+            console.error('[DEBUG] Realtime connection timed out');
+            setChannelStatus('Timeout');
+          } else if (status === REALTIME_SUBSCRIBE_STATES.CLOSED) {
+            console.log('[DEBUG] Realtime connection closed');
+            setChannelStatus('Closed');
+          }
+          
+          // Keep the channel open for ongoing monitoring
+          // Don't remove it automatically
+        });
+    } catch (err: any) {
+      console.error('[DEBUG] Error checking realtime status:', err);
+      setChannelStatus('ERROR');
+      toast({
+        title: 'Realtime Error',
+        description: err.message,
+        variant: 'destructive'
+      });
+    }
+  };
+
+  // Automatically check realtime status on hook initialization
+  useEffect(() => {
+    checkRealtimeStatus();
+    
+    // Check status periodically
+    const interval = setInterval(() => {
+      checkRealtimeStatus();
+    }, 30000); // Check every 30 seconds
+
+    return () => clearInterval(interval);
+  }, [toast]); // Include toast in dependencies
 
   // Simple toggle for debug panel visibility
   const toggleDebugMode = () => {
@@ -54,41 +111,6 @@ export const useNotificationDebugger = () => {
       toast({
         title: 'Error',
         description: `Exception: ${err.message}`,
-        variant: 'destructive'
-      });
-    }
-  };
-
-  // Check if real-time is working by checking the status of the admin-notifications channel
-  const checkRealtimeStatus = async () => {
-    try {
-      // Create a temporary channel to check if Supabase can establish a connection
-      const testChannel = supabase.channel('test-connection');
-      
-      testChannel
-        .subscribe((status) => {
-          console.log('[DEBUG] Test channel status:', status);
-          setChannelStatus(status);
-          
-          // Only update UI state; avoid toasts to prevent persistent popups
-          if (status === REALTIME_SUBSCRIBE_STATES.SUBSCRIBED) {
-            // Successful connection; update state only
-          } else {
-            // Error or other states; log for debugging but do not toast
-            console.log('[DEBUG] Realtime status:', status);
-          }
-          
-          // Remove the test channel after checking
-          setTimeout(() => {
-            supabase.removeChannel(testChannel);
-          }, 2000);
-        });
-    } catch (err: any) {
-      console.error('[DEBUG] Error checking realtime status:', err);
-      setChannelStatus('ERROR');
-      toast({
-        title: 'Realtime Error',
-        description: err.message,
         variant: 'destructive'
       });
     }
