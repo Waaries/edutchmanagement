@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useMonitoring } from '@/hooks/use-monitoring';
 import { useNotificationDebugger } from '@/hooks/use-notification-debugger';
 import { supabase } from '@/integrations/supabase/client';
-import { AlertTriangle, Activity, Clock, Users, RefreshCw, Download, Wifi, HardDrive } from 'lucide-react';
+import { AlertTriangle, Activity, Clock, Users, RefreshCw, Download, Wifi, HardDrive, CheckCircle } from 'lucide-react';
 
 interface StorageInfo {
   totalSize: number;
@@ -378,14 +378,18 @@ const MonitoringDashboard: React.FC = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Fouten</CardTitle>
-            <AlertTriangle className="h-4 w-4 text-yellow-500" />
+            {getLocalData('errors').length > 0 ? (
+              <AlertTriangle className="h-4 w-4 text-red-500" />
+            ) : (
+              <CheckCircle className="h-4 w-4 text-green-500" />
+            )}
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
               {getLocalData('errors').length}
             </div>
             <p className="text-xs text-muted-foreground">
-              Lokaal opgeslagen
+              {getLocalData('errors').length === 0 ? 'Geen fouten' : 'Lokaal opgeslagen'}
             </p>
           </CardContent>
         </Card>
