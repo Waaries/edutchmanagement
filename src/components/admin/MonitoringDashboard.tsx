@@ -289,7 +289,7 @@ const MonitoringDashboard: React.FC = () => {
               </Badge>
             </div>
             {healthStatus?.services.database.responseTime && (
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-sm text-muted-foreground mt-1">
                 {healthStatus.services.database.responseTime}ms
               </p>
             )}
@@ -308,7 +308,7 @@ const MonitoringDashboard: React.FC = () => {
               </Badge>
             </div>
             {healthStatus?.services.auth.responseTime && (
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-sm text-muted-foreground mt-1">
                 {healthStatus.services.auth.responseTime}ms
               </p>
             )}
@@ -326,7 +326,7 @@ const MonitoringDashboard: React.FC = () => {
                 {getSystemHealthBadge()}
               </Badge>
             </div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-sm text-muted-foreground">
               {getSystemHealthText()}
             </p>
             {systemHealth !== 'healthy' && (
@@ -334,7 +334,7 @@ const MonitoringDashboard: React.FC = () => {
                 <Button
                   size="sm"
                   variant="outline"
-                  className="w-full text-xs"
+                  className="w-full text-sm"
                   onClick={() => {
                     fetchHealthStatus();
                     calculateSystemHealth();
