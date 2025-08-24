@@ -321,7 +321,7 @@ const MonitoringDashboard: React.FC = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Systeem Gezondheid</CardTitle>
-            <Wifi className={`h-4 w-4 ${getSystemHealthIcon()}`} />
+            <Wifi className={`h-4 w-4 ${systemHealth === 'healthy' ? 'text-green-500' : systemHealth === 'warning' ? 'text-yellow-500' : systemHealth === 'error' ? 'text-red-500' : 'text-gray-500'}`} />
           </CardHeader>
           <CardContent>
             <div className="text-xl font-bold">
