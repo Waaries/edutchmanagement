@@ -33,6 +33,7 @@ interface HealthStatus {
 const MonitoringDashboard: React.FC = () => {
   const [healthStatus, setHealthStatus] = useState<HealthStatus | null>(null);
   const [storageInfo, setStorageInfo] = useState<StorageInfo | null>(null);
+  const [systemHealth, setSystemHealth] = useState<'healthy' | 'warning' | 'error'>('healthy');
   const [isLoading, setIsLoading] = useState(true);
   const [lastRefresh, setLastRefresh] = useState<Date>(new Date());
   const { getLocalData, clearLocalData } = useMonitoring();
@@ -64,6 +65,78 @@ const MonitoringDashboard: React.FC = () => {
       });
     }
   };
+
+  // Calculate overall system health based on various metrics
+  const calculateSystemHealth = () => {
+    const errors = getLocalData('errors');
+    const recentErrors = errors.filter((error: any) => {
+      const errorTime = new Date(error.timestamp).getTime();
+      const oneHourAgo = Date.now() - (60 * 60 * 1000);
+      return errorTime > oneHourAgo;
+    });
+
+    // Check for critical issues
+    if (recentErrors.length > 5) {
+      setSystemHealth('error');
+      return;
+    }
+
+    // Check database health
+    if (healthStatus?.services?.database?.status === 'error') {
+      setSystemHealth('error');
+      return;
+    }
+
+    // Check auth health
+    if (healthStatus?.services?.auth?.status === 'error') {
+      setSystemHealth('error');
+      return;
+    }
+
+    // Check for warnings
+    if (recentErrors.length > 0 || 
+        healthStatus?.services?.database?.status === 'degraded' ||
+        healthStatus?.services?.auth?.status === 'degraded' ||
+        (storageInfo?.usage && storageInfo.usage > 80)) {
+      setSystemHealth('warning');
+      return;
+    }
+
+    // All good
+    setSystemHealth('healthy');
+  };
+
+  const getSystemHealthIcon = () => {
+    switch (systemHealth) {
+      case 'healthy': return 'text-green-500';
+      case 'warning': return 'text-yellow-500';
+      case 'error': return 'text-red-500';
+      default: return 'text-gray-500';
+    }
+  };
+
+  const getSystemHealthText = () => {
+    switch (systemHealth) {
+      case 'healthy': return 'Alle systemen operationeel';
+      case 'warning': return 'Waarschuwingen gedetecteerd';
+      case 'error': return 'Kritieke problemen';
+      default: return 'Status onbekend';
+    }
+  };
+
+  const getSystemHealthBadge = () => {
+    switch (systemHealth) {
+      case 'healthy': return 'Gezond';
+      case 'warning': return 'Waarschuwing';
+      case 'error': return 'Kritiek';
+      default: return 'Onbekend';
+    }
+  };
+
+  // Update system health when dependencies change
+  useEffect(() => {
+    calculateSystemHealth();
+  }, [healthStatus, storageInfo, getLocalData]);
 
   const fetchHealthStatus = async () => {
     setIsLoading(true);
@@ -244,18 +317,33 @@ const MonitoringDashboard: React.FC = () => {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Systeem Status</CardTitle>
-            <Wifi className="h-4 w-4 text-green-500" />
+            <CardTitle className="text-sm font-medium">Systeem Gezondheid</CardTitle>
+            <Wifi className={`h-4 w-4 ${getSystemHealthIcon()}`} />
           </CardHeader>
           <CardContent>
             <div className="flex items-center gap-2 mb-2">
-              <span className="font-medium text-green-600">
-                Operationeel
-              </span>
+              <Badge className={`${getStatusColor(systemHealth)} text-white`}>
+                {getSystemHealthBadge()}
+              </Badge>
             </div>
             <p className="text-xs text-muted-foreground">
-              Alle systemen werken normaal
+              {getSystemHealthText()}
             </p>
+            {systemHealth !== 'healthy' && (
+              <div className="mt-2">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="w-full text-xs"
+                  onClick={() => {
+                    fetchHealthStatus();
+                    calculateSystemHealth();
+                  }}
+                >
+                  Hercontroleer
+                </Button>
+              </div>
+            )}
           </CardContent>
         </Card>
 
