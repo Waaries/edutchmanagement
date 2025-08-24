@@ -55,7 +55,7 @@ export default function PublicContract() {
         .rpc('get_contract_by_token', { token_param: accessToken });
 
       if (contractError || !contractData || contractData.length === 0) {
-        setError('Contract not found or invalid access token');
+        setError(contractData && contractData.length === 0 ? 'Contract not found or link has expired' : 'Contract not found or invalid access token');
         return;
       }
 
