@@ -3,8 +3,9 @@ import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import UsersTable from "@/components/admin/UsersTable";
+import CreateUserDialog from "@/components/admin/CreateUserDialog";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertCircle, Users, Download, RefreshCw } from "lucide-react";
+import { AlertCircle, Users, Download, RefreshCw, UserPlus } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -12,6 +13,7 @@ const UsersTab: React.FC = () => {
   const [hasAccess, setHasAccess] = useState<boolean | null>(null);
   const [verifying, setVerifying] = useState(true);
   const [userCount, setUserCount] = useState(0);
+  const [createUserOpen, setCreateUserOpen] = useState(false);
   const { toast } = useToast();
 
   // Fetch user count
@@ -151,6 +153,10 @@ const UsersTab: React.FC = () => {
         {/* User Management Actions */}
         <div className="flex flex-wrap gap-2 mb-6 p-4 bg-gray-50 rounded-lg">
           <div className="flex flex-wrap gap-2 flex-1">
+            <Button variant="default" size="sm" onClick={() => setCreateUserOpen(true)}>
+              <UserPlus className="h-4 w-4 mr-2" />
+              Nieuwe Gebruiker
+            </Button>
             <Button variant="outline" size="sm" onClick={() => window.open('https://supabase.com/dashboard/project/yajulpyjxgwehomkqdqv/auth/users', '_blank')}>
               <Users className="h-4 w-4 mr-2" />
               Supabase Auth Beheer
@@ -172,6 +178,25 @@ const UsersTab: React.FC = () => {
         </div>
         
         <UsersTable />
+        
+        <CreateUserDialog 
+          open={createUserOpen}
+          onOpenChange={setCreateUserOpen}
+          onUserCreated={() => {
+            refreshUsers();
+            // Refresh user count
+            const fetchUserCount = async () => {
+              try {
+                const { data, error } = await supabase.rpc('get_users');
+                if (error) throw error;
+                setUserCount(data?.length || 0);
+              } catch (error) {
+                console.error('Error fetching user count:', error);
+              }
+            };
+            fetchUserCount();
+          }}
+        />
       </CardContent>
     </Card>
   );

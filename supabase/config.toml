@@ -43,3 +43,7 @@ verify_jwt = false
 [[functions]]
 name = "health-check"
 verify_jwt = false
+
+[[functions]]
+name = "create-user"
+verify_jwt = true
