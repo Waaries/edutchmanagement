@@ -282,27 +282,42 @@ export type Database = {
       profiles: {
         Row: {
           avatar_url: string | null
+          business_address: string | null
+          company_name: string | null
           created_at: string | null
           first_name: string | null
           id: string
+          kvk_number: string | null
           last_name: string | null
+          phone: string | null
           updated_at: string | null
+          vat_number: string | null
         }
         Insert: {
           avatar_url?: string | null
+          business_address?: string | null
+          company_name?: string | null
           created_at?: string | null
           first_name?: string | null
           id: string
+          kvk_number?: string | null
           last_name?: string | null
+          phone?: string | null
           updated_at?: string | null
+          vat_number?: string | null
         }
         Update: {
           avatar_url?: string | null
+          business_address?: string | null
+          company_name?: string | null
           created_at?: string | null
           first_name?: string | null
           id?: string
+          kvk_number?: string | null
           last_name?: string | null
+          phone?: string | null
           updated_at?: string | null
+          vat_number?: string | null
         }
         Relationships: []
       }
