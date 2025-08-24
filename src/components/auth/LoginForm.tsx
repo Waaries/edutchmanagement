@@ -9,6 +9,7 @@ import { AlertCircle, LockKeyhole, Eye, EyeOff } from 'lucide-react';
 import { SocialAuthButtons } from './SocialAuthButtons';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
 
 const LoginForm = () => {
   const { signIn, resetPassword } = useAuth();
@@ -61,10 +62,27 @@ const LoginForm = () => {
         description: language === 'nl' ? "U bent succesvol ingelogd." : "You have successfully logged in.",
       });
       
-      console.log("Login successful, redirecting to dashboard");
+      console.log("Login successful, checking admin status for redirect");
       
-      // Force a refresh of the page to ensure clean state
-      window.location.href = '/dashboard';
+      // Check admin status to determine redirect destination
+      try {
+        const { data: isAdmin, error: adminError } = await supabase.rpc('is_admin');
+        
+        if (adminError) {
+          console.error('Error checking admin status:', adminError);
+          // Default to user dashboard if admin check fails
+          window.location.href = '/dashboard';
+        } else {
+          // Redirect based on admin status
+          const redirectUrl = isAdmin ? '/admin' : '/dashboard';
+          console.log("Redirecting to:", redirectUrl, "isAdmin:", isAdmin);
+          window.location.href = redirectUrl;
+        }
+      } catch (err) {
+        console.error('Failed to check admin status:', err);
+        // Default to user dashboard if admin check fails
+        window.location.href = '/dashboard';
+      }
     }
     
     setSubmitting(false);

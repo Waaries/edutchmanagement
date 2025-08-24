@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { AlertCircle, LockKeyhole, Eye, EyeOff, ShieldCheck } from 'lucide-react';
 import { z } from 'zod';
+import { supabase } from '@/integrations/supabase/client';
 
 const SimpleAuthPage = () => {
   const [searchParams] = useSearchParams();
@@ -100,7 +101,26 @@ const SimpleAuthPage = () => {
         title: "Ingelogd",
         description: "U bent succesvol ingelogd.",
       });
-      window.location.href = '/dashboard';
+      
+      // Check admin status to determine redirect destination
+      try {
+        const { data: isAdmin, error: adminError } = await supabase.rpc('is_admin');
+        
+        if (adminError) {
+          console.error('Error checking admin status:', adminError);
+          // Default to user dashboard if admin check fails
+          window.location.href = '/dashboard';
+        } else {
+          // Redirect based on admin status
+          const redirectUrl = isAdmin ? '/admin' : '/dashboard';
+          console.log("SimpleAuth redirecting to:", redirectUrl, "isAdmin:", isAdmin);
+          window.location.href = redirectUrl;
+        }
+      } catch (err) {
+        console.error('Failed to check admin status:', err);
+        // Default to user dashboard if admin check fails
+        window.location.href = '/dashboard';
+      }
     }
     
     setSubmitting(false);
