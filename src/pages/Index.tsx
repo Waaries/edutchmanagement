@@ -8,7 +8,7 @@ import Testimonials from "@/components/Testimonials";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import BackToTop from "@/components/BackToTop";
-import NotificationDebugger from "@/components/debug/NotificationDebugger";
+
 import { useAuth } from "@/contexts/AuthContext";
 import { usePageTracking } from "@/hooks/use-monitoring";
 
@@ -67,7 +67,6 @@ const Index = () => {
       </main>
       <Footer />
       <BackToTop />
-      {isAdmin && <NotificationDebugger />}
     </div>
   );
 };

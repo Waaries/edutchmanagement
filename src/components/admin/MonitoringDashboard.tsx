@@ -5,8 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useMonitoring } from '@/hooks/use-monitoring';
+import { useNotificationDebugger } from '@/hooks/use-notification-debugger';
 import { supabase } from '@/integrations/supabase/client';
-import { AlertTriangle, Activity, Clock, Users, RefreshCw, Download } from 'lucide-react';
+import { AlertTriangle, Activity, Clock, Users, RefreshCw, Download, Wifi } from 'lucide-react';
 
 interface HealthStatus {
   timestamp: string;
@@ -27,6 +28,11 @@ const MonitoringDashboard: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [lastRefresh, setLastRefresh] = useState<Date>(new Date());
   const { getLocalData, clearLocalData } = useMonitoring();
+  const {
+    channelStatus,
+    checkRealtimeStatus,
+    testContactNotification
+  } = useNotificationDebugger();
 
   const fetchHealthStatus = async () => {
     setIsLoading(true);
@@ -56,6 +62,15 @@ const MonitoringDashboard: React.FC = () => {
       case 'degraded': return 'bg-yellow-500';
       case 'error': return 'bg-red-500';
       default: return 'bg-gray-500';
+    }
+  };
+
+  const getRealtimeStatusColor = (status: string) => {
+    switch (status.toLowerCase()) {
+      case 'subscribed': return 'text-green-600';
+      case 'connecting': return 'text-yellow-600';
+      case 'closed': return 'text-red-600';
+      default: return 'text-gray-600';
     }
   };
 
@@ -124,7 +139,7 @@ const MonitoringDashboard: React.FC = () => {
       </div>
 
       {/* System Health Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Systeemstatus</CardTitle>
@@ -179,6 +194,38 @@ const MonitoringDashboard: React.FC = () => {
                 {healthStatus.services.auth.responseTime}ms
               </p>
             )}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Realtime Status</CardTitle>
+            <Wifi className={`h-4 w-4 ${channelStatus.toLowerCase() === 'subscribed' ? 'text-green-500' : 'text-red-500'}`} />
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center gap-2 mb-2">
+              <span className={`font-medium ${getRealtimeStatusColor(channelStatus)}`}>
+                {channelStatus}
+              </span>
+            </div>
+            <div className="space-y-1">
+              <Button
+                size="sm"
+                variant="outline" 
+                className="w-full text-xs"
+                onClick={checkRealtimeStatus}
+              >
+                Check Status
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                className="w-full text-xs"
+                onClick={testContactNotification}
+              >
+                Test Notificatie
+              </Button>
+            </div>
           </CardContent>
         </Card>
 
