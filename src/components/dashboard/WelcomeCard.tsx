@@ -75,14 +75,6 @@ const WelcomeCard = ({ user, isAdmin }: WelcomeCardProps) => {
           Bekijk uw persoonlijke dashboard bij eDutch Management.
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <p>Vanuit dit dashboard kunt u al uw gegevens en activiteiten beheren.</p>
-        <div className="mt-4 p-3 border rounded bg-slate-50">
-          <p><strong>Account Type:</strong> {isAdmin ? 'Administrator' : 'Standaard Gebruiker'}</p>
-          <p className="mt-1"><strong>Email:</strong> {user.email}</p>
-          <p className="mt-1"><strong>Laatste login:</strong> {new Date(user.last_sign_in_at || '').toLocaleString('nl-NL')}</p>
-        </div>
-      </CardContent>
     </Card>
   );
 };
