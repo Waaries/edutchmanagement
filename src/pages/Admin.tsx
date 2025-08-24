@@ -7,7 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
 const Admin: React.FC = () => {
-  const { user, loading } = useAuth();
+  const { user, loading, isAdmin: contextIsAdmin } = useAuth();
   const [verifying, setVerifying] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
@@ -27,46 +27,64 @@ const Admin: React.FC = () => {
 
       try {
         console.log("Admin page - Verifying admin access for:", user.email);
+        console.log("Context isAdmin:", contextIsAdmin);
         
-        // Use the fixed is_admin function
-        const { data, error } = await supabase.rpc('is_admin');
-        
-        if (error) {
-          console.error("Admin verification error:", error);
-          setError("Er is een fout opgetreden bij het verifiëren van uw toegangsrechten.");
-          
-          toast({
-            title: "Toegangsfout",
-            description: "Er is een fout opgetreden bij het verifiëren van uw beheerdersrechten.",
-            variant: "destructive",
-          });
-          setIsAdmin(false);
-        } else {
+        // First check context admin status, then verify with RPC if needed
+        if (contextIsAdmin) {
+          setIsAdmin(true);
           setError(null);
-          console.log("Admin page - is_admin result:", data);
-          setIsAdmin(data);
-          
-          // If user does not have admin role, redirect to dashboard
-          if (!data) {
-            toast({
-              title: "Toegang geweigerd",
-              description: "U heeft geen toegang tot het admin dashboard.",
-              variant: "destructive",
-            });
-            navigate('/dashboard');
-          }
+          setVerifying(false);
+          return;
         }
+        
+        // Wait a bit for auth context to update, then check RPC
+        setTimeout(async () => {
+          try {
+            const { data, error } = await supabase.rpc('is_admin');
+            
+            if (error) {
+              console.error("Admin verification error:", error);
+              setError("Er is een fout opgetreden bij het verifiëren van uw toegangsrechten.");
+              
+              toast({
+                title: "Toegangsfout",
+                description: "Er is een fout opgetreden bij het verifiëren van uw beheerdersrechten.",
+                variant: "destructive",
+              });
+              setIsAdmin(false);
+            } else {
+              setError(null);
+              console.log("Admin page - is_admin result:", data);
+              setIsAdmin(data);
+              
+              // If user does not have admin role, redirect to dashboard
+              if (!data) {
+                toast({
+                  title: "Toegang geweigerd",
+                  description: "U heeft geen toegang tot het admin dashboard.",
+                  variant: "destructive",
+                });
+                navigate('/dashboard');
+              }
+            }
+            setVerifying(false);
+          } catch (err) {
+            console.error("Exception during admin verification:", err);
+            setError("Er is een onbekende fout opgetreden.");
+            setIsAdmin(false);
+            setVerifying(false);
+          }
+        }, contextIsAdmin ? 0 : 500); // No delay if context already knows user is admin
       } catch (err) {
         console.error("Exception during admin verification:", err);
         setError("Er is een onbekende fout opgetreden.");
         setIsAdmin(false);
-      } finally {
         setVerifying(false);
       }
     };
     
     verifyAdminAccess();
-  }, [user, loading, navigate, toast]);
+  }, [user, loading, contextIsAdmin, navigate, toast]);
   
   // Show loading indicator while verifying
   if (loading || verifying) {

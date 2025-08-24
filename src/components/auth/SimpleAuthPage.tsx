@@ -102,25 +102,27 @@ const SimpleAuthPage = () => {
         description: "U bent succesvol ingelogd.",
       });
       
-      // Check admin status to determine redirect destination
-      try {
-        const { data: isAdmin, error: adminError } = await supabase.rpc('is_admin');
-        
-        if (adminError) {
-          console.error('Error checking admin status:', adminError);
+      // Small delay to ensure auth context updates before redirect
+      setTimeout(async () => {
+        try {
+          const { data: isAdmin, error: adminError } = await supabase.rpc('is_admin');
+          
+          if (adminError) {
+            console.error('Error checking admin status:', adminError);
+            // Default to user dashboard if admin check fails
+            navigate('/dashboard', { replace: true });
+          } else {
+            // Redirect based on admin status
+            const redirectUrl = isAdmin ? '/admin' : '/dashboard';
+            console.log("SimpleAuth redirecting to:", redirectUrl, "isAdmin:", isAdmin);
+            navigate(redirectUrl, { replace: true });
+          }
+        } catch (err) {
+          console.error('Failed to check admin status:', err);
           // Default to user dashboard if admin check fails
-          window.location.href = '/dashboard';
-        } else {
-          // Redirect based on admin status
-          const redirectUrl = isAdmin ? '/admin' : '/dashboard';
-          console.log("SimpleAuth redirecting to:", redirectUrl, "isAdmin:", isAdmin);
-          window.location.href = redirectUrl;
+          navigate('/dashboard', { replace: true });
         }
-      } catch (err) {
-        console.error('Failed to check admin status:', err);
-        // Default to user dashboard if admin check fails
-        window.location.href = '/dashboard';
-      }
+      }, 300); // Give auth context time to update
     }
     
     setSubmitting(false);
