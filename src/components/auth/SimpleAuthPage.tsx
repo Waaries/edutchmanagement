@@ -423,10 +423,6 @@ const SimpleAuthPage = () => {
                 </div>
               )}
 
-              <div className="p-4 bg-blue-50 text-blue-700 rounded-xl flex items-start text-sm">
-                <ShieldCheck className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" />
-                <span>Beveiligde registratie. Uw gegevens worden versleuteld opgeslagen.</span>
-              </div>
               
               <Button 
                 type="submit" 
