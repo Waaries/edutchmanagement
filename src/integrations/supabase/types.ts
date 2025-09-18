@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "12.2.3 (519615d)"
+    PostgrestVersion: "13.0.5"
   }
   public: {
     Tables: {
@@ -393,6 +393,10 @@ export type Database = {
         Args: { user_id_param: string }
         Returns: undefined
       }
+      algorithm_sign: {
+        Args: { algorithm: string; secret: string; signables: string }
+        Returns: string
+      }
       cleanup_expired_sessions: {
         Args: Record<PropertyKey, never>
         Returns: undefined
@@ -479,6 +483,14 @@ export type Database = {
         Args: { user_id_param: string }
         Returns: undefined
       }
+      sign: {
+        Args: { algorithm?: string; payload: Json; secret: string }
+        Returns: string
+      }
+      try_cast_double: {
+        Args: { inp: string }
+        Returns: number
+      }
       update_contract_by_token: {
         Args: {
           filled_data_param: Json
@@ -486,6 +498,22 @@ export type Database = {
           token_param: string
         }
         Returns: boolean
+      }
+      url_decode: {
+        Args: { data: string }
+        Returns: string
+      }
+      url_encode: {
+        Args: { data: string }
+        Returns: string
+      }
+      verify: {
+        Args: { algorithm?: string; secret: string; token: string }
+        Returns: {
+          header: Json
+          payload: Json
+          valid: boolean
+        }[]
       }
     }
     Enums: {
