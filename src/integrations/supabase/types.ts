@@ -104,6 +104,36 @@ export type Database = {
         }
         Relationships: []
       }
+      contract_access_logs: {
+        Row: {
+          access_token: string | null
+          attempted_at: string
+          error_reason: string | null
+          id: string
+          ip_address: unknown | null
+          success: boolean
+          user_agent: string | null
+        }
+        Insert: {
+          access_token?: string | null
+          attempted_at?: string
+          error_reason?: string | null
+          id?: string
+          ip_address?: unknown | null
+          success: boolean
+          user_agent?: string | null
+        }
+        Update: {
+          access_token?: string | null
+          attempted_at?: string
+          error_reason?: string | null
+          id?: string
+          ip_address?: unknown | null
+          success?: boolean
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       contract_template_fields: {
         Row: {
           created_at: string
@@ -394,6 +424,10 @@ export type Database = {
         Returns: undefined
       }
       cleanup_expired_sessions: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      cleanup_old_access_logs: {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
