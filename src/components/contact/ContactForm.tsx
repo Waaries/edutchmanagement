@@ -5,10 +5,12 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Send, Loader2 } from "lucide-react";
+import { Send, Loader2, UserCheck, LogIn } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useFormTracking } from "@/hooks/use-monitoring";
+import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const ContactForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -21,6 +23,8 @@ const ContactForm = () => {
   });
   const { toast } = useToast();
   const { trackFormStart, trackFormSubmit, trackFormError } = useFormTracking('contact_form');
+  const { user, session, loading: authLoading } = useAuth();
+  const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -32,6 +36,17 @@ const ContactForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Check authentication first
+    if (!user || !session) {
+      trackFormError('Authentication error: User not logged in');
+      toast({
+        title: "Authenticatie vereist",
+        description: "U moet ingelogd zijn om een bericht te verzenden. Ga naar de inlogpagina.",
+        variant: "destructive",
+      });
+      return;
+    }
     
     if (!formData.name || !formData.email || !formData.message) {
       trackFormError('Validation error: Missing required fields');
@@ -85,15 +100,66 @@ const ContactForm = () => {
       console.error('Error sending message:', error);
       trackFormSubmit(false, [error.message]);
       
-      toast({
-        title: "Fout bij verzenden",
-        description: "Er is een fout opgetreden. Probeer het later opnieuw.",
-        variant: "destructive",
-      });
+      // Check if it's an authentication error
+      if (error.message?.includes('insufficient_privilege') || error.message?.includes('policy')) {
+        toast({
+          title: "Authenticatie vereist",
+          description: "U moet ingelogd zijn om een bericht te verzenden.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Fout bij verzenden",
+          description: "Er is een fout opgetreden. Probeer het later opnieuw.",
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  // Show loading state during auth initialization
+  if (authLoading) {
+    return (
+      <Card className="h-full flex flex-col">
+        <CardContent className="flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
+            <p>Bezig met laden...</p>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  // Show authentication required message
+  if (!user || !session) {
+    return (
+      <Card className="h-full flex flex-col">
+        <CardHeader className="pb-4">
+          <CardTitle className="text-2xl flex items-center gap-2">
+            <UserCheck className="h-6 w-6" />
+            Inloggen vereist
+          </CardTitle>
+          <CardDescription>
+            Om een bericht te verzenden moet u eerst inloggen.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="flex-1 flex flex-col justify-center">
+          <div className="text-center space-y-4">
+            <p className="text-muted-foreground">
+              Voor uw veiligheid en om spam te voorkomen, vereisen we dat u ingelogd bent voordat u een bericht kunt verzenden.
+            </p>
+            <Button onClick={() => navigate('/auth')} className="w-full">
+              <LogIn className="mr-2 h-4 w-4" />
+              Inloggen / Registreren
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card className="h-full flex flex-col">
