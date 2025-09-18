@@ -224,6 +224,7 @@ export type Database = {
           expires_at: string | null
           filled_data: Json
           id: string
+          metadata: Json | null
           status: string
           template_id: string
           updated_at: string
@@ -237,6 +238,7 @@ export type Database = {
           expires_at?: string | null
           filled_data?: Json
           id?: string
+          metadata?: Json | null
           status?: string
           template_id: string
           updated_at?: string
@@ -250,6 +252,7 @@ export type Database = {
           expires_at?: string | null
           filled_data?: Json
           id?: string
+          metadata?: Json | null
           status?: string
           template_id?: string
           updated_at?: string
@@ -351,6 +354,48 @@ export type Database = {
         }
         Relationships: []
       }
+      security_audit_logs: {
+        Row: {
+          action: string
+          created_at: string
+          error_message: string | null
+          id: string
+          ip_address: unknown | null
+          metadata: Json | null
+          resource_id: string | null
+          resource_type: string
+          success: boolean
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          ip_address?: unknown | null
+          metadata?: Json | null
+          resource_id?: string | null
+          resource_type: string
+          success?: boolean
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          ip_address?: unknown | null
+          metadata?: Json | null
+          resource_id?: string | null
+          resource_type?: string
+          success?: boolean
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -427,6 +472,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      cleanup_expired_sessions_secure: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       cleanup_old_access_logs: {
         Args: Record<PropertyKey, never>
         Returns: undefined
@@ -435,6 +484,23 @@ export type Database = {
         Args: { token_param: string }
         Returns: {
           access_token: string
+          client_email: string
+          client_name: string
+          completed_at: string
+          created_at: string
+          filled_data: Json
+          id: string
+          status: string
+          template_content: string
+          template_description: string
+          template_id: string
+          template_title: string
+          updated_at: string
+        }[]
+      }
+      get_contract_by_token_secure: {
+        Args: { token_param: string }
+        Returns: {
           client_email: string
           client_name: string
           completed_at: string

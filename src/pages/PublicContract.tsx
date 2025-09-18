@@ -52,14 +52,19 @@ export default function PublicContract() {
     try {
       // Use secure function to get contract by token
       const { data: contractData, error: contractError } = await supabase
-        .rpc('get_contract_by_token', { token_param: accessToken });
+        .rpc('get_contract_by_token_secure', { token_param: accessToken });
 
       if (contractError || !contractData || contractData.length === 0) {
         setError(contractData && contractData.length === 0 ? 'Contract not found or link has expired' : 'Contract not found or invalid access token');
         return;
       }
 
-      const contract = contractData[0] as FilledContract;
+      // The secure function doesn't return access_token for security reasons
+      // We'll add it manually since we have it from the URL
+      const contract = {
+        ...contractData[0],
+        access_token: accessToken
+      } as FilledContract;
       setContract(contract);
       setFormData((contract.filled_data as Record<string, any>) || {});
 
