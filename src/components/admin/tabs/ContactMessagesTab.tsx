@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Mail, Phone, User, Clock, MessageCircle, Save } from "lucide-react";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Mail, Phone, User, Clock, MessageCircle, Save, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { ContactMessage } from "@/hooks/use-realtime-notifications";
@@ -14,6 +15,7 @@ const ContactMessagesTab = () => {
   const [messages, setMessages] = useState<ContactMessage[]>([]);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState<string | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -134,6 +136,42 @@ const ContactMessagesTab = () => {
     }
   };
 
+  const deleteMessage = async (messageId: string) => {
+    setDeleting(messageId);
+    try {
+      const { error } = await supabase
+        .from('contact_messages')
+        .delete()
+        .eq('id', messageId);
+
+      if (error) {
+        console.error('Error deleting message:', error);
+        toast({
+          title: "Fout bij verwijderen",
+          description: "Er was een probleem bij het verwijderen van het bericht.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      setMessages(prev => prev.filter(msg => msg.id !== messageId));
+
+      toast({
+        title: "Bericht verwijderd",
+        description: "Het contactbericht is succesvol verwijderd.",
+      });
+    } catch (err) {
+      console.error('Error:', err);
+      toast({
+        title: "Fout bij verwijderen",
+        description: "Er was een onbekende fout bij het verwijderen.",
+        variant: "destructive",
+      });
+    } finally {
+      setDeleting(null);
+    }
+  };
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'unread':
@@ -214,7 +252,7 @@ const ContactMessagesTab = () => {
                     <Select 
                       value={message.status} 
                       onValueChange={(value) => updateMessageStatus(message.id, value)}
-                      disabled={updating === message.id}
+                      disabled={updating === message.id || deleting === message.id}
                     >
                       <SelectTrigger className="w-32">
                         <SelectValue />
@@ -226,6 +264,35 @@ const ContactMessagesTab = () => {
                         <SelectItem value="closed">Afgesloten</SelectItem>
                       </SelectContent>
                     </Select>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          disabled={updating === message.id || deleting === message.id}
+                          className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Bericht verwijderen</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            Weet je zeker dat je dit contactbericht wilt verwijderen? Deze actie kan niet ongedaan gemaakt worden.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Annuleren</AlertDialogCancel>
+                          <AlertDialogAction 
+                            onClick={() => deleteMessage(message.id)}
+                            className="bg-red-600 hover:bg-red-700 text-white"
+                          >
+                            Verwijderen
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   </div>
                 </div>
               </CardHeader>
@@ -254,11 +321,11 @@ const ContactMessagesTab = () => {
                       }}
                       placeholder="Voeg admin notities toe..."
                       className="flex-1"
-                      disabled={updating === message.id}
+                      disabled={updating === message.id || deleting === message.id}
                     />
                     <Button
                       onClick={() => updateAdminNotes(message.id, message.admin_notes || '')}
-                      disabled={updating === message.id}
+                      disabled={updating === message.id || deleting === message.id}
                       className="self-end"
                     >
                       <Save className="h-4 w-4" />
