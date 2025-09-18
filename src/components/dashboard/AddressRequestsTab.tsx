@@ -4,9 +4,10 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Calendar, Clock, Building2, Mail, Phone, User, Plus } from "lucide-react";
+import { Calendar, Clock, Building2, Mail, Phone, User, Plus, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface AddressRequest {
@@ -32,6 +33,7 @@ const AddressRequestsTab = () => {
   const { toast } = useToast();
   const [requests, setRequests] = useState<AddressRequest[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deleting, setDeleting] = useState<string | null>(null);
 
   useEffect(() => {
     if (user) {
@@ -61,6 +63,36 @@ const AddressRequestsTab = () => {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const deleteRequest = async (requestId: string) => {
+    setDeleting(requestId);
+    try {
+      const { error } = await supabase
+        .from('address_requests')
+        .delete()
+        .eq('id', requestId);
+
+      if (error) {
+        throw error;
+      }
+
+      setRequests(prev => prev.filter(request => request.id !== requestId));
+
+      toast({
+        title: "Aanvraag verwijderd",
+        description: "Uw aanvraag is succesvol verwijderd.",
+      });
+    } catch (error) {
+      console.error("Error deleting request:", error);
+      toast({
+        title: "Fout bij verwijderen",
+        description: "Er is een fout opgetreden bij het verwijderen van uw aanvraag.",
+        variant: "destructive"
+      });
+    } finally {
+      setDeleting(null);
     }
   };
 
@@ -135,7 +167,38 @@ const AddressRequestsTab = () => {
                       {getPackageLabel(request.preferred_address_type)} • {request.business_type}
                     </CardDescription>
                   </div>
-                  {getStatusBadge(request.status)}
+                  <div className="flex items-center gap-2">
+                    {getStatusBadge(request.status)}
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          disabled={deleting === request.id}
+                          className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Aanvraag verwijderen</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            Weet je zeker dat je deze aanvraag voor "{request.company_name}" wilt verwijderen? Deze actie kan niet ongedaan gemaakt worden.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Annuleren</AlertDialogCancel>
+                          <AlertDialogAction 
+                            onClick={() => deleteRequest(request.id)}
+                            className="bg-red-600 hover:bg-red-700 text-white"
+                          >
+                            Verwijderen
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </div>
                 </div>
               </CardHeader>
               
