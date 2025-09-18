@@ -63,15 +63,15 @@ const Testimonials = () => {
   ];
 
   return (
-    <section id="getuigenissen" className="section-padding gradient-primary text-white overflow-hidden" ref={sectionRef}>
+    <section id="getuigenissen" className="section-padding bg-slate-50 text-slate-800 overflow-hidden" ref={sectionRef}>
       <div className="container mx-auto container-padding reveal">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-block px-3 py-1 text-sm font-medium bg-white/10 text-white mb-4 rounded-2xl flex items-center justify-center mx-auto">
+          <div className="inline-block px-3 py-1 text-sm font-medium bg-primary/10 text-primary mb-4 rounded-2xl flex items-center justify-center mx-auto">
             <Sparkles className="h-4 w-4 mr-2" />
             Ervaringen
           </div>
-          <h2 className="mb-6">Wat Onze <span className="text-white">Klanten</span> Zeggen</h2>
-          <p className="text-lg text-white/80">
+          <h2 className="mb-6">Wat Onze <span className="text-primary">Klanten</span> Zeggen</h2>
+          <p className="text-lg text-muted-foreground">
             Ontdek waarom ondernemers kiezen voor onze bedrijfsadresservice.
           </p>
         </div>
@@ -88,19 +88,19 @@ const Testimonials = () => {
                     : 'opacity-0 translate-x-full z-0'
               }`}
             >
-              <div className="bg-white/10 backdrop-blur-sm border border-white/10 rounded-3xl p-8 md:p-12 card-shadow">
+              <div className="bg-white border border-slate-200 rounded-3xl p-8 md:p-12 card-shadow">
                 <div className="flex flex-col items-center text-center">
-                  <div className="h-12 w-12 rounded-full bg-white/10 flex items-center justify-center mb-6">
-                    <Sparkles className="h-6 w-6 text-white/80" />
+                  <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-6">
+                    <Sparkles className="h-6 w-6 text-primary" />
                   </div>
                   
-                  <p className="text-xl md:text-2xl mb-8 text-white/90 text-balance">
+                  <p className="text-xl md:text-2xl mb-8 text-slate-700 text-balance">
                     "{testimonial.quote}"
                   </p>
                   
                   <div className="text-center">
-                    <p className="font-semibold">{testimonial.author}</p>
-                    <p className="text-white/70 text-sm">{testimonial.company}</p>
+                    <p className="font-semibold text-slate-800">{testimonial.author}</p>
+                    <p className="text-slate-600 text-sm">{testimonial.company}</p>
                   </div>
                 </div>
               </div>
@@ -111,10 +111,10 @@ const Testimonials = () => {
         <div className="flex justify-center mt-8 gap-4">
           <button 
             onClick={handlePrev}
-            className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors duration-300"
+            className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center hover:bg-slate-300 transition-colors duration-300"
             aria-label="Previous testimonial"
           >
-            <ArrowLeft className="h-5 w-5 text-white" />
+            <ArrowLeft className="h-5 w-5 text-slate-600" />
           </button>
           
           {testimonials.map((_, index) => (
@@ -122,7 +122,7 @@ const Testimonials = () => {
               key={index}
               onClick={() => setActiveTestimonial(index)}
               className={`w-3 h-3 rounded-full mx-1 transition-all ${
-                index === activeTestimonial ? 'bg-white' : 'bg-white/30'
+                index === activeTestimonial ? 'bg-primary' : 'bg-slate-300'
               }`}
               aria-label={`View testimonial ${index + 1}`}
             />
@@ -130,10 +130,10 @@ const Testimonials = () => {
           
           <button 
             onClick={handleNext}
-            className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors duration-300"
+            className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center hover:bg-slate-300 transition-colors duration-300"
             aria-label="Next testimonial"
           >
-            <ArrowRight className="h-5 w-5 text-white" />
+            <ArrowRight className="h-5 w-5 text-slate-600" />
           </button>
         </div>
       </div>
