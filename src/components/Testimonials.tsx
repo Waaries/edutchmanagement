@@ -63,7 +63,7 @@ const Testimonials = () => {
   ];
 
   return (
-    <section id="getuigenissen" className="section-padding gradient-primary text-white" ref={sectionRef}>
+    <section id="getuigenissen" className="section-padding gradient-primary text-white overflow-hidden" ref={sectionRef}>
       <div className="container mx-auto container-padding reveal">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="inline-block px-3 py-1 text-sm font-medium bg-white/10 text-white mb-4 rounded-2xl flex items-center justify-center mx-auto">
