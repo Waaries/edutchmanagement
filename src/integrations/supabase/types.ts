@@ -619,6 +619,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      detect_session_anomalies: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       detect_suspicious_activity: {
         Args: Record<PropertyKey, never>
         Returns: {
