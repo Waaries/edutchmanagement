@@ -99,14 +99,20 @@ export const useAddressRequestForm = () => {
       console.log("User authenticated:", !!user);
       console.log("User ID:", user?.id || 'null');
 
-      // Get client IP for rate limiting
-      const clientIP = await getClientIP();
-      console.log("Client IP:", clientIP);
+      // Try to get client IP but don't block submission if it fails
+      let clientIP = null;
+      try {
+        clientIP = await getClientIP();
+        console.log("Client IP:", clientIP);
+      } catch (ipError) {
+        console.warn("Failed to get client IP, continuing without it:", ipError);
+        // Don't block form submission if IP fetch fails
+      }
 
       const requestData = {
         ...formData,
         user_id: user?.id || null,
-        ip_address: clientIP
+        ip_address: clientIP || null
       };
 
       console.log("Final request data:", requestData);
@@ -136,10 +142,11 @@ export const useAddressRequestForm = () => {
         }
         
         toast({
-          title: "Fout bij verzenden",
+          title: "Fout bij verzenden", 
           description: userMessage,
           variant: "destructive"
         });
+        setIsSubmitting(false);
         return; // Don't throw, handle gracefully
       }
 

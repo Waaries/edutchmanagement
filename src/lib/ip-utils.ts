@@ -1,24 +1,41 @@
 // Utility functions for IP address handling
 
 export async function getClientIP(): Promise<string | null> {
-  try {
-    // Try to get IP from ipify service
-    const response = await fetch('https://api.ipify.org?format=json');
-    const data = await response.json();
-    return data.ip;
-  } catch (error) {
-    console.warn('Failed to get client IP:', error);
-    
-    // Fallback: try another service
-    try {
-      const response = await fetch('https://httpbin.org/ip');
+  // Try multiple methods to get client IP, but don't fail if none work
+  const ipSources = [
+    async () => {
+      const response = await fetch('https://api.ipify.org?format=json', {
+        method: 'GET',
+        mode: 'cors'
+      });
+      if (!response.ok) throw new Error('API response not ok');
       const data = await response.json();
-      return data.origin.split(',')[0].trim();
-    } catch (fallbackError) {
-      console.warn('Failed to get IP from fallback service:', fallbackError);
-      return null;
+      return data.ip;
+    },
+    async () => {
+      const response = await fetch('https://httpbin.org/ip', {
+        method: 'GET', 
+        mode: 'cors'
+      });
+      if (!response.ok) throw new Error('API response not ok');
+      const data = await response.json();
+      return data.origin?.split(',')[0]?.trim();
+    }
+  ];
+
+  for (const getIP of ipSources) {
+    try {
+      const ip = await getIP();
+      if (ip && isValidIP(ip)) return ip;
+    } catch (error) {
+      console.warn('IP source failed:', error);
+      continue;
     }
   }
+
+  // If all methods fail, return null - this is acceptable for form submission
+  console.info('Could not determine client IP - continuing with null value');
+  return null;
 }
 
 // Hash IP for privacy (basic client-side hashing for logging)
