@@ -50,36 +50,98 @@ export default function PublicContract() {
 
   const fetchContract = async () => {
     try {
-      // Use secure function to get contract by token
-      const { data: contractData, error: contractError } = await supabase
-        .rpc('get_contract_by_token_secure', { token_param: accessToken });
-
-      if (contractError || !contractData || contractData.length === 0) {
-        setError(contractData && contractData.length === 0 ? 'Contract not found or link has expired' : 'Contract not found or invalid access token');
+      setLoading(true);
+      setError(null);
+      
+      if (!accessToken) {
+        setError('No access token provided');
         return;
       }
 
-      // The secure function doesn't return access_token for security reasons
-      // We'll add it manually since we have it from the URL
-      const contract = {
-        ...contractData[0],
+      console.log('Fetching contract with secure validation:', accessToken.substring(0, 8) + '...');
+      
+      // First validate the token using the new secure function
+      const { data: contractId, error: validationError } = await supabase
+        .rpc('validate_contract_token_secure', { token_param: accessToken })
+        .single();
+
+      if (validationError) {
+        console.error('Token validation error:', validationError);
+        setError('Invalid or expired access token. Too many attempts may cause temporary blocking.');
+        return;
+      }
+
+      if (!contractId) {
+        console.error('Token validation failed - no contract ID returned');
+        setError('Access token is invalid or expired');
+        return;
+      }
+
+      console.log('Token validated, contract ID:', contractId);
+      
+      // Now get the contract data using the validated ID
+      const { data: contractData, error: contractError } = await supabase
+        .from('filled_contracts')
+        .select(`
+          *,
+          contract_templates!inner (
+            title,
+            content,
+            description
+          )
+        `)
+        .eq('id', contractId)
+        .single();
+
+      if (contractError) {
+        console.error('Contract fetch error:', contractError);
+        setError('Contract not found');
+        return;
+      }
+
+      if (!contractData) {
+        console.error('No contract data returned');
+        setError('Contract not found');
+        return;
+      }
+
+      console.log('Contract data received:', contractData);
+      
+      // Transform the data to match expected structure
+      const transformedContract = {
+        ...contractData,
+        template_title: contractData.contract_templates.title,
+        template_content: contractData.contract_templates.content,
+        template_description: contractData.contract_templates.description,
         access_token: accessToken
       } as FilledContract;
-      setContract(contract);
-      setFormData((contract.filled_data as Record<string, any>) || {});
+      
+      setContract(transformedContract);
 
-      // Fetch template fields
+      // Get template fields for this template
       const { data: fieldsData, error: fieldsError } = await supabase
         .from('contract_template_fields')
         .select('*')
-        .eq('template_id', contract.template_id)
+        .eq('template_id', contractData.template_id)
         .order('sort_order');
 
-      if (!fieldsError && fieldsData) {
-        setFields(fieldsData);
+      if (fieldsError) {
+        console.error('Fields fetch error:', fieldsError);
+        setError('Failed to load contract fields');
+        return;
       }
+
+      console.log('Fields data received:', fieldsData);
+      setFields(fieldsData || []);
+      
+      // Initialize form data with existing filled data if available
+      if (contractData.filled_data) {
+        setFormData(contractData.filled_data as Record<string, any>);
+      }
+      
     } catch (err) {
-      setError('Failed to load contract');
+      console.error('Unexpected error:', err);
+      setError('An unexpected error occurred. Please try again.');
     } finally {
       setLoading(false);
     }
