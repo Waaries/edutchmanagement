@@ -216,6 +216,7 @@ export type Database = {
       }
       filled_contracts: {
         Row: {
+          access_count: number | null
           access_token: string
           client_email: string
           client_name: string | null
@@ -224,12 +225,17 @@ export type Database = {
           expires_at: string | null
           filled_data: Json
           id: string
+          is_token_used: boolean | null
+          last_accessed_at: string | null
           metadata: Json | null
           status: string
           template_id: string
+          token_created_at: string | null
           updated_at: string
+          user_id: string | null
         }
         Insert: {
+          access_count?: number | null
           access_token: string
           client_email: string
           client_name?: string | null
@@ -238,12 +244,17 @@ export type Database = {
           expires_at?: string | null
           filled_data?: Json
           id?: string
+          is_token_used?: boolean | null
+          last_accessed_at?: string | null
           metadata?: Json | null
           status?: string
           template_id: string
+          token_created_at?: string | null
           updated_at?: string
+          user_id?: string | null
         }
         Update: {
+          access_count?: number | null
           access_token?: string
           client_email?: string
           client_name?: string | null
@@ -252,10 +263,14 @@ export type Database = {
           expires_at?: string | null
           filled_data?: Json
           id?: string
+          is_token_used?: boolean | null
+          last_accessed_at?: string | null
           metadata?: Json | null
           status?: string
           template_id?: string
+          token_created_at?: string | null
           updated_at?: string
+          user_id?: string | null
         }
         Relationships: [
           {
@@ -354,6 +369,42 @@ export type Database = {
         }
         Relationships: []
       }
+      rate_limiting: {
+        Row: {
+          action_type: string
+          attempt_count: number | null
+          blocked_until: string | null
+          created_at: string | null
+          first_attempt_at: string | null
+          id: string
+          ip_address: unknown
+          is_blocked: boolean | null
+          last_attempt_at: string | null
+        }
+        Insert: {
+          action_type: string
+          attempt_count?: number | null
+          blocked_until?: string | null
+          created_at?: string | null
+          first_attempt_at?: string | null
+          id?: string
+          ip_address: unknown
+          is_blocked?: boolean | null
+          last_attempt_at?: string | null
+        }
+        Update: {
+          action_type?: string
+          attempt_count?: number | null
+          blocked_until?: string | null
+          created_at?: string | null
+          first_attempt_at?: string | null
+          id?: string
+          ip_address?: unknown
+          is_blocked?: boolean | null
+          last_attempt_at?: string | null
+        }
+        Relationships: []
+      }
       security_audit_logs: {
         Row: {
           action: string
@@ -422,11 +473,13 @@ export type Database = {
           city: string | null
           country: string | null
           created_at: string
+          encrypted_ip_hash: string | null
           expires_at: string | null
           id: string
           ip_address: unknown | null
           is_active: boolean
           last_activity: string
+          session_metadata: Json | null
           session_token: string
           user_agent: string | null
           user_id: string | null
@@ -435,11 +488,13 @@ export type Database = {
           city?: string | null
           country?: string | null
           created_at?: string
+          encrypted_ip_hash?: string | null
           expires_at?: string | null
           id?: string
           ip_address?: unknown | null
           is_active?: boolean
           last_activity?: string
+          session_metadata?: Json | null
           session_token: string
           user_agent?: string | null
           user_id?: string | null
@@ -448,11 +503,13 @@ export type Database = {
           city?: string | null
           country?: string | null
           created_at?: string
+          encrypted_ip_hash?: string | null
           expires_at?: string | null
           id?: string
           ip_address?: unknown | null
           is_active?: boolean
           last_activity?: string
+          session_metadata?: Json | null
           session_token?: string
           user_agent?: string | null
           user_id?: string | null
@@ -467,6 +524,15 @@ export type Database = {
       add_admin_role: {
         Args: { user_id_param: string }
         Returns: undefined
+      }
+      check_rate_limit: {
+        Args: {
+          action_name: string
+          client_ip: unknown
+          max_attempts?: number
+          time_window?: unknown
+        }
+        Returns: boolean
       }
       cleanup_expired_sessions: {
         Args: Record<PropertyKey, never>
@@ -532,6 +598,10 @@ export type Database = {
           | { role_name: string; user_id: number }
         Returns: boolean
       }
+      hash_ip_address: {
+        Args: { ip_address: unknown }
+        Returns: string
+      }
       is_admin: {
         Args: Record<PropertyKey, never>
         Returns: boolean
@@ -577,6 +647,10 @@ export type Database = {
       }
       remove_admin_role: {
         Args: { user_id_param: string }
+        Returns: undefined
+      }
+      security_maintenance: {
+        Args: Record<PropertyKey, never>
         Returns: undefined
       }
       update_contract_by_token: {
