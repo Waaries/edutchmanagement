@@ -575,7 +575,36 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      public_profiles: {
+        Row: {
+          avatar_url: string | null
+          company_name: string | null
+          created_at: string | null
+          first_name: string | null
+          id: string | null
+          last_name: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          company_name?: string | null
+          created_at?: string | null
+          first_name?: string | null
+          id?: string | null
+          last_name?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          company_name?: string | null
+          created_at?: string | null
+          first_name?: string | null
+          id?: string | null
+          last_name?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       add_admin_role: {
@@ -595,6 +624,10 @@ export type Database = {
         Args: { tbl_name: string; user_ip: string }
         Returns: boolean
       }
+      check_suspicious_activity: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       cleanup_expired_sessions: {
         Args: Record<PropertyKey, never>
         Returns: undefined
@@ -608,6 +641,10 @@ export type Database = {
         Returns: undefined
       }
       cleanup_rate_limit_tracking: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      cleanup_security_logs: {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
@@ -707,6 +744,10 @@ export type Database = {
           token_param: string
         }
         Returns: boolean
+      }
+      validate_contract_token: {
+        Args: { token_param: string }
+        Returns: string
       }
     }
     Enums: {
