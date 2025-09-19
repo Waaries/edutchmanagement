@@ -648,6 +648,15 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      detect_suspicious_activity: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          description: string
+          detection_time: string
+          ip_addresses: string[]
+          threat_level: string
+        }[]
+      }
       get_contract_by_token_secure: {
         Args: { token_param: string }
         Returns: {
@@ -737,6 +746,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      security_maintenance_hardened: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       update_contract_by_token: {
         Args: {
           filled_data_param: Json
@@ -746,6 +759,10 @@ export type Database = {
         Returns: boolean
       }
       validate_contract_token: {
+        Args: { token_param: string }
+        Returns: string
+      }
+      validate_contract_token_secure: {
         Args: { token_param: string }
         Returns: string
       }
