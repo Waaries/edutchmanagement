@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { Send, User, Mail } from "lucide-react";
 import { generateAccessToken } from "@/lib/utils";
@@ -38,6 +39,7 @@ const ContractGenerationForm: React.FC<ContractGenerationFormProps> = ({
   onGenerated
 }) => {
   const { toast } = useToast();
+  const { user } = useAuth();
   const queryClient = useQueryClient();
   const [clientInfo, setClientInfo] = useState({
     email: '',
@@ -57,7 +59,8 @@ const ContractGenerationForm: React.FC<ContractGenerationFormProps> = ({
           client_name: clientInfo.name,
           filled_data: formData,
           access_token: accessToken,
-          status: 'pending'
+          status: 'pending',
+          user_id: user?.id || '00000000-0000-0000-0000-000000000000'
         })
         .select()
         .single();

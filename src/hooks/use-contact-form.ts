@@ -5,6 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useFormValidation } from "@/hooks/use-form-validation";
 import { useAutoSave } from "@/hooks/use-auto-save";
 import { useAnalytics } from "@/hooks/use-analytics";
+import { getClientIP } from "@/lib/ip-utils";
 
 export interface ContactFormState {
   name: string;
@@ -100,48 +101,40 @@ export const useContactForm = () => {
     try {
       console.log("[ContactForm] Submitting form data:", formState);
       
-      // Store the message in the database
-      const { data, error: dbError } = await supabase
-        .from('contact_messages')
-        .insert([{
-          name: formState.name,
-          email: formState.email,
-          phone: formState.phone || null,
-          message: formState.message,
-          status: 'unread'
-        }])
-        .select();
+      // Get client IP for rate limiting
+      const clientIP = await getClientIP();
+      console.log("[ContactForm] Client IP:", clientIP);
 
-      if (dbError) {
-        console.error("[ContactForm] Database error:", dbError);
-        throw new Error("Fout bij opslaan bericht in database");
-      }
-
-      console.log("[ContactForm] Message stored in database successfully:", data);
-      
-      // Also send email notification
-      const { data: emailData, error: functionError } = await supabase.functions.invoke('send-contact-email', {
-        body: formState
+      // Use secure contact submission function instead of direct database insert
+      const { data: submitData, error: submitError } = await supabase.functions.invoke('secure-contact-submit', {
+        body: {
+          ...formState,
+          ip_address: clientIP
+        }
       });
-      
-      console.log("[ContactForm] Email function response:", emailData);
-      
-      if (functionError) {
-        console.error("[ContactForm] Email function error:", functionError);
-        // Don't throw here - message is already stored in DB
-        toast({
-          title: "Bericht opgeslagen",
-          description: "Uw bericht is opgeslagen, maar de e-mailnotificatie kon niet worden verzonden.",
-        });
-        trackFormSubmission('contact_form', true);
-      } else if (!emailData?.success) {
-        console.error("[ContactForm] Email function failed:", emailData);
-        toast({
-          title: "Bericht opgeslagen",
-          description: "Uw bericht is opgeslagen, maar de e-mailnotificatie kon niet worden verzonden.",
-        });
-        trackFormSubmission('contact_form', true);
+
+      if (submitError) {
+        console.error("[ContactForm] Secure submission error:", submitError);
+        
+        // Check if it's a rate limit error
+        if (submitError.message?.includes('Rate limit exceeded')) {
+          toast({
+            title: "Te veel berichten verzonden",
+            description: "U kunt maximaal 3 berichten per uur verzenden. Probeer het later opnieuw.",
+            variant: "destructive",
+          });
+          trackFormSubmission('contact_form', false);
+          return;
+        }
+        
+        throw submitError;
       }
+
+      if (!submitData?.success) {
+        throw new Error(submitData?.error || "Onbekende fout bij verzenden");
+      }
+
+      console.log("[ContactForm] Secure submission successful:", submitData);
       
       // Clear auto-saved data on successful submission
       clearSavedData();

@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAutoSave } from "@/hooks/use-auto-save";
 import { trackFormSubmission } from "@/lib/analytics";
+import { getClientIP } from "@/lib/ip-utils";
 
 export interface AddressRequestFormData {
   company_name: string;
@@ -98,9 +99,14 @@ export const useAddressRequestForm = () => {
       console.log("User authenticated:", !!user);
       console.log("User ID:", user?.id || 'null');
 
+      // Get client IP for rate limiting
+      const clientIP = await getClientIP();
+      console.log("Client IP:", clientIP);
+
       const requestData = {
         ...formData,
-        user_id: user?.id || null
+        user_id: user?.id || null,
+        ip_address: clientIP
       };
 
       console.log("Final request data:", requestData);

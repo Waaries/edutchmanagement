@@ -98,6 +98,7 @@ serve(async (req) => {
         email: email.trim().toLowerCase(),
         phone: phone ? phone.trim() : null,
         message: message.trim(),
+        ip_address: clientIP,
         status: 'unread'
       })
       .select()
