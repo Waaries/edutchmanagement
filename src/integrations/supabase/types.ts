@@ -575,7 +575,29 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      admin_contract_summary: {
+        Row: {
+          completed_at: string | null
+          created_at: string | null
+          field_count: string | null
+          id: string | null
+          masked_client_email: string | null
+          masked_client_name: string | null
+          status: string | null
+          template_id: string | null
+          template_title: string | null
+          updated_at: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "filled_contracts_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "contract_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       add_admin_role: {
@@ -610,24 +632,6 @@ export type Database = {
       cleanup_rate_limit_tracking: {
         Args: Record<PropertyKey, never>
         Returns: undefined
-      }
-      get_contract_by_token: {
-        Args: { token_param: string }
-        Returns: {
-          access_token: string
-          client_email: string
-          client_name: string
-          completed_at: string
-          created_at: string
-          filled_data: Json
-          id: string
-          status: string
-          template_content: string
-          template_description: string
-          template_id: string
-          template_title: string
-          updated_at: string
-        }[]
       }
       get_contract_by_token_secure: {
         Args: { token_param: string }
