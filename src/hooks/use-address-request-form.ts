@@ -117,9 +117,30 @@ export const useAddressRequestForm = () => {
         .select();
 
       if (error) {
-        console.error("Supabase error:", error);
+        console.error("Supabase error details:", {
+          code: error.code,
+          message: error.message,
+          details: error.details,
+          hint: error.hint
+        });
         trackFormSubmission('address_request', false);
-        throw error;
+        
+        // Provide more specific error messages
+        let userMessage = "Er is een fout opgetreden bij het verzenden van uw aanvraag.";
+        if (error.code === "42501") {
+          userMessage = "Autorisatiefout. Probeer het opnieuw of neem contact met ons op.";
+        } else if (error.code === "23505") {
+          userMessage = "Deze aanvraag is al eerder verzonden.";
+        } else if (error.message?.includes("violates")) {
+          userMessage = "Er is een validatiefout opgetreden. Controleer uw gegevens en probeer het opnieuw.";
+        }
+        
+        toast({
+          title: "Fout bij verzenden",
+          description: userMessage,
+          variant: "destructive"
+        });
+        return; // Don't throw, handle gracefully
       }
 
       console.log("Successfully created address request:", data);
@@ -167,9 +188,19 @@ export const useAddressRequestForm = () => {
       }
     } catch (error) {
       console.error("Error submitting request:", error);
+      
+      // Only show generic error if we haven't already shown a specific one
+      let errorMessage = "Er is een onbekende fout opgetreden. Probeer het opnieuw.";
+      
+      if (error && typeof error === 'object' && 'message' in error) {
+        console.error("Detailed error:", error);
+        // Don't show the raw error message to users for security
+        errorMessage = "Er is een technische fout opgetreden. Neem contact met ons op als het probleem aanhoudt.";
+      }
+      
       toast({
         title: "Fout bij verzenden",
-        description: "Er is een fout opgetreden bij het verzenden van uw aanvraag. Probeer het opnieuw.",
+        description: errorMessage,
         variant: "destructive"
       });
     } finally {
