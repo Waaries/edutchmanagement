@@ -575,29 +575,7 @@ export type Database = {
       }
     }
     Views: {
-      admin_contract_summary: {
-        Row: {
-          completed_at: string | null
-          created_at: string | null
-          field_count: string | null
-          id: string | null
-          masked_client_email: string | null
-          masked_client_name: string | null
-          status: string | null
-          template_id: string | null
-          template_title: string | null
-          updated_at: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "filled_contracts_template_id_fkey"
-            columns: ["template_id"]
-            isOneToOne: false
-            referencedRelation: "contract_templates"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
+      [_ in never]: never
     }
     Functions: {
       add_admin_role: {
