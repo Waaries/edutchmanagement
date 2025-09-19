@@ -25,6 +25,7 @@ export type Database = {
           email: string
           expected_mail_volume: string
           id: string
+          ip_address: string | null
           phone: string
           preferred_address_type: string
           special_requirements: string | null
@@ -42,6 +43,7 @@ export type Database = {
           email: string
           expected_mail_volume: string
           id?: string
+          ip_address?: string | null
           phone: string
           preferred_address_type: string
           special_requirements?: string | null
@@ -59,6 +61,7 @@ export type Database = {
           email?: string
           expected_mail_volume?: string
           id?: string
+          ip_address?: string | null
           phone?: string
           preferred_address_type?: string
           special_requirements?: string | null
@@ -74,6 +77,7 @@ export type Database = {
           created_at: string
           email: string
           id: string
+          ip_address: string | null
           message: string
           name: string
           phone: string | null
@@ -85,6 +89,7 @@ export type Database = {
           created_at?: string
           email: string
           id?: string
+          ip_address?: string | null
           message: string
           name: string
           phone?: string | null
@@ -96,6 +101,7 @@ export type Database = {
           created_at?: string
           email?: string
           id?: string
+          ip_address?: string | null
           message?: string
           name?: string
           phone?: string | null
@@ -232,7 +238,7 @@ export type Database = {
           template_id: string
           token_created_at: string | null
           updated_at: string
-          user_id: string | null
+          user_id: string
         }
         Insert: {
           access_count?: number | null
@@ -251,7 +257,7 @@ export type Database = {
           template_id: string
           token_created_at?: string | null
           updated_at?: string
-          user_id?: string | null
+          user_id: string
         }
         Update: {
           access_count?: number | null
@@ -270,7 +276,7 @@ export type Database = {
           template_id?: string
           token_created_at?: string | null
           updated_at?: string
-          user_id?: string | null
+          user_id?: string
         }
         Relationships: [
           {
@@ -327,6 +333,36 @@ export type Database = {
         }
         Relationships: []
       }
+      profile_access_log: {
+        Row: {
+          accessed_profile_id: string
+          action: string
+          created_at: string | null
+          id: string
+          ip_address: string | null
+          success: boolean | null
+          user_id: string
+        }
+        Insert: {
+          accessed_profile_id: string
+          action: string
+          created_at?: string | null
+          id?: string
+          ip_address?: string | null
+          success?: boolean | null
+          user_id: string
+        }
+        Update: {
+          accessed_profile_id?: string
+          action?: string
+          created_at?: string | null
+          id?: string
+          ip_address?: string | null
+          success?: boolean | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -366,6 +402,27 @@ export type Database = {
           phone?: string | null
           updated_at?: string | null
           vat_number?: string | null
+        }
+        Relationships: []
+      }
+      rate_limit_tracking: {
+        Row: {
+          created_at: string | null
+          id: string
+          ip_address: string
+          table_name: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          ip_address: string
+          table_name: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          ip_address?: string
+          table_name?: string
         }
         Relationships: []
       }
@@ -534,6 +591,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      check_submission_rate_limit: {
+        Args: { tbl_name: string; user_ip: string }
+        Returns: boolean
+      }
       cleanup_expired_sessions: {
         Args: Record<PropertyKey, never>
         Returns: undefined
@@ -543,6 +604,10 @@ export type Database = {
         Returns: undefined
       }
       cleanup_old_access_logs: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      cleanup_rate_limit_tracking: {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
