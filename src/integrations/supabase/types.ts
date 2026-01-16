@@ -116,7 +116,7 @@ export type Database = {
           attempted_at: string
           error_reason: string | null
           id: string
-          ip_address: unknown | null
+          ip_address: unknown
           success: boolean
           user_agent: string | null
         }
@@ -125,7 +125,7 @@ export type Database = {
           attempted_at?: string
           error_reason?: string | null
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           success: boolean
           user_agent?: string | null
         }
@@ -134,7 +134,7 @@ export type Database = {
           attempted_at?: string
           error_reason?: string | null
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           success?: boolean
           user_agent?: string | null
         }
@@ -297,7 +297,7 @@ export type Database = {
           error_message: string | null
           event_type: string
           id: string
-          ip_address: unknown | null
+          ip_address: unknown
           session_id: string | null
           success: boolean
           user_agent: string | null
@@ -311,7 +311,7 @@ export type Database = {
           error_message?: string | null
           event_type: string
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           session_id?: string | null
           success?: boolean
           user_agent?: string | null
@@ -325,7 +325,7 @@ export type Database = {
           error_message?: string | null
           event_type?: string
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           session_id?: string | null
           success?: boolean
           user_agent?: string | null
@@ -468,7 +468,7 @@ export type Database = {
           created_at: string
           error_message: string | null
           id: string
-          ip_address: unknown | null
+          ip_address: unknown
           metadata: Json | null
           resource_id: string | null
           resource_type: string
@@ -481,7 +481,7 @@ export type Database = {
           created_at?: string
           error_message?: string | null
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           metadata?: Json | null
           resource_id?: string | null
           resource_type: string
@@ -494,7 +494,7 @@ export type Database = {
           created_at?: string
           error_message?: string | null
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           metadata?: Json | null
           resource_id?: string | null
           resource_type?: string
@@ -533,7 +533,7 @@ export type Database = {
           encrypted_ip_hash: string | null
           expires_at: string | null
           id: string
-          ip_address: unknown | null
+          ip_address: unknown
           is_active: boolean
           last_activity: string
           session_metadata: Json | null
@@ -548,7 +548,7 @@ export type Database = {
           encrypted_ip_hash?: string | null
           expires_at?: string | null
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           is_active?: boolean
           last_activity?: string
           session_metadata?: Json | null
@@ -563,7 +563,7 @@ export type Database = {
           encrypted_ip_hash?: string | null
           expires_at?: string | null
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           is_active?: boolean
           last_activity?: string
           session_metadata?: Json | null
@@ -578,10 +578,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      add_admin_role: {
-        Args: { user_id_param: string }
-        Returns: undefined
-      }
+      add_admin_role: { Args: { user_id_param: string }; Returns: undefined }
       check_rate_limit: {
         Args: {
           action_name: string
@@ -595,36 +592,15 @@ export type Database = {
         Args: { tbl_name: string; user_ip: string }
         Returns: boolean
       }
-      check_suspicious_activity: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      cleanup_expired_sessions: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      cleanup_expired_sessions_secure: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      cleanup_old_access_logs: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      cleanup_rate_limit_tracking: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      cleanup_security_logs: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      detect_session_anomalies: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
+      check_suspicious_activity: { Args: never; Returns: undefined }
+      cleanup_expired_sessions: { Args: never; Returns: undefined }
+      cleanup_expired_sessions_secure: { Args: never; Returns: undefined }
+      cleanup_old_access_logs: { Args: never; Returns: undefined }
+      cleanup_rate_limit_tracking: { Args: never; Returns: undefined }
+      cleanup_security_logs: { Args: never; Returns: undefined }
+      detect_session_anomalies: { Args: never; Returns: undefined }
       detect_suspicious_activity: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           description: string
           detection_time: string
@@ -650,7 +626,7 @@ export type Database = {
         }[]
       }
       get_users: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           created_at: string
           email: string
@@ -659,25 +635,16 @@ export type Database = {
           raw_app_meta_data: Json
         }[]
       }
-      has_role: {
-        Args:
-          | { requested_role: Database["public"]["Enums"]["user_role"] }
-          | { role_name: string }
-          | { role_name: string; user_id: number }
-        Returns: boolean
-      }
-      hash_ip_address: {
-        Args: { ip_address: unknown }
-        Returns: string
-      }
-      is_admin: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      is_admin_user: {
-        Args: { user_id_param: string }
-        Returns: boolean
-      }
+      has_role:
+        | {
+            Args: { requested_role: Database["public"]["Enums"]["user_role"] }
+            Returns: boolean
+          }
+        | { Args: { role_name: string }; Returns: boolean }
+        | { Args: { role_name: string; user_id: number }; Returns: boolean }
+      hash_ip_address: { Args: { ip_address: unknown }; Returns: string }
+      is_admin: { Args: never; Returns: boolean }
+      is_admin_user: { Args: { user_id_param: string }; Returns: boolean }
       log_auth_event: {
         Args: {
           p_email: string
@@ -710,21 +677,17 @@ export type Database = {
         Returns: string
       }
       pg_get_tabledef: {
-        Args: { _verbose: boolean; in_schema: string; in_table: string }
+        Args: {
+          _verbose: boolean
+          arr?: string[]
+          in_schema: string
+          in_table: string
+        }
         Returns: string
       }
-      remove_admin_role: {
-        Args: { user_id_param: string }
-        Returns: undefined
-      }
-      security_maintenance: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      security_maintenance_hardened: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
+      remove_admin_role: { Args: { user_id_param: string }; Returns: undefined }
+      security_maintenance: { Args: never; Returns: undefined }
+      security_maintenance_hardened: { Args: never; Returns: undefined }
       update_contract_by_token: {
         Args: {
           filled_data_param: Json
