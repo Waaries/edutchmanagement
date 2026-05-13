@@ -584,7 +584,7 @@ export type Database = {
           action_name: string
           client_ip: unknown
           max_attempts?: number
-          time_window?: unknown
+          time_window?: string
         }
         Returns: boolean
       }
