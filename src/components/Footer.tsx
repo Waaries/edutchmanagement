@@ -6,6 +6,7 @@ import FooterColumn from "./footer/FooterColumn";
 import FooterLinkList from "./footer/FooterLinkList";
 import ContactInfo from "./footer/ContactInfo";
 import FooterBottom from "./footer/FooterBottom";
+import logoLight from "@/assets/logo-light.png";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -38,9 +39,9 @@ const Footer = () => {
           <div className="md:col-span-6 lg:col-span-5 flex flex-col">
             <div className="mb-6">
               <img 
-                src="/lovable-uploads/39d6c2c8-b4a1-4f97-86fb-dd3a6e9fcdbd.png" 
+                src={logoLight} 
                 alt="eDutch Management Logo" 
-                className="h-16 w-auto object-contain invert"
+                className="h-20 w-auto object-contain"
               />
             </div>
             <p className="text-white/80 text-base leading-relaxed mb-6 max-w-md">

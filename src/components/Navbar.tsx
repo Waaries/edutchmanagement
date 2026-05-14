@@ -5,6 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import LanguageSelector from "@/components/LanguageSelector";
+import logoLight from "@/assets/logo-light.png";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -80,10 +81,9 @@ const Navbar = () => {
             onClick={handleLogoClick}
           >
             <img
-              src="/lovable-uploads/39d6c2c8-b4a1-4f97-86fb-dd3a6e9fcdbd.png"
+              src={logoLight}
               alt="eDutch Management Logo"
-              className="h-16 md:h-20 w-auto object-contain drop-shadow-[0_0_20px_rgba(96,165,250,0.5)]"
-              style={{ filter: "brightness(1.6) contrast(1.15) drop-shadow(0 0 14px rgba(147,197,253,0.55))" }}
+              className="h-16 md:h-20 w-auto object-contain drop-shadow-[0_0_18px_rgba(96,165,250,0.4)]"
             />
           </Link>
 
