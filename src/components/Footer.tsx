@@ -51,23 +51,23 @@ const Footer = () => {
           </div>
           
           {/* Column 2: Services and Links - Combined */}
-          <div className="md:col-span-6 lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-12">
+          <div className="md:col-span-6 lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-6">
             {/* Services Column */}
-            <div className="sm:col-span-1 md:flex md:justify-center">
+            <div className="sm:col-span-1 md:flex md:justify-start">
               <FooterColumn title={translate("footer.services")}>
                 <FooterLinkList links={serviceLinks} />
               </FooterColumn>
             </div>
-            
+
             {/* Links Column */}
-            <div className="sm:col-span-1 md:flex md:justify-center">
+            <div className="sm:col-span-1 md:flex md:justify-start">
               <FooterColumn title={translate("footer.links")}>
                 <FooterLinkList links={navLinks} />
               </FooterColumn>
             </div>
-          
+
             {/* Column 3: Contact Information */}
-            <div className="sm:col-span-1 md:flex md:justify-end">
+            <div className="sm:col-span-1 md:flex md:justify-start">
               <FooterColumn title={translate("footer.contact")}>
                 <ContactInfo />
               </FooterColumn>
