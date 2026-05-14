@@ -46,38 +46,32 @@ const Testimonials = () => {
     );
   };
   
-  const testimonials = [
-    {
-      quote: "Het huren van een bedrijfsadres via deze dienst heeft onze professionele uitstraling aanzienlijk verbeterd. Onze klanten zijn onder de indruk van ons prestigieuze adres, terwijl wij flexibel blijven werken.",
-      author: "Sophie van den Berg",
-      company: "Directeur, InnovateTech BV"
-    },
-    {
-      quote: "Als startende ondernemer was dit precies wat ik nodig had. Een betaalbaar professioneel adres zonder de kosten van een fysiek kantoor. De postafhandeling is uiterst efficiënt en betrouwbaar.",
-      author: "Thomas Bakker",
-      company: "Oprichter, WebSolutions"
-    },
-    {
-      quote: "De klantenservice is uitzonderlijk. Ze gaan verder dan verwacht om onze specifieke behoeften te vervullen. Het Premium pakket biedt alles wat we nodig hebben voor ons groeiende team.",
-      author: "Emma Visser",
-      company: "Marketing Manager, GrowBiz"
-    }
-  ];
+  const testimonials = translate("testimonials.items") as unknown as Array<{
+    quote: string;
+    author: string;
+    company: string;
+  }>;
 
   return (
     <section id="getuigenissen" className="section-padding bg-slate-50 text-slate-800 overflow-hidden" ref={sectionRef}>
       <div className="container mx-auto container-padding reveal">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-block px-3 py-1 text-sm font-medium bg-primary/10 text-primary mb-4 rounded-2xl flex items-center justify-center mx-auto">
-            <Sparkles className="h-4 w-4 mr-2" />
-            Ervaringen
+          <div className="inline-flex items-center px-3 py-1 text-xs font-bold tracking-wider uppercase bg-blue-500/10 text-blue-600 border border-blue-500/20 mb-4 rounded-full mx-auto">
+            <Sparkles className="h-3 w-3 mr-2" />
+            {translate("testimonials.title")}
           </div>
-          <h2 className="mb-6">Wat Onze <span className="text-primary">Klanten</span> Zeggen</h2>
+          <h2 className="mb-6">
+            {translate("testimonials.subtitle").split(" ").map((word, i, arr) => (
+              <span key={i} className={i === Math.floor(arr.length / 2) ? "text-blue-500" : ""}>
+                {word}{i < arr.length - 1 ? " " : ""}
+              </span>
+            ))}
+          </h2>
           <p className="text-lg text-muted-foreground">
-            Ontdek waarom ondernemers kiezen voor onze bedrijfsadresservice.
+            {translate("testimonials.description")}
           </p>
         </div>
-        
+
         <div className="relative min-h-[300px] flex items-center justify-center">
           {testimonials.map((testimonial, index) => (
             <div 
