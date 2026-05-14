@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { ArrowRight, Building, MapPin, Mail } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trackButtonClick } from "@/lib/analytics";
+import heroOffice from "@/assets/hero-office.jpg";
 
 const Hero = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -97,8 +98,16 @@ const Hero = () => {
           >
             <div className="relative h-[440px] sm:h-[480px] w-full max-w-[400px] rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-1 backdrop-blur-xl shadow-2xl">
               <div className="h-full w-full overflow-hidden rounded-[22px] bg-slate-900/40 p-8 flex flex-col justify-end relative">
-                <div className="absolute top-10 left-8 right-8 h-48 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 opacity-25 blur-2xl" />
-                <div className="absolute top-10 left-8 right-8 h-48 rounded-2xl border border-white/10 bg-white/5" />
+                <div className="absolute top-8 left-8 right-8 h-56 rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-black/40">
+                  <img
+                    src={heroOffice}
+                    alt="Premium Amsterdam business location"
+                    width={896}
+                    height={1024}
+                    className="h-full w-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/10 to-transparent" />
+                </div>
 
                 <div className="relative rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-md">
                   <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-blue-500 shadow-lg shadow-blue-500/40">
