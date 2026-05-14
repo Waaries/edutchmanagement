@@ -1,6 +1,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Sparkles, ArrowLeft, ArrowRight } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Testimonials = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
