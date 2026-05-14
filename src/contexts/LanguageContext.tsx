@@ -180,7 +180,24 @@ const translations = {
     testimonials: {
       title: "Ervaringen",
       subtitle: "Wat Onze Klanten Zeggen",
-      description: "Ontdek waarom ondernemers kiezen voor onze bedrijfsadresservice."
+      description: "Ontdek waarom ondernemers kiezen voor onze bedrijfsadresservice.",
+      items: [
+        {
+          quote: "Het huren van een bedrijfsadres via deze dienst heeft onze professionele uitstraling aanzienlijk verbeterd. Onze klanten zijn onder de indruk van ons prestigieuze adres, terwijl wij flexibel blijven werken.",
+          author: "Sophie van den Berg",
+          company: "Directeur, InnovateTech BV"
+        },
+        {
+          quote: "Als startende ondernemer was dit precies wat ik nodig had. Een betaalbaar professioneel adres zonder de kosten van een fysiek kantoor. De postafhandeling is uiterst efficiënt en betrouwbaar.",
+          author: "Thomas Bakker",
+          company: "Oprichter, WebSolutions"
+        },
+        {
+          quote: "De klantenservice is uitzonderlijk. Ze gaan verder dan verwacht om onze specifieke behoeften te vervullen. Het Premium pakket biedt alles wat we nodig hebben voor ons groeiende team.",
+          author: "Emma Visser",
+          company: "Marketing Manager, GrowBiz"
+        }
+      ]
     },
     contact: {
       title: "Contact Opnemen",
@@ -188,23 +205,52 @@ const translations = {
       description: "Neem contact met ons op voor meer informatie of om een pakket te kiezen dat bij uw bedrijf past.",
       form: {
         title: "Stuur ons een bericht",
+        description: "Vul het formulier in en we nemen binnen 24 uur contact met u op. Maximum 3 berichten per uur toegestaan.",
         name: "Naam",
         namePlace: "Uw volledige naam",
         email: "E-mail",
-        emailPlace: "uw@email.nl",
-        phone: "Telefoonnummer",
-        phonePlace: "Uw telefoonnummer",
+        emailPlace: "uw.email@example.com",
+        phone: "Telefoon",
+        phonePlace: "+31 6 12345678",
+        subject: "Onderwerp",
+        subjectPlace: "Waar gaat uw vraag over?",
         service: "Gewenst Pakket",
         servicePlaceholder: "Selecteer een pakket",
         basicService: "Basis Bedrijfsadres",
         premiumService: "Premium Bedrijfsadres",
         completeService: "Zakelijk Compleet",
         customService: "Aangepast Pakket",
-        message: "Uw Bericht",
-        messagePlaceholder: "Vertel ons wat meer over uw behoeften...",
-        sendBtn: "Verstuur Bericht",
-        success: "Bericht Verzonden!",
-        successMessage: "Bedankt voor uw bericht. We nemen zo snel mogelijk contact met u op."
+        message: "Bericht",
+        messagePlaceholder: "Beschrijf uw vraag of wens in detail...",
+        sendBtn: "Bericht Verzenden",
+        sendingBtn: "Bezig met verzenden...",
+        validationTitle: "Ontbrekende informatie",
+        validationMsg: "Vul uw naam, e-mail en bericht in.",
+        rateLimitTitle: "Te veel verzoeken",
+        rateLimitMsg: "Maximum 3 berichten per uur toegestaan. Wacht even voordat u een nieuw bericht verzendt.",
+        errorTitle: "Fout",
+        errorMsg: "Kan bericht niet verzenden. Probeer het opnieuw.",
+        unexpectedError: "Er is een onverwachte fout opgetreden. Probeer het opnieuw.",
+        success: "Bericht verzonden!",
+        successMessage: "Dank u voor uw bericht. We nemen binnen 24 uur contact met u op."
+      },
+      info: {
+        title: "Contactinformatie",
+        description: "U kunt ons ook rechtstreeks bereiken via onderstaande gegevens.",
+        address: "Ons Adres",
+        addressValue: "Reigersbos 100 P\n1107 ES Amsterdam",
+        phone: "Telefoonnummer",
+        phoneValue: "+31 (0)20 737 03 85",
+        hoursShort: "Ma-Vr: 09:00 - 17:00",
+        email: "E-mail",
+        emailValue: "info@edutchmanagement.nl",
+        responseTime: "Antwoord binnen 24 uur",
+        hoursTitle: "Openingstijden",
+        hoursMonFri: "Maandag - Vrijdag: 09:00 - 17:00",
+        hoursSat: "Zaterdag: Gesloten",
+        hoursSun: "Zondag: Gesloten",
+        quickResponse: "Snelle respons",
+        quickResponseDesc: "We reageren binnen 24 uur op uw bericht. Voor urgente zaken kunt u bellen tijdens kantooruren."
       }
     },
     auth: {
@@ -250,6 +296,9 @@ const translations = {
       services: "Diensten",
       links: "Links",
       contact: "Contact",
+      description: "Wij bieden professionele bedrijfsadressen voor ondernemers en bedrijven die hun uitstraling willen verbeteren zonder de kosten van een fysiek kantoor.",
+      aboutUs: "Over Ons",
+      pricing: "Tarieven",
       copyright: "© {year} eDutch Management. Alle rechten voorbehouden.",
       terms: "Algemene Voorwaarden",
       privacy: "Privacybeleid",
@@ -397,7 +446,24 @@ const translations = {
     testimonials: {
       title: "Experiences",
       subtitle: "What Our Customers Say",
-      description: "Discover why entrepreneurs choose our business address service."
+      description: "Discover why entrepreneurs choose our business address service.",
+      items: [
+        {
+          quote: "Renting a business address through this service has significantly improved our professional image. Our clients are impressed by our prestigious address while we keep working flexibly.",
+          author: "Sophie van den Berg",
+          company: "Director, InnovateTech BV"
+        },
+        {
+          quote: "As a starting entrepreneur this was exactly what I needed. An affordable professional address without the cost of a physical office. Mail handling is highly efficient and reliable.",
+          author: "Thomas Bakker",
+          company: "Founder, WebSolutions"
+        },
+        {
+          quote: "The customer service is exceptional. They go above and beyond to meet our specific needs. The Premium package offers everything we need for our growing team.",
+          author: "Emma Visser",
+          company: "Marketing Manager, GrowBiz"
+        }
+      ]
     },
     contact: {
       title: "Contact Us",
@@ -405,23 +471,52 @@ const translations = {
       description: "Contact us for more information or to choose a package that suits your business.",
       form: {
         title: "Send us a message",
+        description: "Fill in the form and we will contact you within 24 hours. Maximum 3 messages per hour allowed.",
         name: "Name",
         namePlace: "Your full name",
         email: "Email",
-        emailPlace: "your@email.com",
-        phone: "Phone Number",
-        phonePlace: "Your phone number",
+        emailPlace: "your.email@example.com",
+        phone: "Phone",
+        phonePlace: "+31 6 12345678",
+        subject: "Subject",
+        subjectPlace: "What is your question about?",
         service: "Desired Package",
         servicePlaceholder: "Select a package",
         basicService: "Basic Business Address",
         premiumService: "Premium Business Address",
         completeService: "Business Complete",
         customService: "Custom Package",
-        message: "Your Message",
-        messagePlaceholder: "Tell us more about your needs...",
+        message: "Message",
+        messagePlaceholder: "Describe your question or request in detail...",
         sendBtn: "Send Message",
-        success: "Message Sent!",
-        successMessage: "Thank you for your message. We will contact you as soon as possible."
+        sendingBtn: "Sending...",
+        validationTitle: "Missing information",
+        validationMsg: "Please fill in your name, email and message.",
+        rateLimitTitle: "Too many requests",
+        rateLimitMsg: "Maximum 3 messages per hour allowed. Please wait before sending another message.",
+        errorTitle: "Error",
+        errorMsg: "Could not send message. Please try again.",
+        unexpectedError: "An unexpected error occurred. Please try again.",
+        success: "Message sent!",
+        successMessage: "Thank you for your message. We will contact you within 24 hours."
+      },
+      info: {
+        title: "Contact Information",
+        description: "You can also reach us directly via the details below.",
+        address: "Our Address",
+        addressValue: "Reigersbos 100 P\n1107 ES Amsterdam",
+        phone: "Phone Number",
+        phoneValue: "+31 (0)20 737 03 85",
+        hoursShort: "Mon-Fri: 09:00 - 17:00",
+        email: "Email",
+        emailValue: "info@edutchmanagement.nl",
+        responseTime: "Response within 24 hours",
+        hoursTitle: "Opening Hours",
+        hoursMonFri: "Monday - Friday: 09:00 - 17:00",
+        hoursSat: "Saturday: Closed",
+        hoursSun: "Sunday: Closed",
+        quickResponse: "Quick response",
+        quickResponseDesc: "We respond within 24 hours to your message. For urgent matters, please call during office hours."
       }
     },
     auth: {
@@ -467,6 +562,9 @@ const translations = {
       services: "Services",
       links: "Links",
       contact: "Contact",
+      description: "We provide professional business addresses for entrepreneurs and businesses looking to enhance their image without the cost of a physical office.",
+      aboutUs: "About Us",
+      pricing: "Pricing",
       copyright: "© {year} eDutch Management. All rights reserved.",
       terms: "Terms and Conditions",
       privacy: "Privacy Policy",

@@ -76,16 +76,14 @@ const Navbar = () => {
           
           <Link 
             to="/" 
-            className="flex items-center text-2xl font-bold tracking-tight cursor-pointer"
+            className="flex items-center cursor-pointer"
             onClick={handleLogoClick}
           >
-            <div className="h-24 w-24 md:h-28 md:w-28 mx-auto flex items-center justify-center rounded-2xl">
-              <img 
-                src="/lovable-uploads/39d6c2c8-b4a1-4f97-86fb-dd3a6e9fcdbd.png" 
-                alt="eDutch Management Logo" 
-                className="h-22 md:h-26 w-auto" 
-              />
-            </div>
+            <img 
+              src="/lovable-uploads/39d6c2c8-b4a1-4f97-86fb-dd3a6e9fcdbd.png" 
+              alt="eDutch Management Logo" 
+              className="h-12 md:h-14 w-auto object-contain" 
+            />
           </Link>
 
           <nav className="hidden md:flex items-center space-x-8 flex-1 justify-end">

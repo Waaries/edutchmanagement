@@ -9,8 +9,10 @@ import { Send, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useFormTracking } from "@/hooks/use-monitoring";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const ContactForm = () => {
+  const { translate } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -133,28 +135,26 @@ const ContactForm = () => {
   return (
     <Card className="h-full flex flex-col">
       <CardHeader className="pb-4">
-        <CardTitle className="text-2xl">Stuur ons een bericht</CardTitle>
-        <CardDescription>
-          Vul het formulier in en we nemen binnen 24 uur contact met u op. Maximum 3 berichten per uur toegestaan.
-        </CardDescription>
+        <CardTitle className="text-2xl">{translate("contact.form.title")}</CardTitle>
+        <CardDescription>{translate("contact.form.description")}</CardDescription>
       </CardHeader>
       <CardContent className="flex-1">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Naam *</Label>
+              <Label htmlFor="name">{translate("contact.form.name")} *</Label>
               <Input
                 id="name"
                 name="name"
                 value={formData.name}
                 onChange={handleInputChange}
                 required
-                placeholder="Uw volledige naam"
+                placeholder={translate("contact.form.namePlace")}
                 className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email">E-mail *</Label>
+              <Label htmlFor="email">{translate("contact.form.email")} *</Label>
               <Input
                 id="email"
                 name="email"
@@ -162,40 +162,40 @@ const ContactForm = () => {
                 value={formData.email}
                 onChange={handleInputChange}
                 required
-                placeholder="uw.email@example.com"
+                placeholder={translate("contact.form.emailPlace")}
                 className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
               />
             </div>
           </div>
-          
+
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="phone">Telefoon</Label>
+              <Label htmlFor="phone">{translate("contact.form.phone")}</Label>
               <Input
                 id="phone"
                 name="phone"
                 type="tel"
                 value={formData.phone}
                 onChange={handleInputChange}
-                placeholder="+31 6 12345678"
+                placeholder={translate("contact.form.phonePlace")}
                 className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="subject">Onderwerp</Label>
+              <Label htmlFor="subject">{translate("contact.form.subject")}</Label>
               <Input
                 id="subject"
                 name="subject"
                 value={formData.subject}
                 onChange={handleInputChange}
-                placeholder="Waar gaat uw vraag over?"
+                placeholder={translate("contact.form.subjectPlace")}
                 className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
               />
             </div>
           </div>
-          
+
           <div className="space-y-2">
-            <Label htmlFor="message">Bericht *</Label>
+            <Label htmlFor="message">{translate("contact.form.message")} *</Label>
             <Textarea
               id="message"
               name="message"
@@ -203,25 +203,25 @@ const ContactForm = () => {
               onChange={handleInputChange}
               required
               rows={5}
-              placeholder="Beschrijf uw vraag of wens in detail..."
+              placeholder={translate("contact.form.messagePlaceholder")}
               className="transition-all duration-200 focus:ring-2 focus:ring-primary/20 resize-none"
             />
           </div>
-          
-          <Button 
-            type="submit" 
-            className="w-full h-12 text-lg font-medium" 
+
+          <Button
+            type="submit"
+            className="w-full h-12 text-lg font-medium"
             disabled={isSubmitting}
           >
             {isSubmitting ? (
               <>
                 <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                Verzenden...
+                {translate("contact.form.sendingBtn")}
               </>
             ) : (
               <>
                 <Send className="mr-2 h-5 w-5" />
-                Bericht Verzenden
+                {translate("contact.form.sendBtn")}
               </>
             )}
           </Button>
