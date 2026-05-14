@@ -158,12 +158,12 @@ export function AppSidebar() {
 
         {/* Footer with Sign Out */}
         {user && (
-          <SidebarFooter className="p-4 border-t">
+          <SidebarFooter className="p-4 border-t border-white/10">
             <Button
               variant="ghost"
               size="sm"
               onClick={handleSignOut}
-              className="w-full justify-start"
+              className="w-full justify-start text-slate-300 hover:text-white hover:bg-white/5"
             >
               <LogOut className="h-4 w-4" />
               {!isCollapsed && <span className="ml-2">Uitloggen</span>}
