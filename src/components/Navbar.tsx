@@ -82,7 +82,8 @@ const Navbar = () => {
             <img
               src="/lovable-uploads/39d6c2c8-b4a1-4f97-86fb-dd3a6e9fcdbd.png"
               alt="eDutch Management Logo"
-              className="h-16 md:h-20 w-auto object-contain drop-shadow-[0_0_18px_rgba(96,165,250,0.45)] brightness-110"
+              className="h-16 md:h-20 w-auto object-contain drop-shadow-[0_0_20px_rgba(96,165,250,0.5)]"
+              style={{ filter: "brightness(1.6) contrast(1.15) drop-shadow(0 0 14px rgba(147,197,253,0.55))" }}
             />
           </Link>
 
