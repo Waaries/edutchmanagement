@@ -142,7 +142,7 @@ const SecurityAuditTab: React.FC = () => {
       case 'PASS': case 'SECURE': return 'bg-green-100 text-green-800';
       case 'WARNING': case 'MOSTLY_SECURE': return 'bg-yellow-100 text-yellow-800';
       case 'FAIL': case 'VULNERABLE': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      default: return 'bg-white/10 text-slate-200';
     }
   };
 
@@ -151,7 +151,7 @@ const SecurityAuditTab: React.FC = () => {
       case 'PASS': case 'SECURE': return <CheckCircle className="h-4 w-4 text-green-600" />;
       case 'WARNING': case 'MOSTLY_SECURE': return <AlertTriangle className="h-4 w-4 text-yellow-600" />;
       case 'FAIL': case 'VULNERABLE': return <XCircle className="h-4 w-4 text-red-600" />;
-      default: return <Shield className="h-4 w-4 text-gray-600" />;
+      default: return <Shield className="h-4 w-4 text-slate-400" />;
     }
   };
 

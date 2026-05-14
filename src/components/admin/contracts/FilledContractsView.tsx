@@ -136,7 +136,7 @@ const FilledContractsView = () => {
       case 'pending': return 'bg-yellow-500';
       case 'signed': return 'bg-blue-500';
       case 'cancelled': return 'bg-red-500';
-      default: return 'bg-gray-500';
+      default: return 'bg-white/50';
     }
   };
 

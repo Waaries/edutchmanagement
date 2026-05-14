@@ -48,7 +48,7 @@ const UserRow: React.FC<UserRowProps> = ({ user, onStatusChange, onDeleteClick }
           </div>
         ) : (
           <div className="flex items-center">
-            <X className="h-5 w-5 text-gray-400 mr-1" />
+            <X className="h-5 w-5 text-slate-500 mr-1" />
             <span>Nee</span>
           </div>
         )}

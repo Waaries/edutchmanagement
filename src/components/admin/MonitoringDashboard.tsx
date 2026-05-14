@@ -111,7 +111,7 @@ const MonitoringDashboard: React.FC = () => {
       case 'healthy': return 'text-green-500';
       case 'warning': return 'text-yellow-500';
       case 'error': return 'text-red-500';
-      default: return 'text-gray-500';
+      default: return 'text-slate-400';
     }
   };
 
@@ -171,7 +171,7 @@ const MonitoringDashboard: React.FC = () => {
       case 'healthy': return 'bg-green-500';
       case 'degraded': return 'bg-yellow-500';
       case 'error': return 'bg-red-500';
-      default: return 'bg-gray-500';
+      default: return 'bg-white/50';
     }
   };
 
@@ -180,7 +180,7 @@ const MonitoringDashboard: React.FC = () => {
       case 'subscribed': return 'text-green-600';
       case 'connecting': return 'text-yellow-600';
       case 'closed': return 'text-red-600';
-      default: return 'text-gray-600';
+      default: return 'text-slate-400';
     }
   };
 
@@ -321,7 +321,7 @@ const MonitoringDashboard: React.FC = () => {
         <Card className="flex flex-col h-full">
           <CardHeader className="flex flex-row items-center justify-between items-start space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Systeem Gezondheid</CardTitle>
-            <Activity className={`h-4 w-4 flex-shrink-0 ${systemHealth === 'healthy' ? 'text-green-500' : systemHealth === 'warning' ? 'text-yellow-500' : systemHealth === 'error' ? 'text-red-500' : 'text-gray-500'}`} />
+            <Activity className={`h-4 w-4 flex-shrink-0 ${systemHealth === 'healthy' ? 'text-green-500' : systemHealth === 'warning' ? 'text-yellow-500' : systemHealth === 'error' ? 'text-red-500' : 'text-slate-400'}`} />
           </CardHeader>
           <CardContent className="flex-1 flex flex-col justify-between">
             <div className="text-xl font-bold">
@@ -434,7 +434,7 @@ const MonitoringDashboard: React.FC = () => {
                     {error.stack && (
                       <details className="mt-2">
                         <summary className="text-xs cursor-pointer">Stack Trace</summary>
-                        <pre className="text-xs bg-gray-100 p-2 rounded mt-1 overflow-x-auto">
+                        <pre className="text-xs bg-white/10 p-2 rounded mt-1 overflow-x-auto">
                           {error.stack}
                         </pre>
                       </details>
@@ -555,7 +555,7 @@ const MonitoringDashboard: React.FC = () => {
                   </div>
                   <div>
                     <h4 className="font-medium mb-2">Systeeminformatie</h4>
-                    <div className="bg-gray-50 rounded-lg p-3">
+                    <div className="bg-white/5 rounded-lg p-3">
                       <pre className="text-sm">
                         {JSON.stringify(healthStatus.system, null, 2)}
                       </pre>

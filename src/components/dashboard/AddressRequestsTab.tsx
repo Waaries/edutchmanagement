@@ -130,7 +130,7 @@ const AddressRequestsTab = () => {
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-2xl font-bold">Mijn Aanvragen</h2>
-          <p className="text-gray-600">Overzicht van uw bedrijfsadres aanvragen</p>
+          <p className="text-slate-400">Overzicht van uw bedrijfsadres aanvragen</p>
         </div>
         <Button onClick={() => navigate("/aanvragen")}>
           <Plus className="h-4 w-4 mr-2" />
@@ -141,9 +141,9 @@ const AddressRequestsTab = () => {
       {requests.length === 0 ? (
         <Card>
           <CardContent className="py-8 text-center">
-            <Building2 className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">Geen aanvragen gevonden</h3>
-            <p className="text-gray-600 mb-4">
+            <Building2 className="h-12 w-12 text-slate-500 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-white mb-2">Geen aanvragen gevonden</h3>
+            <p className="text-slate-400 mb-4">
               U heeft nog geen bedrijfsadres aanvragen ingediend.
             </p>
             <Button onClick={() => navigate("/aanvragen")}>
@@ -204,19 +204,19 @@ const AddressRequestsTab = () => {
               
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                  <div className="flex items-center gap-2 text-sm text-slate-400">
                     <User className="h-4 w-4" />
                     <span>{request.contact_person}</span>
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                  <div className="flex items-center gap-2 text-sm text-slate-400">
                     <Mail className="h-4 w-4" />
                     <span>{request.email}</span>
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                  <div className="flex items-center gap-2 text-sm text-slate-400">
                     <Phone className="h-4 w-4" />
                     <span>{request.phone}</span>
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                  <div className="flex items-center gap-2 text-sm text-slate-400">
                     <Calendar className="h-4 w-4" />
                     <span>{new Date(request.created_at).toLocaleDateString('nl-NL')}</span>
                   </div>
@@ -243,7 +243,7 @@ const AddressRequestsTab = () => {
                   {request.special_requirements && (
                     <div className="text-sm">
                       <span className="font-medium">Bijzondere wensen:</span>
-                      <p className="text-gray-600 mt-1">{request.special_requirements}</p>
+                      <p className="text-slate-400 mt-1">{request.special_requirements}</p>
                     </div>
                   )}
 
@@ -255,7 +255,7 @@ const AddressRequestsTab = () => {
                   )}
                 </div>
 
-                <div className="flex items-center gap-2 text-xs text-gray-500 mt-4 pt-4 border-t">
+                <div className="flex items-center gap-2 text-xs text-slate-400 mt-4 pt-4 border-t">
                   <Clock className="h-3 w-3" />
                   <span>
                     Laatst bijgewerkt: {new Date(request.updated_at).toLocaleDateString('nl-NL')} om {new Date(request.updated_at).toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' })}

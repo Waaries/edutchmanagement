@@ -100,7 +100,7 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ onTabChange }) => {
               ))}
             </>
           ) : (
-            <div className="text-center py-4 text-gray-500">
+            <div className="text-center py-4 text-slate-400">
               <p className="text-sm">Geen nieuwe notificaties</p>
             </div>
           )}

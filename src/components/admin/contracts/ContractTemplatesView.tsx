@@ -191,9 +191,9 @@ const ContractTemplatesView: React.FC<ContractTemplatesViewProps> = ({
     switch (status) {
       case 'active': return 'bg-green-500';
       case 'draft': return 'bg-yellow-500';
-      case 'inactive': return 'bg-gray-500';
+      case 'inactive': return 'bg-white/50';
       case 'archived': return 'bg-red-500';
-      default: return 'bg-gray-500';
+      default: return 'bg-white/50';
     }
   };
 

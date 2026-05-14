@@ -69,7 +69,7 @@ const SearchAndFilters = ({ filters, onFiltersChange, totalCount, filteredCount 
         
         <CardContent className="space-y-4">
           <div className="relative">
-            <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+            <Search className="absolute left-3 top-3 h-4 w-4 text-slate-500" />
             <Input
               placeholder="Zoek op bedrijfsnaam, contactpersoon, email..."
               value={filters.searchTerm}
@@ -147,7 +147,7 @@ const SearchAndFilters = ({ filters, onFiltersChange, totalCount, filteredCount 
             </div>
           )}
 
-          <div className="flex items-center justify-between text-sm text-gray-600">
+          <div className="flex items-center justify-between text-sm text-slate-400">
             <span>
               {filteredCount} van {totalCount} aanvragen
               {activeFiltersCount > 0 && " (gefilterd)"}

@@ -223,7 +223,7 @@ const FilledContractViewer: React.FC<FilledContractViewerProps> = ({
               <span className={`ml-1 px-2 py-1 rounded text-xs ${
                 contract.status === 'completed' ? 'bg-green-100 text-green-800' :
                 contract.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                'bg-gray-100 text-gray-800'
+                'bg-white/10 text-slate-200'
               }`}>
                 {contract.status}
               </span>
