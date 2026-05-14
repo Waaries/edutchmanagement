@@ -2,9 +2,11 @@
 import { AuthError } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 
 export function useAuthMethods() {
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const cleanAuthState = () => {
     console.log('Cleaning auth state...');
