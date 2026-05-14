@@ -35,10 +35,10 @@ const Contact = () => {
       <div className="container mx-auto px-4 reveal">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-4xl font-bold mb-6 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent animate-fade-in">
-            Klaar Om Uw Bedrijfsadres Te Upgraden?
+            {translate("contact.subtitle")}
           </h2>
           <p className="text-lg text-muted-foreground animate-fade-in animation-delay-200">
-            {translate("contact.description") || "Neem contact met ons op voor een persoonlijk advies over uw bedrijfsadres."}
+            {translate("contact.description")}
           </p>
         </div>
         
