@@ -136,7 +136,7 @@ const ContactForm = () => {
   const labelCls = "text-slate-300";
 
   return (
-    <Card className="h-full flex flex-col bg-gradient-to-br from-white/[0.07] to-white/[0.02] border-white/10 backdrop-blur-sm">
+    <Card className="h-full flex flex-col bg-slate-900/60 bg-gradient-to-br from-white/[0.07] to-white/[0.02] border-white/10 backdrop-blur-sm shadow-2xl shadow-black/30">
       <CardHeader className="pb-4">
         <CardTitle className="text-2xl text-white">{translate("contact.form.title")}</CardTitle>
         <CardDescription className="text-slate-400">{translate("contact.form.description")}</CardDescription>
