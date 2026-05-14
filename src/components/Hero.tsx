@@ -61,7 +61,7 @@ const Hero = () => {
             </div>
             <h1 className="mb-6 text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight text-white">
               {titleParts[0]}
-              <span className="text-blue-500">professionele</span>
+              {highlightWord && <span className="text-blue-500">{highlightWord}</span>}
               {titleParts[1]}
             </h1>
             <p className="mb-6 max-w-xl text-lg leading-relaxed text-slate-300">
