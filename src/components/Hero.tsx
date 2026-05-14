@@ -36,9 +36,9 @@ const Hero = () => {
     <section
       id="home"
       ref={heroRef}
-      className="relative pt-28 pb-12 px-4 lg:px-8 bg-slate-50 overflow-hidden"
+      className="relative pt-28 pb-12 px-0 bg-slate-950 overflow-hidden"
     >
-      <div className="relative w-full max-w-7xl mx-auto rounded-3xl bg-slate-950 shadow-2xl overflow-hidden">
+      <div className="relative w-full max-w-7xl mx-auto bg-slate-950 overflow-hidden">
         {/* Decorative glows */}
         <div
           className="absolute -top-24 -right-24 h-96 w-96 rounded-full bg-blue-600/20 blur-3xl pointer-events-none"

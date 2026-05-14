@@ -65,24 +65,24 @@ const Navbar = () => {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        isScrolled 
-          ? "bg-white/90 backdrop-blur-md shadow-lg py-2" 
+        isScrolled
+          ? "bg-slate-950/85 backdrop-blur-xl border-b border-white/10 shadow-2xl shadow-black/20 py-2"
           : "bg-transparent py-4"
       }`}
     >
       <div className="container-full container-padding">
         <div className="flex items-center justify-between">
-          <div className="flex-1 flex justify-start max-w-[100px]"></div> {/* Reduced space on the left */}
-          
-          <Link 
-            to="/" 
+          <div className="flex-1 flex justify-start max-w-[100px]"></div>
+
+          <Link
+            to="/"
             className="flex items-center cursor-pointer"
             onClick={handleLogoClick}
           >
-            <img 
-              src="/lovable-uploads/39d6c2c8-b4a1-4f97-86fb-dd3a6e9fcdbd.png" 
-              alt="eDutch Management Logo" 
-              className="h-12 md:h-14 w-auto object-contain" 
+            <img
+              src="/lovable-uploads/39d6c2c8-b4a1-4f97-86fb-dd3a6e9fcdbd.png"
+              alt="eDutch Management Logo"
+              className="h-12 md:h-14 w-auto object-contain"
             />
           </Link>
 
@@ -91,7 +91,7 @@ const Navbar = () => {
               <Link
                 key={item.key}
                 to={isHomePage ? `#${item.id}` : `/#${item.id}`}
-                className="text-slate-700 hover:text-primary transition-colors font-bold font-poppins border-animate"
+                className="text-slate-200 hover:text-blue-400 transition-colors font-semibold font-poppins"
                 onClick={(e) => handleNavClick(e, item.id)}
               >
                 {item.label}
@@ -99,9 +99,9 @@ const Navbar = () => {
             ))}
 
             {user && (
-              <Link 
+              <Link
                 to="/dashboard"
-                className="text-slate-700 hover:text-primary transition-colors font-bold font-poppins border-animate flex items-center gap-1"
+                className="text-slate-200 hover:text-blue-400 transition-colors font-semibold font-poppins flex items-center gap-1"
               >
                 <LayoutDashboard className="h-4 w-4" />
                 <span>Dashboard</span>
@@ -109,19 +109,19 @@ const Navbar = () => {
             )}
 
             <LanguageSelector />
-            
+
             {user ? (
-              <Button 
+              <Button
                 onClick={handleLogout}
                 variant="outline"
-                className="flex items-center gap-2"
+                className="flex items-center gap-2 bg-white/5 border-white/15 text-white hover:bg-white/10 hover:border-white/25"
               >
                 <LogOut className="h-4 w-4" />
                 <span>{translate("nav.logout")}</span>
               </Button>
             ) : (
               <Link to="/auth">
-                <Button className="flex items-center gap-2">
+                <Button className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-400 hover:to-indigo-500 text-white shadow-lg shadow-blue-500/30">
                   <LogIn className="h-4 w-4" />
                   <span>{translate("nav.login")}</span>
                 </Button>
@@ -131,8 +131,8 @@ const Navbar = () => {
 
           <div className="md:hidden flex items-center gap-2">
             <LanguageSelector />
-            <button 
-              className="text-slate-800 bg-slate-100 p-2 rounded-xl"
+            <button
+              className="text-white bg-white/10 border border-white/15 p-2 rounded-xl backdrop-blur-sm"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -143,43 +143,43 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden bg-white absolute top-full left-0 right-0 shadow-2xl animate-fade-in">
+        <div className="md:hidden bg-slate-950/95 backdrop-blur-xl border-b border-white/10 absolute top-full left-0 right-0 shadow-2xl animate-fade-in">
           <div className="container-full container-padding py-5">
             <div className="flex flex-col space-y-4">
               {menuItems.map((item) => (
                 <Link
                   key={item.key}
                   to={isHomePage ? `#${item.id}` : `/#${item.id}`}
-                  className="text-slate-700 hover:text-primary transition-colors py-2 font-bold font-poppins flex items-center"
+                  className="text-slate-200 hover:text-blue-400 transition-colors py-2 font-semibold font-poppins flex items-center"
                   onClick={(e) => handleNavClick(e, item.id)}
                 >
                   {item.label}
                 </Link>
               ))}
-              
+
               {user && (
-                <Link 
+                <Link
                   to="/dashboard"
-                  className="text-slate-700 hover:text-primary transition-colors py-2 font-bold font-poppins flex items-center gap-2"
+                  className="text-slate-200 hover:text-blue-400 transition-colors py-2 font-semibold font-poppins flex items-center gap-2"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <LayoutDashboard className="h-4 w-4" />
                   <span>Dashboard</span>
                 </Link>
               )}
-              
+
               {user ? (
-                <Button 
+                <Button
                   onClick={handleLogout}
                   variant="outline"
-                  className="w-full flex items-center justify-center gap-2 mt-4"
+                  className="w-full flex items-center justify-center gap-2 mt-4 bg-white/5 border-white/15 text-white hover:bg-white/10"
                 >
                   <LogOut className="h-4 w-4" />
                   <span>{translate("nav.logout")}</span>
                 </Button>
               ) : (
                 <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
-                  <Button className="w-full flex items-center justify-center gap-2 mt-4">
+                  <Button className="w-full flex items-center justify-center gap-2 mt-4 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-400 hover:to-indigo-500 text-white shadow-lg shadow-blue-500/30">
                     <LogIn className="h-4 w-4" />
                     <span>{translate("nav.login")}</span>
                   </Button>

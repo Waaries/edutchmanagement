@@ -8,8 +8,8 @@ const ContactInfo = () => {
   return (
     <ul className="space-y-3">
       <li className="flex items-start group hover:bg-white/5 p-1 rounded-lg transition-all">
-        <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-4 flex-shrink-0 group-hover:bg-primary/20 transition-colors">
-          <MapPin className="h-5 w-5 text-primary" />
+        <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-4 flex-shrink-0 group-hover:bg-blue-500/20 transition-colors">
+          <MapPin className="h-5 w-5 text-blue-400" />
         </div>
         <div className="text-left">
           <h4 className="font-medium text-base mb-0.5">{translate("contact.info.address")}</h4>
@@ -22,32 +22,32 @@ const ContactInfo = () => {
       </li>
 
       <li className="flex items-center group hover:bg-white/5 p-1 rounded-lg transition-all">
-        <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-4 flex-shrink-0 group-hover:bg-primary/20 transition-colors">
-          <Phone className="h-5 w-5 text-primary" />
+        <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-4 flex-shrink-0 group-hover:bg-blue-500/20 transition-colors">
+          <Phone className="h-5 w-5 text-blue-400" />
         </div>
         <div className="text-left">
           <h4 className="font-medium text-base mb-0.5">{translate("contact.info.phone")}</h4>
-          <a href="tel:+31207370385" className="text-slate-300 hover:text-primary transition-colors text-base">
+          <a href="tel:+31207370385" className="text-slate-300 hover:text-blue-400 transition-colors text-base">
             {translate("contact.info.phoneValue")}
           </a>
         </div>
       </li>
 
       <li className="flex items-start group hover:bg-white/5 p-1 rounded-lg transition-all">
-        <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-4 flex-shrink-0 group-hover:bg-primary/20 transition-colors">
-          <Mail className="h-5 w-5 text-primary" />
+        <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-4 flex-shrink-0 group-hover:bg-blue-500/20 transition-colors">
+          <Mail className="h-5 w-5 text-blue-400" />
         </div>
         <div className="text-left">
           <h4 className="font-medium text-base mb-0.5">{translate("contact.info.email")}</h4>
-          <a href="mailto:info@edutchmanagement.nl" className="text-slate-300 hover:text-primary transition-colors text-base">
+          <a href="mailto:info@edutchmanagement.nl" className="text-slate-300 hover:text-blue-400 transition-colors text-base">
             {translate("contact.info.emailValue")}
           </a>
         </div>
       </li>
 
       <li className="flex items-center group hover:bg-white/5 p-1 rounded-lg transition-all">
-        <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-4 flex-shrink-0 group-hover:bg-primary/20 transition-colors">
-          <Clock className="h-5 w-5 text-primary" />
+        <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mr-4 flex-shrink-0 group-hover:bg-blue-500/20 transition-colors">
+          <Clock className="h-5 w-5 text-blue-400" />
         </div>
         <div className="text-left">
           <h4 className="font-medium text-base mb-0.5">{translate("contact.info.hoursTitle")}</h4>
