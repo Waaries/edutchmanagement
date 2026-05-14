@@ -116,7 +116,7 @@ const AppointmentsTab = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* Mail list column */}
               <div className="md:col-span-1">
-                <div className="bg-slate-50 rounded-md p-4 h-[400px] overflow-y-auto">
+                <div className="bg-white/5 border border-white/10 rounded-md p-4 h-[400px] overflow-y-auto">
                   <h3 className="font-medium mb-4">Uw ontvangen post ({mailItems.length})</h3>
                   <div className="space-y-2">
                     {mailItems.map(mail => (
@@ -125,7 +125,7 @@ const AppointmentsTab = () => {
                         className={`p-3 border rounded-lg cursor-pointer transition-colors ${
                           selectedMail?.id === mail.id 
                             ? 'bg-primary/10 border-primary/20' 
-                            : 'bg-white hover:bg-slate-100'
+                            : 'bg-white/5 hover:bg-white/10'
                         } ${mail.status === 'unread' ? 'border-l-4 border-l-blue-500' : ''}`}
                         onClick={() => handleViewMail(mail)}
                       >
@@ -134,7 +134,7 @@ const AppointmentsTab = () => {
                             <h4 className={`font-medium ${mail.status === 'unread' ? 'font-bold' : ''}`}>
                               {mail.title}
                             </h4>
-                            <p className="text-sm text-slate-500">
+                            <p className="text-sm text-slate-400">
                               {mail.sender} · {formatDutchDate(mail.receivedDate)}
                             </p>
                           </div>
@@ -150,7 +150,7 @@ const AppointmentsTab = () => {
 
               {/* Mail content column */}
               <div className="md:col-span-2">
-                <div className="bg-slate-50 rounded-md p-6 h-[400px] overflow-y-auto">
+                <div className="bg-white/5 border border-white/10 rounded-md p-6 h-[400px] overflow-y-auto">
                   {selectedMail ? (
                     <div>
                       <div className="flex justify-between items-start mb-4">
@@ -166,7 +166,7 @@ const AppointmentsTab = () => {
                         </Button>
                       </div>
                       
-                      <div className="mb-6 text-sm text-slate-500">
+                      <div className="mb-6 text-sm text-slate-400">
                         <p><strong>Van:</strong> {selectedMail.sender}</p>
                         <p><strong>Ontvangen op:</strong> {formatDutchDate(selectedMail.receivedDate)}</p>
                         <p>
@@ -197,9 +197,9 @@ const AppointmentsTab = () => {
                     </div>
                   ) : (
                     <div className="h-full flex flex-col items-center justify-center text-center">
-                      <Mail className="h-12 w-12 text-slate-300 mb-4" />
+                      <Mail className="h-12 w-12 text-slate-500 mb-4" />
                       <h3 className="text-lg font-medium mb-2">Geen post geselecteerd</h3>
-                      <p className="text-slate-500 max-w-md">
+                      <p className="text-slate-400 max-w-md">
                         Selecteer een item uit de lijst om de inhoud te bekijken
                       </p>
                     </div>
@@ -209,9 +209,9 @@ const AppointmentsTab = () => {
             </div>
           ) : (
             <div className="text-center py-12">
-              <Mail className="h-12 w-12 text-slate-300 mx-auto mb-4" />
+              <Mail className="h-12 w-12 text-slate-500 mx-auto mb-4" />
               <h3 className="text-lg font-medium mb-2">Geen post gevonden</h3>
-              <p className="text-slate-500 max-w-md mx-auto mb-6">
+              <p className="text-slate-400 max-w-md mx-auto mb-6">
                 U heeft momenteel geen ontvangen post in het systeem geregistreerd.
               </p>
               <Button onClick={handleRegisterNewMail}>
