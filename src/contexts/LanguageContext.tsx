@@ -180,7 +180,24 @@ const translations = {
     testimonials: {
       title: "Ervaringen",
       subtitle: "Wat Onze Klanten Zeggen",
-      description: "Ontdek waarom ondernemers kiezen voor onze bedrijfsadresservice."
+      description: "Ontdek waarom ondernemers kiezen voor onze bedrijfsadresservice.",
+      items: [
+        {
+          quote: "Het huren van een bedrijfsadres via deze dienst heeft onze professionele uitstraling aanzienlijk verbeterd. Onze klanten zijn onder de indruk van ons prestigieuze adres, terwijl wij flexibel blijven werken.",
+          author: "Sophie van den Berg",
+          company: "Directeur, InnovateTech BV"
+        },
+        {
+          quote: "Als startende ondernemer was dit precies wat ik nodig had. Een betaalbaar professioneel adres zonder de kosten van een fysiek kantoor. De postafhandeling is uiterst efficiënt en betrouwbaar.",
+          author: "Thomas Bakker",
+          company: "Oprichter, WebSolutions"
+        },
+        {
+          quote: "De klantenservice is uitzonderlijk. Ze gaan verder dan verwacht om onze specifieke behoeften te vervullen. Het Premium pakket biedt alles wat we nodig hebben voor ons groeiende team.",
+          author: "Emma Visser",
+          company: "Marketing Manager, GrowBiz"
+        }
+      ]
     },
     contact: {
       title: "Contact Opnemen",
@@ -188,23 +205,52 @@ const translations = {
       description: "Neem contact met ons op voor meer informatie of om een pakket te kiezen dat bij uw bedrijf past.",
       form: {
         title: "Stuur ons een bericht",
+        description: "Vul het formulier in en we nemen binnen 24 uur contact met u op. Maximum 3 berichten per uur toegestaan.",
         name: "Naam",
         namePlace: "Uw volledige naam",
         email: "E-mail",
-        emailPlace: "uw@email.nl",
-        phone: "Telefoonnummer",
-        phonePlace: "Uw telefoonnummer",
+        emailPlace: "uw.email@example.com",
+        phone: "Telefoon",
+        phonePlace: "+31 6 12345678",
+        subject: "Onderwerp",
+        subjectPlace: "Waar gaat uw vraag over?",
         service: "Gewenst Pakket",
         servicePlaceholder: "Selecteer een pakket",
         basicService: "Basis Bedrijfsadres",
         premiumService: "Premium Bedrijfsadres",
         completeService: "Zakelijk Compleet",
         customService: "Aangepast Pakket",
-        message: "Uw Bericht",
-        messagePlaceholder: "Vertel ons wat meer over uw behoeften...",
-        sendBtn: "Verstuur Bericht",
-        success: "Bericht Verzonden!",
-        successMessage: "Bedankt voor uw bericht. We nemen zo snel mogelijk contact met u op."
+        message: "Bericht",
+        messagePlaceholder: "Beschrijf uw vraag of wens in detail...",
+        sendBtn: "Bericht Verzenden",
+        sendingBtn: "Bezig met verzenden...",
+        validationTitle: "Ontbrekende informatie",
+        validationMsg: "Vul uw naam, e-mail en bericht in.",
+        rateLimitTitle: "Te veel verzoeken",
+        rateLimitMsg: "Maximum 3 berichten per uur toegestaan. Wacht even voordat u een nieuw bericht verzendt.",
+        errorTitle: "Fout",
+        errorMsg: "Kan bericht niet verzenden. Probeer het opnieuw.",
+        unexpectedError: "Er is een onverwachte fout opgetreden. Probeer het opnieuw.",
+        success: "Bericht verzonden!",
+        successMessage: "Dank u voor uw bericht. We nemen binnen 24 uur contact met u op."
+      },
+      info: {
+        title: "Contactinformatie",
+        description: "U kunt ons ook rechtstreeks bereiken via onderstaande gegevens.",
+        address: "Ons Adres",
+        addressValue: "Reigersbos 100 P\n1107 ES Amsterdam",
+        phone: "Telefoonnummer",
+        phoneValue: "+31 (0)20 737 03 85",
+        hoursShort: "Ma-Vr: 09:00 - 17:00",
+        email: "E-mail",
+        emailValue: "info@edutchmanagement.nl",
+        responseTime: "Antwoord binnen 24 uur",
+        hoursTitle: "Openingstijden",
+        hoursMonFri: "Maandag - Vrijdag: 09:00 - 17:00",
+        hoursSat: "Zaterdag: Gesloten",
+        hoursSun: "Zondag: Gesloten",
+        quickResponse: "Snelle respons",
+        quickResponseDesc: "We reageren binnen 24 uur op uw bericht. Voor urgente zaken kunt u bellen tijdens kantooruren."
       }
     },
     auth: {
