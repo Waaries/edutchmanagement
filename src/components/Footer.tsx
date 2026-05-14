@@ -22,9 +22,9 @@ const Footer = () => {
   // Navigation links data
   const navLinks = [
     { text: translate("nav.home"), href: "#home" },
-    { text: "Over Ons", href: "#over-ons" },
+    { text: translate("footer.aboutUs"), href: "#over-ons" },
     { text: translate("nav.services"), href: "#diensten" },
-    { text: "Tarieven", href: "#tarieven" }
+    { text: translate("footer.pricing"), href: "#tarieven" }
   ];
 
   return (
@@ -35,16 +35,14 @@ const Footer = () => {
           {/* Column 1: Logo, Description and Social Links */}
           <div className="md:col-span-6 lg:col-span-5 flex flex-col">
             <div className="mb-6">
-              <div className="h-24 w-24 flex items-center justify-center rounded-lg">
-                <img 
-                  src="/lovable-uploads/39d6c2c8-b4a1-4f97-86fb-dd3a6e9fcdbd.png" 
-                  alt="eDutch Management Logo" 
-                  className="h-20 invert"
-                />
-              </div>
+              <img 
+                src="/lovable-uploads/39d6c2c8-b4a1-4f97-86fb-dd3a6e9fcdbd.png" 
+                alt="eDutch Management Logo" 
+                className="h-16 w-auto object-contain invert"
+              />
             </div>
             <p className="text-white/80 text-base leading-relaxed mb-6 max-w-md">
-              Wij bieden professionele bedrijfsadressen voor ondernemers en bedrijven die hun uitstraling willen verbeteren zonder de kosten van een fysiek kantoor.
+              {translate("footer.description")}
             </p>
             <SocialLinks className="pt-2" />
           </div>
