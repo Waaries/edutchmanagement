@@ -68,14 +68,14 @@ const ContactForm = () => {
         
         if (error.message?.includes('rate limit')) {
           toast({
-            title: "Te veel verzoeken",
-            description: "Maximum 3 berichten per uur toegestaan. Wacht even voordat u een nieuw bericht verzendt.",
+            title: translate("contact.form.rateLimitTitle"),
+            description: translate("contact.form.rateLimitMsg"),
             variant: "destructive",
           });
         } else {
           toast({
-            title: "Fout",
-            description: "Kan bericht niet verzenden. Probeer het opnieuw.",
+            title: translate("contact.form.errorTitle"),
+            description: translate("contact.form.errorMsg"),
             variant: "destructive",
           });
         }
@@ -88,13 +88,13 @@ const ContactForm = () => {
         
         if (data.error.includes('rate limit')) {
           toast({
-            title: "Te veel verzoeken",
-            description: "Maximum 3 berichten per uur toegestaan. Wacht even voordat u een nieuw bericht verzendt.",
+            title: translate("contact.form.rateLimitTitle"),
+            description: translate("contact.form.rateLimitMsg"),
             variant: "destructive",
           });
         } else {
           toast({
-            title: "Fout", 
+            title: translate("contact.form.errorTitle"),
             description: data.error,
             variant: "destructive",
           });
@@ -106,8 +106,8 @@ const ContactForm = () => {
       trackFormSubmit(true);
 
       toast({
-        title: "Bericht verzonden!",
-        description: "Dank u voor uw bericht. We nemen binnen 24 uur contact met u op.",
+        title: translate("contact.form.success"),
+        description: translate("contact.form.successMessage"),
       });
 
       // Reset form
@@ -123,8 +123,8 @@ const ContactForm = () => {
       console.error('Failed to submit contact form:', error);
       trackFormSubmit(false, [error.message]);
       toast({
-        title: "Fout",
-        description: "Er is een onverwachte fout opgetreden. Probeer het opnieuw.",
+        title: translate("contact.form.errorTitle"),
+        description: translate("contact.form.unexpectedError"),
         variant: "destructive",
       });
     } finally {
