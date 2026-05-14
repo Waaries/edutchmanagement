@@ -52,9 +52,9 @@ export function AppSidebar() {
   };
 
   const getNavCls = ({ isActive }: { isActive: boolean }) =>
-    isActive 
-      ? "bg-primary/10 text-primary font-medium border-r-2 border-primary" 
-      : "hover:bg-muted/50 text-muted-foreground hover:text-foreground";
+    isActive
+      ? "bg-blue-500/15 text-blue-300 font-medium border-r-2 border-blue-500"
+      : "hover:bg-white/5 text-slate-400 hover:text-white";
 
   const handleSignOut = async () => {
     try {
@@ -66,20 +66,20 @@ export function AppSidebar() {
 
   return (
     <Sidebar
-      className={isCollapsed ? "w-14" : "w-64"}
+      className={`${isCollapsed ? "w-14" : "w-64"} border-r border-white/10`}
     >
-      <div className="flex flex-col h-full">
-        <div className="p-4 border-b">
+      <div className="flex flex-col h-full bg-slate-950/80 backdrop-blur-xl">
+        <div className="p-4 border-b border-white/10">
           <div className="flex items-center gap-2">
             {!isCollapsed && (
               <div className="flex flex-col">
-                <span className="font-semibold text-sm">eDutch Management</span>
-                <span className="text-xs text-muted-foreground">
+                <span className="font-semibold text-sm text-white">eDutch Management</span>
+                <span className="text-xs text-slate-400 truncate max-w-[160px]">
                   {user?.email || 'Bezoeker'}
                 </span>
               </div>
             )}
-            <SidebarTrigger className="ml-auto" />
+            <SidebarTrigger className="ml-auto text-slate-300 hover:bg-white/10" />
           </div>
         </div>
 
