@@ -24,7 +24,13 @@ const Hero = () => {
     }
   };
 
-  const titleParts = translate("hero.title").split("professionele");
+  const rawTitle = translate("hero.title");
+  const highlightWord = rawTitle.includes("professionele")
+    ? "professionele"
+    : rawTitle.includes("professional")
+      ? "professional"
+      : null;
+  const titleParts = highlightWord ? rawTitle.split(highlightWord) : [rawTitle, ""];
 
   return (
     <section
