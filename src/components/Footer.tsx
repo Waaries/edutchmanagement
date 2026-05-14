@@ -51,7 +51,7 @@ const Footer = () => {
           </div>
           
           {/* Column 2: Services and Links - Combined */}
-          <div className="md:col-span-6 lg:col-span-7 grid grid-cols-1 sm:grid-cols-[max-content_max-content_minmax(260px,1fr)] gap-x-10 gap-y-10 lg:gap-x-12 justify-start">
+          <div className="md:col-span-6 lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-x-8 gap-y-10">
             {/* Services Column */}
             <div className="sm:col-span-1 md:flex md:justify-start">
               <FooterColumn title={translate("footer.services")}>
