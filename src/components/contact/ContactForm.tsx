@@ -39,8 +39,8 @@ const ContactForm = () => {
     if (!formData.name || !formData.email || !formData.message) {
       trackFormError('Validation error: Missing required fields');
       toast({
-        title: "Ontbrekende informatie", 
-        description: "Vul uw naam, e-mail en bericht in.",
+        title: translate("contact.form.validationTitle"),
+        description: translate("contact.form.validationMsg"),
         variant: "destructive",
       });
       return;
@@ -68,14 +68,14 @@ const ContactForm = () => {
         
         if (error.message?.includes('rate limit')) {
           toast({
-            title: "Te veel verzoeken",
-            description: "Maximum 3 berichten per uur toegestaan. Wacht even voordat u een nieuw bericht verzendt.",
+            title: translate("contact.form.rateLimitTitle"),
+            description: translate("contact.form.rateLimitMsg"),
             variant: "destructive",
           });
         } else {
           toast({
-            title: "Fout",
-            description: "Kan bericht niet verzenden. Probeer het opnieuw.",
+            title: translate("contact.form.errorTitle"),
+            description: translate("contact.form.errorMsg"),
             variant: "destructive",
           });
         }
@@ -88,13 +88,13 @@ const ContactForm = () => {
         
         if (data.error.includes('rate limit')) {
           toast({
-            title: "Te veel verzoeken",
-            description: "Maximum 3 berichten per uur toegestaan. Wacht even voordat u een nieuw bericht verzendt.",
+            title: translate("contact.form.rateLimitTitle"),
+            description: translate("contact.form.rateLimitMsg"),
             variant: "destructive",
           });
         } else {
           toast({
-            title: "Fout", 
+            title: translate("contact.form.errorTitle"),
             description: data.error,
             variant: "destructive",
           });
@@ -106,8 +106,8 @@ const ContactForm = () => {
       trackFormSubmit(true);
 
       toast({
-        title: "Bericht verzonden!",
-        description: "Dank u voor uw bericht. We nemen binnen 24 uur contact met u op.",
+        title: translate("contact.form.success"),
+        description: translate("contact.form.successMessage"),
       });
 
       // Reset form
@@ -123,8 +123,8 @@ const ContactForm = () => {
       console.error('Failed to submit contact form:', error);
       trackFormSubmit(false, [error.message]);
       toast({
-        title: "Fout",
-        description: "Er is een onverwachte fout opgetreden. Probeer het opnieuw.",
+        title: translate("contact.form.errorTitle"),
+        description: translate("contact.form.unexpectedError"),
         variant: "destructive",
       });
     } finally {
@@ -132,97 +132,53 @@ const ContactForm = () => {
     }
   };
 
+  const inputCls = "bg-white/5 border-white/10 text-white placeholder:text-slate-500 focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 transition-all";
+  const labelCls = "text-slate-300";
+
   return (
-    <Card className="h-full flex flex-col">
+    <Card className="h-full flex flex-col bg-gradient-to-br from-white/[0.07] to-white/[0.02] border-white/10 backdrop-blur-sm">
       <CardHeader className="pb-4">
-        <CardTitle className="text-2xl">{translate("contact.form.title")}</CardTitle>
-        <CardDescription>{translate("contact.form.description")}</CardDescription>
+        <CardTitle className="text-2xl text-white">{translate("contact.form.title")}</CardTitle>
+        <CardDescription className="text-slate-400">{translate("contact.form.description")}</CardDescription>
       </CardHeader>
       <CardContent className="flex-1">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="name">{translate("contact.form.name")} *</Label>
-              <Input
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                required
-                placeholder={translate("contact.form.namePlace")}
-                className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
-              />
+              <Label htmlFor="name" className={labelCls}>{translate("contact.form.name")} *</Label>
+              <Input id="name" name="name" value={formData.name} onChange={handleInputChange} required placeholder={translate("contact.form.namePlace")} className={inputCls} />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email">{translate("contact.form.email")} *</Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                required
-                placeholder={translate("contact.form.emailPlace")}
-                className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
-              />
+              <Label htmlFor="email" className={labelCls}>{translate("contact.form.email")} *</Label>
+              <Input id="email" name="email" type="email" value={formData.email} onChange={handleInputChange} required placeholder={translate("contact.form.emailPlace")} className={inputCls} />
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="phone">{translate("contact.form.phone")}</Label>
-              <Input
-                id="phone"
-                name="phone"
-                type="tel"
-                value={formData.phone}
-                onChange={handleInputChange}
-                placeholder={translate("contact.form.phonePlace")}
-                className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
-              />
+              <Label htmlFor="phone" className={labelCls}>{translate("contact.form.phone")}</Label>
+              <Input id="phone" name="phone" type="tel" value={formData.phone} onChange={handleInputChange} placeholder={translate("contact.form.phonePlace")} className={inputCls} />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="subject">{translate("contact.form.subject")}</Label>
-              <Input
-                id="subject"
-                name="subject"
-                value={formData.subject}
-                onChange={handleInputChange}
-                placeholder={translate("contact.form.subjectPlace")}
-                className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
-              />
+              <Label htmlFor="subject" className={labelCls}>{translate("contact.form.subject")}</Label>
+              <Input id="subject" name="subject" value={formData.subject} onChange={handleInputChange} placeholder={translate("contact.form.subjectPlace")} className={inputCls} />
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="message">{translate("contact.form.message")} *</Label>
-            <Textarea
-              id="message"
-              name="message"
-              value={formData.message}
-              onChange={handleInputChange}
-              required
-              rows={5}
-              placeholder={translate("contact.form.messagePlaceholder")}
-              className="transition-all duration-200 focus:ring-2 focus:ring-primary/20 resize-none"
-            />
+            <Label htmlFor="message" className={labelCls}>{translate("contact.form.message")} *</Label>
+            <Textarea id="message" name="message" value={formData.message} onChange={handleInputChange} required rows={5} placeholder={translate("contact.form.messagePlaceholder")} className={`${inputCls} resize-none`} />
           </div>
 
           <Button
             type="submit"
-            className="w-full h-12 text-lg font-medium"
+            className="w-full h-12 text-lg font-medium bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-400 hover:to-indigo-500 text-white shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50"
             disabled={isSubmitting}
           >
             {isSubmitting ? (
-              <>
-                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                {translate("contact.form.sendingBtn")}
-              </>
+              <><Loader2 className="mr-2 h-5 w-5 animate-spin" />{translate("contact.form.sendingBtn")}</>
             ) : (
-              <>
-                <Send className="mr-2 h-5 w-5" />
-                {translate("contact.form.sendBtn")}
-              </>
+              <><Send className="mr-2 h-5 w-5" />{translate("contact.form.sendBtn")}</>
             )}
           </Button>
         </form>
