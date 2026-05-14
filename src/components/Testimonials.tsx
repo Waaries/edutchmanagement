@@ -53,26 +53,23 @@ const Testimonials = () => {
   }>;
 
   return (
-    <section id="getuigenissen" className="section-padding bg-slate-50 text-slate-800 overflow-hidden" ref={sectionRef}>
-      <div className="container mx-auto container-padding reveal">
+    <section id="getuigenissen" className="relative py-24 md:py-32 bg-slate-950 overflow-hidden border-t border-white/5" ref={sectionRef}>
+      <div className="absolute top-0 left-1/3 w-[500px] h-[500px] rounded-full bg-blue-600/15 blur-[140px] pointer-events-none" />
+      <div className="relative container mx-auto px-6 reveal">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center px-3 py-1 text-xs font-bold tracking-wider uppercase bg-blue-500/10 text-blue-600 border border-blue-500/20 mb-4 rounded-full mx-auto">
-            <Sparkles className="h-3 w-3 mr-2" />
-            {translate("testimonials.title")}
+          <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
+            <Sparkles className="h-4 w-4 text-blue-400" />
+            <span className="text-sm font-medium text-slate-300">{translate("testimonials.title")}</span>
           </div>
-          <h2 className="mb-6">
-            {translate("testimonials.subtitle").split(" ").map((word, i, arr) => (
-              <span key={i} className={i === Math.floor(arr.length / 2) ? "text-blue-500" : ""}>
-                {word}{i < arr.length - 1 ? " " : ""}
-              </span>
-            ))}
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight mb-6 leading-[1.1]">
+            {translate("testimonials.subtitle")}
           </h2>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-lg text-slate-400">
             {translate("testimonials.description")}
           </p>
         </div>
 
-        <div className="relative min-h-[300px] flex items-center justify-center">
+        <div className="relative min-h-[320px] flex items-center justify-center">
           {testimonials.map((testimonial, index) => (
             <div 
               key={index}
@@ -84,19 +81,17 @@ const Testimonials = () => {
                     : 'opacity-0 translate-x-full z-0'
               }`}
             >
-              <div className="bg-white border border-slate-200 rounded-3xl p-8 md:p-12 card-shadow">
+              <div className="bg-gradient-to-br from-white/[0.07] to-white/[0.02] border border-white/10 backdrop-blur-sm rounded-2xl p-8 md:p-12">
                 <div className="flex flex-col items-center text-center">
-                  <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-6">
-                    <Sparkles className="h-6 w-6 text-primary" />
+                  <div className="h-14 w-14 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center mb-6">
+                    <Sparkles className="h-6 w-6 text-blue-400" />
                   </div>
-                  
-                  <p className="text-xl md:text-2xl mb-8 text-slate-700 text-balance">
+                  <p className="text-xl md:text-2xl mb-8 text-slate-200 text-balance leading-relaxed">
                     "{testimonial.quote}"
                   </p>
-                  
                   <div className="text-center">
-                    <p className="font-semibold text-slate-800">{testimonial.author}</p>
-                    <p className="text-slate-600 text-sm">{testimonial.company}</p>
+                    <p className="font-semibold text-white">{testimonial.author}</p>
+                    <p className="text-slate-400 text-sm">{testimonial.company}</p>
                   </div>
                 </div>
               </div>
@@ -104,21 +99,21 @@ const Testimonials = () => {
           ))}
         </div>
         
-        <div className="flex justify-center mt-8 gap-4">
+        <div className="flex justify-center items-center mt-8 gap-3">
           <button 
             onClick={handlePrev}
-            className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center hover:bg-slate-300 transition-colors duration-300"
+            className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors"
             aria-label="Previous testimonial"
           >
-            <ArrowLeft className="h-5 w-5 text-slate-600" />
+            <ArrowLeft className="h-5 w-5 text-slate-300" />
           </button>
           
           {testimonials.map((_, index) => (
             <button
               key={index}
               onClick={() => setActiveTestimonial(index)}
-              className={`w-3 h-3 rounded-full mx-1 transition-all ${
-                index === activeTestimonial ? 'bg-primary' : 'bg-slate-300'
+              className={`h-2 rounded-full transition-all ${
+                index === activeTestimonial ? 'bg-blue-400 w-8' : 'bg-white/20 w-2'
               }`}
               aria-label={`View testimonial ${index + 1}`}
             />
@@ -126,10 +121,10 @@ const Testimonials = () => {
           
           <button 
             onClick={handleNext}
-            className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center hover:bg-slate-300 transition-colors duration-300"
+            className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors"
             aria-label="Next testimonial"
           >
-            <ArrowRight className="h-5 w-5 text-slate-600" />
+            <ArrowRight className="h-5 w-5 text-slate-300" />
           </button>
         </div>
       </div>
