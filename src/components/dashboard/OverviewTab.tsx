@@ -134,23 +134,23 @@ const OverviewTab = ({ setActiveTab }: OverviewTabProps) => {
             ) : MOCK_UPCOMING_POSTS.length > 0 ? (
               <div className="space-y-4">
                 {MOCK_UPCOMING_POSTS.map(post => (
-                  <div key={post.id} className="p-3 border rounded-lg bg-slate-50">
+                  <div key={post.id} className="p-3 border border-white/10 rounded-lg bg-white/5">
                     <div className="flex justify-between items-start">
                       <div>
                         <h4 className="font-medium">{post.title}</h4>
-                        <p className="text-sm text-slate-500">{formatDate(post.date)}</p>
+                        <p className="text-sm text-slate-400">{formatDate(post.date)}</p>
                       </div>
                       {post.status === "confirmed" ? (
-                        <CalendarCheck className="h-5 w-5 text-green-600" />
+                        <CalendarCheck className="h-5 w-5 text-green-400" />
                       ) : (
-                        <CalendarX className="h-5 w-5 text-amber-500" />
+                        <CalendarX className="h-5 w-5 text-amber-400" />
                       )}
                     </div>
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="text-center py-4 text-slate-500">Geen ontvangen post</p>
+              <p className="text-center py-4 text-slate-400">Geen ontvangen post</p>
             )}
           </CardContent>
           <CardFooter>
