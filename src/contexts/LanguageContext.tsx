@@ -446,7 +446,24 @@ const translations = {
     testimonials: {
       title: "Experiences",
       subtitle: "What Our Customers Say",
-      description: "Discover why entrepreneurs choose our business address service."
+      description: "Discover why entrepreneurs choose our business address service.",
+      items: [
+        {
+          quote: "Renting a business address through this service has significantly improved our professional image. Our clients are impressed by our prestigious address while we keep working flexibly.",
+          author: "Sophie van den Berg",
+          company: "Director, InnovateTech BV"
+        },
+        {
+          quote: "As a starting entrepreneur this was exactly what I needed. An affordable professional address without the cost of a physical office. Mail handling is highly efficient and reliable.",
+          author: "Thomas Bakker",
+          company: "Founder, WebSolutions"
+        },
+        {
+          quote: "The customer service is exceptional. They go above and beyond to meet our specific needs. The Premium package offers everything we need for our growing team.",
+          author: "Emma Visser",
+          company: "Marketing Manager, GrowBiz"
+        }
+      ]
     },
     contact: {
       title: "Contact Us",
@@ -454,23 +471,52 @@ const translations = {
       description: "Contact us for more information or to choose a package that suits your business.",
       form: {
         title: "Send us a message",
+        description: "Fill in the form and we will contact you within 24 hours. Maximum 3 messages per hour allowed.",
         name: "Name",
         namePlace: "Your full name",
         email: "Email",
-        emailPlace: "your@email.com",
-        phone: "Phone Number",
-        phonePlace: "Your phone number",
+        emailPlace: "your.email@example.com",
+        phone: "Phone",
+        phonePlace: "+31 6 12345678",
+        subject: "Subject",
+        subjectPlace: "What is your question about?",
         service: "Desired Package",
         servicePlaceholder: "Select a package",
         basicService: "Basic Business Address",
         premiumService: "Premium Business Address",
         completeService: "Business Complete",
         customService: "Custom Package",
-        message: "Your Message",
-        messagePlaceholder: "Tell us more about your needs...",
+        message: "Message",
+        messagePlaceholder: "Describe your question or request in detail...",
         sendBtn: "Send Message",
-        success: "Message Sent!",
-        successMessage: "Thank you for your message. We will contact you as soon as possible."
+        sendingBtn: "Sending...",
+        validationTitle: "Missing information",
+        validationMsg: "Please fill in your name, email and message.",
+        rateLimitTitle: "Too many requests",
+        rateLimitMsg: "Maximum 3 messages per hour allowed. Please wait before sending another message.",
+        errorTitle: "Error",
+        errorMsg: "Could not send message. Please try again.",
+        unexpectedError: "An unexpected error occurred. Please try again.",
+        success: "Message sent!",
+        successMessage: "Thank you for your message. We will contact you within 24 hours."
+      },
+      info: {
+        title: "Contact Information",
+        description: "You can also reach us directly via the details below.",
+        address: "Our Address",
+        addressValue: "Reigersbos 100 P\n1107 ES Amsterdam",
+        phone: "Phone Number",
+        phoneValue: "+31 (0)20 737 03 85",
+        hoursShort: "Mon-Fri: 09:00 - 17:00",
+        email: "Email",
+        emailValue: "info@edutchmanagement.nl",
+        responseTime: "Response within 24 hours",
+        hoursTitle: "Opening Hours",
+        hoursMonFri: "Monday - Friday: 09:00 - 17:00",
+        hoursSat: "Saturday: Closed",
+        hoursSun: "Sunday: Closed",
+        quickResponse: "Quick response",
+        quickResponseDesc: "We respond within 24 hours to your message. For urgent matters, please call during office hours."
       }
     },
     auth: {
