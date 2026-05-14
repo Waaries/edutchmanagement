@@ -124,21 +124,17 @@ export function useAuthMethods() {
   const signOut = async () => {
     try {
       console.log('Starting sign out process...');
-      
-      // Show toast first
+
+      // Navigate first (SPA) to avoid white flash from full page reload
+      navigate('/', { replace: true });
+
       toast({
         title: "Uitgelogd",
         description: "U bent succesvol uitgelogd.",
       });
-      
-      // Clean auth state
+
       cleanAuthState();
-      
-      // Sign out from Supabase
       await supabase.auth.signOut();
-      
-      // Force redirect to homepage
-      window.location.href = '/';
     } catch (error) {
       console.error('Sign out error:', error);
       toast({
@@ -146,9 +142,7 @@ export function useAuthMethods() {
         description: "Er was een probleem bij het uitloggen. Probeer het opnieuw.",
         variant: "destructive",
       });
-      
-      // Even if sign out fails, redirect to clean state
-      window.location.href = '/';
+      navigate('/', { replace: true });
     }
   };
 
