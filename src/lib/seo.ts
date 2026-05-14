@@ -11,9 +11,10 @@ export interface SEOConfig {
 }
 
 export const defaultSEO: SEOConfig = {
-  title: "eDutch Management | Professionele Bedrijfsadressen Nederland",
-  description: "Professionele bedrijfsadressen en postadres services in Nederland. Vestig uw bedrijf met een prestigieus adres. KvK inschrijving, postafhandeling en meer.",
+  title: "eDutch Management | Bedrijfsadres Nederland",
+  description: "Professioneel bedrijfsadres en postadres in Nederland. KvK-inschrijfbaar, met postafhandeling en virtual office services.",
   keywords: "bedrijfsadres, postadres, KvK inschrijving, bedrijf opstarten, Nederland, postafhandeling, virtual office",
+  canonical: "https://edutchmanagement.nl/",
   ogType: "website",
   twitterCard: "summary_large_image"
 };
@@ -96,9 +97,10 @@ export const updateMetaTags = (config: Partial<SEOConfig> = {}) => {
 // Page-specific SEO configurations
 export const pageSEO = {
   home: {
-    title: "eDutch Management | Professionele Bedrijfsadressen Nederland",
-    description: "Start uw bedrijf met een prestigieus adres. Professionele bedrijfsadressen, KvK inschrijving, postafhandeling en virtual office services in Nederland.",
+    title: "eDutch Management | Bedrijfsadres Nederland",
+    description: "Start uw bedrijf met een prestigieus adres. Bedrijfsadres, KvK inschrijving, postafhandeling en virtual office in Nederland.",
     keywords: "bedrijfsadres nederland, postadres, kvk inschrijving, virtual office, bedrijf opstarten",
+    canonical: "https://edutchmanagement.nl/",
     structuredData: {
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
@@ -110,23 +112,50 @@ export const pageSEO = {
         "addressLocality": "Amsterdam"
       },
       "telephone": "+31-20-123-4567",
-      "url": window.location.origin
+      "url": "https://edutchmanagement.nl/"
     }
   },
-  
+
   dashboard: {
     title: "Dashboard | eDutch Management",
     description: "Beheer uw bedrijfsadres en bekijk uw aanvragen in het eDutch Management dashboard.",
+    canonical: "https://edutchmanagement.nl/dashboard",
   },
 
   addressRequest: {
-    title: "Aanvraag Bedrijfsadres | eDutch Management", 
+    title: "Bedrijfsadres Aanvragen | eDutch Management",
     description: "Vraag een professioneel bedrijfsadres aan. Eenvoudig proces voor KvK inschrijving en postafhandeling.",
+    canonical: "https://edutchmanagement.nl/aanvragen",
+    structuredData: {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "Bedrijfsadres aanvragen",
+      "description": "Aanvraag voor een KvK-inschrijfbaar bedrijfsadres met postafhandeling.",
+      "provider": {
+        "@type": "Organization",
+        "name": "eDutch Management",
+        "url": "https://edutchmanagement.nl/"
+      },
+      "areaServed": "NL"
+    }
+  },
+
+  auth: {
+    title: "Inloggen | eDutch Management",
+    description: "Log in op uw eDutch Management klantportaal.",
+    canonical: "https://edutchmanagement.nl/auth",
   },
 
   admin: {
     title: "Admin Dashboard | eDutch Management",
     description: "Administratie dashboard voor eDutch Management",
+    canonical: "https://edutchmanagement.nl/admin",
+  },
+
+  cookiePolicy: {
+    title: "Cookiebeleid | eDutch Management",
+    description: "Informatie over hoe eDutch Management cookies gebruikt.",
+    canonical: "https://edutchmanagement.nl/cookie-policy",
   }
 };
 

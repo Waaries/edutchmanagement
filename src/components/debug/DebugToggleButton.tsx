@@ -13,7 +13,7 @@ const DebugToggleButton: React.FC<DebugToggleButtonProps> = ({
   onToggle
 }) => {
   // Show only the toggle button in production
-  if (process.env.NODE_ENV !== 'development' && debugMode === 'none') {
+  if (!import.meta.env.DEV && debugMode === 'none') {
     return (
       <div className="fixed bottom-4 right-4 z-50">
         <Button 

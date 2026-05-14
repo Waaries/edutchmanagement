@@ -2,10 +2,11 @@
 import { useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { updateMetaTags, pageSEO } from "@/lib/seo";
 
 const CookiePolicy = () => {
   useEffect(() => {
-    document.title = "Cookiebeleid | eDutch Management";
+    updateMetaTags(pageSEO.cookiePolicy);
   }, []);
 
   return (

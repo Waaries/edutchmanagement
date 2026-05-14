@@ -1,0 +1,10 @@
+# eDutch Management
+
+> Professionele bedrijfsadressen en virtual office services in Nederland — KvK-inschrijfbare postadressen, postafhandeling en gerelateerde diensten voor ondernemers.
+
+## Pages
+
+- [Home](/): Overzicht van diensten, voordelen en contact.
+- [Bedrijfsadres aanvragen](/aanvragen): Aanvraagformulier voor een professioneel bedrijfsadres.
+- [Inloggen](/auth): Klantportaal voor bestaande gebruikers.
+- [Cookiebeleid](/cookie-policy): Informatie over cookies en privacy.

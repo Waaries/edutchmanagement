@@ -4,6 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Navigate, useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { User, LayoutDashboard, Mail, Settings } from "lucide-react";
+import { updateMetaTags, pageSEO } from "@/lib/seo";
 
 // Import components
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
@@ -45,7 +46,7 @@ const Dashboard = () => {
   const { user, loading, isAdmin, initialized } = authContext;
 
   useEffect(() => {
-    document.title = "Dashboard | eDutch Management";
+    updateMetaTags(pageSEO.dashboard);
     
     console.log('Dashboard page - Auth state:', { 
       user: !!user, 

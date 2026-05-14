@@ -4,6 +4,7 @@ import { Navigate, useLocation, useSearchParams, useNavigate } from 'react-route
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { usePasswordReset } from '@/hooks/use-password-reset';
+import { updateMetaTags, pageSEO } from '@/lib/seo';
 import SimpleAuthPage from '@/components/auth/SimpleAuthPage';
 import SuccessDialog from '@/components/auth/SuccessDialog';
 import ErrorBoundary from '@/components/ErrorBoundary';
@@ -17,6 +18,8 @@ const Auth = () => {
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
   const [showDialog, setShowDialog] = useState(false);
+
+  useEffect(() => { updateMetaTags(pageSEO.auth); }, []);
   
   // Safely get auth context with error handling
   let authContext;
