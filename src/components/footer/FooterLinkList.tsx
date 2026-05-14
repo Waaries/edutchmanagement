@@ -11,9 +11,9 @@ const FooterLinkList = ({ links }: FooterLinkListProps) => {
     <ul className="space-y-3">
       {links.map((link, index) => (
         <li key={index}>
-          <a 
-            href={link.href} 
-            className="text-base text-slate-300 hover:text-primary transition-colors duration-300 flex items-center group"
+          <a
+            href={link.href}
+            className="text-base text-slate-300 hover:text-blue-400 transition-colors duration-300 inline-flex items-center group leading-tight py-1"
           >
             <span className="inline-block transform group-hover:translate-x-1 transition-transform duration-300">
               {link.text}
