@@ -29,12 +29,12 @@ const Dashboard = () => {
     console.error('Auth context error in Dashboard:', err);
     // Show error state and redirect to auth
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-white to-slate-100">
+      <div className="flex items-center justify-center min-h-screen bg-slate-950">
         <div className="text-center">
-          <p className="text-red-600 mb-4">Authenticatiefout opgetreden</p>
+          <p className="text-red-400 mb-4">Authenticatiefout opgetreden</p>
           <button 
             onClick={() => window.location.href = '/auth'}
-            className="px-4 py-2 bg-primary text-white rounded hover:bg-primary/90"
+            className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg hover:opacity-90"
           >
             Terug naar inloggen
           </button>
