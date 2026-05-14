@@ -237,7 +237,7 @@ const EnhancedContractPreview: React.FC<EnhancedContractPreviewProps> = ({
                 {fields.map((field, index) => (
                   <div key={index} className="flex items-center gap-2">
                     <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-                    <span className="text-gray-700">{field.field_label}</span>
+                    <span className="text-slate-300">{field.field_label}</span>
                     {field.is_required && (
                       <span className="text-red-500 text-xs font-medium">*Verplicht</span>
                     )}

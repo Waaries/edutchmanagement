@@ -26,19 +26,19 @@ const RequestDetails = ({
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-        <div className="flex items-center gap-2 text-sm text-gray-600">
+        <div className="flex items-center gap-2 text-sm text-slate-400">
           <User className="h-4 w-4" />
           <span>{contactPerson}</span>
         </div>
-        <div className="flex items-center gap-2 text-sm text-gray-600">
+        <div className="flex items-center gap-2 text-sm text-slate-400">
           <Mail className="h-4 w-4" />
           <span>{email}</span>
         </div>
-        <div className="flex items-center gap-2 text-sm text-gray-600">
+        <div className="flex items-center gap-2 text-sm text-slate-400">
           <Phone className="h-4 w-4" />
           <span>{phone}</span>
         </div>
-        <div className="flex items-center gap-2 text-sm text-gray-600">
+        <div className="flex items-center gap-2 text-sm text-slate-400">
           <Calendar className="h-4 w-4" />
           <span>{new Date(createdAt).toLocaleDateString('nl-NL')}</span>
         </div>
@@ -65,12 +65,12 @@ const RequestDetails = ({
         {specialRequirements && (
           <div className="text-sm">
             <span className="font-medium">Bijzondere wensen:</span>
-            <p className="text-gray-600 mt-1 bg-gray-50 p-2 rounded">{specialRequirements}</p>
+            <p className="text-slate-400 mt-1 bg-white/5 p-2 rounded">{specialRequirements}</p>
           </div>
         )}
       </div>
 
-      <div className="flex items-center gap-2 text-xs text-gray-500 mt-4 pt-4 border-t">
+      <div className="flex items-center gap-2 text-xs text-slate-400 mt-4 pt-4 border-t">
         <Clock className="h-3 w-3" />
         <span>
           Laatst bijgewerkt: {new Date(updatedAt).toLocaleDateString('nl-NL')} om {new Date(updatedAt).toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' })}

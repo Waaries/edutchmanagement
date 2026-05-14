@@ -63,26 +63,29 @@ const DashboardHeader = ({ isAdmin }: DashboardHeaderProps) => {
   };
 
   return (
-    <div className="flex items-center gap-4 mb-6 justify-between">
-      <div className="flex items-center gap-2">
-        <LayoutDashboard className="h-8 w-8 text-primary" />
-        <h1 className="text-3xl font-bold">Dashboard</h1>
+    <div className="flex items-center gap-4 mb-6 justify-between flex-wrap">
+      <div className="flex items-center gap-3">
+        <div className="p-2 rounded-xl bg-gradient-to-br from-blue-500/20 to-indigo-500/10 border border-blue-500/20">
+          <LayoutDashboard className="h-7 w-7 text-blue-400" />
+        </div>
+        <h1 className="text-3xl font-bold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
+          Dashboard
+        </h1>
       </div>
       <div className="flex items-center gap-2">
         {(isAdmin || hasAdminRole) && (
-          <Button 
+          <Button
             onClick={goToAdmin}
-            variant="outline" 
-            className="flex items-center gap-2 border-primary text-primary hover:bg-primary/10"
+            variant="outline"
+            className="flex items-center gap-2 border-blue-500/30 bg-blue-500/10 text-blue-300 hover:bg-blue-500/20 hover:text-blue-200"
           >
-            <Shield className="h-4 w-4 text-primary" />
+            <Shield className="h-4 w-4" />
             <span>Ga naar Admin Dashboard</span>
           </Button>
         )}
-        <Button 
+        <Button
           onClick={handleLogout}
-          variant="destructive" 
-          className="flex items-center gap-2"
+          className="flex items-center gap-2 bg-red-500/90 hover:bg-red-500 text-white border-0"
         >
           <LogOut className="h-4 w-4" />
           <span>Uitloggen</span>

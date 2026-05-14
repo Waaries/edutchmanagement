@@ -62,16 +62,16 @@ const WelcomeCard = ({ user, isAdmin }: WelcomeCardProps) => {
                       'gebruiker';
 
   return (
-    <Card className="mb-8">
+    <Card className="mb-8 bg-gradient-to-br from-blue-500/10 via-white/5 to-indigo-500/10 border-white/10 backdrop-blur-md shadow-xl shadow-blue-500/5">
       <CardHeader>
-        <CardTitle>
+        <CardTitle className="text-2xl">
           {loading ? (
-            <Skeleton className="h-8 w-64" />
+            <Skeleton className="h-8 w-64 bg-white/5" />
           ) : (
-            <>Welkom, {welcomeName}!</>
+            <>Welkom, <span className="bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">{welcomeName}</span>!</>
           )}
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="text-slate-400">
           Bekijk uw persoonlijke dashboard bij eDutch Management.
         </CardDescription>
       </CardHeader>

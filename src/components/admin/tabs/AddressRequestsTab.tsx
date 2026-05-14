@@ -19,15 +19,15 @@ const AddressRequestsTab = () => {
     <div className="space-y-6">
       <div>
         <h2 className="text-2xl font-bold">Bedrijfsadres Aanvragen</h2>
-        <p className="text-gray-600">Beheer en behandel aanvragen voor bedrijfsadressen</p>
+        <p className="text-slate-400">Beheer en behandel aanvragen voor bedrijfsadressen</p>
       </div>
 
       {requests.length === 0 ? (
         <Card>
           <CardContent className="py-8 text-center">
-            <Building2 className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">Geen aanvragen</h3>
-            <p className="text-gray-600">Er zijn momenteel geen bedrijfsadres aanvragen.</p>
+            <Building2 className="h-12 w-12 text-slate-500 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-white mb-2">Geen aanvragen</h3>
+            <p className="text-slate-400">Er zijn momenteel geen bedrijfsadres aanvragen.</p>
           </CardContent>
         </Card>
       ) : (

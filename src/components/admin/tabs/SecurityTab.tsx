@@ -251,7 +251,7 @@ const SecurityTab: React.FC = () => {
 
             <TabsContent value="login-logs" className="space-y-4">
               {/* Filters and Search */}
-              <div className="flex flex-wrap gap-4 p-4 bg-gray-50 rounded-lg">
+              <div className="flex flex-wrap gap-4 p-4 bg-white/5 rounded-lg">
                 <div className="flex-1 min-w-[200px]">
                   <div className="relative">
                     <Search className="h-4 w-4 absolute left-3 top-3 text-muted-foreground" />
@@ -361,7 +361,7 @@ const SecurityTab: React.FC = () => {
 
             <TabsContent value="active-sessions" className="space-y-4">
               {/* Session Management Actions */}
-              <div className="flex gap-2 p-4 bg-gray-50 rounded-lg">
+              <div className="flex gap-2 p-4 bg-white/5 rounded-lg">
                 <Button variant="outline" size="sm" onClick={fetchUserSessions}>
                   <RefreshCw className="h-4 w-4 mr-2" />
                   Ververs Sessies

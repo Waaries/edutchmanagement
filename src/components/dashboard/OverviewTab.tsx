@@ -64,13 +64,20 @@ const OverviewTab = ({ setActiveTab }: OverviewTabProps) => {
                 <Skeleton className="h-[200px] w-full" />
               </div>
             ) : (
-              <AspectRatio ratio={21/9} className="bg-slate-50 rounded-md">
+              <AspectRatio ratio={21/9} className="bg-white/5 border border-white/10 rounded-md">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={MOCK_ACTIVITY_DATA} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
-                    <XAxis dataKey="month" />
-                    <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="posts" fill="#3b82f6" />
+                    <XAxis dataKey="month" stroke="hsl(215 20% 65%)" />
+                    <YAxis stroke="hsl(215 20% 65%)" />
+                    <Tooltip
+                      contentStyle={{
+                        background: "hsl(217 33% 10%)",
+                        border: "1px solid hsl(215 28% 20%)",
+                        borderRadius: "0.5rem",
+                        color: "hsl(210 40% 98%)",
+                      }}
+                    />
+                    <Bar dataKey="posts" fill="hsl(217 91% 60%)" radius={[6, 6, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </AspectRatio>
@@ -127,23 +134,23 @@ const OverviewTab = ({ setActiveTab }: OverviewTabProps) => {
             ) : MOCK_UPCOMING_POSTS.length > 0 ? (
               <div className="space-y-4">
                 {MOCK_UPCOMING_POSTS.map(post => (
-                  <div key={post.id} className="p-3 border rounded-lg bg-slate-50">
+                  <div key={post.id} className="p-3 border border-white/10 rounded-lg bg-white/5">
                     <div className="flex justify-between items-start">
                       <div>
                         <h4 className="font-medium">{post.title}</h4>
-                        <p className="text-sm text-slate-500">{formatDate(post.date)}</p>
+                        <p className="text-sm text-slate-400">{formatDate(post.date)}</p>
                       </div>
                       {post.status === "confirmed" ? (
-                        <CalendarCheck className="h-5 w-5 text-green-600" />
+                        <CalendarCheck className="h-5 w-5 text-green-400" />
                       ) : (
-                        <CalendarX className="h-5 w-5 text-amber-500" />
+                        <CalendarX className="h-5 w-5 text-amber-400" />
                       )}
                     </div>
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="text-center py-4 text-slate-500">Geen ontvangen post</p>
+              <p className="text-center py-4 text-slate-400">Geen ontvangen post</p>
             )}
           </CardContent>
           <CardFooter>

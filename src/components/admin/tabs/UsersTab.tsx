@@ -151,7 +151,7 @@ const UsersTab: React.FC = () => {
         </Alert>
         
         {/* User Management Actions */}
-        <div className="flex flex-wrap gap-2 mb-6 p-4 bg-gray-50 rounded-lg">
+        <div className="flex flex-wrap gap-2 mb-6 p-4 bg-white/5 rounded-lg">
           <div className="flex flex-wrap gap-2 flex-1">
             <Button variant="default" size="sm" onClick={() => setCreateUserOpen(true)}>
               <UserPlus className="h-4 w-4 mr-2" />

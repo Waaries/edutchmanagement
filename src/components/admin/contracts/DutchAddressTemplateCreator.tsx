@@ -248,7 +248,7 @@ const DutchAddressTemplateCreator: React.FC<DutchAddressTemplateCreatorProps> = 
         <div className="space-y-4">
           <div className="bg-blue-50 p-4 rounded-lg">
             <h4 className="font-medium mb-2">Sjabloon bevat:</h4>
-            <ul className="text-sm text-gray-600 space-y-1">
+            <ul className="text-sm text-slate-400 space-y-1">
               <li>• Complete contractstructuur in het Nederlands</li>
               <li>• 16 automatisch gegenereerde formuliervelden</li>
               <li>• Intelligente veldtypes (tekst, datum, dropdown, etc.)</li>

@@ -29,12 +29,12 @@ const Dashboard = () => {
     console.error('Auth context error in Dashboard:', err);
     // Show error state and redirect to auth
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-white to-slate-100">
+      <div className="flex items-center justify-center min-h-screen bg-slate-950">
         <div className="text-center">
-          <p className="text-red-600 mb-4">Authenticatiefout opgetreden</p>
+          <p className="text-red-400 mb-4">Authenticatiefout opgetreden</p>
           <button 
             onClick={() => window.location.href = '/auth'}
-            className="px-4 py-2 bg-primary text-white rounded hover:bg-primary/90"
+            className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg hover:opacity-90"
           >
             Terug naar inloggen
           </button>
@@ -80,9 +80,9 @@ const Dashboard = () => {
   if (!initialized || loading) {
     console.log("Dashboard: Showing loading state");
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-white to-slate-100">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-slate-950">
         <LoadingSpinner size="lg" />
-        <p className="mt-4 text-gray-600">Bezig met laden...</p>
+        <p className="mt-4 text-slate-400">Bezig met laden...</p>
       </div>
     );
   }
@@ -97,26 +97,38 @@ const Dashboard = () => {
 
   return (
     <ErrorBoundary>
-      <div className="container mx-auto py-8 px-4 pt-32">
+      <div className="container mx-auto py-8 px-4">
         <DashboardHeader isAdmin={isAdmin} />
         
         <WelcomeCard user={user} isAdmin={isAdmin} />
 
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid grid-cols-4 mb-8">
-            <TabsTrigger value="overview" className="flex items-center gap-2">
+          <TabsList className="grid grid-cols-4 mb-8 bg-white/5 border border-white/10 backdrop-blur-md p-1 h-auto">
+            <TabsTrigger
+              value="overview"
+              className="flex items-center gap-2 text-slate-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-blue-500/30"
+            >
               <LayoutDashboard className="h-4 w-4" />
               <span>Overzicht</span>
             </TabsTrigger>
-            <TabsTrigger value="profile" className="flex items-center gap-2">
+            <TabsTrigger
+              value="profile"
+              className="flex items-center gap-2 text-slate-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-blue-500/30"
+            >
               <User className="h-4 w-4" />
               <span>Profiel</span>
             </TabsTrigger>
-            <TabsTrigger value="appointments" className="flex items-center gap-2">
+            <TabsTrigger
+              value="appointments"
+              className="flex items-center gap-2 text-slate-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-blue-500/30"
+            >
               <Mail className="h-4 w-4" />
               <span>Ontvangen post</span>
             </TabsTrigger>
-            <TabsTrigger value="settings" className="flex items-center gap-2">
+            <TabsTrigger
+              value="settings"
+              className="flex items-center gap-2 text-slate-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-blue-500/30"
+            >
               <Settings className="h-4 w-4" />
               <span>Instellingen</span>
             </TabsTrigger>

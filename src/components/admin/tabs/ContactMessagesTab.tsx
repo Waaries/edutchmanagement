@@ -181,9 +181,9 @@ const ContactMessagesTab = () => {
       case 'replied':
         return 'bg-green-100 text-green-800';
       case 'closed':
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-white/10 text-slate-200';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-white/10 text-slate-200';
     }
   };
 
@@ -199,17 +199,17 @@ const ContactMessagesTab = () => {
     <div className="space-y-6">
       <div>
         <h2 className="text-2xl font-bold">Contact Berichten</h2>
-        <p className="text-gray-600">Beheer en behandel contact berichten van klanten</p>
+        <p className="text-slate-400">Beheer en behandel contact berichten van klanten</p>
       </div>
 
       {messages.length === 0 ? (
         <Card>
           <CardContent className="py-8 text-center">
-            <MessageCircle className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
+            <MessageCircle className="h-12 w-12 text-slate-500 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-white mb-2">
               Geen berichten
             </h3>
-            <p className="text-gray-600">
+            <p className="text-slate-400">
               Er zijn momenteel geen contact berichten ontvangen.
             </p>
           </CardContent>
@@ -221,10 +221,10 @@ const ContactMessagesTab = () => {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <User className="h-5 w-5 text-gray-600" />
+                    <User className="h-5 w-5 text-slate-400" />
                     <div>
                       <CardTitle className="text-lg">{message.name}</CardTitle>
-                      <div className="flex items-center gap-4 text-sm text-gray-600 mt-1">
+                      <div className="flex items-center gap-4 text-sm text-slate-400 mt-1">
                         <div className="flex items-center gap-1">
                           <Mail className="h-4 w-4" />
                           <span>{message.email}</span>
@@ -299,7 +299,7 @@ const ContactMessagesTab = () => {
               <CardContent className="space-y-4">
                 <div>
                   <h4 className="font-medium mb-2">Bericht:</h4>
-                  <div className="bg-gray-50 p-3 rounded-md">
+                  <div className="bg-white/5 p-3 rounded-md">
                     <p className="text-sm whitespace-pre-wrap">{message.message}</p>
                   </div>
                 </div>

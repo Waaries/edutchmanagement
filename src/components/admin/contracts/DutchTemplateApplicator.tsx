@@ -272,7 +272,7 @@ const DutchTemplateApplicator: React.FC<DutchTemplateApplicatorProps> = ({
         <div className="space-y-4">
           <div className="bg-white p-4 rounded-lg border">
             <h4 className="font-medium mb-2">Wat wordt bijgewerkt:</h4>
-            <ul className="text-sm text-gray-600 space-y-1">
+            <ul className="text-sm text-slate-400 space-y-1">
               <li>• Contract titel en beschrijving</li>
               <li>• Volledige contract inhoud in het Nederlands</li>
               <li>• 16 gespecialiseerde formuliervelden</li>

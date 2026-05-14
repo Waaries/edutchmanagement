@@ -47,7 +47,7 @@ const ContractTemplateQuickStart: React.FC<ContractTemplateQuickStartProps> = ({
                 <FileText className="h-6 w-6 text-blue-600" />
                 <div className="font-medium">Aanbevolen Sjabloon</div>
               </div>
-              <div className="text-sm text-gray-600 mb-4">
+              <div className="text-sm text-slate-400 mb-4">
                 Professioneel Nederlands contract voor bedrijfsadres dienstverlening
               </div>
             </div>

@@ -158,6 +158,76 @@
   .btn {
     @apply rounded-2xl transition-all duration-300;
   }
+
+  /* Dashboard / Admin dark shell — flips shadcn tokens to a slate-950 + blue palette
+     so all Cards, Inputs, Tabs, Buttons inherit the dark theme automatically. */
+  .dashboard-dark {
+    --background: 222 47% 5%;
+    --foreground: 210 40% 98%;
+
+    --card: 217 33% 10%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 217 33% 10%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 217 91% 60%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 215 28% 17%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 215 28% 17%;
+    --muted-foreground: 215 20% 70%;
+
+    --accent: 215 28% 22%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 215 28% 20%;
+    --input: 215 28% 20%;
+    --ring: 217 91% 60%;
+
+    --sidebar-background: 222 47% 6%;
+    --sidebar-foreground: 215 20% 75%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 210 40% 98%;
+    --sidebar-accent: 215 28% 17%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 215 28% 20%;
+    --sidebar-ring: 217 91% 60%;
+
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+  }
+
+  /* Decorative blue glow used at the corners of dark dashboard shell */
+  .dashboard-glow::before,
+  .dashboard-glow::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+    border-radius: 9999px;
+    filter: blur(120px);
+    opacity: 0.35;
+    z-index: 0;
+  }
+  .dashboard-glow::before {
+    top: -120px;
+    right: -120px;
+    width: 420px;
+    height: 420px;
+    background: hsl(217 91% 60%);
+  }
+  .dashboard-glow::after {
+    bottom: -160px;
+    left: -120px;
+    width: 380px;
+    height: 380px;
+    background: hsl(258 90% 66%);
+  }
 }
 
 /* Enhanced Animation System */
