@@ -39,8 +39,8 @@ const ContactForm = () => {
     if (!formData.name || !formData.email || !formData.message) {
       trackFormError('Validation error: Missing required fields');
       toast({
-        title: "Ontbrekende informatie", 
-        description: "Vul uw naam, e-mail en bericht in.",
+        title: translate("contact.form.validationTitle"),
+        description: translate("contact.form.validationMsg"),
         variant: "destructive",
       });
       return;
