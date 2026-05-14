@@ -64,13 +64,20 @@ const OverviewTab = ({ setActiveTab }: OverviewTabProps) => {
                 <Skeleton className="h-[200px] w-full" />
               </div>
             ) : (
-              <AspectRatio ratio={21/9} className="bg-slate-50 rounded-md">
+              <AspectRatio ratio={21/9} className="bg-white/5 border border-white/10 rounded-md">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={MOCK_ACTIVITY_DATA} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
-                    <XAxis dataKey="month" />
-                    <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="posts" fill="#3b82f6" />
+                    <XAxis dataKey="month" stroke="hsl(215 20% 65%)" />
+                    <YAxis stroke="hsl(215 20% 65%)" />
+                    <Tooltip
+                      contentStyle={{
+                        background: "hsl(217 33% 10%)",
+                        border: "1px solid hsl(215 28% 20%)",
+                        borderRadius: "0.5rem",
+                        color: "hsl(210 40% 98%)",
+                      }}
+                    />
+                    <Bar dataKey="posts" fill="hsl(217 91% 60%)" radius={[6, 6, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </AspectRatio>
