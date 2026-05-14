@@ -39,7 +39,7 @@ const Hero = () => {
       ref={heroRef}
       className="relative pt-28 pb-12 px-0 bg-slate-950 overflow-hidden"
     >
-      <div className="relative w-full max-w-7xl mx-auto bg-slate-950 overflow-hidden">
+      <div className="relative w-full bg-slate-950 overflow-hidden">
         {/* Decorative glows */}
         <div
           className="absolute -top-24 -right-24 h-96 w-96 rounded-full bg-blue-600/20 blur-3xl pointer-events-none"
@@ -50,7 +50,7 @@ const Hero = () => {
           style={{ transform: `translateY(${scrollY * -0.08}px)` }}
         />
 
-        <div className="relative grid gap-12 px-6 pt-14 pb-16 lg:grid-cols-2 lg:items-center lg:gap-16 lg:px-14 lg:pt-20 lg:pb-24">
+        <div className="relative grid gap-12 px-6 pt-14 pb-16 lg:grid-cols-2 lg:items-center lg:gap-16 lg:px-14 lg:pt-20 lg:pb-24 max-w-7xl mx-auto">
           {/* Left content */}
           <div
             className={`transition-all duration-1000 ${
@@ -127,7 +127,7 @@ const Hero = () => {
 
         {/* Bottom features */}
         <div className="relative border-t border-white/5 bg-slate-950/50 px-6 py-10 lg:px-14">
-          <div className="grid gap-8 md:grid-cols-3">
+          <div className="grid gap-8 md:grid-cols-3 max-w-7xl mx-auto">
             {[
               { icon: Building, title: translate("hero.features.address.title"), desc: translate("hero.features.address.desc") },
               { icon: MapPin, title: translate("hero.features.management.title"), desc: translate("hero.features.management.desc") },
