@@ -51,7 +51,7 @@ const Footer = () => {
           </div>
           
           {/* Column 2: Services and Links - Combined */}
-          <div className="md:col-span-6 lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-x-8 gap-y-10">
+          <div className="md:col-span-6 lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-x-8 gap-y-10 md:pl-8 lg:pl-16 xl:pl-24">
             {/* Services Column */}
             <div className="sm:col-span-1 md:flex md:justify-start">
               <FooterColumn title={translate("footer.services")}>
