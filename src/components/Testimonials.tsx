@@ -6,6 +6,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 const Testimonials = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
+  const { translate } = useLanguage();
   
   useEffect(() => {
     const observer = new IntersectionObserver(
