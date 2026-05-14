@@ -1,9 +1,7 @@
 import { useState, useEffect, useRef } from "react";
-import { ChevronRight, ArrowRight, Building, MapPin, Mail } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ArrowRight, Building, MapPin, Mail } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trackButtonClick } from "@/lib/analytics";
-import ImageLoader from "@/components/ui/image-loader";
 
 const Hero = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -13,12 +11,7 @@ const Hero = () => {
 
   useEffect(() => {
     setIsVisible(true);
-
-    // Parallax effect
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
-
+    const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -27,114 +20,114 @@ const Hero = () => {
     const section = document.getElementById(sectionId);
     if (section) {
       section.scrollIntoView({ behavior: 'smooth' });
-      // Track navigation
       trackButtonClick(`scroll_to_${sectionId}`, 'hero_section');
     }
   };
 
+  const titleParts = translate("hero.title").split("professionele");
+
   return (
-    <section id="home" className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-slate-50" ref={heroRef}>
-      {/* Background elements with parallax */}
-      <div 
-        className="absolute top-0 -right-40 w-96 h-96 bg-blue-500 opacity-5 blob-shape transition-transform duration-1000"
-        style={{ transform: `translateY(${scrollY * 0.2}px)` }}
-      ></div>
-      <div 
-        className="absolute top-1/3 -left-20 w-80 h-80 bg-slate-500 opacity-5 blob-shape-alt transition-transform duration-1000"
-        style={{ transform: `translateY(${scrollY * -0.1}px)` }}
-      ></div>
-      <div 
-        className="absolute bottom-20 right-1/4 w-64 h-64 bg-blue-400 opacity-5 blob-shape transition-transform duration-1000"
-        style={{ transform: `translateY(${scrollY * 0.15}px)` }}
-      ></div>
-      
-      <div className="container-full container-padding z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
-          <div className="lg:col-span-3 space-y-8 mx-auto text-center lg:text-left">
-            <div className={`transition-all duration-1000 delay-300 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-              <h1 className="font-bold mb-6 leading-tight text-balance text-center lg:text-left animate-fade-in">
-                {translate("hero.title").split("professionele")[0]}
-                <span className="text-blue-500">professionele</span>
-                {translate("hero.title").split("professionele")[1]}
-              </h1>
-              <p className="text-lg md:text-xl text-slate-600 mb-8 max-w-xl text-balance text-center lg:text-left mx-auto lg:mx-0 animate-fade-in animation-delay-200">
-                {translate("hero.subtitle")}
-              </p>
-              <p className="text-md text-slate-600 mb-8 max-w-xl text-balance text-center lg:text-left mx-auto lg:mx-0 animate-fade-in animation-delay-400">
-                {translate("hero.description")}
-              </p>
-              
-              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 animate-fade-in animation-delay-600">
-                <Button className="px-8 py-6 group hover-lift" onClick={() => scrollToSection('diensten')}>
-                  <span>{translate("hero.discoverBtn")}</span>
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Button>
-                <Button variant="outline" className="px-8 py-6 hover-lift" onClick={() => scrollToSection('contact')}>
-                  {translate("hero.contactBtn")}
-                </Button>
-              </div>
+    <section
+      id="home"
+      ref={heroRef}
+      className="relative pt-28 pb-12 px-4 lg:px-8 bg-slate-50 overflow-hidden"
+    >
+      <div className="relative w-full max-w-7xl mx-auto rounded-3xl bg-slate-950 shadow-2xl overflow-hidden">
+        {/* Decorative glows */}
+        <div
+          className="absolute -top-24 -right-24 h-96 w-96 rounded-full bg-blue-600/20 blur-3xl pointer-events-none"
+          style={{ transform: `translateY(${scrollY * 0.1}px)` }}
+        />
+        <div
+          className="absolute -bottom-24 -left-24 h-96 w-96 rounded-full bg-indigo-900/40 blur-3xl pointer-events-none"
+          style={{ transform: `translateY(${scrollY * -0.08}px)` }}
+        />
+
+        <div className="relative grid gap-12 px-6 pt-14 pb-16 lg:grid-cols-2 lg:items-center lg:gap-16 lg:px-14 lg:pt-20 lg:pb-24">
+          {/* Left content */}
+          <div
+            className={`transition-all duration-1000 ${
+              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
+          >
+            <div className="mb-6 inline-flex items-center rounded-full bg-blue-500/10 px-3 py-1 text-xs font-bold tracking-wider text-blue-400 uppercase border border-blue-500/20">
+              {translate("hero.premium")}
             </div>
-            
-            <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6 text-center lg:text-left">
-              {[
-                {
-                  icon: Building,
-                  title: translate("hero.features.address.title"),
-                  desc: translate("hero.features.address.desc")
-                },
-                {
-                  icon: MapPin,
-                  title: translate("hero.features.management.title"),
-                  desc: translate("hero.features.management.desc")
-                },
-                {
-                  icon: Mail,
-                  title: translate("hero.features.mail.title"),
-                  desc: translate("hero.features.mail.desc")
-                }
-              ].map((item, index) => (
-                <div 
-                  key={index} 
-                  className={`flex flex-col items-center lg:items-start gap-4 transition-all duration-700 hover:bg-primary/5 p-4 rounded-2xl hover-lift animate-fade-in`}
-                  style={{ animationDelay: `${(index + 1) * 200 + 800}ms` }}
-                >
-                  <div className="flex-shrink-0 w-10 h-10 rounded-2xl bg-primary/10 flex items-center justify-center mb-2 hover:bg-primary/20 transition-colors duration-300">
-                    <item.icon className="h-5 w-5 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-slate-800 text-lg">{item.title}</h3>
-                    <p className="text-slate-600">{item.desc}</p>
-                  </div>
-                </div>
-              ))}
+            <h1 className="mb-6 text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight text-white">
+              {titleParts[0]}
+              <span className="text-blue-500">professionele</span>
+              {titleParts[1]}
+            </h1>
+            <p className="mb-6 max-w-xl text-lg leading-relaxed text-slate-300">
+              {translate("hero.subtitle")}
+            </p>
+            <p className="mb-10 max-w-xl text-base leading-relaxed text-slate-400">
+              {translate("hero.description")}
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4">
+              <button
+                onClick={() => scrollToSection('diensten')}
+                className="group inline-flex items-center justify-center rounded-xl bg-blue-600 px-8 py-4 text-sm font-bold text-white transition-all hover:bg-blue-500 hover:shadow-xl hover:shadow-blue-500/30"
+              >
+                <span>{translate("hero.discoverBtn")}</span>
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </button>
+              <button
+                onClick={() => scrollToSection('contact')}
+                className="rounded-xl border border-slate-700 bg-slate-900/50 px-8 py-4 text-sm font-bold text-white backdrop-blur-sm transition-all hover:bg-slate-800"
+              >
+                {translate("hero.contactBtn")}
+              </button>
             </div>
           </div>
-          
-          {/* Right side image section with parallax */}
-          <div className="lg:col-span-2 flex justify-center lg:justify-end transition-all duration-1000 delay-500">
-            <div 
-              className={`stacked-card transform ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}
-              style={{ transform: `translateY(${scrollY * -0.05}px)` }}
-            >
-              <div className="glass-card rounded-3xl overflow-hidden relative z-10 card-shadow hover-lift">
-                <ImageLoader
-                  src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
-                  alt="Modern office space"
-                  className="w-full h-[500px]"
-                  priority={true}
-                  loading="eager"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-blue-900/70 to-transparent flex flex-col justify-end p-8">
-                  <div className="glass-card rounded-2xl p-6 max-w-md backdrop-blur-md bg-white/20 hover:bg-white/30 transition-colors duration-300">
-                    <div className="flex items-center mb-3">
-                      <div className="h-8 w-8 bg-white/30 rounded-full flex items-center justify-center mr-3"></div>
-                      <h3 className="text-white font-semibold text-2xl">{translate("hero.premium")}</h3>
-                    </div>
-                    <p className="text-white/90">{translate("hero.premiumDesc")}</p>
+
+          {/* Right visual */}
+          <div
+            className={`relative flex justify-center lg:justify-end transition-all duration-1000 delay-200 ${
+              isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
+            }`}
+            style={{ transform: `translateY(${scrollY * -0.04}px)` }}
+          >
+            <div className="relative h-[440px] sm:h-[480px] w-full max-w-[400px] rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-1 backdrop-blur-xl shadow-2xl">
+              <div className="h-full w-full overflow-hidden rounded-[22px] bg-slate-900/40 p-8 flex flex-col justify-end relative">
+                <div className="absolute top-10 left-8 right-8 h-48 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 opacity-25 blur-2xl" />
+                <div className="absolute top-10 left-8 right-8 h-48 rounded-2xl border border-white/10 bg-white/5" />
+
+                <div className="relative rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-md">
+                  <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-blue-500 shadow-lg shadow-blue-500/40">
+                    <MapPin className="h-5 w-5 text-white" />
                   </div>
+                  <h3 className="mb-2 text-xl font-bold text-white">
+                    {translate("hero.premium")}
+                  </h3>
+                  <p className="text-sm text-slate-300 leading-relaxed">
+                    {translate("hero.premiumDesc")}
+                  </p>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Bottom features */}
+        <div className="relative border-t border-white/5 bg-slate-950/50 px-6 py-10 lg:px-14">
+          <div className="grid gap-8 md:grid-cols-3">
+            {[
+              { icon: Building, title: translate("hero.features.address.title"), desc: translate("hero.features.address.desc") },
+              { icon: MapPin, title: translate("hero.features.management.title"), desc: translate("hero.features.management.desc") },
+              { icon: Mail, title: translate("hero.features.mail.title"), desc: translate("hero.features.mail.desc") },
+            ].map((item, i) => (
+              <div key={i} className="flex items-start gap-4">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                  <item.icon className="h-5 w-5" />
+                </div>
+                <div>
+                  <div className="text-sm font-bold text-white">{item.title}</div>
+                  <div className="text-xs text-slate-400 mt-1">{item.desc}</div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
