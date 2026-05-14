@@ -2,8 +2,16 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate, useNavigate } from "react-router-dom";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { User, LayoutDashboard, Mail, Settings } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+const DASH_NAV = [
+  { value: "overview", label: "Overzicht", icon: LayoutDashboard },
+  { value: "profile", label: "Profiel", icon: User },
+  { value: "appointments", label: "Ontvangen post", icon: Mail },
+  { value: "settings", label: "Instellingen", icon: Settings },
+];
 import { updateMetaTags, pageSEO } from "@/lib/seo";
 
 // Import components
@@ -102,53 +110,55 @@ const Dashboard = () => {
         
         <WelcomeCard user={user} isAdmin={isAdmin} />
 
-        <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid grid-cols-4 mb-8 bg-white/5 border border-white/10 backdrop-blur-md p-1 h-auto">
-            <TabsTrigger
-              value="overview"
-              className="flex items-center gap-2 text-slate-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-blue-500/30"
-            >
-              <LayoutDashboard className="h-4 w-4" />
-              <span>Overzicht</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="profile"
-              className="flex items-center gap-2 text-slate-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-blue-500/30"
-            >
-              <User className="h-4 w-4" />
-              <span>Profiel</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="appointments"
-              className="flex items-center gap-2 text-slate-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-blue-500/30"
-            >
-              <Mail className="h-4 w-4" />
-              <span>Ontvangen post</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="settings"
-              className="flex items-center gap-2 text-slate-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-blue-500/30"
-            >
-              <Settings className="h-4 w-4" />
-              <span>Instellingen</span>
-            </TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="overview">
-            <OverviewTab setActiveTab={setActiveTab} />
-          </TabsContent>
-          
-          <TabsContent value="profile">
-            <ProfileTab user={user} />
-          </TabsContent>
-          
-          <TabsContent value="appointments">
-            <AppointmentsTab />
-          </TabsContent>
-          
-          <TabsContent value="settings">
-            <SettingsTab />
-          </TabsContent>
+        <Tabs
+          value={activeTab}
+          onValueChange={setActiveTab}
+          orientation="vertical"
+          className="flex flex-col lg:flex-row gap-6"
+        >
+          <aside className="lg:w-64 lg:shrink-0">
+            <div className="lg:sticky lg:top-20 rounded-xl border border-white/10 bg-slate-900/60 backdrop-blur-xl p-3">
+              <p className="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                Menu
+              </p>
+              <nav className="flex lg:flex-col gap-1 overflow-x-auto lg:overflow-visible">
+                {DASH_NAV.map((item) => {
+                  const Icon = item.icon;
+                  const active = activeTab === item.value;
+                  return (
+                    <button
+                      key={item.value}
+                      onClick={() => setActiveTab(item.value)}
+                      className={cn(
+                        "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap text-left w-full",
+                        active
+                          ? "bg-gradient-to-r from-blue-500/20 to-indigo-500/10 text-blue-200 border border-blue-500/30 shadow-[0_0_20px_-5px_rgba(59,130,246,0.4)]"
+                          : "text-slate-400 hover:text-white hover:bg-white/5 border border-transparent"
+                      )}
+                    >
+                      <Icon className="h-4 w-4 shrink-0" />
+                      <span>{item.label}</span>
+                    </button>
+                  );
+                })}
+              </nav>
+            </div>
+          </aside>
+
+          <div className="flex-1 min-w-0">
+            <TabsContent value="overview" className="mt-0">
+              <OverviewTab setActiveTab={setActiveTab} />
+            </TabsContent>
+            <TabsContent value="profile" className="mt-0">
+              <ProfileTab user={user} />
+            </TabsContent>
+            <TabsContent value="appointments" className="mt-0">
+              <AppointmentsTab />
+            </TabsContent>
+            <TabsContent value="settings" className="mt-0">
+              <SettingsTab />
+            </TabsContent>
+          </div>
         </Tabs>
       </div>
     </ErrorBoundary>
