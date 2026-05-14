@@ -5,6 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import AdminDashboard from "@/components/admin/AdminDashboard";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { updateMetaTags, pageSEO } from "@/lib/seo";
 
 const Admin: React.FC = () => {
   const { user, loading, isAdmin: contextIsAdmin } = useAuth();
@@ -13,6 +14,8 @@ const Admin: React.FC = () => {
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  useEffect(() => { updateMetaTags(pageSEO.admin); }, []);
   
   // Directly verify admin status
   useEffect(() => {

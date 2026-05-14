@@ -18,6 +18,8 @@ const Auth = () => {
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
   const [showDialog, setShowDialog] = useState(false);
+
+  useEffect(() => { updateMetaTags(pageSEO.auth); }, []);
   
   // Safely get auth context with error handling
   let authContext;
