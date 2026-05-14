@@ -80,9 +80,9 @@ const Dashboard = () => {
   if (!initialized || loading) {
     console.log("Dashboard: Showing loading state");
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-white to-slate-100">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-slate-950">
         <LoadingSpinner size="lg" />
-        <p className="mt-4 text-gray-600">Bezig met laden...</p>
+        <p className="mt-4 text-slate-400">Bezig met laden...</p>
       </div>
     );
   }
