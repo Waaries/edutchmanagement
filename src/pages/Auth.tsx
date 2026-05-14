@@ -4,6 +4,7 @@ import { Navigate, useLocation, useSearchParams, useNavigate } from 'react-route
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { usePasswordReset } from '@/hooks/use-password-reset';
+import { updateMetaTags, pageSEO } from '@/lib/seo';
 import SimpleAuthPage from '@/components/auth/SimpleAuthPage';
 import SuccessDialog from '@/components/auth/SuccessDialog';
 import ErrorBoundary from '@/components/ErrorBoundary';

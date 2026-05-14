@@ -11,6 +11,7 @@ import BackToTop from "@/components/BackToTop";
 
 import { useAuth } from "@/contexts/AuthContext";
 import { usePageTracking } from "@/hooks/use-monitoring";
+import { updateMetaTags, pageSEO } from "@/lib/seo";
 
 const Index = () => {
   const mounted = useRef(false);
@@ -20,8 +21,7 @@ const Index = () => {
   usePageTracking('home');
 
   useEffect(() => {
-    // Update the document title
-    document.title = "eDutch Management | Professionele Bedrijfsadressen";
+    updateMetaTags(pageSEO.home);
     
     const handleScroll = () => {
       const reveals = document.querySelectorAll('.reveal');

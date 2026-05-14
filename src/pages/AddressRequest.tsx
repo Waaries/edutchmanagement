@@ -1,10 +1,12 @@
 
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, Building2, CheckCircle } from "lucide-react";
 import { useAddressRequestForm } from "@/hooks/use-address-request-form";
 import { useAuth } from "@/contexts/AuthContext";
+import { updateMetaTags, pageSEO } from "@/lib/seo";
 import CompanyInformationSection from "@/components/address-request/CompanyInformationSection";
 import ContactInformationSection from "@/components/address-request/ContactInformationSection";
 import AddressTypeSelection from "@/components/address-request/AddressTypeSelection";
@@ -15,6 +17,7 @@ import SpecialRequirementsSection from "@/components/address-request/SpecialRequ
 const AddressRequest = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  useEffect(() => { updateMetaTags(pageSEO.addressRequest); }, []);
   const {
     formData,
     isSubmitting,
