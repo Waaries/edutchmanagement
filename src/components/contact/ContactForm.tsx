@@ -9,8 +9,10 @@ import { Send, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useFormTracking } from "@/hooks/use-monitoring";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const ContactForm = () => {
+  const { translate } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
