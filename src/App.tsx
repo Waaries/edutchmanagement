@@ -1,6 +1,6 @@
 
 import { useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -53,8 +53,8 @@ function AppContent() {
       <Routes>
         <Route path="/" element={<AppLayout showSidebar={false}><Index /></AppLayout>} />
         <Route path="/auth" element={<AppLayout showSidebar={false}><Auth /></AppLayout>} />
-        <Route path="/admin" element={<AppLayout showSidebar={false}><Admin /></AppLayout>} />
-        <Route path="/dashboard" element={<AppLayout><Dashboard /></AppLayout>} />
+        <Route path="/admin" element={<Navigate to="/dashboard" replace />} />
+        <Route path="/dashboard" element={<AppLayout showSidebar={false}><Dashboard /></AppLayout>} />
         <Route path="/aanvragen" element={<AppLayout><AddressRequest /></AppLayout>} />
         <Route path="/contract/:accessToken" element={<AppLayout showSidebar={false}><PublicContract /></AppLayout>} />
         <Route path="/cookie-policy" element={<AppLayout showSidebar={false}><CookiePolicy /></AppLayout>} />
