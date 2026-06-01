@@ -3,26 +3,56 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate, useNavigate } from "react-router-dom";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
-import { User, LayoutDashboard, Mail, Settings } from "lucide-react";
+import {
+  User, LayoutDashboard, Mail, Settings,
+  Users, Shield, ClipboardList, Building2, MessageSquare,
+  FileText, Database, ScrollText, Activity,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
-
-const DASH_NAV = [
-  { value: "overview", label: "Overzicht", icon: LayoutDashboard },
-  { value: "profile", label: "Profiel", icon: User },
-  { value: "appointments", label: "Ontvangen post", icon: Mail },
-  { value: "settings", label: "Instellingen", icon: Settings },
-];
 import { updateMetaTags, pageSEO } from "@/lib/seo";
 
-// Import components
+// User tab components
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import WelcomeCard from "@/components/dashboard/WelcomeCard";
 import OverviewTab from "@/components/dashboard/OverviewTab";
 import ProfileTab from "@/components/dashboard/ProfileTab";
 import AppointmentsTab from "@/components/dashboard/AppointmentsTab";
 import SettingsTab from "@/components/dashboard/SettingsTab";
+
+// Admin tab components
+import AdminOverviewTab from "@/components/admin/tabs/OverviewTab";
+import UsersTab from "@/components/admin/tabs/UsersTab";
+import SecurityTab from "@/components/admin/tabs/SecurityTab";
+import SecurityAuditTab from "@/components/admin/tabs/SecurityAuditTab";
+import AdminAddressRequestsTab from "@/components/admin/tabs/AddressRequestsTab";
+import ContactMessagesTab from "@/components/admin/tabs/ContactMessagesTab";
+import ContractsTab from "@/components/admin/tabs/ContractsTab";
+import DataTab from "@/components/admin/tabs/DataTab";
+import LogsTab from "@/components/admin/tabs/LogsTab";
+import MonitoringTab from "@/components/admin/tabs/MonitoringTab";
+
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import ErrorBoundary from "@/components/ErrorBoundary";
+
+const USER_NAV = [
+  { value: "overview", label: "Overzicht", icon: LayoutDashboard },
+  { value: "profile", label: "Profiel", icon: User },
+  { value: "appointments", label: "Ontvangen post", icon: Mail },
+  { value: "settings", label: "Instellingen", icon: Settings },
+];
+
+const ADMIN_NAV = [
+  { value: "admin-users", label: "Gebruikers", icon: Users },
+  { value: "admin-security", label: "Beveiliging", icon: Shield },
+  { value: "admin-audit", label: "Audit", icon: ClipboardList },
+  { value: "admin-requests", label: "Aanvragen", icon: Building2 },
+  { value: "admin-messages", label: "Berichten", icon: MessageSquare },
+  { value: "admin-contracts", label: "Contracten", icon: FileText },
+  { value: "admin-data", label: "Data", icon: Database },
+  { value: "admin-logs", label: "Logs", icon: ScrollText },
+  { value: "admin-monitoring", label: "Monitoring", icon: Activity },
+];
+
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
