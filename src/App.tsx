@@ -53,7 +53,7 @@ function AppContent() {
       <Routes>
         <Route path="/" element={<AppLayout showSidebar={false}><Index /></AppLayout>} />
         <Route path="/auth" element={<AppLayout showSidebar={false}><Auth /></AppLayout>} />
-        <Route path="/admin" element={<AppLayout><Admin /></AppLayout>} />
+        <Route path="/admin" element={<AppLayout showSidebar={false}><Admin /></AppLayout>} />
         <Route path="/dashboard" element={<AppLayout><Dashboard /></AppLayout>} />
         <Route path="/aanvragen" element={<AppLayout><AddressRequest /></AppLayout>} />
         <Route path="/contract/:accessToken" element={<AppLayout showSidebar={false}><PublicContract /></AppLayout>} />
