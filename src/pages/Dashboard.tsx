@@ -43,15 +43,16 @@ const USER_NAV = [
 
 const ADMIN_NAV = [
   { value: "admin-users", label: "Gebruikers", icon: Users },
+  { value: "admin-mail", label: "Post", icon: Mail },
   { value: "admin-security", label: "Beveiliging", icon: Shield },
   { value: "admin-audit", label: "Audit", icon: ClipboardList },
   { value: "admin-requests", label: "Aanvragen", icon: Building2 },
   { value: "admin-messages", label: "Berichten", icon: MessageSquare },
   { value: "admin-contracts", label: "Contracten", icon: FileText },
-  { value: "admin-data", label: "Data", icon: Database },
   { value: "admin-logs", label: "Logs", icon: ScrollText },
   { value: "admin-monitoring", label: "Monitoring", icon: Activity },
 ];
+
 
 
 const Dashboard = () => {
