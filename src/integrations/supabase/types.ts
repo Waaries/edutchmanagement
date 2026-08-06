@@ -333,6 +333,57 @@ export type Database = {
         }
         Relationships: []
       }
+      mail_items: {
+        Row: {
+          created_at: string
+          id: string
+          is_read: boolean
+          mail_type: Database["public"]["Enums"]["mail_type"]
+          notes: string | null
+          priority: string
+          received_at: string
+          registered_by: string | null
+          scan_url: string | null
+          sender: string | null
+          status: string
+          subject: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_read?: boolean
+          mail_type?: Database["public"]["Enums"]["mail_type"]
+          notes?: string | null
+          priority?: string
+          received_at?: string
+          registered_by?: string | null
+          scan_url?: string | null
+          sender?: string | null
+          status?: string
+          subject: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_read?: boolean
+          mail_type?: Database["public"]["Enums"]["mail_type"]
+          notes?: string | null
+          priority?: string
+          received_at?: string
+          registered_by?: string | null
+          scan_url?: string | null
+          sender?: string | null
+          status?: string
+          subject?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profile_access_log: {
         Row: {
           accessed_profile_id: string
@@ -716,6 +767,7 @@ export type Database = {
         | "phone"
         | "select"
         | "checkbox"
+      mail_type: "letter" | "parcel" | "registered" | "other"
       user_role: "user" | "admin"
     }
     CompositeTypes: {
@@ -855,6 +907,7 @@ export const Constants = {
         "select",
         "checkbox",
       ],
+      mail_type: ["letter", "parcel", "registered", "other"],
       user_role: ["user", "admin"],
     },
   },
