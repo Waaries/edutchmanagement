@@ -4,6 +4,7 @@ import { isProduction } from './analytics-config';
 import { GA_MEASUREMENT_ID } from './analytics-config';
 import { analyticsLog } from './analytics-logger';
 import { isGtagReady } from './analytics-script-loader';
+import { devLog } from "@/lib/logger";
 
 // Enable analytics with proper consent handling
 export const enableAnalytics = () => {
@@ -51,12 +52,12 @@ export const shouldTrackAnalytics = (): boolean => {
     
     // In production, check for explicit consent
     if (isProduction()) {
-      console.log(`[Analytics Consent] Production - explicit consent: ${hasExplicitConsent}`);
+      devLog(`[Analytics Consent] Production - explicit consent: ${hasExplicitConsent}`);
       return hasExplicitConsent;
     }
     
     // In development, require explicit consent
-    console.log(`[Analytics Consent] Development - consent required: ${hasExplicitConsent}`);
+    devLog(`[Analytics Consent] Development - consent required: ${hasExplicitConsent}`);
     return hasExplicitConsent;
   } catch (error) {
     console.error('[Analytics Consent] Error checking consent:', error);
@@ -82,7 +83,7 @@ export const shouldTrackAnalyticsRealtime = (): boolean => {
   
   // Log cache updates for debugging
   if (consentCache !== newConsent) {
-    console.log(`[Analytics Consent] Cache updated: ${consentCache} -> ${newConsent}`);
+    devLog(`[Analytics Consent] Cache updated: ${consentCache} -> ${newConsent}`);
   }
   
   consentCache = newConsent;
@@ -95,7 +96,7 @@ export const shouldTrackAnalyticsRealtime = (): boolean => {
 if (typeof window !== 'undefined') {
   window.addEventListener('cookieChange', (event) => {
     const detail = (event as CustomEvent).detail;
-    console.log(`[Analytics Consent] Cookie change detected: ${detail?.name}, clearing cache`);
+    devLog(`[Analytics Consent] Cookie change detected: ${detail?.name}, clearing cache`);
     consentCache = null;
     lastConsentCheck = 0;
   });

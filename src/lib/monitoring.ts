@@ -1,3 +1,4 @@
+import { devLog } from "@/lib/logger";
 
 // Monitoring and error tracking utilities
 export interface ErrorReport {
@@ -87,7 +88,7 @@ class MonitoringService {
       context
     };
 
-    console.log('[Monitoring] Performance metric:', metric);
+    devLog('[Monitoring] Performance metric:', metric);
     this.sendToMonitoringService('performance', metric);
     this.storeLocally('performance', metric);
   }
@@ -104,7 +105,7 @@ class MonitoringService {
       context
     };
 
-    console.log('[Monitoring] UX metric:', metric);
+    devLog('[Monitoring] UX metric:', metric);
     this.sendToMonitoringService('ux', metric);
     this.storeLocally('ux', metric);
   }
@@ -227,7 +228,7 @@ class MonitoringService {
       // or store in Supabase for later analysis
       if (window.location.hostname !== 'localhost') {
         // Only send in production to avoid noise during development
-        console.log(`[Monitoring] Would send ${type} data to monitoring service:`, data);
+        devLog(`[Monitoring] Would send ${type} data to monitoring service:`, data);
       }
     } catch (error) {
       console.error('[Monitoring] Failed to send to monitoring service:', error);

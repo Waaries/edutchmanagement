@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
+import { devLog } from "@/lib/logger";
 
 interface WelcomeCardProps {
   user: User;
@@ -42,7 +43,7 @@ const WelcomeCard = ({ user, isAdmin }: WelcomeCardProps) => {
             setFirstName(data.first_name);
           }
         } else {
-          console.log('Profiles table may not exist');
+          devLog('Profiles table may not exist');
         }
       } catch (error) {
         console.error('Error:', error);

@@ -6,6 +6,7 @@ import AdminDashboard from "@/components/admin/AdminDashboard";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { updateMetaTags, pageSEO } from "@/lib/seo";
+import { devLog } from "@/lib/logger";
 
 const Admin: React.FC = () => {
   const { user, loading, isAdmin: contextIsAdmin } = useAuth();
@@ -29,7 +30,7 @@ const Admin: React.FC = () => {
       }
 
       try {
-        console.log("Context isAdmin:", contextIsAdmin);
+        devLog("Context isAdmin:", contextIsAdmin);
         
         // First check context admin status, then verify with RPC if needed
         if (contextIsAdmin) {
@@ -56,7 +57,7 @@ const Admin: React.FC = () => {
               setIsAdmin(false);
             } else {
               setError(null);
-              console.log("Admin page - is_admin result:", data);
+              devLog("Admin page - is_admin result:", data);
               setIsAdmin(data);
               
               // If user does not have admin role, redirect to dashboard

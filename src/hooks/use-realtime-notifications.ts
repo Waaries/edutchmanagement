@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { AddressRequest } from "@/hooks/use-admin-address-requests";
+import { devLog } from "@/lib/logger";
 
 export interface ContactMessage {
   id: string;
@@ -23,11 +24,11 @@ export const useRealtimeNotifications = (isAdmin: boolean) => {
 
   useEffect(() => {
     if (!isAdmin) {
-      console.log("[Notifications] User is not admin, skipping real-time setup");
+      devLog("[Notifications] User is not admin, skipping real-time setup");
       return;
     }
 
-    console.log("[Notifications] Setting up real-time notifications for admin user");
+    devLog("[Notifications] Setting up real-time notifications for admin user");
     
     const channel = supabase
       .channel('admin-notifications')
@@ -39,7 +40,7 @@ export const useRealtimeNotifications = (isAdmin: boolean) => {
           table: 'address_requests'
         },
         (payload) => {
-          console.log('[Notifications] New address request received:', payload);
+          devLog('[Notifications] New address request received:', payload);
           const newRequest = payload.new as AddressRequest;
           
           toast({
@@ -58,7 +59,7 @@ export const useRealtimeNotifications = (isAdmin: boolean) => {
           table: 'address_requests'
         },
         (payload) => {
-          console.log('[Notifications] Address request updated:', payload);
+          devLog('[Notifications] Address request updated:', payload);
           const updatedRequest = payload.new as AddressRequest;
           
           // Only show notification if status changed
@@ -78,7 +79,7 @@ export const useRealtimeNotifications = (isAdmin: boolean) => {
           table: 'contact_messages'
         },
         (payload) => {
-          console.log('[Notifications] New contact message received:', payload);
+          devLog('[Notifications] New contact message received:', payload);
           const newMessage = payload.new as ContactMessage;
           
           toast({
@@ -90,17 +91,17 @@ export const useRealtimeNotifications = (isAdmin: boolean) => {
         }
       )
       .subscribe((status, err) => {
-        console.log('[Notifications] Subscription status:', status);
+        devLog('[Notifications] Subscription status:', status);
         if (err) {
           console.error('[Notifications] Subscription error:', err);
         } else {
           setIsSubscribed(status === 'SUBSCRIBED');
-          console.log('[Notifications] Successfully subscribed to admin-notifications channel');
+          devLog('[Notifications] Successfully subscribed to admin-notifications channel');
         }
       });
 
     return () => {
-      console.log('[Notifications] Cleaning up real-time subscription');
+      devLog('[Notifications] Cleaning up real-time subscription');
       supabase.removeChannel(channel);
       setIsSubscribed(false);
     };

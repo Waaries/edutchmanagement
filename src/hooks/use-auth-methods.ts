@@ -3,19 +3,20 @@ import { AuthError } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
+import { devLog } from "@/lib/logger";
 
 export function useAuthMethods() {
   const { toast } = useToast();
   const navigate = useNavigate();
 
   const cleanAuthState = () => {
-    console.log('Cleaning auth state...');
+    devLog('Cleaning auth state...');
     // Remove all Supabase auth-related keys
     const keysToRemove = Object.keys(localStorage).filter(key => 
       key.startsWith('supabase.auth.') || key.includes('sb-')
     );
     keysToRemove.forEach(key => {
-      console.log('Removing key:', key);
+      devLog('Removing key:', key);
       localStorage.removeItem(key);
     });
     
@@ -70,7 +71,7 @@ export function useAuthMethods() {
 
   const signInWithGoogle = async () => {
     try {
-      console.log('Starting Google sign in...');
+      devLog('Starting Google sign in...');
       cleanAuthState();
       
       const { error } = await supabase.auth.signInWithOAuth({
@@ -88,7 +89,7 @@ export function useAuthMethods() {
 
   const signInWithFacebook = async () => {
     try {
-      console.log('Starting Facebook sign in...');
+      devLog('Starting Facebook sign in...');
       cleanAuthState();
       
       const { error } = await supabase.auth.signInWithOAuth({
@@ -118,7 +119,7 @@ export function useAuthMethods() {
 
   const signOut = async () => {
     try {
-      console.log('Starting sign out process...');
+      devLog('Starting sign out process...');
 
       // Navigate first (SPA) to avoid white flash from full page reload
       navigate('/', { replace: true });

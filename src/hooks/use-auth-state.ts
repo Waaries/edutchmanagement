@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Session, User } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
+import { devLog } from "@/lib/logger";
 
 export function useAuthState() {
   const [session, setSession] = useState<Session | null>(null);
@@ -32,7 +33,7 @@ export function useAuthState() {
   const handleAuthChange = async (event: string, currentSession: Session | null) => {
     
     if (event === 'SIGNED_OUT') {
-      console.log('User signed out, clearing state');
+      devLog('User signed out, clearing state');
       setSession(null);
       setUser(null);
       setIsAdmin(false);
@@ -49,13 +50,13 @@ export function useAuthState() {
         try {
           await checkAdminStatus(currentSession.user.id);
         } catch (error) {
-          console.log('Admin check failed but continuing:', error);
+          devLog('Admin check failed but continuing:', error);
         }
       }, 100);
       
       setLoading(false);
     } else {
-      console.log('No session, clearing user state');
+      devLog('No session, clearing user state');
       setSession(null);
       setUser(null);
       setIsAdmin(false);
@@ -71,7 +72,7 @@ export function useAuthState() {
       if (!mounted) return;
       
       try {
-        console.log('Initializing auth state...');
+        devLog('Initializing auth state...');
         setLoading(true);
         
         // Get initial session
@@ -83,7 +84,7 @@ export function useAuthState() {
         const { data: authData } = supabase.auth.onAuthStateChange(
           async (event, session) => {
             if (!mounted) {
-              console.log('Component unmounted, ignoring auth state change');
+              devLog('Component unmounted, ignoring auth state change');
               return;
             }
             
@@ -96,7 +97,7 @@ export function useAuthState() {
         // Process initial session
         await handleAuthChange('INITIAL_SESSION', currentSession);
         
-        console.log('Auth initialization complete');
+        devLog('Auth initialization complete');
         setInitialized(true);
       } catch (error) {
         console.error('Error initializing auth:', error);
@@ -111,7 +112,7 @@ export function useAuthState() {
     const timer = setTimeout(initializeAuth, 50);
 
     return () => {
-      console.log('Cleaning up auth state hook');
+      devLog('Cleaning up auth state hook');
       clearTimeout(timer);
       mounted = false;
       if (authSubscription) {
@@ -120,7 +121,7 @@ export function useAuthState() {
     };
   }, []);
 
-  console.log('Auth state hook values:', { 
+  devLog('Auth state hook values:', { 
     session: !!session, 
     user: !!user, 
     loading, 

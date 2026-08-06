@@ -1,5 +1,6 @@
 
 import { useEffect, useRef } from "react";
+import { devLog } from "@/lib/logger";
 
 interface UseAutoSaveProps {
   data: any;
@@ -18,7 +19,7 @@ export const useAutoSave = ({ data, key, delay = 2000 }: UseAutoSaveProps) => {
     timeoutRef.current = setTimeout(() => {
       try {
         localStorage.setItem(`autosave_${key}`, JSON.stringify(data));
-        console.log(`Auto-saved form data for ${key}`);
+        devLog(`Auto-saved form data for ${key}`);
       } catch (error) {
         console.error("Auto-save failed:", error);
       }
