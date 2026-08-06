@@ -89,15 +89,15 @@ const AdminTabs = () => {
               <OverviewTab onTabChange={handleTabChange} />
             </TabsContent>
             <TabsContent value="users" className="mt-0"><UsersTab /></TabsContent>
+            <TabsContent value="mail" className="mt-0"><MailTab /></TabsContent>
             <TabsContent value="security" className="mt-0"><SecurityTab /></TabsContent>
             <TabsContent value="audit" className="mt-0"><SecurityAuditTab /></TabsContent>
             <TabsContent value="requests" className="mt-0"><AddressRequestsTab /></TabsContent>
             <TabsContent value="messages" className="mt-0"><ContactMessagesTab /></TabsContent>
             <TabsContent value="contracts" className="mt-0"><ContractsTab /></TabsContent>
-            <TabsContent value="data" className="mt-0"><DataTab /></TabsContent>
             <TabsContent value="logs" className="mt-0"><LogsTab /></TabsContent>
             <TabsContent value="monitoring" className="mt-0"><MonitoringTab /></TabsContent>
-            <TabsContent value="settings" className="mt-0"><SettingsTab /></TabsContent>
+
           </CardContent>
         </Card>
       </div>
