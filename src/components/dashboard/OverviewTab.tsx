@@ -1,12 +1,14 @@
-
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { Badge } from "@/components/ui/badge";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/contexts/AuthContext";
-import { Mail, CalendarCheck, CalendarX } from "lucide-react";
+import { Mail } from "lucide-react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { supabase } from "@/integrations/supabase/client";
+import { MailItem, MAIL_TYPE_LABELS, mailTypeClass } from "@/lib/mail-utils";
 
 interface OverviewTabProps {
   setActiveTab: (tab: string) => void;
@@ -17,38 +19,68 @@ interface ActivityData {
   posts: number;
 }
 
-const MOCK_ACTIVITY_DATA: ActivityData[] = [
-  { month: 'Jan', posts: 5 },
-  { month: 'Feb', posts: 7 },
-  { month: 'Mar', posts: 4 },
-  { month: 'Apr', posts: 8 },
-  { month: 'Mei', posts: 12 },
-  { month: 'Jun', posts: 8 },
-  { month: 'Jul', posts: 6 },
-  { month: 'Aug', posts: 9 },
-];
+const MONTHS_NL = ["Jan", "Feb", "Mrt", "Apr", "Mei", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"];
 
-const MOCK_UPCOMING_POSTS = [];
+const buildActivityData = (items: MailItem[]): ActivityData[] => {
+  const now = new Date();
+  const buckets: ActivityData[] = [];
+  const keyToIndex = new Map<string, number>();
+
+  for (let i = 7; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const key = `${d.getFullYear()}-${d.getMonth()}`;
+    keyToIndex.set(key, buckets.length);
+    buckets.push({ month: MONTHS_NL[d.getMonth()], posts: 0 });
+  }
+
+  items.forEach((item) => {
+    const d = new Date(item.received_at);
+    const idx = keyToIndex.get(`${d.getFullYear()}-${d.getMonth()}`);
+    if (idx !== undefined) buckets[idx].posts += 1;
+  });
+
+  return buckets;
+};
 
 const OverviewTab = ({ setActiveTab }: OverviewTabProps) => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
-  
+  const [mailItems, setMailItems] = useState<MailItem[]>([]);
+
   useEffect(() => {
-    // Simuleer het laden van data
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-    
-    return () => clearTimeout(timer);
-  }, []);
+    if (!user) return;
+    const fetchMail = async () => {
+      try {
+        setLoading(true);
+        const { data, error } = await supabase
+          .from("mail_items")
+          .select("*")
+          .eq("user_id", user.id)
+          .order("received_at", { ascending: false });
+        if (error) throw error;
+        setMailItems((data ?? []) as MailItem[]);
+      } catch (error) {
+        console.error("Error fetching mail items:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchMail();
+  }, [user]);
+
+  const activityData = buildActivityData(mailItems);
+  const recentMail = mailItems.slice(0, 5);
+  const unreadCount = mailItems.filter((m) => !m.is_read).length;
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('nl-NL', { day: 'numeric', month: 'short' }) + ' ' + 
-           date.toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' });
+    return (
+      date.toLocaleDateString("nl-NL", { day: "numeric", month: "short" }) +
+      " " +
+      date.toLocaleTimeString("nl-NL", { hour: "2-digit", minute: "2-digit" })
+    );
   };
-  
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <div className="lg:col-span-2 space-y-6">
@@ -56,19 +88,27 @@ const OverviewTab = ({ setActiveTab }: OverviewTabProps) => {
         <Card>
           <CardHeader>
             <CardTitle>Uw activiteit</CardTitle>
-            <CardDescription>Overzicht van uw ontvangen post door de tijd</CardDescription>
+            <CardDescription>Ontvangen post per maand (laatste 8 maanden)</CardDescription>
           </CardHeader>
           <CardContent>
             {loading ? (
               <div className="w-full h-[200px] flex items-center justify-center">
                 <Skeleton className="h-[200px] w-full" />
               </div>
+            ) : mailItems.length === 0 ? (
+              <div className="rounded-md border border-white/10 bg-white/5 py-12 text-center">
+                <Mail className="h-10 w-10 text-slate-500 mx-auto mb-3" />
+                <h3 className="font-medium mb-1">Nog geen post ontvangen</h3>
+                <p className="text-sm text-slate-400">
+                  Zodra wij post voor u registreren, ziet u hier uw activiteit.
+                </p>
+              </div>
             ) : (
-              <AspectRatio ratio={21/9} className="bg-white/5 border border-white/10 rounded-md">
+              <AspectRatio ratio={21 / 9} className="bg-white/5 border border-white/10 rounded-md">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={MOCK_ACTIVITY_DATA} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
+                  <BarChart data={activityData} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
                     <XAxis dataKey="month" stroke="hsl(215 20% 65%)" />
-                    <YAxis stroke="hsl(215 20% 65%)" />
+                    <YAxis stroke="hsl(215 20% 65%)" allowDecimals={false} />
                     <Tooltip
                       contentStyle={{
                         background: "hsl(217 33% 10%)",
@@ -99,7 +139,7 @@ const OverviewTab = ({ setActiveTab }: OverviewTabProps) => {
               <Button onClick={() => setActiveTab("profile")}>Naar profiel</Button>
             </CardFooter>
           </Card>
-          
+
           <Card>
             <CardHeader>
               <CardTitle>Instellingen</CardTitle>
@@ -109,20 +149,26 @@ const OverviewTab = ({ setActiveTab }: OverviewTabProps) => {
               <p>Configureer notificaties, privacy en andere systeeminstellingen.</p>
             </CardContent>
             <CardFooter>
-              <Button variant="outline" onClick={() => setActiveTab("settings")}>Instellingen bekijken</Button>
+              <Button variant="outline" onClick={() => setActiveTab("settings")}>
+                Instellingen bekijken
+              </Button>
             </CardFooter>
           </Card>
         </div>
       </div>
 
-      {/* Right column with upcoming posts */}
+      {/* Right column with recent mail */}
       <div className="space-y-6">
         <Card className="h-full">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Mail className="h-5 w-5" /> Ontvangen post
             </CardTitle>
-            <CardDescription>Uw geregistreerde post</CardDescription>
+            <CardDescription>
+              {unreadCount > 0
+                ? `${unreadCount} ongelezen van ${mailItems.length} poststukken`
+                : "Uw meest recente post"}
+            </CardDescription>
           </CardHeader>
           <CardContent>
             {loading ? (
@@ -131,26 +177,41 @@ const OverviewTab = ({ setActiveTab }: OverviewTabProps) => {
                 <Skeleton className="h-16 w-full" />
                 <Skeleton className="h-16 w-full" />
               </div>
-            ) : MOCK_UPCOMING_POSTS.length > 0 ? (
+            ) : recentMail.length > 0 ? (
               <div className="space-y-4">
-                {MOCK_UPCOMING_POSTS.map(post => (
-                  <div key={post.id} className="p-3 border border-white/10 rounded-lg bg-white/5">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h4 className="font-medium">{post.title}</h4>
-                        <p className="text-sm text-slate-400">{formatDate(post.date)}</p>
+                {recentMail.map((item) => (
+                  <div
+                    key={item.id}
+                    className={`p-3 border rounded-lg bg-white/5 ${
+                      item.is_read ? "border-white/10" : "border-blue-500/30"
+                    }`}
+                  >
+                    <div className="flex justify-between items-start gap-2">
+                      <div className="min-w-0">
+                        <h4 className={`truncate ${item.is_read ? "font-medium" : "font-bold"}`}>
+                          {item.subject}
+                        </h4>
+                        <p className="text-sm text-slate-400 truncate">
+                          {item.sender || "Onbekende afzender"} · {formatDate(item.received_at)}
+                        </p>
+                        <Badge
+                          variant="outline"
+                          className={`mt-2 ${mailTypeClass(item.mail_type)}`}
+                        >
+                          {MAIL_TYPE_LABELS[item.mail_type]}
+                        </Badge>
                       </div>
-                      {post.status === "confirmed" ? (
-                        <CalendarCheck className="h-5 w-5 text-green-400" />
-                      ) : (
-                        <CalendarX className="h-5 w-5 text-amber-400" />
-                      )}
+                      <Mail
+                        className={`h-5 w-5 shrink-0 ${
+                          item.is_read ? "text-slate-500" : "text-blue-400"
+                        }`}
+                      />
                     </div>
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="text-center py-4 text-slate-400">Geen ontvangen post</p>
+              <p className="text-center py-4 text-slate-400">Nog geen post ontvangen</p>
             )}
           </CardContent>
           <CardFooter>
