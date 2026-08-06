@@ -12,7 +12,6 @@ export function useAuthState() {
 
   const checkAdminStatus = async (userId: string) => {
     try {
-      console.log('Checking admin status for user:', userId);
       const { data, error } = await supabase.rpc('is_admin');
       
       if (error) {
@@ -21,7 +20,6 @@ export function useAuthState() {
         return false;
       }
       
-      console.log('Admin check result for user:', userId, 'is admin:', data);
       setIsAdmin(data);
       return data;
     } catch (err) {
@@ -32,7 +30,6 @@ export function useAuthState() {
   };
 
   const handleAuthChange = async (event: string, currentSession: Session | null) => {
-    console.log('Auth state changed:', event, currentSession?.user?.email);
     
     if (event === 'SIGNED_OUT') {
       console.log('User signed out, clearing state');
@@ -44,7 +41,6 @@ export function useAuthState() {
     }
     
     if (currentSession?.user) {
-      console.log('Setting user session for:', currentSession.user.email);
       setSession(currentSession);
       setUser(currentSession.user);
       
@@ -80,7 +76,6 @@ export function useAuthState() {
         
         // Get initial session
         const { data: { session: currentSession }, error } = await supabase.auth.getSession();
-        console.log('Initial session check:', !!currentSession, error ? 'Error: ' + error.message : 'OK');
         
         if (!mounted) return;
         

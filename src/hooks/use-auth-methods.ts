@@ -30,12 +30,10 @@ export function useAuthMethods() {
 
   const signIn = async (email: string, password: string) => {
     try {
-      console.log('Starting sign in process for:', email);
       cleanAuthState();
       
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (!error) {
-        console.log('Successful login for:', email);
       } else {
         console.error('Login error:', error.message);
       }
@@ -48,7 +46,6 @@ export function useAuthMethods() {
 
   const signUp = async (email: string, password: string, metadata?: Record<string, string>) => {
     try {
-      console.log('Starting sign up process for:', email);
       cleanAuthState();
       
       const { error } = await supabase.auth.signUp({
@@ -61,7 +58,6 @@ export function useAuthMethods() {
       });
       
       if (!error) {
-        console.log('Successful signup for:', email);
       } else {
         console.error('Signup error:', error.message);
       }
@@ -110,7 +106,6 @@ export function useAuthMethods() {
 
   const resetPassword = async (email: string) => {
     try {
-      console.log('Starting password reset for:', email);
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/auth?reset=true`,
       });

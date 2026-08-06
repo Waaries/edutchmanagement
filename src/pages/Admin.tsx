@@ -29,7 +29,6 @@ const Admin: React.FC = () => {
       }
 
       try {
-        console.log("Admin page - Verifying admin access for:", user.email);
         console.log("Context isAdmin:", contextIsAdmin);
         
         // First check context admin status, then verify with RPC if needed

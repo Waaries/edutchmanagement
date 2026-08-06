@@ -12,7 +12,6 @@ export const createOrUpdateProfile = async (userId: string, userData: any) => {
       .maybeSingle();
 
     if (existingProfile) {
-      console.log('Profile already exists for user:', userId);
       return { data: existingProfile, error: null };
     }
 
@@ -79,7 +78,6 @@ export const ensureProfileExists = async (user: User) => {
       .maybeSingle();
 
     if (existingProfile) {
-      console.log('Profile already exists for user:', user.email);
       return true;
     }
 

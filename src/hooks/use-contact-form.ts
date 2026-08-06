@@ -103,7 +103,6 @@ export const useContactForm = () => {
       
       // Get client IP for rate limiting
       const clientIP = await getClientIP();
-      console.log("[ContactForm] Client IP:", clientIP);
 
       // Use secure contact submission function instead of direct database insert
       const { data: submitData, error: submitError } = await supabase.functions.invoke('secure-contact-submit', {

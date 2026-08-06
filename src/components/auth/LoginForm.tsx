@@ -92,7 +92,6 @@ const LoginForm = () => {
     e.preventDefault();
     e.stopPropagation();
     
-    console.log('Password reset clicked for email:', email);
     
     if (!email || !email.trim()) {
       setError("Voer eerst uw e-mailadres in om uw wachtwoord te resetten");
