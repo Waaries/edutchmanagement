@@ -1,4 +1,5 @@
 import { devLog } from "@/lib/logger";
+import { enableAnalytics, disableAnalytics, initializeAnalytics } from './analytics';
 
 // Cookie management utilities with enhanced error handling and fallback support
 
@@ -265,25 +266,22 @@ export const setConsentCookies = (consentType: 'all' | 'essential') => {
     setCookie('analyticsEnabled', 'true');
     
     // Initialize analytics if consent is granted
-    import('./analytics').then(({ enableAnalytics, initializeAnalytics }) => {
-      // Ensure we're in browser environment
-      if (typeof window !== 'undefined') {
-        // Re-initialize analytics with consent
-        setTimeout(async () => {
-          await initializeAnalytics();
-          enableAnalytics();
-          
-          // Verify consent was properly set
-          setTimeout(() => {
-            const verifyConsent = getConsentStatus();
-            devLog(`[Cookie Debug] Consent verification after setting: ${verifyConsent}`);
-            if (verifyConsent !== consentType) {
-              console.error(`[Cookie Debug] Consent verification failed! Expected: ${consentType}, Got: ${verifyConsent}`);
-            }
-          }, 200);
-        }, 100);
-      }
-    });
+    if (typeof window !== 'undefined') {
+      // Re-initialize analytics with consent
+      setTimeout(async () => {
+        await initializeAnalytics();
+        enableAnalytics();
+
+        // Verify consent was properly set
+        setTimeout(() => {
+          const verifyConsent = getConsentStatus();
+          devLog(`[Cookie Debug] Consent verification after setting: ${verifyConsent}`);
+          if (verifyConsent !== consentType) {
+            console.error(`[Cookie Debug] Consent verification failed! Expected: ${consentType}, Got: ${verifyConsent}`);
+          }
+        }, 200);
+      }, 100);
+    }
     
     devLog('[Cookie Debug] Analytics tracking enabled');
   } else {
@@ -291,11 +289,9 @@ export const setConsentCookies = (consentType: 'all' | 'essential') => {
     eraseCookie('analyticsEnabled');
     
     // Disable analytics if consent is withdrawn
-    import('./analytics').then(({ disableAnalytics }) => {
-      if (typeof window !== 'undefined') {
-        disableAnalytics();
-      }
-    });
+    if (typeof window !== 'undefined') {
+      disableAnalytics();
+    }
     
     devLog('[Cookie Debug] Analytics tracking disabled');
   }
