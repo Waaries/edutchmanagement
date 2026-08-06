@@ -87,14 +87,6 @@ const Dashboard = () => {
   useEffect(() => {
     updateMetaTags(pageSEO.dashboard);
     
-    console.log('Dashboard page - Auth state:', { 
-      user: !!user, 
-      loading,
-      isAdmin,
-      initialized,
-      userEmail: user?.email 
-    });
-
     // Only proceed with auth checks if initialized
     if (!initialized) {
       console.log('Auth not yet initialized, waiting...');
@@ -131,8 +123,6 @@ const Dashboard = () => {
     console.log("Dashboard: No user, redirecting to auth");
     return <Navigate to="/auth" replace />;
   }
-
-  console.log("Dashboard: Rendering dashboard for user:", user.email);
 
   return (
     <ErrorBoundary>
