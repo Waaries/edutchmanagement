@@ -5,9 +5,8 @@ import UsersTab from "./tabs/UsersTab";
 import AddressRequestsTab from "./tabs/AddressRequestsTab";
 import ContactMessagesTab from "./tabs/ContactMessagesTab";
 import ContractsTab from "./tabs/ContractsTab";
-import DataTab from "./tabs/DataTab";
+import MailTab from "./tabs/MailTab";
 import LogsTab from "./tabs/LogsTab";
-import SettingsTab from "./tabs/SettingsTab";
 import MonitoringTab from "./tabs/MonitoringTab";
 import SecurityTab from "./tabs/SecurityTab";
 import SecurityAuditTab from "./tabs/SecurityAuditTab";
@@ -20,26 +19,25 @@ import {
   Building2,
   MessageSquare,
   FileText,
-  Database,
+  Mail,
   ScrollText,
   Activity,
-  Settings,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const NAV = [
   { value: "overview", label: "Overzicht", icon: LayoutDashboard },
   { value: "users", label: "Gebruikers", icon: Users },
+  { value: "mail", label: "Post", icon: Mail },
   { value: "security", label: "Beveiliging", icon: Shield },
   { value: "audit", label: "Audit", icon: ClipboardList },
   { value: "requests", label: "Aanvragen", icon: Building2 },
   { value: "messages", label: "Berichten", icon: MessageSquare },
   { value: "contracts", label: "Contracten", icon: FileText },
-  { value: "data", label: "Data", icon: Database },
   { value: "logs", label: "Logs", icon: ScrollText },
   { value: "monitoring", label: "Monitoring", icon: Activity },
-  { value: "settings", label: "Instellingen", icon: Settings },
 ];
+
 
 const AdminTabs = () => {
   const [activeTab, setActiveTab] = useState("overview");
