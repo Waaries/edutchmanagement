@@ -1,5 +1,4 @@
 import { devLog } from "@/lib/logger";
-import { enableAnalytics, disableAnalytics, initializeAnalytics } from './analytics';
 
 // Cookie management utilities with enhanced error handling and fallback support
 
@@ -269,8 +268,9 @@ export const setConsentCookies = (consentType: 'all' | 'essential') => {
     if (typeof window !== 'undefined') {
       // Re-initialize analytics with consent
       setTimeout(async () => {
-        await initializeAnalytics();
-        enableAnalytics();
+        const analytics = await import('./analytics');
+        await analytics.initializeAnalytics();
+        analytics.enableAnalytics();
 
         // Verify consent was properly set
         setTimeout(() => {
@@ -290,7 +290,7 @@ export const setConsentCookies = (consentType: 'all' | 'essential') => {
     
     // Disable analytics if consent is withdrawn
     if (typeof window !== 'undefined') {
-      disableAnalytics();
+      void import('./analytics').then(({ disableAnalytics }) => disableAnalytics());
     }
     
     devLog('[Cookie Debug] Analytics tracking disabled');
