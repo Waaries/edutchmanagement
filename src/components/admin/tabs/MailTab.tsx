@@ -138,7 +138,7 @@ const MailTab = () => {
         status: scanPath ? "scanned" : "received",
         received_at: new Date(form.received_at).toISOString(),
         notes: form.notes.trim() || null,
-        scan_url: scanPath,
+        scan_path: scanPath,
         registered_by: user?.id ?? null,
       });
       if (error) throw error;
@@ -186,18 +186,18 @@ const MailTab = () => {
       });
       return;
     }
-    if (item.scan_url) {
-      await supabase.storage.from("mail-scans").remove([item.scan_url]);
+    if (item.scan_path) {
+      await supabase.storage.from("mail-scans").remove([item.scan_path]);
     }
     setItems((prev) => prev.filter((i) => i.id !== item.id));
     toast({ title: "Verwijderd", description: "Het poststuk is verwijderd." });
   };
 
   const handleOpenScan = async (item: MailItem) => {
-    if (!item.scan_url) return;
+    if (!item.scan_path) return;
     const { data, error } = await supabase.storage
       .from("mail-scans")
-      .createSignedUrl(item.scan_url, 300);
+      .createSignedUrl(item.scan_path, 300);
     if (error || !data) {
       toast({
         title: "Scan niet beschikbaar",
@@ -445,7 +445,7 @@ const MailTab = () => {
                         </Select>
                       </TableCell>
                       <TableCell className="text-right whitespace-nowrap">
-                        {item.scan_url && (
+                        {item.scan_path && (
                           <Button
                             variant="ghost"
                             size="icon"
