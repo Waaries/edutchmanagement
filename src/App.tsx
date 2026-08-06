@@ -1,5 +1,5 @@
 
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -14,16 +14,24 @@ import { enforceHTTPS, applySecurityHeaders } from "./lib/security";
 import { initializePerformanceMonitoring } from "./lib/performance";
 import { updateMetaTags, pageSEO } from "./lib/seo";
 import Index from "./pages/Index";
-import Auth from "./pages/Auth";
-import Admin from "./pages/Admin";
-import Dashboard from "./pages/Dashboard";
-import AddressRequest from "./pages/AddressRequest";
 import NotFound from "./pages/NotFound";
-import CookiePolicy from "./pages/CookiePolicy";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
-import TermsAndConditions from "./pages/TermsAndConditions";
-import PublicContract from "./pages/PublicContract";
 import CookieConsent from "@/components/CookieConsent";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
+
+// Heavy routes are loaded on demand so the homepage bundle stays small.
+const Auth = lazy(() => import("./pages/Auth"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const AddressRequest = lazy(() => import("./pages/AddressRequest"));
+const PublicContract = lazy(() => import("./pages/PublicContract"));
+const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const TermsAndConditions = lazy(() => import("./pages/TermsAndConditions"));
+
+const RouteFallback = () => (
+  <div className="flex min-h-screen items-center justify-center bg-slate-950">
+    <LoadingSpinner size="lg" />
+  </div>
+);
 
 // Create a QueryClient instance
 const queryClient = new QueryClient({
@@ -52,6 +60,7 @@ function AppContent() {
     <>
       <Toaster />
       <CookieConsent />
+      <Suspense fallback={<RouteFallback />}>
       <Routes>
         <Route path="/" element={<AppLayout showSidebar={false}><Index /></AppLayout>} />
         <Route path="/auth" element={<AppLayout showSidebar={false}><Auth /></AppLayout>} />
@@ -64,6 +73,7 @@ function AppContent() {
         <Route path="/terms" element={<AppLayout showSidebar={false}><TermsAndConditions /></AppLayout>} />
         <Route path="*" element={<AppLayout showSidebar={false}><NotFound /></AppLayout>} />
       </Routes>
+      </Suspense>
     </>
   );
 }
