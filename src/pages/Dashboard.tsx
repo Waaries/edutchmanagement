@@ -27,7 +27,7 @@ import SecurityAuditTab from "@/components/admin/tabs/SecurityAuditTab";
 import AdminAddressRequestsTab from "@/components/admin/tabs/AddressRequestsTab";
 import ContactMessagesTab from "@/components/admin/tabs/ContactMessagesTab";
 import ContractsTab from "@/components/admin/tabs/ContractsTab";
-import DataTab from "@/components/admin/tabs/DataTab";
+import AdminMailTab from "@/components/admin/tabs/MailTab";
 import LogsTab from "@/components/admin/tabs/LogsTab";
 import MonitoringTab from "@/components/admin/tabs/MonitoringTab";
 
@@ -43,15 +43,16 @@ const USER_NAV = [
 
 const ADMIN_NAV = [
   { value: "admin-users", label: "Gebruikers", icon: Users },
+  { value: "admin-mail", label: "Post", icon: Mail },
   { value: "admin-security", label: "Beveiliging", icon: Shield },
   { value: "admin-audit", label: "Audit", icon: ClipboardList },
   { value: "admin-requests", label: "Aanvragen", icon: Building2 },
   { value: "admin-messages", label: "Berichten", icon: MessageSquare },
   { value: "admin-contracts", label: "Contracten", icon: FileText },
-  { value: "admin-data", label: "Data", icon: Database },
   { value: "admin-logs", label: "Logs", icon: ScrollText },
   { value: "admin-monitoring", label: "Monitoring", icon: Activity },
 ];
+
 
 
 const Dashboard = () => {
@@ -227,12 +228,13 @@ const Dashboard = () => {
             {isAdmin && (
               <>
                 <TabsContent value="admin-users" className="mt-0"><UsersTab /></TabsContent>
+                <TabsContent value="admin-mail" className="mt-0"><AdminMailTab /></TabsContent>
                 <TabsContent value="admin-security" className="mt-0"><SecurityTab /></TabsContent>
                 <TabsContent value="admin-audit" className="mt-0"><SecurityAuditTab /></TabsContent>
                 <TabsContent value="admin-requests" className="mt-0"><AdminAddressRequestsTab /></TabsContent>
                 <TabsContent value="admin-messages" className="mt-0"><ContactMessagesTab /></TabsContent>
                 <TabsContent value="admin-contracts" className="mt-0"><ContractsTab /></TabsContent>
-                <TabsContent value="admin-data" className="mt-0"><DataTab /></TabsContent>
+
                 <TabsContent value="admin-logs" className="mt-0"><LogsTab /></TabsContent>
                 <TabsContent value="admin-monitoring" className="mt-0"><MonitoringTab /></TabsContent>
               </>
