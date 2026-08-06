@@ -16,7 +16,7 @@ import { updateMetaTags, pageSEO } from "./lib/seo";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import CookieConsent from "@/components/CookieConsent";
-import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import LoadingSpinner from "@/components/ui/loading-spinner";
 
 // Heavy routes are loaded on demand so the homepage bundle stays small.
 const Auth = lazy(() => import("./pages/Auth"));
