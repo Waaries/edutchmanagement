@@ -228,12 +228,13 @@ const Dashboard = () => {
             {isAdmin && (
               <>
                 <TabsContent value="admin-users" className="mt-0"><UsersTab /></TabsContent>
+                <TabsContent value="admin-mail" className="mt-0"><AdminMailTab /></TabsContent>
                 <TabsContent value="admin-security" className="mt-0"><SecurityTab /></TabsContent>
                 <TabsContent value="admin-audit" className="mt-0"><SecurityAuditTab /></TabsContent>
                 <TabsContent value="admin-requests" className="mt-0"><AdminAddressRequestsTab /></TabsContent>
                 <TabsContent value="admin-messages" className="mt-0"><ContactMessagesTab /></TabsContent>
                 <TabsContent value="admin-contracts" className="mt-0"><ContractsTab /></TabsContent>
-                <TabsContent value="admin-data" className="mt-0"><DataTab /></TabsContent>
+
                 <TabsContent value="admin-logs" className="mt-0"><LogsTab /></TabsContent>
                 <TabsContent value="admin-monitoring" className="mt-0"><MonitoringTab /></TabsContent>
               </>
