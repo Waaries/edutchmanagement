@@ -9,7 +9,8 @@ export const SecurityHeaders = {
       "'unsafe-eval'",
       "https://www.googletagmanager.com",
       "https://www.google-analytics.com",
-      "https://fonts.googleapis.com"
+      "https://fonts.googleapis.com",
+      "https://cdn.gpteng.co"
     ],
     'style-src': [
       "'self'", 
