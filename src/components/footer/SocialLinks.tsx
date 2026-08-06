@@ -1,4 +1,4 @@
-import { Facebook, Instagram, Linkedin, Mail } from "lucide-react";
+import { Facebook, Mail } from "lucide-react";
 
 interface SocialLinksProps {
   className?: string;
@@ -12,16 +12,6 @@ const SocialLinks = ({ className }: SocialLinksProps) => {
           icon: <Facebook size={20} />, 
           label: "Facebook", 
           href: "https://www.facebook.com/profile.php?id=61576336456020" 
-        },
-        { 
-          icon: <Instagram size={20} />, 
-          label: "Instagram", 
-          href: "#instagram" 
-        },
-        { 
-          icon: <Linkedin size={20} />,
-          label: "LinkedIn", 
-          href: "#linkedin" 
         },
         { 
           icon: <Mail size={20} />,
