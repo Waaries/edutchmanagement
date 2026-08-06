@@ -95,15 +95,10 @@ export const useAddressRequestForm = () => {
     setIsSubmitting(true);
     
     try {
-      console.log("Submitting address request with data:", formData);
-      console.log("User authenticated:", !!user);
-      console.log("User ID:", user?.id || 'null');
-
       // Try to get client IP but don't block submission if it fails
       let clientIP = null;
       try {
         clientIP = await getClientIP();
-        console.log("Client IP:", clientIP);
       } catch (ipError) {
         console.warn("Failed to get client IP, continuing without it:", ipError);
         // Don't block form submission if IP fetch fails
@@ -115,7 +110,7 @@ export const useAddressRequestForm = () => {
         ip_address: clientIP || null
       };
 
-      console.log("Final request data:", requestData);
+
 
       const { data, error } = await supabase
         .from('address_requests')
@@ -150,11 +145,8 @@ export const useAddressRequestForm = () => {
         return; // Don't throw, handle gracefully
       }
 
-      console.log("Successfully created address request:", data);
-
       // Send notification email to admin
       try {
-        console.log("Sending notification email to admin...");
         const notificationResponse = await supabase.functions.invoke('send-address-request-notification', {
           body: requestData
         });
@@ -167,7 +159,6 @@ export const useAddressRequestForm = () => {
             description: "Uw aanvraag is succesvol verzonden, maar er was een probleem met de e-mailnotificatie.",
           });
         } else {
-          console.log("Notification email sent successfully");
         }
       } catch (emailError) {
         console.error("Failed to send notification email:", emailError);

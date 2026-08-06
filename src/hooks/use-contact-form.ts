@@ -6,6 +6,7 @@ import { useFormValidation } from "@/hooks/use-form-validation";
 import { useAutoSave } from "@/hooks/use-auto-save";
 import { useAnalytics } from "@/hooks/use-analytics";
 import { getClientIP } from "@/lib/ip-utils";
+import { devLog } from "@/lib/logger";
 
 export interface ContactFormState {
   name: string;
@@ -99,11 +100,10 @@ export const useContactForm = () => {
     setLoading(true);
     
     try {
-      console.log("[ContactForm] Submitting form data:", formState);
+      devLog("[ContactForm] Submitting form data:", formState);
       
       // Get client IP for rate limiting
       const clientIP = await getClientIP();
-      console.log("[ContactForm] Client IP:", clientIP);
 
       // Use secure contact submission function instead of direct database insert
       const { data: submitData, error: submitError } = await supabase.functions.invoke('secure-contact-submit', {
@@ -134,7 +134,7 @@ export const useContactForm = () => {
         throw new Error(submitData?.error || "Onbekende fout bij verzenden");
       }
 
-      console.log("[ContactForm] Secure submission successful:", submitData);
+      devLog("[ContactForm] Secure submission successful:", submitData);
       
       // Clear auto-saved data on successful submission
       clearSavedData();

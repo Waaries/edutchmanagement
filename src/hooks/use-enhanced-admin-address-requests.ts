@@ -2,6 +2,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { devLog } from "@/lib/logger";
 
 export interface AddressRequest {
   id: string;
@@ -55,7 +56,7 @@ export const useEnhancedAdminAddressRequests = () => {
           table: 'address_requests'
         },
         (payload) => {
-          console.log('Real-time update:', payload);
+          devLog('Real-time update:', payload);
           if (payload.eventType === 'INSERT') {
             setRequests(prev => [payload.new as AddressRequest, ...prev]);
           } else if (payload.eventType === 'UPDATE') {

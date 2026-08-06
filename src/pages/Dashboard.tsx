@@ -33,6 +33,7 @@ import MonitoringTab from "@/components/admin/tabs/MonitoringTab";
 
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import ErrorBoundary from "@/components/ErrorBoundary";
+import { devLog } from "@/lib/logger";
 
 const USER_NAV = [
   { value: "overview", label: "Overzicht", icon: LayoutDashboard },
@@ -87,29 +88,21 @@ const Dashboard = () => {
   useEffect(() => {
     updateMetaTags(pageSEO.dashboard);
     
-    console.log('Dashboard page - Auth state:', { 
-      user: !!user, 
-      loading,
-      isAdmin,
-      initialized,
-      userEmail: user?.email 
-    });
-
     // Only proceed with auth checks if initialized
     if (!initialized) {
-      console.log('Auth not yet initialized, waiting...');
+      devLog('Auth not yet initialized, waiting...');
       return;
     }
 
     if (!loading) {
       if (!user) {
-        console.log("User is not logged in, redirecting to auth page");
+        devLog("User is not logged in, redirecting to auth page");
         if (!isRedirecting) {
           setIsRedirecting(true);
           navigate("/auth", { replace: true });
         }
       } else {
-        console.log("User is logged in on dashboard");
+        devLog("User is logged in on dashboard");
         setIsRedirecting(false);
       }
     }
@@ -117,7 +110,7 @@ const Dashboard = () => {
 
   // Show loading while auth is initializing or loading
   if (!initialized || loading) {
-    console.log("Dashboard: Showing loading state");
+    devLog("Dashboard: Showing loading state");
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-slate-950">
         <LoadingSpinner size="lg" />
@@ -128,11 +121,9 @@ const Dashboard = () => {
 
   // If not logged in, redirect to auth
   if (!user) {
-    console.log("Dashboard: No user, redirecting to auth");
+    devLog("Dashboard: No user, redirecting to auth");
     return <Navigate to="/auth" replace />;
   }
-
-  console.log("Dashboard: Rendering dashboard for user:", user.email);
 
   return (
     <ErrorBoundary>

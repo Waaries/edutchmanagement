@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { User } from "@supabase/supabase-js";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
+import { devLog } from "@/lib/logger";
 
 interface AdminSecurityCheckProps {
   user: User;
@@ -31,7 +32,6 @@ const AdminSecurityCheck: React.FC<AdminSecurityCheckProps> = ({
       
       try {
         // Log admin access attempt for security monitoring
-        console.log("Admin access verification for:", user.email);
         
         // Use the fixed is_admin() function via RPC call
         const { data, error } = await supabase.rpc('is_admin');
@@ -51,7 +51,7 @@ const AdminSecurityCheck: React.FC<AdminSecurityCheckProps> = ({
         }
         
         // data will be true or false from the is_admin function
-        console.log("Admin verification result:", data);
+        devLog("Admin verification result:", data);
         setVerifiedAdmin(data);
         
         // Redirect non-admins with a message

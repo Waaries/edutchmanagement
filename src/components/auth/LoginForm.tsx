@@ -10,6 +10,7 @@ import { SocialAuthButtons } from './SocialAuthButtons';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import { devLog } from "@/lib/logger";
 
 const LoginForm = () => {
   const { signIn, resetPassword } = useAuth();
@@ -48,7 +49,7 @@ const LoginForm = () => {
     if (error) {
       setLoginAttempts(prev => prev + 1);
       setError(error.message);
-      console.log("Login failed:", error.message);
+      devLog("Login failed:", error.message);
       
       // After 3 failed attempts, suggest password reset
       if (loginAttempts >= 2) {
@@ -62,7 +63,7 @@ const LoginForm = () => {
         description: language === 'nl' ? "U bent succesvol ingelogd." : "You have successfully logged in.",
       });
       
-      console.log("Login successful, checking admin status for redirect");
+      devLog("Login successful, checking admin status for redirect");
       
       // Check admin status to determine redirect destination
       try {
@@ -75,7 +76,7 @@ const LoginForm = () => {
         } else {
           // Redirect based on admin status
           const redirectUrl = isAdmin ? '/admin' : '/dashboard';
-          console.log("Redirecting to:", redirectUrl, "isAdmin:", isAdmin);
+          devLog("Redirecting to:", redirectUrl, "isAdmin:", isAdmin);
           window.location.href = redirectUrl;
         }
       } catch (err) {
@@ -92,7 +93,6 @@ const LoginForm = () => {
     e.preventDefault();
     e.stopPropagation();
     
-    console.log('Password reset clicked for email:', email);
     
     if (!email || !email.trim()) {
       setError("Voer eerst uw e-mailadres in om uw wachtwoord te resetten");

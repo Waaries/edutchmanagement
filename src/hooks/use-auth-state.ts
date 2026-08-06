@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Session, User } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
+import { devLog } from "@/lib/logger";
 
 export function useAuthState() {
   const [session, setSession] = useState<Session | null>(null);
@@ -12,7 +13,6 @@ export function useAuthState() {
 
   const checkAdminStatus = async (userId: string) => {
     try {
-      console.log('Checking admin status for user:', userId);
       const { data, error } = await supabase.rpc('is_admin');
       
       if (error) {
@@ -21,7 +21,6 @@ export function useAuthState() {
         return false;
       }
       
-      console.log('Admin check result for user:', userId, 'is admin:', data);
       setIsAdmin(data);
       return data;
     } catch (err) {
@@ -32,10 +31,9 @@ export function useAuthState() {
   };
 
   const handleAuthChange = async (event: string, currentSession: Session | null) => {
-    console.log('Auth state changed:', event, currentSession?.user?.email);
     
     if (event === 'SIGNED_OUT') {
-      console.log('User signed out, clearing state');
+      devLog('User signed out, clearing state');
       setSession(null);
       setUser(null);
       setIsAdmin(false);
@@ -44,7 +42,6 @@ export function useAuthState() {
     }
     
     if (currentSession?.user) {
-      console.log('Setting user session for:', currentSession.user.email);
       setSession(currentSession);
       setUser(currentSession.user);
       
@@ -53,13 +50,13 @@ export function useAuthState() {
         try {
           await checkAdminStatus(currentSession.user.id);
         } catch (error) {
-          console.log('Admin check failed but continuing:', error);
+          devLog('Admin check failed but continuing:', error);
         }
       }, 100);
       
       setLoading(false);
     } else {
-      console.log('No session, clearing user state');
+      devLog('No session, clearing user state');
       setSession(null);
       setUser(null);
       setIsAdmin(false);
@@ -75,12 +72,11 @@ export function useAuthState() {
       if (!mounted) return;
       
       try {
-        console.log('Initializing auth state...');
+        devLog('Initializing auth state...');
         setLoading(true);
         
         // Get initial session
         const { data: { session: currentSession }, error } = await supabase.auth.getSession();
-        console.log('Initial session check:', !!currentSession, error ? 'Error: ' + error.message : 'OK');
         
         if (!mounted) return;
         
@@ -88,7 +84,7 @@ export function useAuthState() {
         const { data: authData } = supabase.auth.onAuthStateChange(
           async (event, session) => {
             if (!mounted) {
-              console.log('Component unmounted, ignoring auth state change');
+              devLog('Component unmounted, ignoring auth state change');
               return;
             }
             
@@ -101,7 +97,7 @@ export function useAuthState() {
         // Process initial session
         await handleAuthChange('INITIAL_SESSION', currentSession);
         
-        console.log('Auth initialization complete');
+        devLog('Auth initialization complete');
         setInitialized(true);
       } catch (error) {
         console.error('Error initializing auth:', error);
@@ -116,7 +112,7 @@ export function useAuthState() {
     const timer = setTimeout(initializeAuth, 50);
 
     return () => {
-      console.log('Cleaning up auth state hook');
+      devLog('Cleaning up auth state hook');
       clearTimeout(timer);
       mounted = false;
       if (authSubscription) {
@@ -125,7 +121,7 @@ export function useAuthState() {
     };
   }, []);
 
-  console.log('Auth state hook values:', { 
+  devLog('Auth state hook values:', { 
     session: !!session, 
     user: !!user, 
     loading, 

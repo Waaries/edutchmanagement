@@ -9,6 +9,7 @@ import SimpleAuthPage from '@/components/auth/SimpleAuthPage';
 import SuccessDialog from '@/components/auth/SuccessDialog';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import LoadingSpinner from '@/components/ui/loading-spinner';
+import { devLog } from "@/lib/logger";
 
 const Auth = () => {
   const location = useLocation();
@@ -71,12 +72,12 @@ const Auth = () => {
   useEffect(() => {
     // Only check for redirects if auth is initialized
     if (!initialized) {
-      console.log('Auth not yet initialized in Auth page');
+      devLog('Auth not yet initialized in Auth page');
       return;
     }
 
     if (user && !loading && !isRedirecting) {
-      console.log("User is logged in, redirecting to appropriate page:", isAdmin ? "/admin" : "/dashboard");
+      devLog("User is logged in, redirecting to appropriate page:", isAdmin ? "/admin" : "/dashboard");
       
       setIsRedirecting(true);
       // Use setTimeout to ensure state is properly set

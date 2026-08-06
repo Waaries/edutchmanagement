@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { devLog } from "@/lib/logger";
 
 interface DashboardHeaderProps {
   isAdmin: boolean;
@@ -34,7 +35,7 @@ const DashboardHeader = ({ isAdmin }: DashboardHeaderProps) => {
           });
         } else {
           setHasAdminRole(!!data);
-          console.log("Admin check result:", data);
+          devLog("Admin check result:", data);
         }
       } catch (err) {
         console.error("Error verifying admin role:", err);

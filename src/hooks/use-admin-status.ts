@@ -18,11 +18,9 @@ export function useAdminStatus(onStatusChange: () => void) {
     try {
       setIsProcessing(true);
       
-      console.log("Toggling admin status for:", user.email, "Current status:", user.is_admin);
       
       if (user.is_admin) {
         // Remove admin role using RPC function to avoid RLS recursion
-        console.log("Removing admin role from:", user.id);
         const { error } = await supabase
           .rpc('remove_admin_role', { user_id_param: user.id });
 
@@ -37,7 +35,6 @@ export function useAdminStatus(onStatusChange: () => void) {
         });
       } else {
         // Add admin role using RPC function to avoid RLS recursion
-        console.log("Adding admin role to:", user.id);
         const { error } = await supabase
           .rpc('add_admin_role', { user_id_param: user.id });
 

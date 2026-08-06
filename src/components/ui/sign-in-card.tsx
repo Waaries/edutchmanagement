@@ -8,6 +8,7 @@ import CardGlowEffect from '../auth/card/CardGlowEffect';
 import CardHeader from '../auth/card/CardHeader';
 import LoginForm from '../auth/LoginForm';
 import RegisterForm from '../auth/RegisterForm';
+import { devLog } from "@/lib/logger";
 
 const SignInCard = () => {
   const [searchParams] = useSearchParams();
@@ -31,7 +32,7 @@ const SignInCard = () => {
   // Update tab when URL changes
   useEffect(() => {
     const newTab = getInitialTab();
-    console.log('URL params changed, setting tab to:', newTab);
+    devLog('URL params changed, setting tab to:', newTab);
     setCurrentTab(newTab);
   }, [searchParams]);
 
@@ -48,7 +49,7 @@ const SignInCard = () => {
   };
 
   const handleTabChange = (value: string) => {
-    console.log('Tab change requested to:', value);
+    devLog('Tab change requested to:', value);
     
     // Update local state immediately
     setCurrentTab(value);
@@ -62,13 +63,13 @@ const SignInCard = () => {
   };
 
   const handleRegistrationSuccess = (message: string) => {
-    console.log('Registration successful:', message);
+    devLog('Registration successful:', message);
     // Switch to login tab and show success message
     setCurrentTab('login');
     navigate('/auth', { replace: true });
   };
 
-  console.log('Current tab state:', currentTab);
+  devLog('Current tab state:', currentTab);
 
   return (
     <div className="min-h-screen w-screen bg-white relative overflow-hidden flex items-center justify-center">

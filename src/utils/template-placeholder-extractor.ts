@@ -1,3 +1,4 @@
+import { devLog } from "@/lib/logger";
 interface ExtractedField {
   field_name: string;
   field_label: string;
@@ -8,17 +9,17 @@ interface ExtractedField {
 }
 
 export const extractPlaceholdersFromTemplate = (content: string): ExtractedField[] => {
-  console.log('Extracting placeholders from content:', content.substring(0, 200) + '...');
+  devLog('Extracting placeholders from content:', content.substring(0, 200) + '...');
   
   // Extract all placeholders in the format {{placeholder_name}}
   const placeholderRegex = /\{\{([^}]+)\}\}/g;
   const matches = [...content.matchAll(placeholderRegex)];
   
-  console.log('Found placeholder matches:', matches.map(m => m[1]));
+  devLog('Found placeholder matches:', matches.map(m => m[1]));
   
   // Remove duplicates and create field objects
   const uniquePlaceholders = [...new Set(matches.map(match => match[1].trim()))];
-  console.log('Unique placeholders:', uniquePlaceholders);
+  devLog('Unique placeholders:', uniquePlaceholders);
   
   return uniquePlaceholders.map((placeholder, index) => {
     const fieldName = placeholder.toLowerCase().replace(/\s+/g, '_');
@@ -77,7 +78,7 @@ export const extractPlaceholdersFromTemplate = (content: string): ExtractedField
       sort_order: index
     };
     
-    console.log('Created field:', extractedField);
+    devLog('Created field:', extractedField);
     return extractedField;
   });
 };
@@ -86,26 +87,26 @@ export const mergeExtractedFieldsWithExisting = (
   extractedFields: ExtractedField[],
   existingFields: any[]
 ): ExtractedField[] => {
-  console.log('Merging fields:', { extractedCount: extractedFields.length, existingCount: existingFields.length });
+  devLog('Merging fields:', { extractedCount: extractedFields.length, existingCount: existingFields.length });
   
   const existingFieldNames = new Set(existingFields.map(field => field.field_name));
-  console.log('Existing field names:', Array.from(existingFieldNames));
+  devLog('Existing field names:', Array.from(existingFieldNames));
   
   // Keep existing fields and add new ones
   const mergedFields = [...existingFields];
   
   extractedFields.forEach(extractedField => {
     if (!existingFieldNames.has(extractedField.field_name)) {
-      console.log('Adding new field:', extractedField.field_name);
+      devLog('Adding new field:', extractedField.field_name);
       mergedFields.push({
         ...extractedField,
         sort_order: mergedFields.length
       });
     } else {
-      console.log('Field already exists, skipping:', extractedField.field_name);
+      devLog('Field already exists, skipping:', extractedField.field_name);
     }
   });
   
-  console.log('Final merged fields count:', mergedFields.length);
+  devLog('Final merged fields count:', mergedFields.length);
   return mergedFields;
 };

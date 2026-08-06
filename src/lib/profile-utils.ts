@@ -1,6 +1,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 import { User } from '@supabase/supabase-js';
+import { devLog } from "@/lib/logger";
 
 export const createOrUpdateProfile = async (userId: string, userData: any) => {
   try {
@@ -12,7 +13,6 @@ export const createOrUpdateProfile = async (userId: string, userData: any) => {
       .maybeSingle();
 
     if (existingProfile) {
-      console.log('Profile already exists for user:', userId);
       return { data: existingProfile, error: null };
     }
 
@@ -35,13 +35,13 @@ export const createOrUpdateProfile = async (userId: string, userData: any) => {
       console.error('Error creating profile:', error);
       // If it's an RLS error, still return success to not block the user
       if (error.code === '42501') {
-        console.log('RLS policy prevents profile creation, but allowing user to continue');
+        devLog('RLS policy prevents profile creation, but allowing user to continue');
         return { data: { id: userId, ...profileData }, error: null };
       }
       return { data: null, error };
     }
 
-    console.log('Profile created successfully:', data);
+    devLog('Profile created successfully:', data);
     return { data, error: null };
   } catch (err) {
     console.error('Unexpected error in createOrUpdateProfile:', err);
@@ -79,7 +79,6 @@ export const ensureProfileExists = async (user: User) => {
       .maybeSingle();
 
     if (existingProfile) {
-      console.log('Profile already exists for user:', user.email);
       return true;
     }
 
@@ -103,13 +102,13 @@ export const ensureProfileExists = async (user: User) => {
       console.error('Error creating profile in ensureProfileExists:', error);
       // If it's an RLS error, still return true to not block the user
       if (error.code === '42501') {
-        console.log('RLS policy prevents profile creation, but allowing user to continue');
+        devLog('RLS policy prevents profile creation, but allowing user to continue');
         return true;
       }
       return false;
     }
 
-    console.log('Profile created successfully in ensureProfileExists:', data);
+    devLog('Profile created successfully in ensureProfileExists:', data);
     return true;
   } catch (err) {
     console.error('Unexpected error in ensureProfileExists:', err);

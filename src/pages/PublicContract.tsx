@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import { useToast } from "@/hooks/use-toast";
 import { replacePlaceholders } from "@/utils/contract-placeholder-replacer";
+import { devLog } from "@/lib/logger";
 
 interface FilledContract {
   id: string;
@@ -58,7 +59,7 @@ export default function PublicContract() {
         return;
       }
 
-      console.log('Fetching contract with secure validation:', accessToken.substring(0, 8) + '...');
+      devLog('Fetching contract with secure validation:', accessToken.substring(0, 8) + '...');
       
       // First validate the token using the new secure function
       const { data: contractId, error: validationError } = await supabase
@@ -77,7 +78,7 @@ export default function PublicContract() {
         return;
       }
 
-      console.log('Token validated, contract ID:', contractId);
+      devLog('Token validated, contract ID:', contractId);
       
       // Now get the contract data using the validated ID
       const { data: contractData, error: contractError } = await supabase
@@ -105,7 +106,7 @@ export default function PublicContract() {
         return;
       }
 
-      console.log('Contract data received:', contractData);
+      devLog('Contract data received:', contractData);
       
       // Transform the data to match expected structure
       const transformedContract = {
@@ -131,7 +132,7 @@ export default function PublicContract() {
         return;
       }
 
-      console.log('Fields data received:', fieldsData);
+      devLog('Fields data received:', fieldsData);
       setFields(fieldsData || []);
       
       // Initialize form data with existing filled data if available

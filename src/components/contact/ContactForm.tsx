@@ -10,6 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useFormTracking } from "@/hooks/use-monitoring";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { devLog } from "@/lib/logger";
 
 const ContactForm = () => {
   const { translate } = useLanguage();
@@ -50,7 +51,7 @@ const ContactForm = () => {
     trackFormStart();
 
     try {
-      console.log('Submitting contact form via secure endpoint');
+      devLog('Submitting contact form via secure endpoint');
       
       // Use the new secure contact submission endpoint with rate limiting
       const { data, error } = await supabase.functions.invoke('secure-contact-submit', {
@@ -102,7 +103,7 @@ const ContactForm = () => {
         return;
       }
 
-      console.log('Contact message submitted successfully:', data);
+      devLog('Contact message submitted successfully:', data);
       trackFormSubmit(true);
 
       toast({

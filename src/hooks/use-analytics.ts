@@ -15,6 +15,7 @@ import {
 import { hasAnalyticsConsent } from '@/lib/cookie-utils';
 import { isProduction } from '@/lib/analytics-config';
 import { shouldTrackAnalytics, shouldTrackAnalyticsRealtime } from '@/lib/analytics-consent';
+import { devLog } from "@/lib/logger";
 
 // Global flag to prevent multiple initializations
 let globalAnalyticsInitialized = false;
@@ -29,7 +30,7 @@ export const useAnalytics = () => {
   useEffect(() => {
     const handleCookieChange = () => {
       const newConsentStatus = hasAnalyticsConsent();
-      console.log('[Analytics Hook] Cookie change detected, consent status:', newConsentStatus);
+      devLog('[Analytics Hook] Cookie change detected, consent status:', newConsentStatus);
       setConsentStatus(newConsentStatus);
     };
 
@@ -49,7 +50,7 @@ export const useAnalytics = () => {
     if (initRef.current || globalAnalyticsInitialized) return;
     
     initRef.current = true;
-    console.log('[Analytics Hook] Initializing analytics hook');
+    devLog('[Analytics Hook] Initializing analytics hook');
     
     // Only initialize in browser environment
     if (typeof window === 'undefined') return;
@@ -59,10 +60,10 @@ export const useAnalytics = () => {
         globalAnalyticsInitialized = true;
         
         if (isProduction()) {
-          console.log('[Analytics Hook] Production environment detected');
+          devLog('[Analytics Hook] Production environment detected');
           await forceInitializeAnalytics();
         } else {
-          console.log('[Analytics Hook] Development environment');
+          devLog('[Analytics Hook] Development environment');
           await initializeAnalytics();
         }
         setInitialized(true);
@@ -76,7 +77,7 @@ export const useAnalytics = () => {
     setTimeout(initAnalytics, 100);
 
     return () => {
-      console.log('[Analytics Hook] Cleaning up analytics hook');
+      devLog('[Analytics Hook] Cleaning up analytics hook');
     };
   }, []);
 
@@ -89,10 +90,10 @@ export const useAnalytics = () => {
       const analyticsReady = isAnalyticsInitialized();
       
       if (shouldTrack && analyticsReady) {
-        console.log(`[Analytics Hook] Tracking page view: ${location.pathname}`);
+        devLog(`[Analytics Hook] Tracking page view: ${location.pathname}`);
         trackPageView(location.pathname + location.search, document.title);
       } else {
-        console.log(`[Analytics Hook] Skipping page view - should track: ${shouldTrack}, initialized: ${analyticsReady}`);
+        devLog(`[Analytics Hook] Skipping page view - should track: ${shouldTrack}, initialized: ${analyticsReady}`);
       }
     };
 
