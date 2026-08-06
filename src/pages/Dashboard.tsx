@@ -27,7 +27,7 @@ import SecurityAuditTab from "@/components/admin/tabs/SecurityAuditTab";
 import AdminAddressRequestsTab from "@/components/admin/tabs/AddressRequestsTab";
 import ContactMessagesTab from "@/components/admin/tabs/ContactMessagesTab";
 import ContractsTab from "@/components/admin/tabs/ContractsTab";
-import DataTab from "@/components/admin/tabs/DataTab";
+import AdminMailTab from "@/components/admin/tabs/MailTab";
 import LogsTab from "@/components/admin/tabs/LogsTab";
 import MonitoringTab from "@/components/admin/tabs/MonitoringTab";
 
