@@ -145,11 +145,8 @@ export const useAddressRequestForm = () => {
         return; // Don't throw, handle gracefully
       }
 
-      console.log("Successfully created address request:", data);
-
       // Send notification email to admin
       try {
-        console.log("Sending notification email to admin...");
         const notificationResponse = await supabase.functions.invoke('send-address-request-notification', {
           body: requestData
         });
@@ -162,7 +159,6 @@ export const useAddressRequestForm = () => {
             description: "Uw aanvraag is succesvol verzonden, maar er was een probleem met de e-mailnotificatie.",
           });
         } else {
-          console.log("Notification email sent successfully");
         }
       } catch (emailError) {
         console.error("Failed to send notification email:", emailError);
