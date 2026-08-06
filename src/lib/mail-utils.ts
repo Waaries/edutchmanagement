@@ -18,7 +18,7 @@ export interface MailItem {
   status: MailStatus;
   received_at: string;
   is_read: boolean;
-  scan_url: string | null;
+  scan_path: string | null;
   notes: string | null;
   registered_by: string | null;
   created_at: string;

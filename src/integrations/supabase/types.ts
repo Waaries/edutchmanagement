@@ -343,7 +343,7 @@ export type Database = {
           priority: string
           received_at: string
           registered_by: string | null
-          scan_url: string | null
+          scan_path: string | null
           sender: string | null
           status: string
           subject: string
@@ -359,7 +359,7 @@ export type Database = {
           priority?: string
           received_at?: string
           registered_by?: string | null
-          scan_url?: string | null
+          scan_path?: string | null
           sender?: string | null
           status?: string
           subject: string
@@ -375,7 +375,7 @@ export type Database = {
           priority?: string
           received_at?: string
           registered_by?: string | null
-          scan_url?: string | null
+          scan_path?: string | null
           sender?: string | null
           status?: string
           subject?: string

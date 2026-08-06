@@ -73,12 +73,12 @@ const AppointmentsTab = () => {
   );
 
   const handleOpenScan = async (mail: MailItem) => {
-    if (!mail.scan_url) return;
+    if (!mail.scan_path) return;
     try {
       setScanLoading(true);
       const { data, error } = await supabase.storage
         .from("mail-scans")
-        .createSignedUrl(mail.scan_url, 60 * 5);
+        .createSignedUrl(mail.scan_path, 60 * 5);
       if (error) throw error;
       window.open(data.signedUrl, "_blank", "noopener,noreferrer");
     } catch (error) {
@@ -196,7 +196,7 @@ const AppointmentsTab = () => {
                           </p>
                         </div>
 
-                        {selectedMail.scan_url && (
+                        {selectedMail.scan_path && (
                           <Button
                             onClick={() => handleOpenScan(selectedMail)}
                             disabled={scanLoading}
