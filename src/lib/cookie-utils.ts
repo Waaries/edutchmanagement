@@ -1,5 +1,4 @@
 import { devLog } from "@/lib/logger";
-import { enableAnalytics, disableAnalytics, initializeAnalytics } from './analytics';
 
 // Cookie management utilities with enhanced error handling and fallback support
 
