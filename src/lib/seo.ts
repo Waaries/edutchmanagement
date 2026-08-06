@@ -156,6 +156,18 @@ export const pageSEO = {
     title: "Cookiebeleid | eDutch Management",
     description: "Informatie over hoe eDutch Management cookies gebruikt.",
     canonical: "https://edutchmanagement.nl/cookie-policy",
+  },
+
+  privacy: {
+    title: "Privacybeleid | eDutch Management",
+    description: "Lees hoe eDutch Management persoonsgegevens verwerkt, welke rechten u heeft en hoe wij uw gegevens beveiligen.",
+    canonical: "https://edutchmanagement.nl/privacy",
+  },
+
+  terms: {
+    title: "Algemene Voorwaarden | eDutch Management",
+    description: "De algemene voorwaarden van eDutch Management voor bedrijfsadres-, postadres- en virtual office dienstverlening.",
+    canonical: "https://edutchmanagement.nl/terms",
   }
 };
 

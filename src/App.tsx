@@ -20,6 +20,8 @@ import Dashboard from "./pages/Dashboard";
 import AddressRequest from "./pages/AddressRequest";
 import NotFound from "./pages/NotFound";
 import CookiePolicy from "./pages/CookiePolicy";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsAndConditions from "./pages/TermsAndConditions";
 import PublicContract from "./pages/PublicContract";
 import CookieConsent from "@/components/CookieConsent";
 
@@ -58,6 +60,8 @@ function AppContent() {
         <Route path="/aanvragen" element={<AppLayout><AddressRequest /></AppLayout>} />
         <Route path="/contract/:accessToken" element={<AppLayout showSidebar={false}><PublicContract /></AppLayout>} />
         <Route path="/cookie-policy" element={<AppLayout showSidebar={false}><CookiePolicy /></AppLayout>} />
+        <Route path="/privacy" element={<AppLayout showSidebar={false}><PrivacyPolicy /></AppLayout>} />
+        <Route path="/terms" element={<AppLayout showSidebar={false}><TermsAndConditions /></AppLayout>} />
         <Route path="*" element={<AppLayout showSidebar={false}><NotFound /></AppLayout>} />
       </Routes>
     </>

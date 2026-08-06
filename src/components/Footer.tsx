@@ -23,9 +23,10 @@ const Footer = () => {
   // Navigation links data
   const navLinks = [
     { text: translate("nav.home"), href: "#home" },
-    { text: translate("footer.aboutUs"), href: "#over-ons" },
+    { text: translate("footer.aboutUs"), href: "#voordelen" },
     { text: translate("nav.services"), href: "#diensten" },
-    { text: translate("footer.pricing"), href: "#tarieven" }
+    { text: translate("footer.pricing"), href: "#diensten" },
+    { text: translate("footer.applyNow"), href: "/aanvragen" }
   ];
 
   return (
