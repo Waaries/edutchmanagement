@@ -91,19 +91,10 @@ const SimpleAuthPage = () => {
     } else {
       setLoginAttempts(0);
       toast({ title: "Ingelogd", description: "U bent succesvol ingelogd." });
-      setTimeout(async () => {
-        try {
-          const { data: isAdmin, error: adminError } = await supabase.rpc('is_admin');
-          if (adminError) {
-            navigate('/dashboard', { replace: true });
-          } else {
-            navigate(isAdmin ? '/admin' : '/dashboard', { replace: true });
-          }
-        } catch {
-          navigate('/dashboard', { replace: true });
-        }
-      }, 300);
+      // No navigation here: Auth.tsx is the single source of truth and
+      // redirects as soon as the auth session is available.
     }
+
 
     setSubmitting(false);
   };
