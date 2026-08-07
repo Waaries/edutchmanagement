@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate, useNavigate, Link } from "react-router-dom";
-import logoLight from "@/assets/logo-light.png";
+import Logo from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 import { Shield, MapPin, Copy, Check } from "lucide-react";
 import { updateMetaTags, pageSEO } from "@/lib/seo";
@@ -12,7 +12,7 @@ import CustomerDetails, { ProfileData } from "@/components/dashboard/CustomerDet
 import AccountSettings from "@/components/dashboard/AccountSettings";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import ErrorBoundary from "@/components/ErrorBoundary";
-import { AppGlow, AppCard, AppPill } from "@/components/ui/app-surface";
+import { AppCard, AppPill } from "@/components/ui/app-surface";
 
 const EDUTCH_ADDRESS = "Reigersbos 100 P, 1107 ES Amsterdam";
 
@@ -28,9 +28,9 @@ const Dashboard = () => {
   } catch (err) {
     console.error("Auth context error in Dashboard:", err);
     return (
-      <div className="flex items-center justify-center min-h-screen bg-slate-950">
+      <div className="flex items-center justify-center min-h-screen bg-slate-50">
         <div className="text-center">
-          <p className="text-red-400 mb-4">Authenticatiefout opgetreden</p>
+          <p className="text-red-600 mb-4">Authenticatiefout opgetreden</p>
           <button
             onClick={() => (window.location.href = "/auth")}
             className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg hover:opacity-90"
@@ -50,9 +50,9 @@ const Dashboard = () => {
 
   if (!initialized || loading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-slate-950">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-slate-50">
         <LoadingSpinner size="lg" />
-        <p className="mt-4 text-slate-400">Bezig met laden...</p>
+        <p className="mt-4 text-slate-500">Bezig met laden...</p>
       </div>
     );
   }
@@ -86,18 +86,17 @@ const Dashboard = () => {
     <ErrorBoundary>
       <div className="min-h-screen bg-slate-50 flex flex-col">
         {/* Dark topbar, in line with the public navbar */}
-        <header className="dashboard-dark relative bg-slate-950 overflow-hidden">
-          <AppGlow />
+        <header className="relative bg-white border-b border-slate-200">
           <div className="relative container mx-auto max-w-4xl px-4 py-4 flex items-center justify-between gap-4">
             <Link to="/">
-              <img src={logoLight} alt="eDutch Management" className="h-9 w-auto object-contain" />
+              <Logo variant="dark" className="h-10" />
             </Link>
             {isAdmin && (
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => navigate("/beheer")}
-                className="text-slate-300 hover:text-white hover:bg-white/5"
+                className="text-slate-600 hover:text-slate-900 hover:bg-slate-100"
               >
                 <Shield className="h-4 w-4 mr-2" />
                 Naar beheer
@@ -116,7 +115,7 @@ const Dashboard = () => {
               </AppPill>
               <h1 className="app-title">
                 Welkom,{" "}
-                <span className="bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                   {companyName}
                 </span>
               </h1>

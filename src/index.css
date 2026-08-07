@@ -37,6 +37,12 @@
     --input: 220 5.9% 90%;
     --ring: 210 100% 40%;
 
+    /* Brand accent — the orange from the logo. Secondary accent next to blue. */
+    --brand: 28 85% 54%;
+    --brand-foreground: 0 0% 100%;
+    --brand-soft: 28 90% 96%;
+    --brand-strong: 24 80% 40%;
+
     --radius: 1.5rem;
 
     --sidebar-background: 0 0% 98%;

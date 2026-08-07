@@ -39,7 +39,7 @@ const Features = () => {
       ref={sectionRef}
     >
       {/* Soft transition from the dark hero into the light body */}
-      <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-slate-950 to-white pointer-events-none" />
+      <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-slate-50 to-white pointer-events-none" />
       {/* Barely-there blue haze so the section is not flat */}
       <div className="absolute top-1/4 -left-32 w-96 h-96 rounded-full bg-blue-500/[0.04] blur-[120px] pointer-events-none" />
 

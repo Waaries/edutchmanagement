@@ -89,13 +89,13 @@ const Services = () => {
               key={index}
               className={`group relative rounded-2xl transition-all duration-500 animate-fade-in flex flex-col ${
                 service.mostPopular
-                  ? "bg-white border-2 border-blue-500 shadow-xl shadow-blue-500/15 lg:scale-[1.03]"
+                  ? "bg-white border-2 border-brand shadow-xl shadow-brand/15 lg:scale-[1.03]"
                   : "bg-white border border-slate-200 shadow-sm hover:border-blue-400 hover:shadow-lg hover:shadow-blue-500/10"
               }`}
               style={{ animationDelay: `${index * 150}ms` }}
             >
               {service.mostPopular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-xs font-semibold tracking-wide uppercase shadow-lg shadow-blue-500/40">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-brand text-brand-foreground text-xs font-semibold tracking-wide uppercase shadow-lg shadow-brand/30">
                   {service.mostPopularText}
                 </div>
               )}

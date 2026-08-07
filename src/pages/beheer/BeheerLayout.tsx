@@ -9,8 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import ErrorBoundary from "@/components/ErrorBoundary";
-import { AppGlow } from "@/components/ui/app-surface";
-import logoLight from "@/assets/logo-light.png";
+import Logo from "@/components/Logo";
 
 const MAIN_NAV = [
   { to: "/beheer", label: "Werklijst", icon: ClipboardList, end: true },
@@ -33,9 +32,9 @@ const linkClass = (active: boolean, admin = false) =>
     "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap w-full border",
     active
       ? admin
-        ? "bg-amber-500/15 text-amber-200 border-amber-500/30"
-        : "bg-gradient-to-r from-blue-500/20 to-indigo-500/10 text-blue-200 border-blue-500/30 shadow-[0_0_20px_-5px_rgba(59,130,246,0.4)]"
-      : "text-slate-400 hover:text-white hover:bg-white/5 border-transparent"
+        ? "bg-brand/10 text-brand-strong border-brand/25"
+        : "bg-blue-50 text-blue-700 border-blue-100"
+      : "text-slate-600 hover:text-slate-900 hover:bg-slate-100 border-transparent"
   );
 
 const BeheerLayout = () => {
@@ -62,9 +61,9 @@ const BeheerLayout = () => {
 
   if (!initialized || loading || (user && allowed === null)) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-slate-950">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-slate-50">
         <LoadingSpinner size="lg" />
-        <p className="mt-4 text-slate-400">Beheeromgeving laden...</p>
+        <p className="mt-4 text-slate-500">Beheeromgeving laden...</p>
       </div>
     );
   }
@@ -73,7 +72,7 @@ const BeheerLayout = () => {
   if (!allowed) return <Navigate to="/dashboard" replace />;
 
   const nav = (
-    <div className="app-card p-3 space-y-4">
+    <div className="p-1 space-y-4">
       <div>
         <p className="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-slate-500">Beheer</p>
         <nav className="flex flex-col gap-1">
@@ -92,10 +91,10 @@ const BeheerLayout = () => {
         </nav>
       </div>
 
-      <div className="pt-3 border-t border-white/10">
+      <div className="pt-3 border-t border-slate-200">
         <button
           onClick={() => setSystemOpen((v) => !v)}
-          className="w-full flex items-center justify-between px-3 py-2 text-xs font-semibold uppercase tracking-wider text-slate-500 hover:text-slate-300"
+          className="w-full flex items-center justify-between px-3 py-2 text-xs font-semibold uppercase tracking-wider text-slate-500 hover:text-slate-800"
         >
           <span className="flex items-center gap-2"><Shield className="h-3 w-3" /> Systeem</span>
           <ChevronDown className={cn("h-3 w-3 transition-transform", systemOpen && "rotate-180")} />
@@ -117,10 +116,10 @@ const BeheerLayout = () => {
         )}
       </div>
 
-      <div className="pt-3 border-t border-white/10">
+      <div className="pt-3 border-t border-slate-200">
         <Link
           to="/dashboard"
-          className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-400 hover:text-white hover:bg-white/5"
+          className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-100"
         >
           <ArrowLeft className="h-4 w-4" />
           <span>Naar klantportaal</span>
@@ -132,11 +131,10 @@ const BeheerLayout = () => {
   return (
     <div className="min-h-screen flex bg-slate-50">
       {/* Dark navigation anchor — counterpart of the public navbar */}
-      <aside className="dashboard-dark hidden lg:block w-72 shrink-0 relative bg-slate-950 overflow-hidden">
-        <AppGlow />
+      <aside className="hidden lg:block w-72 shrink-0 relative bg-white border-r border-slate-200">
         <div className="relative sticky top-0 h-screen overflow-y-auto p-4">
           <Link to="/" className="block px-2 py-3 mb-2">
-            <img src={logoLight} alt="eDutch Management" className="h-9 w-auto object-contain" />
+            <Logo variant="dark" className="h-10" />
           </Link>
           {nav}
         </div>
@@ -144,20 +142,20 @@ const BeheerLayout = () => {
 
       <div className="flex-1 min-w-0 flex flex-col">
         {/* Dark topbar on small screens, holding the mobile menu */}
-        <div className="dashboard-dark lg:hidden bg-slate-950 px-4 py-3 flex items-center justify-between gap-3">
+        <div className="lg:hidden bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between gap-3">
           <Link to="/">
-            <img src={logoLight} alt="eDutch Management" className="h-8 w-auto object-contain" />
+            <Logo variant="dark" className="h-9" />
           </Link>
           <button
             onClick={() => setMobileOpen((v) => !v)}
-            className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-slate-200 text-sm"
+            className="flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 border border-slate-200 text-slate-700 text-sm"
           >
             {mobileOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
             Beheermenu
           </button>
         </div>
         {mobileOpen && (
-          <div className="dashboard-dark lg:hidden bg-slate-950 px-4 pb-4">{nav}</div>
+          <div className="lg:hidden bg-white border-b border-slate-200 px-4 pb-4">{nav}</div>
         )}
 
         <main className="workspace-light flex-1 min-w-0 bg-slate-50 px-4 lg:px-8 py-8 lg:py-10 pb-16">
