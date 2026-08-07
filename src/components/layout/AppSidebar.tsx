@@ -53,8 +53,8 @@ export function AppSidebar() {
 
   const getNavCls = ({ isActive }: { isActive: boolean }) =>
     isActive
-      ? "bg-blue-500/15 text-blue-300 font-medium border-r-2 border-blue-500"
-      : "hover:bg-white/5 text-slate-400 hover:text-white";
+      ? "bg-blue-50 text-blue-700 font-medium border-r-2 border-blue-500"
+      : "hover:bg-slate-100 text-slate-600 hover:text-slate-900";
 
   const handleSignOut = async () => {
     try {
@@ -66,20 +66,20 @@ export function AppSidebar() {
 
   return (
     <Sidebar
-      className={`${isCollapsed ? "w-14" : "w-64"} border-r border-white/10`}
+      className={`${isCollapsed ? "w-14" : "w-64"} border-r border-slate-200`}
     >
-      <div className="flex flex-col h-full bg-slate-950/80 backdrop-blur-xl">
-        <div className="p-4 border-b border-white/10">
+      <div className="flex flex-col h-full bg-white">
+        <div className="p-4 border-b border-slate-200">
           <div className="flex items-center gap-2">
             {!isCollapsed && (
               <div className="flex flex-col">
-                <span className="font-semibold text-sm text-white">eDutch Management</span>
-                <span className="text-xs text-slate-400 truncate max-w-[160px]">
+                <span className="font-semibold text-sm text-slate-900">eDutch Management</span>
+                <span className="text-xs text-slate-500 truncate max-w-[160px]">
                   {user?.email || 'Bezoeker'}
                 </span>
               </div>
             )}
-            <SidebarTrigger className="ml-auto text-slate-300 hover:bg-white/10" />
+            <SidebarTrigger className="ml-auto text-slate-600 hover:bg-slate-100" />
           </div>
         </div>
 
@@ -158,12 +158,12 @@ export function AppSidebar() {
 
         {/* Footer with Sign Out */}
         {user && (
-          <SidebarFooter className="p-4 border-t border-white/10">
+          <SidebarFooter className="p-4 border-t border-slate-200">
             <Button
               variant="ghost"
               size="sm"
               onClick={handleSignOut}
-              className="w-full justify-start text-slate-300 hover:text-white hover:bg-white/5"
+              className="w-full justify-start text-slate-600 hover:text-slate-900 hover:bg-slate-100"
             >
               <LogOut className="h-4 w-4" />
               {!isCollapsed && <span className="ml-2">Uitloggen</span>}
