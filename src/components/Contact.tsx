@@ -54,7 +54,10 @@ const Contact = () => {
           </div>
         </div>
       </div>
+      {/* Soft transition into the dark footer */}
+      <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-slate-950 pointer-events-none" />
     </section>
+
   );
 };
 
