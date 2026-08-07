@@ -687,13 +687,25 @@
 .workspace-light .app-title { @apply app-title-light; }
 .workspace-light .app-icon-tile { @apply app-icon-tile-light; }
 
-/* Typography written for a dark ground, re-mapped for a light ground */
-.workspace-light .text-white,
-.workspace-light .text-slate-100,
-.workspace-light .text-slate-200 { @apply text-slate-900; }
+/* Typography written for a dark ground, re-mapped for a light ground.
+   Skipped for anything that carries its own saturated / gradient fill:
+   there the white text is already correct (primary + destructive buttons,
+   filled badges, coloured labels). */
+.workspace-light .text-white:not(.app-btn-primary):not([class*="bg-gradient"]):not([class*="bg-primary"]):not([class*="bg-destructive"]):not([class*="bg-blue-5"]):not([class*="bg-blue-6"]):not([class*="bg-blue-7"]):not([class*="bg-indigo-5"]):not([class*="bg-indigo-6"]):not([class*="bg-red-5"]):not([class*="bg-red-6"]):not([class*="bg-emerald-5"]):not([class*="bg-emerald-6"]):not([class*="bg-green-6"]):not([class*="bg-amber-5"]):not([class*="bg-amber-6"]):not([class*="bg-purple-5"]):not([class*="bg-purple-6"]):not([class*="bg-cyan-5"]):not([class*="bg-cyan-6"]):not([class*="bg-slate-7"]):not([class*="bg-slate-8"]):not([class*="bg-slate-9"]),
+.workspace-light .text-slate-100:not([class*="bg-gradient"]):not([class*="bg-primary"]):not([class*="bg-destructive"]),
+.workspace-light .text-slate-200:not([class*="bg-gradient"]):not([class*="bg-primary"]):not([class*="bg-destructive"]) { @apply text-slate-900; }
 .workspace-light .text-slate-300,
 .workspace-light .text-slate-400 { @apply text-slate-600; }
-.workspace-light .hover\:text-white:hover { @apply text-slate-900; }
+.workspace-light .hover\:text-white:hover:not([class*="bg-gradient"]):not([class*="bg-primary"]):not([class*="bg-destructive"]) { @apply text-slate-900; }
+
+/* Belt and braces: elements that own their coloured ground keep white text,
+   independent of rule order above. */
+.workspace-light .app-btn-primary,
+.workspace-light .app-btn-primary *,
+.workspace-light [class*="bg-gradient"].text-white,
+.workspace-light button[class*="bg-primary"],
+.workspace-light button[class*="bg-destructive"] { @apply text-white; }
+
 
 /* Glass fills / hairlines become paper + slate hairlines */
 .workspace-light .bg-white\/5,
