@@ -69,6 +69,10 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				brand: {
+					DEFAULT: 'hsl(var(--brand))',
+					foreground: 'hsl(var(--brand-foreground))',
+					soft: 'hsl(var(--brand-soft))',
+					strong: 'hsl(var(--brand-strong))',
 					silver: '#f5f5f7',
 					charcoal: '#403E43',
 					darkgrey: '#221F26',
