@@ -70,7 +70,7 @@ const Klanten = () => {
     });
 
     setRows(
-      (usersRes.data ?? []).map((u: UserData) => {
+      (usersRes.data ?? []).map((u) => {
         const p = profiles.get(u.id);
         return {
           ...u,
