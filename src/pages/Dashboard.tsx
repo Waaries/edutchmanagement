@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, Link } from "react-router-dom";
+import logoLight from "@/assets/logo-light.png";
 import { Button } from "@/components/ui/button";
 import { Shield, MapPin, Copy, Check } from "lucide-react";
 import { updateMetaTags, pageSEO } from "@/lib/seo";
@@ -83,9 +84,31 @@ const Dashboard = () => {
 
   return (
     <ErrorBoundary>
-      <div className="dashboard-dark relative min-h-screen bg-slate-950 overflow-hidden">
-        <AppGlow />
-        <div className="relative container mx-auto py-12 px-4 max-w-4xl space-y-8">
+      <div className="min-h-screen bg-slate-50 flex flex-col">
+        {/* Dark topbar, in line with the public navbar */}
+        <header className="dashboard-dark relative bg-slate-950 overflow-hidden">
+          <AppGlow />
+          <div className="relative container mx-auto max-w-4xl px-4 py-4 flex items-center justify-between gap-4">
+            <Link to="/">
+              <img src={logoLight} alt="eDutch Management" className="h-9 w-auto object-contain" />
+            </Link>
+            {isAdmin && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => navigate("/beheer")}
+                className="text-slate-300 hover:text-white hover:bg-white/5"
+              >
+                <Shield className="h-4 w-4 mr-2" />
+                Naar beheer
+              </Button>
+            )}
+          </div>
+        </header>
+
+        <div className="workspace-light flex-1 bg-slate-50">
+        <div className="container mx-auto py-12 px-4 max-w-4xl space-y-8">
+
           <div className="flex items-start justify-between gap-4 flex-wrap">
             <div>
               <AppPill icon={MapPin} className="mb-4">
@@ -101,18 +124,8 @@ const Dashboard = () => {
                 Uw post en gegevens bij eDutch Management
               </p>
             </div>
-            {isAdmin && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => navigate("/beheer")}
-                className="text-slate-400 hover:text-blue-200 hover:bg-white/5"
-              >
-                <Shield className="h-4 w-4 mr-2" />
-                Naar beheer
-              </Button>
-            )}
           </div>
+
 
           <AppCard className="p-6 flex items-start justify-between gap-4 flex-wrap">
             <div className="flex items-start gap-3 min-w-0">
@@ -138,10 +151,11 @@ const Dashboard = () => {
 
           <AccountSettings />
         </div>
+        </div>
       </div>
     </ErrorBoundary>
-
   );
 };
+
 
 export default Dashboard;
