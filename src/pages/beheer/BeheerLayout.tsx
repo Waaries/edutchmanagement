@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import ErrorBoundary from "@/components/ErrorBoundary";
+import { AppGlow } from "@/components/ui/app-surface";
 
 const MAIN_NAV = [
   { to: "/beheer", label: "Werklijst", icon: ClipboardList, end: true },
