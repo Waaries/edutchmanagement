@@ -133,15 +133,16 @@ const ContactForm = () => {
     }
   };
 
-  const inputCls = "bg-white/5 border-white/10 text-white placeholder:text-slate-500 focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 transition-all";
-  const labelCls = "text-slate-300";
+  const inputCls = "bg-white border-slate-300 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all";
+  const labelCls = "text-slate-700";
 
   return (
-    <Card className="h-full flex flex-col bg-slate-900/60 bg-gradient-to-br from-white/[0.07] to-white/[0.02] border-white/10 backdrop-blur-sm shadow-2xl shadow-black/30">
+    <Card className="h-full flex flex-col bg-white border-slate-200 shadow-sm">
       <CardHeader className="pb-4">
-        <CardTitle className="text-2xl text-white">{translate("contact.form.title")}</CardTitle>
-        <CardDescription className="text-slate-400">{translate("contact.form.description")}</CardDescription>
+        <CardTitle className="text-2xl text-slate-900">{translate("contact.form.title")}</CardTitle>
+        <CardDescription className="text-slate-600">{translate("contact.form.description")}</CardDescription>
       </CardHeader>
+
       <CardContent className="flex-1">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

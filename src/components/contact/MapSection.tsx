@@ -2,7 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 
 const MapSection = () => {
   return (
-    <Card className="overflow-hidden">
+    <Card className="overflow-hidden bg-white border-slate-200 shadow-sm">
       <CardContent className="p-0">
         <div className="h-80 relative">
           <iframe 
