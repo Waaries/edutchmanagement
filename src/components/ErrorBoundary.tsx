@@ -33,25 +33,29 @@ class ErrorBoundary extends Component<Props, State> {
       }
 
       return (
-        <div className="min-h-screen flex items-center justify-center bg-slate-50">
-          <div className="max-w-md w-full mx-4">
-            <div className="bg-white rounded-xl shadow-lg p-8 text-center">
-              <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <AlertTriangle className="w-8 h-8 text-red-600" />
+        <div className="relative min-h-screen flex items-center justify-center bg-slate-950 overflow-hidden">
+          <div className="pointer-events-none absolute inset-0">
+            <div className="absolute -top-40 left-1/3 w-[600px] h-[600px] rounded-full bg-blue-600/15 blur-[140px]" />
+            <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] rounded-full bg-indigo-900/30 blur-[120px]" />
+          </div>
+          <div className="relative max-w-md w-full mx-4">
+            <div className="app-card p-8 text-center">
+              <div className="w-16 h-16 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center mx-auto mb-6">
+                <AlertTriangle className="w-8 h-8 text-red-400" />
               </div>
               
-              <h1 className="text-xl font-semibold text-gray-900 mb-3">
+              <h1 className="text-xl font-bold tracking-tight text-white mb-3">
                 Er is iets misgegaan
               </h1>
               
-              <p className="text-gray-600 mb-6">
+              <p className="text-slate-400 mb-6">
                 We ondervinden momenteel een technisch probleem. Probeer de pagina te vernieuwen.
               </p>
               
               <div className="space-y-3">
                 <Button 
                   onClick={() => window.location.reload()}
-                  className="w-full"
+                  className="w-full app-btn-primary rounded-full"
                 >
                   <RefreshCw className="w-4 h-4 mr-2" />
                   Pagina vernieuwen
@@ -60,7 +64,7 @@ class ErrorBoundary extends Component<Props, State> {
                 <Button 
                   variant="outline"
                   onClick={() => window.location.href = '/'}
-                  className="w-full"
+                  className="w-full rounded-full bg-transparent border border-white/10 text-slate-200 hover:bg-white/5 hover:text-white"
                 >
                   Naar homepagina
                 </Button>
@@ -68,10 +72,10 @@ class ErrorBoundary extends Component<Props, State> {
               
               {import.meta.env.DEV && this.state.error && (
                 <details className="mt-6 text-left">
-                  <summary className="cursor-pointer text-sm text-gray-500 hover:text-gray-700">
+                  <summary className="cursor-pointer text-sm text-slate-400 hover:text-slate-200">
                     Technische details (development mode)
                   </summary>
-                  <pre className="mt-2 text-xs bg-gray-100 p-3 rounded text-red-600 overflow-auto">
+                  <pre className="mt-2 text-xs bg-white/5 border border-white/10 p-3 rounded-lg text-red-300 overflow-auto">
                     {this.state.error.message}
                     {'\n'}
                     {this.state.error.stack}
@@ -82,6 +86,7 @@ class ErrorBoundary extends Component<Props, State> {
           </div>
         </div>
       );
+
     }
 
     return this.props.children;
