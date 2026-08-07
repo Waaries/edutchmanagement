@@ -4,6 +4,8 @@ import { useLocation, Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import logoLight from "@/assets/logo-light.png";
+
 
 const NotFound = () => {
   const location = useLocation();
