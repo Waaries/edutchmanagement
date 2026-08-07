@@ -132,10 +132,12 @@ const Werklijst = () => {
       ) : (
         <div className="grid gap-6 md:grid-cols-2">
           {blocks.map((block) => (
-            <Card key={block.key} className="app-card">
+            <Card key={block.key} className="app-card-interactive group">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-                <CardTitle className="flex items-center gap-2 text-base text-white">
-                  <block.icon className="h-4 w-4 text-blue-400" />
+                <CardTitle className="flex items-center gap-2.5 text-base text-white">
+                  <span className="app-icon-tile h-8 w-8 group-hover:bg-blue-500/20 transition-colors">
+                    <block.icon className="h-4 w-4" />
+                  </span>
                   {block.title}
                 </CardTitle>
                 <span className="text-sm font-semibold px-2 py-0.5 rounded-md bg-blue-500/15 text-blue-200 border border-blue-500/30">

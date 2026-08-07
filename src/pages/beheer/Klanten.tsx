@@ -123,27 +123,27 @@ const Klanten = () => {
     <div>
       <PageHeader title="Klanten" description="Klantenbestand en accounts" />
 
-      <div className="flex flex-wrap items-center gap-2 mb-4">
+      <div className="flex flex-wrap items-center gap-3 mb-6">
         <div className="relative flex-1 min-w-[240px]">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
           <Input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Zoek op naam, e-mail of bedrijfsnaam"
-            className="pl-9 bg-slate-900/60 border-white/10 text-slate-100 placeholder:text-slate-500"
+            className="pl-9 bg-white/5 border-white/10 text-slate-100 placeholder:text-slate-500 rounded-xl h-11"
           />
         </div>
-        <Button size="sm" onClick={() => setCreateOpen(true)}>
+        <Button size="sm" className="app-btn-primary h-11 rounded-xl px-5" onClick={() => setCreateOpen(true)}>
           <UserPlus className="h-4 w-4 mr-2" />
           Nieuwe gebruiker
         </Button>
-        <Button size="sm" variant="outline" onClick={load}>
+        <Button size="sm" variant="outline" className="h-11 rounded-xl" onClick={load}>
           <RefreshCw className="h-4 w-4 mr-2" />
           Ververs
         </Button>
       </div>
 
-      <Card className="app-card">
+      <Card className="app-card-solid overflow-hidden">
         <CardContent className="p-0">
           {!rows ? (
             <div className="flex justify-center py-16">
@@ -154,7 +154,7 @@ const Klanten = () => {
           ) : (
             <Table>
               <TableHeader>
-                <TableRow className="border-white/10 hover:bg-transparent">
+                <TableRow className="border-white/10 hover:bg-transparent bg-white/[0.03]">
                   <TableHead className="text-slate-400">Klant</TableHead>
                   <TableHead className="text-slate-400">Bedrijf</TableHead>
                   <TableHead className="text-slate-400">E-mail</TableHead>
@@ -168,7 +168,7 @@ const Klanten = () => {
                   <TableRow
                     key={row.id}
                     onClick={() => navigate(`/beheer/klanten/${row.id}`)}
-                    className="border-white/10 cursor-pointer hover:bg-white/5"
+                    className="border-white/5 cursor-pointer hover:bg-white/[0.06] transition-colors"
                   >
                     <TableCell className="text-slate-100 font-medium">
                       <span className="flex items-center gap-2">
