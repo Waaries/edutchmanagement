@@ -116,7 +116,7 @@ const CookieConsent = () => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="sm:max-w-md max-w-[90%] w-full app-card p-6 text-white shadow-2xl shadow-blue-950/40 [&>button]:text-slate-400 [&>button]:hover:text-white">
+      <DialogContent className="sm:max-w-md max-w-[90%] w-full app-card !bg-slate-900 p-6 text-white shadow-2xl shadow-blue-950/40 [&>button]:text-slate-400 [&>button]:hover:text-white">
         <DialogHeader className="text-left pb-2">
           <DialogTitle className="text-xl font-bold tracking-tight text-white">
             {translate("cookieConsent.title")}
