@@ -143,7 +143,7 @@ const Klanten = () => {
         </Button>
       </div>
 
-      <Card className="bg-slate-900/60 border-white/10 backdrop-blur-xl">
+      <Card className="app-card">
         <CardContent className="p-0">
           {!rows ? (
             <div className="flex justify-center py-16">

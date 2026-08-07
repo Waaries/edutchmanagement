@@ -65,7 +65,7 @@ const Block = ({
   action?: React.ReactNode;
   children: React.ReactNode;
 }) => (
-  <Card className="bg-slate-900/60 border-white/10 backdrop-blur-xl">
+  <Card className="app-card">
     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
       <CardTitle className="flex items-center gap-2 text-base text-white">
         <Icon className="h-4 w-4 text-blue-400" />
@@ -198,7 +198,7 @@ const KlantDetail = () => {
         Terug naar klanten
       </Button>
 
-      <div className="rounded-xl border border-white/10 bg-slate-900/60 backdrop-blur-xl p-6">
+      <div className="app-card p-6">
         <h1 className="text-2xl font-bold text-white">
           {profile.company_name || fullName || email || "Klant"}
         </h1>

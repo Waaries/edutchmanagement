@@ -71,7 +71,7 @@ const BeheerLayout = () => {
   if (!allowed) return <Navigate to="/dashboard" replace />;
 
   const nav = (
-    <div className="rounded-xl border border-white/10 bg-slate-900/60 backdrop-blur-xl p-3 space-y-4">
+    <div className="app-card p-3 space-y-4">
       <div>
         <p className="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-slate-500">Beheer</p>
         <nav className="flex flex-col gap-1">

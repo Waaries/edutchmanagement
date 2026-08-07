@@ -46,7 +46,7 @@ const AccountSettings = () => {
   };
 
   return (
-    <Card className="bg-slate-900/40 border-white/10">
+    <Card className="app-card">
       <CardHeader className="pb-3">
         <CardTitle className="text-sm font-medium text-slate-400">Account</CardTitle>
       </CardHeader>

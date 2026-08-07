@@ -82,7 +82,7 @@ const CustomerDetails = ({ user, onProfileChange }: Props) => {
   };
 
   return (
-    <Card className="bg-slate-900/60 border-white/10 backdrop-blur-xl">
+    <Card className="app-card">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 gap-2">
         <CardTitle className="flex items-center gap-2 text-white">
           <Building2 className="h-5 w-5 text-blue-400" />

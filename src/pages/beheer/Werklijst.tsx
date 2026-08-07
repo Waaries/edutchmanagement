@@ -132,7 +132,7 @@ const Werklijst = () => {
       ) : (
         <div className="grid gap-6 md:grid-cols-2">
           {blocks.map((block) => (
-            <Card key={block.key} className="bg-slate-900/60 border-white/10 backdrop-blur-xl">
+            <Card key={block.key} className="app-card">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
                 <CardTitle className="flex items-center gap-2 text-base text-white">
                   <block.icon className="h-4 w-4 text-blue-400" />
