@@ -12,7 +12,7 @@ import CustomerDetails, { ProfileData } from "@/components/dashboard/CustomerDet
 import AccountSettings from "@/components/dashboard/AccountSettings";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import ErrorBoundary from "@/components/ErrorBoundary";
-import { AppGlow } from "@/components/ui/app-surface";
+import { AppGlow, AppCard, AppPill } from "@/components/ui/app-surface";
 
 const EDUTCH_ADDRESS = "Reigersbos 100 P, 1107 ES Amsterdam";
 
