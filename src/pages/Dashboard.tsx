@@ -87,30 +87,10 @@ const Dashboard = () => {
 
   useEffect(() => {
     updateMetaTags(pageSEO.dashboard);
-    
-    // Only proceed with auth checks if initialized
-    if (!initialized) {
-      devLog('Auth not yet initialized, waiting...');
-      return;
-    }
-
-    if (!loading) {
-      if (!user) {
-        devLog("User is not logged in, redirecting to auth page");
-        if (!isRedirecting) {
-          setIsRedirecting(true);
-          navigate("/auth", { replace: true });
-        }
-      } else {
-        devLog("User is logged in on dashboard");
-        setIsRedirecting(false);
-      }
-    }
-  }, [user, loading, isAdmin, initialized, navigate, isRedirecting]);
+  }, []);
 
   // Show loading while auth is initializing or loading
   if (!initialized || loading) {
-    devLog("Dashboard: Showing loading state");
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-slate-950">
         <LoadingSpinner size="lg" />
@@ -119,11 +99,11 @@ const Dashboard = () => {
     );
   }
 
-  // If not logged in, redirect to auth
+  // Single source of truth: no session means back to the login page.
   if (!user) {
-    devLog("Dashboard: No user, redirecting to auth");
     return <Navigate to="/auth" replace />;
   }
+
 
   return (
     <ErrorBoundary>
