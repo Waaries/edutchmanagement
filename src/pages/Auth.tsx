@@ -79,11 +79,24 @@ const Auth = () => {
     );
   }
 
-  // Single source of truth: as soon as there is a session, go to the dashboard.
-  // The dashboard itself renders the admin UI when the user is an admin.
+  // Preserve a post-login destination (used by the OAuth consent flow) across
+  // provider round-trips, which return to /auth without the query param.
+  const rawNext = searchParams.get('next');
+  if (rawNext && /^\/[^/\\]/.test(rawNext)) {
+    sessionStorage.setItem('auth_next', rawNext);
+  }
+
+  // Single source of truth: as soon as there is a session, go to the dashboard
+  // (or the preserved destination). The dashboard renders the admin UI for admins.
   if (user) {
+    const stored = sessionStorage.getItem('auth_next');
+    if (stored && /^\/[^/\\]/.test(stored)) {
+      sessionStorage.removeItem('auth_next');
+      return <Navigate to={stored} replace />;
+    }
     return <Navigate to="/dashboard" replace />;
   }
+
 
 
   // Render success dialog if needed
