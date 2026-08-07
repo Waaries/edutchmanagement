@@ -46,8 +46,9 @@ const DashboardHeader = ({ isAdmin }: DashboardHeaderProps) => {
   }, [user, toast]);
 
   const goToAdmin = () => {
-    navigate('/admin');
+    navigate('/beheer');
   };
+
 
   const handleLogout = async () => {
     try {
@@ -77,13 +78,15 @@ const DashboardHeader = ({ isAdmin }: DashboardHeaderProps) => {
         {(isAdmin || hasAdminRole) && (
           <Button
             onClick={goToAdmin}
-            variant="outline"
-            className="flex items-center gap-2 border-blue-500/30 bg-blue-500/10 text-blue-300 hover:bg-blue-500/20 hover:text-blue-200"
+            variant="ghost"
+            size="sm"
+            className="flex items-center gap-2 text-slate-400 hover:text-blue-200 hover:bg-white/5"
           >
             <Shield className="h-4 w-4" />
-            <span>Ga naar Admin Dashboard</span>
+            <span>Naar beheer</span>
           </Button>
         )}
+
         <Button
           onClick={handleLogout}
           className="flex items-center gap-2 bg-red-500/90 hover:bg-red-500 text-white border-0"
