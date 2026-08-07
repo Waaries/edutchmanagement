@@ -4,6 +4,16 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { updateMetaTags, pageSEO } from "@/lib/seo";
 
+const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
+  <section className="mb-6 rounded-2xl border border-white/10 bg-slate-900/60 p-6 md:p-8 backdrop-blur-sm">
+    <h2 className="mb-4 text-2xl font-bold text-white">{title}</h2>
+    <div className="space-y-4 text-slate-300 leading-relaxed [&_a]:text-blue-400 [&_a:hover]:underline">
+      {children}
+    </div>
+  </section>
+);
+
+
 const CookiePolicy = () => {
   useEffect(() => {
     updateMetaTags(pageSEO.cookiePolicy);
