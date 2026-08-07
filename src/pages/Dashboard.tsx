@@ -84,34 +84,42 @@ const Dashboard = () => {
 
   return (
     <ErrorBoundary>
-      <div className="container mx-auto py-8 px-4 max-w-4xl space-y-6">
-        <div className="flex items-start justify-between gap-4 flex-wrap">
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-white">
-              Welkom,{" "}
-              <span className="bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">
-                {companyName}
-              </span>
-            </h1>
-            <p className="text-slate-400 text-sm mt-1">Uw post en gegevens bij eDutch Management</p>
+      <div className="dashboard-dark relative min-h-screen bg-slate-950 overflow-hidden">
+        <AppGlow />
+        <div className="relative container mx-auto py-12 px-4 max-w-4xl space-y-8">
+          <div className="flex items-start justify-between gap-4 flex-wrap">
+            <div>
+              <AppPill icon={MapPin} className="mb-4">
+                Klantportaal
+              </AppPill>
+              <h1 className="app-title">
+                Welkom,{" "}
+                <span className="bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">
+                  {companyName}
+                </span>
+              </h1>
+              <p className="text-slate-400 mt-2 leading-relaxed">
+                Uw post en gegevens bij eDutch Management
+              </p>
+            </div>
+            {isAdmin && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => navigate("/beheer")}
+                className="text-slate-400 hover:text-blue-200 hover:bg-white/5"
+              >
+                <Shield className="h-4 w-4 mr-2" />
+                Naar beheer
+              </Button>
+            )}
           </div>
-          {isAdmin && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => navigate("/beheer")}
-              className="text-slate-400 hover:text-blue-200 hover:bg-white/5"
-            >
-              <Shield className="h-4 w-4 mr-2" />
-              Naar beheer
-            </Button>
-          )}
-        </div>
 
-        <Card className="bg-gradient-to-br from-blue-500/10 via-white/5 to-indigo-500/10 border-white/10 backdrop-blur-md">
-          <CardContent className="p-5 flex items-start justify-between gap-4 flex-wrap">
+          <AppCard className="p-6 flex items-start justify-between gap-4 flex-wrap">
             <div className="flex items-start gap-3 min-w-0">
-              <MapPin className="h-5 w-5 text-blue-400 mt-0.5 shrink-0" />
+              <span className="app-icon-tile h-10 w-10 shrink-0">
+                <MapPin className="h-5 w-5" />
+              </span>
               <div className="min-w-0">
                 <p className="text-xs uppercase tracking-wider text-slate-500 mb-1">
                   Uw bedrijfsadres bij eDutch
@@ -123,16 +131,17 @@ const Dashboard = () => {
               {copied ? <Check className="h-4 w-4 mr-2" /> : <Copy className="h-4 w-4 mr-2" />}
               Kopieer adres
             </Button>
-          </CardContent>
-        </Card>
+          </AppCard>
 
-        <CustomerMail />
+          <CustomerMail />
 
-        <CustomerDetails user={user} onProfileChange={setProfile} />
+          <CustomerDetails user={user} onProfileChange={setProfile} />
 
-        <AccountSettings />
+          <AccountSettings />
+        </div>
       </div>
     </ErrorBoundary>
+
   );
 };
 
