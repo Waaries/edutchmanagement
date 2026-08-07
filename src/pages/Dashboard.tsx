@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import {
   User, LayoutDashboard, Mail, Settings,
@@ -58,8 +58,6 @@ const ADMIN_NAV = [
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
-  const navigate = useNavigate();
-  const [isRedirecting, setIsRedirecting] = useState(false);
 
   // Safely get auth context with error handling
   let authContext;
