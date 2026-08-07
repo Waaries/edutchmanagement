@@ -19,18 +19,27 @@ export const AppGlow = ({ className }: { className?: string }) => (
 /** Glass card, identical recipe to the Features cards on the homepage. */
 export const AppCard = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & { interactive?: boolean; solid?: boolean }
->(({ className, interactive, solid, ...props }, ref) => (
+  React.HTMLAttributes<HTMLDivElement> & { interactive?: boolean; solid?: boolean; light?: boolean }
+>(({ className, interactive, solid, light, ...props }, ref) => (
   <div
     ref={ref}
     className={cn(
-      solid ? "app-card-solid" : interactive ? "app-card-interactive" : "app-card",
+      light
+        ? interactive
+          ? "app-card-light-interactive"
+          : "app-card-light"
+        : solid
+          ? "app-card-solid"
+          : interactive
+            ? "app-card-interactive"
+            : "app-card",
       className
     )}
     {...props}
   />
 ));
 AppCard.displayName = "AppCard";
+
 
 /** Card heading row with a small coloured icon, matching the site's card style. */
 export const AppCardHeader = ({
@@ -62,13 +71,16 @@ export const AppPill = ({
   icon: Icon,
   children,
   className,
+  light,
 }: {
   icon?: React.ComponentType<{ className?: string }>;
   children: React.ReactNode;
   className?: string;
+  light?: boolean;
 }) => (
-  <span className={cn("app-pill", className)}>
-    {Icon && <Icon className="h-4 w-4 text-blue-400" />}
+  <span className={cn(light ? "app-pill-light" : "app-pill", className)}>
+    {Icon && <Icon className={cn("h-4 w-4", light ? "text-blue-600" : "text-blue-400")} />}
     {children}
   </span>
 );
+

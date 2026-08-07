@@ -31,18 +31,18 @@ const Contact = () => {
   }, []);
 
   return (
-    <section id="contact" className="relative py-24 md:py-32 bg-slate-950 overflow-hidden border-t border-white/5" ref={sectionRef}>
-      <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] rounded-full bg-indigo-900/30 blur-[140px] pointer-events-none" />
-      <div className="absolute top-1/4 -left-32 w-96 h-96 rounded-full bg-blue-600/15 blur-[120px] pointer-events-none" />
+    <section id="contact" className="relative py-24 md:py-32 bg-slate-50 overflow-hidden border-t border-slate-200" ref={sectionRef}>
+      <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] rounded-full bg-blue-500/[0.04] blur-[140px] pointer-events-none" />
       <div className="relative container mx-auto px-6 reveal">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight mb-6 leading-[1.1] animate-fade-in">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 tracking-tight mb-6 leading-[1.1] animate-fade-in">
             {translate("contact.subtitle")}
           </h2>
-          <p className="text-lg text-slate-400 animate-fade-in animation-delay-200">
+          <p className="text-lg text-slate-600 animate-fade-in animation-delay-200">
             {translate("contact.description")}
           </p>
         </div>
+
         
         <div className="space-y-12 max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-fade-in animation-delay-400 lg:items-stretch">
@@ -54,7 +54,10 @@ const Contact = () => {
           </div>
         </div>
       </div>
+      {/* Soft transition into the dark footer */}
+      <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-slate-950 pointer-events-none" />
     </section>
+
   );
 };
 

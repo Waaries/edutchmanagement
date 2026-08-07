@@ -64,23 +64,21 @@ const Services = () => {
   return (
     <section
       id="diensten"
-      className="relative py-24 md:py-32 bg-slate-950 overflow-hidden border-t border-white/5"
+      className="relative py-24 md:py-32 bg-slate-50 overflow-hidden border-t border-slate-200"
       ref={sectionRef}
     >
-      {/* Premium glows */}
-      <div className="absolute top-0 right-1/4 w-[500px] h-[500px] rounded-full bg-blue-600/15 blur-[140px] pointer-events-none" />
-      <div className="absolute bottom-1/4 -left-32 w-96 h-96 rounded-full bg-indigo-900/30 blur-[120px] pointer-events-none" />
+      <div className="absolute top-0 right-1/4 w-[500px] h-[500px] rounded-full bg-blue-500/[0.04] blur-[140px] pointer-events-none" />
 
       <div className="relative container mx-auto px-6 reveal">
         <div className="text-center max-w-3xl mx-auto mb-16 animate-fade-in">
-          <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
-            <Sparkles className="h-4 w-4 text-blue-400" />
-            <span className="text-sm font-medium text-slate-300">{translate("services.title")}</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full bg-slate-100 border border-slate-200">
+            <Sparkles className="h-4 w-4 text-blue-600" />
+            <span className="text-sm font-medium text-slate-600">{translate("services.title")}</span>
           </div>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight mb-6 leading-[1.1]">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 tracking-tight mb-6 leading-[1.1]">
             {translate("services.subtitle")}
           </h2>
-          <p className="text-lg text-slate-400 leading-relaxed">
+          <p className="text-lg text-slate-600 leading-relaxed">
             {translate("services.description")}
           </p>
         </div>
@@ -89,10 +87,10 @@ const Services = () => {
           {services.map((service, index) => (
             <div
               key={index}
-              className={`group relative rounded-2xl backdrop-blur-sm transition-all duration-500 animate-fade-in flex flex-col ${
+              className={`group relative rounded-2xl transition-all duration-500 animate-fade-in flex flex-col ${
                 service.mostPopular
-                  ? "bg-gradient-to-br from-blue-600/20 to-indigo-900/30 border border-blue-500/40 shadow-2xl shadow-blue-500/20 lg:scale-[1.03]"
-                  : "bg-gradient-to-br from-white/[0.07] to-white/[0.02] border border-white/10 hover:border-blue-500/30"
+                  ? "bg-white border-2 border-blue-500 shadow-xl shadow-blue-500/15 lg:scale-[1.03]"
+                  : "bg-white border border-slate-200 shadow-sm hover:border-blue-400 hover:shadow-lg hover:shadow-blue-500/10"
               }`}
               style={{ animationDelay: `${index * 150}ms` }}
             >
@@ -102,22 +100,22 @@ const Services = () => {
                 </div>
               )}
               <div className="p-8 flex-grow flex flex-col">
-                <h3 className="text-xl font-semibold text-white mb-2">{service.title}</h3>
+                <h3 className="text-xl font-semibold text-slate-900 mb-2">{service.title}</h3>
                 <div className="flex items-end gap-2 mb-3">
-                  <span className="text-5xl font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
+                  <span className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                     {service.price}
                   </span>
-                  <span className="text-slate-400 mb-2 text-sm">{service.period}</span>
+                  <span className="text-slate-500 mb-2 text-sm">{service.period}</span>
                 </div>
-                <p className="text-slate-400 mb-8 leading-relaxed">{service.description}</p>
+                <p className="text-slate-600 mb-8 leading-relaxed">{service.description}</p>
 
                 <ul className="space-y-3 mb-8 flex-grow">
                   {service.features.map((feature: string, idx: number) => (
                     <li key={idx} className="flex items-start gap-3">
-                      <div className="mt-0.5 h-5 w-5 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center flex-shrink-0">
-                        <Check className="h-3 w-3 text-blue-400" />
+                      <div className="mt-0.5 h-5 w-5 rounded-full bg-blue-50 border border-blue-200 flex items-center justify-center flex-shrink-0">
+                        <Check className="h-3 w-3 text-blue-600" />
                       </div>
-                      <span className="text-slate-300 text-sm leading-relaxed">{feature}</span>
+                      <span className="text-slate-700 text-sm leading-relaxed">{feature}</span>
                     </li>
                   ))}
                 </ul>
@@ -127,7 +125,7 @@ const Services = () => {
                   className={`w-full group/btn transition-all duration-300 ${
                     service.mostPopular
                       ? "bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-400 hover:to-indigo-500 text-white shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50"
-                      : "bg-white/5 hover:bg-white/10 text-white border border-white/10 hover:border-white/20"
+                      : "bg-slate-100 hover:bg-slate-200 text-slate-900 border border-slate-200 hover:border-slate-300"
                   }`}
                 >
                   <span>{translate("services.selectPlan")}</span>
@@ -139,10 +137,10 @@ const Services = () => {
         </div>
 
         <div className="mt-16 text-center animate-fade-in">
-          <p className="text-slate-400 mb-4">{translate("services.customNeeds")}</p>
+          <p className="text-slate-600 mb-4">{translate("services.customNeeds")}</p>
           <Button
             variant="outline"
-            className="bg-white/5 border-white/10 text-white hover:bg-white/10 hover:border-white/20"
+            className="bg-white border-slate-300 text-slate-900 hover:bg-slate-100 hover:border-blue-400"
             onClick={() => navigate("/aanvragen")}
           >
             {translate("services.customBtn")}
@@ -151,6 +149,7 @@ const Services = () => {
       </div>
     </section>
   );
+
 };
 
 export default Services;
