@@ -19,18 +19,27 @@ export const AppGlow = ({ className }: { className?: string }) => (
 /** Glass card, identical recipe to the Features cards on the homepage. */
 export const AppCard = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & { interactive?: boolean; solid?: boolean }
->(({ className, interactive, solid, ...props }, ref) => (
+  React.HTMLAttributes<HTMLDivElement> & { interactive?: boolean; solid?: boolean; light?: boolean }
+>(({ className, interactive, solid, light, ...props }, ref) => (
   <div
     ref={ref}
     className={cn(
-      solid ? "app-card-solid" : interactive ? "app-card-interactive" : "app-card",
+      light
+        ? interactive
+          ? "app-card-light-interactive"
+          : "app-card-light"
+        : solid
+          ? "app-card-solid"
+          : interactive
+            ? "app-card-interactive"
+            : "app-card",
       className
     )}
     {...props}
   />
 ));
 AppCard.displayName = "AppCard";
+
 
 /** Card heading row with a small coloured icon, matching the site's card style. */
 export const AppCardHeader = ({

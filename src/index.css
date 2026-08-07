@@ -246,7 +246,34 @@
   .app-icon-tile {
     @apply flex items-center justify-center rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400;
   }
+
+  /* -------------------------------------------------------------------------
+     Light counterparts — used by the public sections between the dark hero
+     and the dark footer. Same geometry and timing as the dark variants.
+  ------------------------------------------------------------------------- */
+  .app-card-light {
+    @apply rounded-2xl bg-white border border-slate-200 shadow-sm;
+  }
+
+  .app-card-light-interactive {
+    @apply rounded-2xl bg-white border border-slate-200 shadow-sm
+           hover:border-blue-400 hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-500;
+  }
+
+  .app-pill-light {
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 border border-slate-200
+           text-sm font-medium text-slate-600;
+  }
+
+  .app-title-light {
+    @apply text-2xl md:text-3xl font-bold text-slate-900 tracking-tight;
+  }
+
+  .app-icon-tile-light {
+    @apply flex items-center justify-center rounded-xl bg-blue-50 border border-blue-200 text-blue-600;
+  }
 }
+
 
 
 /* Enhanced Animation System */
