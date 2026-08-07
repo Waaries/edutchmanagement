@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { AppGlow } from "@/components/ui/app-surface";
+import { AppGlow } from "@/components/ui/app-surface";
 
 const MAIN_NAV = [
   { to: "/beheer", label: "Werklijst", icon: ClipboardList, end: true },
@@ -59,7 +60,7 @@ const BeheerLayout = () => {
     };
   }, [user, loading, initialized, contextIsAdmin]);
 
-  if (false) {
+  if (!initialized || loading || (user && allowed === null)) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-slate-950">
         <LoadingSpinner size="lg" />
@@ -68,7 +69,8 @@ const BeheerLayout = () => {
     );
   }
 
-  // TEMP-VISUAL-CHECK
+  if (!user) return <Navigate to="/auth" replace />;
+  if (!allowed) return <Navigate to="/dashboard" replace />;
 
   const nav = (
     <div className="app-card p-3 space-y-4">

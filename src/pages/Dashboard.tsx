@@ -47,7 +47,7 @@ const Dashboard = () => {
     updateMetaTags(pageSEO.dashboard);
   }, []);
 
-  if (false) {
+  if (!initialized || loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-slate-950">
         <LoadingSpinner size="lg" />
@@ -56,12 +56,14 @@ const Dashboard = () => {
     );
   }
 
-  const fakeUser = (user ?? { id: "x", email: "klant@voorbeeld.nl" }) as typeof user;
+  if (!user) {
+    return <Navigate to="/auth" replace />;
+  }
 
   const companyName =
     profile.company_name ||
     [profile.first_name, profile.last_name].filter(Boolean).join(" ") ||
-    fakeUser?.email?.split("@")[0] ||
+    user.email?.split("@")[0] ||
     "klant";
 
   const fullAddress = profile.company_name
@@ -132,7 +134,7 @@ const Dashboard = () => {
 
           <CustomerMail />
 
-          <CustomerDetails user={fakeUser!} onProfileChange={setProfile} />
+          <CustomerDetails user={user} onProfileChange={setProfile} />
 
           <AccountSettings />
         </div>
