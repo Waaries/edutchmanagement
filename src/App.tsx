@@ -23,6 +23,8 @@ const Auth = lazy(() => import("./pages/Auth"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const AddressRequest = lazy(() => import("./pages/AddressRequest"));
 const PublicContract = lazy(() => import("./pages/PublicContract"));
+const OAuthConsent = lazy(() => import("./pages/OAuthConsent"));
+
 const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsAndConditions = lazy(() => import("./pages/TermsAndConditions"));
@@ -95,6 +97,8 @@ function AppContent() {
 
         <Route path="/aanvragen" element={<AppLayout><AddressRequest /></AppLayout>} />
         <Route path="/contract/:accessToken" element={<AppLayout showSidebar={false}><PublicContract /></AppLayout>} />
+        <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
+
         <Route path="/cookie-policy" element={<AppLayout showSidebar={false}><CookiePolicy /></AppLayout>} />
         <Route path="/privacy" element={<AppLayout showSidebar={false}><PrivacyPolicy /></AppLayout>} />
         <Route path="/terms" element={<AppLayout showSidebar={false}><TermsAndConditions /></AppLayout>} />
