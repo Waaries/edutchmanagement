@@ -5,9 +5,8 @@ import { Navigate } from "react-router-dom";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import {
   User, LayoutDashboard, Mail, Settings,
-  Users, Shield, ClipboardList, Building2, MessageSquare,
-  FileText, Database, ScrollText, Activity,
 } from "lucide-react";
+
 import { cn } from "@/lib/utils";
 import { updateMetaTags, pageSEO } from "@/lib/seo";
 
