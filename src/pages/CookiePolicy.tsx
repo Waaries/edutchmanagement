@@ -10,72 +10,70 @@ const CookiePolicy = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-slate-950">
       <Navbar />
-      <main className="flex-grow container mx-auto px-4 py-32 max-w-4xl">
-        <h1 className="text-4xl font-bold mb-8 font-['Playfair_Display',serif]">Cookiebeleid</h1>
-        
-        <section className="mb-8 bg-white p-8 rounded-lg shadow-sm">
-          <h2 className="text-2xl font-bold mb-4 font-['Playfair_Display',serif] gradient-text">Wat zijn cookies?</h2>
-          <p className="mb-4 text-slate-600">
-            Cookies zijn kleine tekstbestanden die bij uw bezoek aan onze website worden opgeslagen op uw computer, 
-            tablet of smartphone. Deze tekstbestanden bevatten informatie die bij een volgend bezoek weer door de 
-            website kan worden herkend.
+      <main className="relative flex-grow overflow-hidden">
+        <div className="pointer-events-none absolute -top-32 left-1/4 h-[500px] w-[500px] rounded-full bg-blue-600/10 blur-[140px]" />
+        <div className="relative container mx-auto px-4 py-32 max-w-4xl">
+          <p className="mb-3 inline-block rounded-full border border-blue-400/30 bg-blue-500/10 px-4 py-1 text-sm text-blue-300">
+            Juridisch
           </p>
-        </section>
+          <h1 className="text-4xl font-bold tracking-tight text-white mb-8">Cookiebeleid</h1>
 
-        <section className="mb-8 bg-white p-8 rounded-lg shadow-sm">
-          <h2 className="text-2xl font-bold mb-4 font-['Playfair_Display',serif] gradient-text">Welke cookies gebruiken wij?</h2>
-          
-          <h3 className="text-xl font-bold mt-6 mb-2 font-['Playfair_Display',serif]">Essentiële cookies</h3>
-          <p className="mb-4 text-slate-600">
-            Deze cookies zijn noodzakelijk voor het functioneren van de website. Zonder deze cookies kunnen bepaalde 
-            onderdelen niet worden gebruikt. Deze cookies verzamelen geen informatie over u die gebruikt kan worden 
-            voor marketing of om te onthouden welke websites u hebt bezocht.
-          </p>
-          
-          <h3 className="text-xl font-bold mt-6 mb-2 font-['Playfair_Display',serif]">Analytische cookies</h3>
-          <p className="mb-4 text-slate-600">
-            Deze cookies verzamelen informatie over het gedrag van websitebezoekers, zoals welke pagina's het meest 
-            worden bezocht en of bezoekers foutmeldingen ontvangen. Deze cookies verzamelen geen informatie die 
-            bezoekers kan identificeren. Alle informatie die deze cookies verzamelen, is anoniem en wordt alleen 
-            gebruikt om de werking van de website te verbeteren.
-          </p>
-          
-          <h3 className="text-xl font-bold mt-6 mb-2 font-['Playfair_Display',serif]">Marketing cookies</h3>
-          <p className="mb-4 text-slate-600">
-            Deze cookies worden gebruikt om advertenties beter op u en uw interesses af te stemmen. Ze worden ook 
-            gebruikt om het aantal keren dat u een advertentie ziet te beperken en om de effectiviteit van 
-            reclamecampagnes te meten. Ze onthouden dat u een website hebt bezocht en deze informatie kan worden 
-            gedeeld met andere organisaties, zoals adverteerders.
-          </p>
-        </section>
+          <Section title="Wat zijn cookies?">
+            <p>
+              Cookies zijn kleine tekstbestanden die bij uw bezoek aan onze website worden opgeslagen op uw computer,
+              tablet of smartphone. Deze tekstbestanden bevatten informatie die bij een volgend bezoek weer door de
+              website kan worden herkend.
+            </p>
+          </Section>
 
-        <section className="mb-8 bg-white p-8 rounded-lg shadow-sm">
-          <h2 className="text-2xl font-bold mb-4 font-['Playfair_Display',serif] gradient-text">Cookie-instellingen aanpassen</h2>
-          <p className="mb-4 text-slate-600">
-            U kunt uw voorkeuren voor cookies op elk moment aanpassen. Bij uw eerste bezoek aan onze website 
-            hebt u de mogelijkheid om bepaalde cookies te accepteren of te weigeren. U kunt deze instellingen 
-            later wijzigen door uw browserinstellingen aan te passen om cookies te weigeren of te verwijderen.
-          </p>
-          <p className="mb-4 text-slate-600">
-            Let op: het blokkeren van cookies kan invloed hebben op de functionaliteit van onze website.
-          </p>
-        </section>
+          <Section title="Welke cookies gebruiken wij?">
+            <h3 className="text-xl font-bold text-white">Essentiële cookies</h3>
+            <p>
+              Deze cookies zijn noodzakelijk voor het functioneren van de website. Zonder deze cookies kunnen bepaalde
+              onderdelen niet worden gebruikt. Deze cookies verzamelen geen informatie over u die gebruikt kan worden
+              voor marketing of om te onthouden welke websites u hebt bezocht.
+            </p>
 
-        <section className="bg-white p-8 rounded-lg shadow-sm">
-          <h2 className="text-2xl font-bold mb-4 font-['Playfair_Display',serif] gradient-text">Contact</h2>
-          <p className="mb-4 text-slate-600">
-            Als u vragen heeft over ons cookiebeleid, neem dan contact met ons op via: <br />
-            <a href="mailto:info@edutchmanagement.nl" className="text-blue-600 hover:underline">
-              info@edutchmanagement.nl
-            </a>
-          </p>
-        </section>
+            <h3 className="text-xl font-bold text-white">Analytische cookies</h3>
+            <p>
+              Deze cookies verzamelen informatie over het gedrag van websitebezoekers, zoals welke pagina's het meest
+              worden bezocht en of bezoekers foutmeldingen ontvangen. Deze cookies verzamelen geen informatie die
+              bezoekers kan identificeren. Alle informatie die deze cookies verzamelen, is anoniem en wordt alleen
+              gebruikt om de werking van de website te verbeteren.
+            </p>
+
+            <h3 className="text-xl font-bold text-white">Marketing cookies</h3>
+            <p>
+              Deze cookies worden gebruikt om advertenties beter op u en uw interesses af te stemmen. Ze worden ook
+              gebruikt om het aantal keren dat u een advertentie ziet te beperken en om de effectiviteit van
+              reclamecampagnes te meten. Ze onthouden dat u een website hebt bezocht en deze informatie kan worden
+              gedeeld met andere organisaties, zoals adverteerders.
+            </p>
+          </Section>
+
+          <Section title="Cookie-instellingen aanpassen">
+            <p>
+              U kunt uw voorkeuren voor cookies op elk moment aanpassen. Bij uw eerste bezoek aan onze website
+              hebt u de mogelijkheid om bepaalde cookies te accepteren of te weigeren. U kunt deze instellingen
+              later wijzigen door uw browserinstellingen aan te passen om cookies te weigeren of te verwijderen.
+            </p>
+            <p>Let op: het blokkeren van cookies kan invloed hebben op de functionaliteit van onze website.</p>
+          </Section>
+
+          <Section title="Contact">
+            <p>
+              Als u vragen heeft over ons cookiebeleid, neem dan contact met ons op via: <br />
+              <a href="mailto:info@edutchmanagement.nl">info@edutchmanagement.nl</a>
+            </p>
+          </Section>
+        </div>
       </main>
       <Footer />
     </div>
   );
+
 };
 
 export default CookiePolicy;
