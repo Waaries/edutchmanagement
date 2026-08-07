@@ -26,6 +26,18 @@ const PublicContract = lazy(() => import("./pages/PublicContract"));
 const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsAndConditions = lazy(() => import("./pages/TermsAndConditions"));
+const BeheerLayout = lazy(() => import("./pages/beheer/BeheerLayout"));
+const Werklijst = lazy(() => import("./pages/beheer/Werklijst"));
+const PostPage = lazy(() => import("./pages/beheer/pages").then((m) => ({ default: m.PostPage })));
+const AanvragenPage = lazy(() => import("./pages/beheer/pages").then((m) => ({ default: m.AanvragenPage })));
+const ContractenPage = lazy(() => import("./pages/beheer/pages").then((m) => ({ default: m.ContractenPage })));
+const KlantenPage = lazy(() => import("./pages/beheer/pages").then((m) => ({ default: m.KlantenPage })));
+const BeveiligingPage = lazy(() => import("./pages/beheer/pages").then((m) => ({ default: m.BeveiligingPage })));
+const AuditPage = lazy(() => import("./pages/beheer/pages").then((m) => ({ default: m.AuditPage })));
+const LogsPage = lazy(() => import("./pages/beheer/pages").then((m) => ({ default: m.LogsPage })));
+const MonitoringPage = lazy(() => import("./pages/beheer/pages").then((m) => ({ default: m.MonitoringPage })));
+const BerichtenPage = lazy(() => import("./pages/beheer/pages").then((m) => ({ default: m.BerichtenPage })));
+
 
 const RouteFallback = () => (
   <div className="flex min-h-screen items-center justify-center bg-slate-950">
