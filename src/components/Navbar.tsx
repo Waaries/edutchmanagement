@@ -5,7 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import LanguageSelector from "@/components/LanguageSelector";
-import logoLight from "@/assets/logo-light.png";
+import Logo from "@/components/Logo";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -67,8 +67,8 @@ const Navbar = () => {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         isScrolled
-          ? "bg-slate-950/85 backdrop-blur-xl shadow-2xl shadow-black/20 py-2"
-          : "bg-transparent py-4"
+          ? "bg-white/95 backdrop-blur-xl border-b border-slate-200 shadow-lg shadow-slate-900/5 py-2"
+          : "bg-white border-b border-transparent py-4"
       }`}
     >
       <div className="container-full container-padding">
@@ -80,11 +80,7 @@ const Navbar = () => {
             className="flex items-center cursor-pointer"
             onClick={handleLogoClick}
           >
-            <img
-              src={logoLight}
-              alt="eDutch Management Logo"
-              className="h-16 md:h-20 w-auto object-contain drop-shadow-[0_0_18px_rgba(96,165,250,0.4)]"
-            />
+            <Logo variant="dark" alt="eDutch Management Logo" className="h-16 md:h-20" />
           </Link>
 
           <nav className="hidden md:flex items-center space-x-8 flex-1 justify-end">
@@ -92,7 +88,7 @@ const Navbar = () => {
               <Link
                 key={item.key}
                 to={isHomePage ? `#${item.id}` : `/#${item.id}`}
-                className="text-slate-200 hover:text-blue-400 transition-colors font-semibold font-poppins"
+                className="text-slate-600 hover:text-slate-900 transition-colors font-semibold font-poppins"
                 onClick={(e) => handleNavClick(e, item.id)}
               >
                 {item.label}
@@ -102,7 +98,7 @@ const Navbar = () => {
             {user && (
               <Link
                 to="/dashboard"
-                className="text-slate-200 hover:text-blue-400 transition-colors font-semibold font-poppins flex items-center gap-1"
+                className="text-slate-600 hover:text-slate-900 transition-colors font-semibold font-poppins flex items-center gap-1"
               >
                 <LayoutDashboard className="h-4 w-4" />
                 <span>Dashboard</span>
@@ -115,7 +111,7 @@ const Navbar = () => {
               <Button
                 onClick={handleLogout}
                 variant="outline"
-                className="flex items-center gap-2 bg-white/5 border-white/15 text-white hover:bg-white/10 hover:border-white/25"
+                className="flex items-center gap-2 bg-white border-slate-300 text-slate-700 hover:bg-slate-100 hover:text-slate-900"
               >
                 <LogOut className="h-4 w-4" />
                 <span>{translate("nav.logout")}</span>
@@ -133,7 +129,7 @@ const Navbar = () => {
           <div className="md:hidden flex items-center gap-2">
             <LanguageSelector />
             <button
-              className="text-white bg-white/10 border border-white/15 p-2 rounded-xl backdrop-blur-sm"
+              className="text-slate-700 bg-slate-100 border border-slate-200 p-2 rounded-xl"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -144,14 +140,14 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden bg-slate-950/95 backdrop-blur-xl border-b border-white/10 absolute top-full left-0 right-0 shadow-2xl animate-fade-in">
+        <div className="md:hidden bg-white backdrop-blur-xl border-b border-slate-200 absolute top-full left-0 right-0 shadow-xl animate-fade-in">
           <div className="container-full container-padding py-5">
             <div className="flex flex-col space-y-4">
               {menuItems.map((item) => (
                 <Link
                   key={item.key}
                   to={isHomePage ? `#${item.id}` : `/#${item.id}`}
-                  className="text-slate-200 hover:text-blue-400 transition-colors py-2 font-semibold font-poppins flex items-center"
+                  className="text-slate-600 hover:text-slate-900 transition-colors py-2 font-semibold font-poppins flex items-center"
                   onClick={(e) => handleNavClick(e, item.id)}
                 >
                   {item.label}
@@ -161,7 +157,7 @@ const Navbar = () => {
               {user && (
                 <Link
                   to="/dashboard"
-                  className="text-slate-200 hover:text-blue-400 transition-colors py-2 font-semibold font-poppins flex items-center gap-2"
+                  className="text-slate-600 hover:text-slate-900 transition-colors py-2 font-semibold font-poppins flex items-center gap-2"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <LayoutDashboard className="h-4 w-4" />
@@ -173,7 +169,7 @@ const Navbar = () => {
                 <Button
                   onClick={handleLogout}
                   variant="outline"
-                  className="w-full flex items-center justify-center gap-2 mt-4 bg-white/5 border-white/15 text-white hover:bg-white/10"
+                  className="w-full flex items-center justify-center gap-2 mt-4 bg-white border-slate-300 text-slate-700 hover:bg-slate-100 hover:text-slate-900"
                 >
                   <LogOut className="h-4 w-4" />
                   <span>{translate("nav.logout")}</span>
