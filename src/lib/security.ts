@@ -31,6 +31,7 @@ export const SecurityHeaders = {
     'connect-src': [
       "'self'",
       "https://*.supabase.co",
+      "wss://*.supabase.co",
       "https://www.google-analytics.com"
     ],
     'frame-src': [
