@@ -69,28 +69,6 @@ const Auth = () => {
     }
   }, [location, searchParams]);
 
-  useEffect(() => {
-    // Only check for redirects if auth is initialized
-    if (!initialized) {
-      devLog('Auth not yet initialized in Auth page');
-      return;
-    }
-
-    if (user && !loading && !isRedirecting) {
-      devLog("User is logged in, redirecting to appropriate page:", isAdmin ? "/admin" : "/dashboard");
-      
-      setIsRedirecting(true);
-      // Use setTimeout to ensure state is properly set
-      setTimeout(() => {
-        if (isAdmin) {
-          navigate('/admin', { replace: true });
-        } else {
-          navigate('/dashboard', { replace: true });
-        }
-      }, 100);
-    }
-  }, [user, loading, isAdmin, initialized, navigate, isRedirecting]);
-
   // Show loading while auth is initializing
   if (!initialized || loading) {
     return (
@@ -103,10 +81,12 @@ const Auth = () => {
     );
   }
 
-  // If user is already logged in, don't render the auth page
+  // Single source of truth: as soon as there is a session, go to the dashboard.
+  // The dashboard itself renders the admin UI when the user is an admin.
   if (user) {
-    return <Navigate to={isAdmin ? "/admin" : "/dashboard"} replace />;
+    return <Navigate to="/dashboard" replace />;
   }
+
 
   // Render success dialog if needed
   if (showDialog && success) {
