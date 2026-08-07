@@ -55,15 +55,19 @@ const emptyForm = {
 };
 
 const MailTab = () => {
+  const prefillUser =
+    typeof window !== "undefined"
+      ? new URLSearchParams(window.location.search).get("klant") ?? ""
+      : "";
   const { user } = useAuth();
   const { toast } = useToast();
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [items, setItems] = useState<MailItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [form, setForm] = useState(emptyForm);
+  const [form, setForm] = useState({ ...emptyForm, user_id: prefillUser });
   const [scanFile, setScanFile] = useState<File | null>(null);
-  const [filterUser, setFilterUser] = useState("all");
+  const [filterUser, setFilterUser] = useState(prefillUser || "all");
   const [filterStatus, setFilterStatus] = useState("all");
 
   const emailById = useMemo(() => {

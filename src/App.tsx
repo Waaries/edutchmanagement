@@ -31,7 +31,8 @@ const Werklijst = lazy(() => import("./pages/beheer/Werklijst"));
 const PostPage = lazy(() => import("./pages/beheer/pages").then((m) => ({ default: m.PostPage })));
 const AanvragenPage = lazy(() => import("./pages/beheer/pages").then((m) => ({ default: m.AanvragenPage })));
 const ContractenPage = lazy(() => import("./pages/beheer/pages").then((m) => ({ default: m.ContractenPage })));
-const KlantenPage = lazy(() => import("./pages/beheer/pages").then((m) => ({ default: m.KlantenPage })));
+const KlantenPage = lazy(() => import("./pages/beheer/Klanten"));
+const KlantDetailPage = lazy(() => import("./pages/beheer/KlantDetail"));
 const BeveiligingPage = lazy(() => import("./pages/beheer/pages").then((m) => ({ default: m.BeveiligingPage })));
 const AuditPage = lazy(() => import("./pages/beheer/pages").then((m) => ({ default: m.AuditPage })));
 const LogsPage = lazy(() => import("./pages/beheer/pages").then((m) => ({ default: m.LogsPage })));
@@ -84,6 +85,7 @@ function AppContent() {
           <Route path="aanvragen" element={<AanvragenPage />} />
           <Route path="contracten" element={<ContractenPage />} />
           <Route path="klanten" element={<KlantenPage />} />
+          <Route path="klanten/:id" element={<KlantDetailPage />} />
           <Route path="systeem/beveiliging" element={<BeveiligingPage />} />
           <Route path="systeem/audit" element={<AuditPage />} />
           <Route path="systeem/logs" element={<LogsPage />} />
