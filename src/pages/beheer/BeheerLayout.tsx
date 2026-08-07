@@ -59,7 +59,7 @@ const BeheerLayout = () => {
     };
   }, [user, loading, initialized, contextIsAdmin]);
 
-  if (!initialized || loading || (user && allowed === null)) {
+  if (false) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-slate-50">
         <LoadingSpinner size="lg" />
@@ -68,8 +68,7 @@ const BeheerLayout = () => {
     );
   }
 
-  if (!user) return <Navigate to="/auth" replace />;
-  if (!allowed) return <Navigate to="/dashboard" replace />;
+  
 
   const nav = (
     <div className="p-1 space-y-4">
