@@ -2,6 +2,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "./AppSidebar";
 import { useAuth } from "@/contexts/AuthContext";
 import { Menu } from "lucide-react";
+import { AppGlow } from "@/components/ui/app-surface";
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -40,7 +41,8 @@ export function AppLayout({ children, showSidebar = true }: AppLayoutProps) {
           </header>
 
           {/* Main content */}
-          <main className="flex-1 overflow-auto relative dashboard-glow">
+          <main className="flex-1 overflow-auto relative">
+            <AppGlow />
             <div className="relative z-10">{children}</div>
           </main>
         </div>

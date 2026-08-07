@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Shield, MapPin, Copy, Check } from "lucide-react";
 import { updateMetaTags, pageSEO } from "@/lib/seo";
 import { useToast } from "@/hooks/use-toast";
