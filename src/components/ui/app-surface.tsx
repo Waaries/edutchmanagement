@@ -71,13 +71,16 @@ export const AppPill = ({
   icon: Icon,
   children,
   className,
+  light,
 }: {
   icon?: React.ComponentType<{ className?: string }>;
   children: React.ReactNode;
   className?: string;
+  light?: boolean;
 }) => (
-  <span className={cn("app-pill", className)}>
-    {Icon && <Icon className="h-4 w-4 text-blue-400" />}
+  <span className={cn(light ? "app-pill-light" : "app-pill", className)}>
+    {Icon && <Icon className={cn("h-4 w-4", light ? "text-blue-600" : "text-blue-400")} />}
     {children}
   </span>
 );
+
