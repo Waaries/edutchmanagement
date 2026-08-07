@@ -128,12 +128,13 @@ const BeheerLayout = () => {
   );
 
   return (
-    <div className="dashboard-dark min-h-screen bg-slate-950">
-      <div className="container mx-auto py-6 px-4">
-        <div className="lg:hidden mb-4">
+    <div className="dashboard-dark relative min-h-screen bg-slate-950 overflow-hidden">
+      <AppGlow />
+      <div className="relative container mx-auto py-10 px-4 lg:px-6">
+        <div className="lg:hidden mb-6">
           <button
             onClick={() => setMobileOpen((v) => !v)}
-            className="flex items-center gap-2 px-3 py-2 rounded-lg border border-white/10 bg-slate-900/60 text-slate-200 text-sm"
+            className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm text-slate-200 text-sm"
           >
             {mobileOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
             Beheermenu
@@ -141,11 +142,11 @@ const BeheerLayout = () => {
           {mobileOpen && <div className="mt-3">{nav}</div>}
         </div>
 
-        <div className="flex gap-6">
+        <div className="flex gap-8">
           <aside className="hidden lg:block w-64 shrink-0">
-            <div className="sticky top-6">{nav}</div>
+            <div className="sticky top-10">{nav}</div>
           </aside>
-          <main className="flex-1 min-w-0">
+          <main className="flex-1 min-w-0 pb-12">
             <ErrorBoundary>
               <Outlet />
             </ErrorBoundary>
@@ -153,6 +154,7 @@ const BeheerLayout = () => {
         </div>
       </div>
     </div>
+
   );
 };
 
