@@ -120,17 +120,8 @@ const Dashboard = () => {
                   })}
                 </nav>
               </div>
-
-                        >
-                          <Icon className="h-4 w-4 shrink-0" />
-                          <span>{item.label}</span>
-                        </button>
-                      );
-                    })}
-                  </nav>
-                </div>
-              )}
             </div>
+
           </aside>
 
           <div className="flex-1 min-w-0">
