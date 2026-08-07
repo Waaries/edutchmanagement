@@ -29,7 +29,7 @@ const NotFound = () => {
       </div>
       <div className="relative text-center max-w-lg">
         <img 
-          src="/lovable-uploads/39d6c2c8-b4a1-4f97-86fb-dd3a6e9fcdbd.png"
+          src={logoLight}
           alt="eDutch Management Logo"
           className="h-16 mx-auto mb-6"
         />
