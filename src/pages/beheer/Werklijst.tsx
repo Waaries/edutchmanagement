@@ -6,7 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import PageHeader from "./PageHeader";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 
-type Item = { id: string; primary: string; secondary?: string | null; date: string | null };
+type Item = { id: string; primary: string; secondary?: string | null; date: string | null; userId?: string | null };
 
 type Block = {
   key: string;
@@ -30,19 +30,19 @@ const Werklijst = () => {
       const [requests, mail, contracts, messages] = await Promise.all([
         supabase
           .from("address_requests")
-          .select("id, company_name, contact_person, created_at, status", { count: "exact" })
+          .select("id, company_name, contact_person, created_at, status, user_id", { count: "exact" })
           .eq("status", "pending")
           .order("created_at", { ascending: false })
           .limit(5),
         supabase
           .from("mail_items")
-          .select("id, subject, sender, received_at", { count: "exact" })
+          .select("id, subject, sender, received_at, user_id", { count: "exact" })
           .eq("status", "received")
           .order("received_at", { ascending: false })
           .limit(5),
         supabase
           .from("filled_contracts")
-          .select("id, client_name, client_email, created_at", { count: "exact" })
+          .select("id, client_name, client_email, created_at, user_id", { count: "exact" })
           .eq("status", "pending")
           .order("created_at", { ascending: false })
           .limit(5),
@@ -68,6 +68,7 @@ const Werklijst = () => {
             primary: r.company_name,
             secondary: r.contact_person,
             date: r.created_at,
+            userId: r.user_id,
           })),
         },
         {
@@ -81,6 +82,7 @@ const Werklijst = () => {
             primary: m.subject,
             secondary: m.sender,
             date: m.received_at,
+            userId: m.user_id,
           })),
         },
         {
@@ -94,6 +96,7 @@ const Werklijst = () => {
             primary: c.client_name || c.client_email,
             secondary: c.client_name ? c.client_email : null,
             date: c.created_at,
+            userId: c.user_id,
           })),
         },
         {
@@ -147,7 +150,7 @@ const Werklijst = () => {
                     {block.items.map((item) => (
                       <Link
                         key={item.id}
-                        to={block.to}
+                        to={item.userId ? `/beheer/klanten/${item.userId}` : block.to}
                         className="flex items-center justify-between gap-3 px-3 py-2 rounded-lg hover:bg-white/5 transition-colors"
                       >
                         <span className="min-w-0">

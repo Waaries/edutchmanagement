@@ -2,7 +2,6 @@ import PageHeader from "./PageHeader";
 import AdminMailTab from "@/components/admin/tabs/MailTab";
 import AdminAddressRequestsTab from "@/components/admin/tabs/AddressRequestsTab";
 import ContractsTab from "@/components/admin/tabs/ContractsTab";
-import UsersTab from "@/components/admin/tabs/UsersTab";
 import SecurityTab from "@/components/admin/tabs/SecurityTab";
 import SecurityAuditTab from "@/components/admin/tabs/SecurityAuditTab";
 import LogsTab from "@/components/admin/tabs/LogsTab";
@@ -23,7 +22,6 @@ const page = (title: string, description: string, Component: React.ComponentType
 export const PostPage = page("Post", "Registreer en beheer binnengekomen post", AdminMailTab);
 export const AanvragenPage = page("Aanvragen", "Adresaanvragen behandelen", AdminAddressRequestsTab);
 export const ContractenPage = page("Contracten", "Contracten opstellen en opvolgen", ContractsTab);
-export const KlantenPage = page("Klanten", "Klantenbestand en accounts", UsersTab);
 
 export const BeveiligingPage = page("Beveiliging", "Systeembeveiliging en instellingen", SecurityTab);
 export const AuditPage = page("Audit", "Auditlogboek van gevoelige acties", SecurityAuditTab);
