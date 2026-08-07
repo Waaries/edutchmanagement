@@ -222,7 +222,7 @@ const MailTab = () => {
   return (
     <div className="space-y-6">
       {/* Register form */}
-      <Card className="bg-slate-900/60 border-white/10">
+      <Card className="app-card">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Plus className="h-5 w-5 text-blue-400" /> Post registreren
@@ -350,7 +350,7 @@ const MailTab = () => {
       </Card>
 
       {/* Overview */}
-      <Card className="bg-slate-900/60 border-white/10">
+      <Card className="app-card-solid">
         <CardHeader>
           <CardTitle>Geregistreerde post</CardTitle>
           <CardDescription>Alle post die voor klanten is vastgelegd</CardDescription>

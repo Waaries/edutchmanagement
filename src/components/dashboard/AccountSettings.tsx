@@ -46,7 +46,7 @@ const AccountSettings = () => {
   };
 
   return (
-    <Card className="bg-slate-900/40 border-white/10">
+    <Card className="app-card">
       <CardHeader className="pb-3">
         <CardTitle className="text-sm font-medium text-slate-400">Account</CardTitle>
       </CardHeader>
@@ -75,7 +75,7 @@ const AccountSettings = () => {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="mt-1 bg-slate-950/60 border-white/10 text-slate-100"
+                className="mt-1 bg-white/5 border-white/10 text-slate-100 rounded-xl"
               />
             </div>
             <div>
@@ -84,11 +84,11 @@ const AccountSettings = () => {
                 type="password"
                 value={confirm}
                 onChange={(e) => setConfirm(e.target.value)}
-                className="mt-1 bg-slate-950/60 border-white/10 text-slate-100"
+                className="mt-1 bg-white/5 border-white/10 text-slate-100 rounded-xl"
               />
             </div>
             <div className="sm:col-span-2">
-              <Button size="sm" onClick={changePassword} disabled={saving}>
+              <Button size="sm" className="app-btn-primary" onClick={changePassword} disabled={saving}>
                 {saving ? "Opslaan..." : "Wachtwoord opslaan"}
               </Button>
             </div>

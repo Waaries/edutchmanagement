@@ -58,17 +58,21 @@ const Block = ({
   title,
   icon: Icon,
   action,
+  solid,
   children,
 }: {
   title: string;
   icon: typeof Mail;
   action?: React.ReactNode;
+  solid?: boolean;
   children: React.ReactNode;
 }) => (
-  <Card className="bg-slate-900/60 border-white/10 backdrop-blur-xl">
-    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-      <CardTitle className="flex items-center gap-2 text-base text-white">
-        <Icon className="h-4 w-4 text-blue-400" />
+  <Card className={solid ? "app-card-solid" : "app-card"}>
+    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4 gap-3">
+      <CardTitle className="flex items-center gap-2.5 text-base text-white">
+        <span className="app-icon-tile h-8 w-8">
+          <Icon className="h-4 w-4" />
+        </span>
         {title}
       </CardTitle>
       {action}
@@ -198,8 +202,8 @@ const KlantDetail = () => {
         Terug naar klanten
       </Button>
 
-      <div className="rounded-xl border border-white/10 bg-slate-900/60 backdrop-blur-xl p-6">
-        <h1 className="text-2xl font-bold text-white">
+      <div className="app-card p-8">
+        <h1 className="app-title">
           {profile.company_name || fullName || email || "Klant"}
         </h1>
         <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3 text-sm">
@@ -291,8 +295,9 @@ const KlantDetail = () => {
       <Block
         title="Post"
         icon={Mail}
+        solid
         action={
-          <Button asChild size="sm">
+          <Button asChild size="sm" className="app-btn-primary">
             <Link to={`/beheer/post?klant=${id}`}>
               <Plus className="h-4 w-4 mr-1" />
               Post registreren voor deze klant
@@ -305,7 +310,7 @@ const KlantDetail = () => {
         ) : (
           <Table>
             <TableHeader>
-              <TableRow className="border-white/10 hover:bg-transparent">
+              <TableRow className="border-white/10 hover:bg-transparent bg-white/[0.03]">
                 <TableHead className="text-slate-400">Onderwerp</TableHead>
                 <TableHead className="text-slate-400">Type</TableHead>
                 <TableHead className="text-slate-400">Afzender</TableHead>
@@ -315,7 +320,7 @@ const KlantDetail = () => {
             </TableHeader>
             <TableBody>
               {mail.map((m) => (
-                <TableRow key={m.id} className="border-white/10">
+                <TableRow key={m.id} className="border-white/5 hover:bg-white/[0.06] transition-colors">
                   <TableCell className="text-slate-100">{m.subject}</TableCell>
                   <TableCell>
                     <Badge className={mailTypeClass(m.mail_type)}>
@@ -356,13 +361,13 @@ const KlantDetail = () => {
               <Input
                 value={profile[key]}
                 onChange={(e) => setProfile((p) => ({ ...p, [key]: e.target.value }))}
-                className="bg-slate-950/60 border-white/10 text-slate-100"
+                className="bg-white/5 border-white/10 text-slate-100 rounded-xl"
               />
             </div>
           ))}
         </div>
         <div className="mt-4">
-          <Button onClick={saveProfile} disabled={saving}>
+          <Button onClick={saveProfile} disabled={saving} className="app-btn-primary">
             <Save className="h-4 w-4 mr-2" />
             {saving ? "Opslaan..." : "Gegevens opslaan"}
           </Button>

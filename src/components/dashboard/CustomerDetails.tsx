@@ -82,10 +82,12 @@ const CustomerDetails = ({ user, onProfileChange }: Props) => {
   };
 
   return (
-    <Card className="bg-slate-900/60 border-white/10 backdrop-blur-xl">
+    <Card className="app-card">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 gap-2">
-        <CardTitle className="flex items-center gap-2 text-white">
-          <Building2 className="h-5 w-5 text-blue-400" />
+        <CardTitle className="flex items-center gap-2.5 text-white">
+          <span className="app-icon-tile h-9 w-9">
+            <Building2 className="h-4 w-4" />
+          </span>
           Uw gegevens
         </CardTitle>
         {editing ? (
@@ -101,7 +103,7 @@ const CustomerDetails = ({ user, onProfileChange }: Props) => {
               <X className="h-4 w-4 mr-1" />
               Annuleren
             </Button>
-            <Button size="sm" onClick={save} disabled={saving}>
+            <Button size="sm" className="app-btn-primary" onClick={save} disabled={saving}>
               <Save className="h-4 w-4 mr-1" />
               {saving ? "Opslaan..." : "Opslaan"}
             </Button>
@@ -126,7 +128,7 @@ const CustomerDetails = ({ user, onProfileChange }: Props) => {
                 <Input
                   value={profile[key] || ""}
                   onChange={(e) => setProfile((p) => ({ ...p, [key]: e.target.value }))}
-                  className="mt-1 bg-slate-950/60 border-white/10 text-slate-100"
+                  className="mt-1 bg-white/5 border-white/10 text-slate-100 rounded-xl"
                 />
               ) : (
                 <p className="text-sm text-slate-300 mt-1">{profile[key] || "Niet ingevuld"}</p>

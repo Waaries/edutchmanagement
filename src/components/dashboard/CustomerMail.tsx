@@ -94,10 +94,12 @@ const CustomerMail = () => {
 
   return (
     <>
-      <Card className="bg-slate-900/60 border-white/10 backdrop-blur-xl">
+      <Card className="app-card-solid">
         <CardHeader className="flex flex-row items-center justify-between space-y-0">
-          <CardTitle className="flex items-center gap-2 text-white">
-            <Mail className="h-5 w-5 text-blue-400" />
+          <CardTitle className="flex items-center gap-2.5 text-white">
+            <span className="app-icon-tile h-9 w-9">
+              <Mail className="h-4.5 w-4.5" />
+            </span>
             Uw post
           </CardTitle>
           {unread > 0 && (
@@ -140,7 +142,7 @@ const CustomerMail = () => {
                     <tr
                       key={m.id}
                       onClick={() => openMail(m)}
-                      className="border-b border-white/5 cursor-pointer hover:bg-white/5"
+                      className="border-b border-white/5 cursor-pointer hover:bg-white/[0.06] transition-colors"
                     >
                       <td className="py-3 pr-3">
                         <span className="flex items-center gap-2">
@@ -246,7 +248,7 @@ const CustomerMail = () => {
               </div>
 
               {selected.scan_path && (
-                <Button onClick={() => openScan(selected)} disabled={scanLoading}>
+                <Button onClick={() => openScan(selected)} disabled={scanLoading} className="app-btn-primary">
                   {scanLoading ? (
                     <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                   ) : (
