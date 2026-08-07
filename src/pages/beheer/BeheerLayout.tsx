@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { AppGlow } from "@/components/ui/app-surface";
+import logoLight from "@/assets/logo-light.png";
 
 const MAIN_NAV = [
   { to: "/beheer", label: "Werklijst", icon: ClipboardList, end: true },
@@ -129,33 +130,43 @@ const BeheerLayout = () => {
   );
 
   return (
-    <div className="dashboard-dark relative min-h-screen bg-slate-950 overflow-hidden">
-      <AppGlow />
-      <div className="relative container mx-auto py-10 px-4 lg:px-6">
-        <div className="lg:hidden mb-6">
+    <div className="min-h-screen flex bg-slate-50">
+      {/* Dark navigation anchor — counterpart of the public navbar */}
+      <aside className="dashboard-dark hidden lg:block w-72 shrink-0 relative bg-slate-950 overflow-hidden">
+        <AppGlow />
+        <div className="relative sticky top-0 h-screen overflow-y-auto p-4">
+          <Link to="/" className="block px-2 py-3 mb-2">
+            <img src={logoLight} alt="eDutch Management" className="h-9 w-auto object-contain" />
+          </Link>
+          {nav}
+        </div>
+      </aside>
+
+      <div className="flex-1 min-w-0 flex flex-col">
+        {/* Dark topbar on small screens, holding the mobile menu */}
+        <div className="dashboard-dark lg:hidden bg-slate-950 px-4 py-3 flex items-center justify-between gap-3">
+          <Link to="/">
+            <img src={logoLight} alt="eDutch Management" className="h-8 w-auto object-contain" />
+          </Link>
           <button
             onClick={() => setMobileOpen((v) => !v)}
-            className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm text-slate-200 text-sm"
+            className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-slate-200 text-sm"
           >
             {mobileOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
             Beheermenu
           </button>
-          {mobileOpen && <div className="mt-3">{nav}</div>}
         </div>
+        {mobileOpen && (
+          <div className="dashboard-dark lg:hidden bg-slate-950 px-4 pb-4">{nav}</div>
+        )}
 
-        <div className="flex gap-8">
-          <aside className="hidden lg:block w-64 shrink-0">
-            <div className="sticky top-10">{nav}</div>
-          </aside>
-          <main className="flex-1 min-w-0 pb-12">
-            <ErrorBoundary>
-              <Outlet />
-            </ErrorBoundary>
-          </main>
-        </div>
+        <main className="workspace-light flex-1 min-w-0 bg-slate-50 px-4 lg:px-8 py-8 lg:py-10 pb-16">
+          <ErrorBoundary>
+            <Outlet />
+          </ErrorBoundary>
+        </main>
       </div>
     </div>
-
   );
 };
 

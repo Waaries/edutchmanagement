@@ -645,3 +645,134 @@
     transform: none !important;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   Light work area inside the dark app shell (/beheer + /dashboard).
+   The dark sidebar / topbar keep the .dashboard-dark tokens; everything inside
+   .workspace-light flips back to the normal light tokens so shadcn Inputs,
+   Selects, Tables, Dialogs and Badges render in their light variant, and the
+   shared .app-* surfaces resolve to their -light counterparts.
+   Deliberately unlayered so it wins over the Tailwind utilities layer.
+--------------------------------------------------------------------------- */
+.workspace-light {
+  --background: 210 40% 98%;        /* slate-50 */
+  --foreground: 222 47% 11%;        /* slate-900 */
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 11%;
+  --primary: 217 91% 60%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 210 40% 96%;
+  --secondary-foreground: 222 47% 11%;
+  --muted: 210 40% 96%;
+  --muted-foreground: 215 16% 47%;  /* slate-500 */
+  --accent: 210 40% 96%;
+  --accent-foreground: 222 47% 11%;
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 214 32% 91%;            /* slate-200 */
+  --input: 214 32% 91%;
+  --ring: 217 91% 60%;
+
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+/* Shared surfaces resolve to their light counterparts inside the work area */
+.workspace-light .app-card,
+.workspace-light .app-card-solid { @apply app-card-light; }
+.workspace-light .app-card-interactive { @apply app-card-light-interactive; }
+.workspace-light .app-pill { @apply app-pill-light; }
+.workspace-light .app-title { @apply app-title-light; }
+.workspace-light .app-icon-tile { @apply app-icon-tile-light; }
+
+/* Typography written for a dark ground, re-mapped for a light ground */
+.workspace-light .text-white,
+.workspace-light .text-slate-100,
+.workspace-light .text-slate-200 { @apply text-slate-900; }
+.workspace-light .text-slate-300,
+.workspace-light .text-slate-400 { @apply text-slate-600; }
+.workspace-light .hover\:text-white:hover { @apply text-slate-900; }
+
+/* Glass fills / hairlines become paper + slate hairlines */
+.workspace-light .bg-white\/5,
+.workspace-light .bg-white\/10 { @apply bg-slate-100; }
+.workspace-light .hover\:bg-white\/5:hover,
+.workspace-light .hover\:bg-white\/10:hover { @apply bg-slate-100; }
+.workspace-light .border-white\/5,
+.workspace-light .border-white\/10,
+.workspace-light .border-white\/20 { @apply border-slate-200; }
+.workspace-light .divide-white\/10 > * + * { @apply border-slate-200; }
+.workspace-light .bg-slate-900,
+.workspace-light .bg-slate-900\/80,
+.workspace-light .bg-slate-950 { @apply bg-white; }
+
+/* Tables: quiet and scannable */
+.workspace-light table thead th { @apply text-slate-500; }
+.workspace-light table tr { @apply border-slate-200; }
+.workspace-light table tbody tr:hover { @apply bg-slate-50; }
+
+/* Coloured chips: soft tint + dark text from the same family */
+.workspace-light .bg-blue-500\/10,
+.workspace-light .bg-blue-500\/15,
+.workspace-light .bg-blue-500\/20 { @apply bg-blue-50; }
+.workspace-light .text-blue-200,
+.workspace-light .text-blue-300,
+.workspace-light .text-blue-400 { @apply text-blue-700; }
+.workspace-light .border-blue-500\/20,
+.workspace-light .border-blue-500\/30 { @apply border-blue-200; }
+.workspace-light .hover\:bg-blue-500\/20:hover { @apply bg-blue-100; }
+.workspace-light .hover\:text-blue-200:hover { @apply text-blue-700; }
+
+.workspace-light .bg-amber-500\/10,
+.workspace-light .bg-amber-500\/15 { @apply bg-amber-50; }
+.workspace-light .text-amber-200,
+.workspace-light .text-amber-300,
+.workspace-light .text-amber-400 { @apply text-amber-700; }
+.workspace-light .border-amber-500\/20,
+.workspace-light .border-amber-500\/30 { @apply border-amber-200; }
+
+.workspace-light .bg-purple-500\/15 { @apply bg-purple-50; }
+.workspace-light .text-purple-300,
+.workspace-light .text-purple-400 { @apply text-purple-700; }
+.workspace-light .border-purple-500\/30 { @apply border-purple-200; }
+
+.workspace-light .bg-indigo-500\/15 { @apply bg-indigo-50; }
+.workspace-light .text-indigo-300,
+.workspace-light .text-indigo-400 { @apply text-indigo-700; }
+.workspace-light .border-indigo-500\/30 { @apply border-indigo-200; }
+
+.workspace-light .bg-cyan-500\/15 { @apply bg-cyan-50; }
+.workspace-light .text-cyan-300,
+.workspace-light .text-cyan-400 { @apply text-cyan-700; }
+.workspace-light .border-cyan-500\/30 { @apply border-cyan-200; }
+
+.workspace-light .bg-emerald-500\/10,
+.workspace-light .bg-emerald-500\/15 { @apply bg-emerald-50; }
+.workspace-light .text-emerald-300,
+.workspace-light .text-emerald-400 { @apply text-emerald-700; }
+.workspace-light .border-emerald-500\/20,
+.workspace-light .border-emerald-500\/30 { @apply border-emerald-200; }
+
+.workspace-light .bg-green-500\/10,
+.workspace-light .bg-green-500\/15 { @apply bg-green-50; }
+.workspace-light .text-green-300,
+.workspace-light .text-green-400 { @apply text-green-700; }
+.workspace-light .border-green-500\/20,
+.workspace-light .border-green-500\/30 { @apply border-green-200; }
+
+.workspace-light .bg-red-500\/10,
+.workspace-light .bg-red-500\/15 { @apply bg-red-50; }
+.workspace-light .text-red-300,
+.workspace-light .text-red-400 { @apply text-red-700; }
+.workspace-light .border-red-500\/20,
+.workspace-light .border-red-500\/30 { @apply border-red-200; }
+.workspace-light .hover\:text-red-300:hover { @apply text-red-700; }
+
+.workspace-light .bg-slate-500\/15 { @apply bg-slate-100; }
+.workspace-light .border-slate-500\/30 { @apply border-slate-300; }
+
+/* Gradient page titles keep their blue, but readable on white */
+.workspace-light .from-blue-400 { @apply from-blue-600; }
+.workspace-light .to-indigo-400 { @apply to-indigo-600; }
