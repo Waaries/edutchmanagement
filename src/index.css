@@ -704,7 +704,7 @@
 .workspace-light .app-btn-primary *,
 .workspace-light [class*="bg-gradient"].text-white,
 .workspace-light button[class*="bg-primary"],
-.workspace-light button[class*="bg-destructive"] { @apply text-white; }
+.workspace-light button[class*="bg-destructive"] { color: #fff; }
 
 
 /* Glass fills / hairlines become paper + slate hairlines */
