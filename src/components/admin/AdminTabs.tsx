@@ -53,7 +53,7 @@ const AdminTabs = () => {
     >
       {/* Vertical sidebar nav */}
       <aside className="lg:w-64 lg:shrink-0">
-        <div className="lg:sticky lg:top-20 rounded-xl border border-white/10 bg-slate-900/60 backdrop-blur-xl p-3">
+        <div className="lg:sticky lg:top-20 app-card p-3">
           <p className="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
             Admin secties
           </p>
@@ -83,7 +83,7 @@ const AdminTabs = () => {
 
       {/* Content */}
       <div className="flex-1 min-w-0">
-        <Card className="bg-slate-900/60 border-white/10 backdrop-blur-xl">
+        <Card className="app-card">
           <CardContent className="p-6">
             <TabsContent value="overview" className="mt-0">
               <OverviewTab onTabChange={handleTabChange} />
