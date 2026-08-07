@@ -1,0 +1,124 @@
+{
+  "version": 1,
+  "sdk_version": "0.26.1",
+  "path": "/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://yajulpyjxgwehomkqdqv.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "edutchmanagement",
+      "version": "0.1.0",
+      "title": "edutchmanagement"
+    },
+    "tools": [
+      {
+        "name": "list_mail",
+        "title": "List mail items",
+        "description": "List mail items registered for the signed-in customer, newest first.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "description": "Maximum number of mail items to return (default 20)."
+            },
+            "only_unread": {
+              "type": "boolean",
+              "description": "Return only unread mail items."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "mark_mail_read",
+        "title": "Mark mail as read",
+        "description": "Mark one of the signed-in customer's mail items as read or unread.",
+        "annotations": {
+          "readOnlyHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "mail_item_id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "The id of the mail item."
+            },
+            "is_read": {
+              "type": "boolean",
+              "description": "Read state to set (default true)."
+            }
+          },
+          "required": [
+            "mail_item_id"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_profile",
+        "title": "Get my profile",
+        "description": "Get the company profile of the signed-in customer (name, company, KvK, VAT, address).",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_address_requests",
+        "title": "List address requests",
+        "description": "List business address requests visible to the signed-in user, newest first.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "description": "Maximum number of requests to return (default 20)."
+            },
+            "status": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Filter by status, e.g. pending or approved."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
