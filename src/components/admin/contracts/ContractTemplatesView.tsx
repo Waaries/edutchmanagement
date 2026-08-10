@@ -91,7 +91,7 @@ const ContractTemplatesView: React.FC<ContractTemplatesViewProps> = ({
           description: template.description,
           content: template.content,
           status: 'draft',
-          created_by: template.created_by
+          created_by: template.created_by ?? (await supabase.auth.getUser()).data.user?.id ?? null
         })
         .select()
         .single();

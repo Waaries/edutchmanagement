@@ -26,6 +26,7 @@ import {
 interface FilledContract {
   id: string;
   template_id: string;
+  user_id: string | null;
   client_email: string;
   client_name: string | null;
   status: string;
@@ -270,6 +271,9 @@ const FilledContractsView = () => {
                     <CardDescription className="mt-1">
                       <div className="space-y-1">
                         <div>Klant: {contract.client_name || contract.client_email}</div>
+                        {!contract.user_id && (
+                          <div className="text-xs text-amber-600">Verwijderde klant — account bestaat niet meer</div>
+                        )}
                         <div className="flex items-center gap-4 text-sm text-muted-foreground">
                           <span>Aangemaakt: {formatDate(contract.created_at)}</span>
                           {contract.completed_at && (
