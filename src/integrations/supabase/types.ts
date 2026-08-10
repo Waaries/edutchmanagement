@@ -191,7 +191,7 @@ export type Database = {
         Row: {
           content: string
           created_at: string
-          created_by: string
+          created_by: string | null
           description: string | null
           id: string
           status: Database["public"]["Enums"]["contract_status"]
@@ -201,7 +201,7 @@ export type Database = {
         Insert: {
           content: string
           created_at?: string
-          created_by: string
+          created_by?: string | null
           description?: string | null
           id?: string
           status?: Database["public"]["Enums"]["contract_status"]
@@ -211,7 +211,7 @@ export type Database = {
         Update: {
           content?: string
           created_at?: string
-          created_by?: string
+          created_by?: string | null
           description?: string | null
           id?: string
           status?: Database["public"]["Enums"]["contract_status"]
@@ -238,7 +238,7 @@ export type Database = {
           template_id: string
           token_created_at: string | null
           updated_at: string
-          user_id: string
+          user_id: string | null
         }
         Insert: {
           access_count?: number | null
@@ -257,7 +257,7 @@ export type Database = {
           template_id: string
           token_created_at?: string | null
           updated_at?: string
-          user_id: string
+          user_id?: string | null
         }
         Update: {
           access_count?: number | null
@@ -276,7 +276,7 @@ export type Database = {
           template_id?: string
           token_created_at?: string | null
           updated_at?: string
-          user_id?: string
+          user_id?: string | null
         }
         Relationships: [
           {
