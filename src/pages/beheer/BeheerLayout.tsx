@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { NavLink, Navigate, Outlet, Link } from "react-router-dom";
 import {
   ClipboardList, Mail, Building2, FileText, Users, Shield,
-  ChevronDown, Menu, X, ArrowLeft, ScrollText, Activity, MessageSquare,
+  ChevronDown, Menu, X, ArrowLeft, ScrollText, Activity, MessageSquare, UserRound,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -117,6 +117,11 @@ const BeheerLayout = () => {
       </div>
 
       <div className="pt-3 border-t border-slate-200">
+        {user?.email && (
+          <p className="px-3 pb-2 text-xs text-slate-500 truncate" title={user.email}>
+            {user.email}
+          </p>
+        )}
         <Link
           to="/dashboard"
           className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-100"
@@ -124,6 +129,14 @@ const BeheerLayout = () => {
           <ArrowLeft className="h-4 w-4" />
           <span>Naar klantportaal</span>
         </Link>
+        <NavLink
+          to="/beheer/account"
+          onClick={() => setMobileOpen(false)}
+          className={({ isActive }) => linkClass(isActive)}
+        >
+          <UserRound className="h-4 w-4 shrink-0" />
+          <span>Mijn account</span>
+        </NavLink>
       </div>
     </div>
   );

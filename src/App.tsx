@@ -35,6 +35,7 @@ const AanvragenPage = lazy(() => import("./pages/beheer/pages").then((m) => ({ d
 const ContractenPage = lazy(() => import("./pages/beheer/pages").then((m) => ({ default: m.ContractenPage })));
 const KlantenPage = lazy(() => import("./pages/beheer/Klanten"));
 const KlantDetailPage = lazy(() => import("./pages/beheer/KlantDetail"));
+const BeheerAccountPage = lazy(() => import("./pages/beheer/Account"));
 const BeveiligingPage = lazy(() => import("./pages/beheer/pages").then((m) => ({ default: m.BeveiligingPage })));
 const AuditPage = lazy(() => import("./pages/beheer/pages").then((m) => ({ default: m.AuditPage })));
 const LogsPage = lazy(() => import("./pages/beheer/pages").then((m) => ({ default: m.LogsPage })));
@@ -93,6 +94,7 @@ function AppContent() {
           <Route path="systeem/logs" element={<LogsPage />} />
           <Route path="systeem/monitoring" element={<MonitoringPage />} />
           <Route path="systeem/berichten" element={<BerichtenPage />} />
+          <Route path="account" element={<BeheerAccountPage />} />
         </Route>
 
         <Route path="/aanvragen" element={<AppLayout><AddressRequest /></AppLayout>} />
