@@ -274,7 +274,7 @@ const FilledContractsView = () => {
                         {!contract.user_id && (
                           <div className="text-xs text-amber-600">Verwijderde klant — account bestaat niet meer</div>
                         )}
-
+                        <div className="flex items-center gap-4 text-sm text-muted-foreground">
                           <span>Aangemaakt: {formatDate(contract.created_at)}</span>
                           {contract.completed_at && (
                             <span>Voltooid: {formatDate(contract.completed_at)}</span>
