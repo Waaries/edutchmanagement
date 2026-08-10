@@ -94,7 +94,7 @@ const Werklijst = () => {
           items: (contracts.data ?? []).map((c) => ({
             id: c.id,
             primary: c.client_name || c.client_email,
-            secondary: c.client_name ? c.client_email : null,
+            secondary: c.user_id ? (c.client_name ? c.client_email : null) : "Verwijderde klant",
             date: c.created_at,
             userId: c.user_id,
           })),
