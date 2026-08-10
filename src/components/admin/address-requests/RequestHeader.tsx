@@ -65,10 +65,15 @@ const RequestHeader = ({
         </CardTitle>
         <CardDescription className="flex items-center gap-4">
           <span>{getPackageLabel(preferredAddressType)} • {businessType}</span>
-          {userId && (
+          {userId ? (
             <span className="flex items-center gap-1 text-xs">
               <User className="h-3 w-3" />
               User ID: {userId.substring(0, 8)}...
+            </span>
+          ) : (
+            <span className="flex items-center gap-1 text-xs text-amber-600">
+              <User className="h-3 w-3" />
+              Verwijderde klant of losse aanvraag
             </span>
           )}
         </CardDescription>
