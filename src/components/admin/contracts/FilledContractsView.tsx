@@ -26,6 +26,7 @@ import {
 interface FilledContract {
   id: string;
   template_id: string;
+  user_id: string | null;
   client_email: string;
   client_name: string | null;
   status: string;
